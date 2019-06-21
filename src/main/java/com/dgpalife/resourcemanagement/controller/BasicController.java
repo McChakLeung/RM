@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class BasicController {
+public class  BasicController {
 
     @RequestMapping("/")
     public String index(HttpSession session){
