@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dgpalife.resourcemanagement.mapper.ResourcesMapper">
+  <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.Resources">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="ResourceNo" jdbcType="VARCHAR" property="resourceno" />
+    <result column="ResourceType" jdbcType="VARCHAR" property="resourcetype" />
+    <result column="ServiceSupplier" jdbcType="VARCHAR" property="servicesupplier" />
+    <result column="Address" jdbcType="VARCHAR" property="address" />
+    <result column="DeptNo" jdbcType="VARCHAR" property="deptno" />
+    <result column="UserName" jdbcType="VARCHAR" property="UserName" />
+    <result column="EquipNo" jdbcType="VARCHAR" property="equipno" />
+    <result column="Expenses" jdbcType="DOUBLE" property="expenses" />
+    <result column="ChargeType" jdbcType="VARCHAR" property="chargetype" />
+    <result column="CreatorName" jdbcType="VARCHAR" property="creatorname" />
+    <result column="CreateTime" jdbcType="DATE" property="createtime" />
+    <result column="ResourceStatus" jdbcType="VARCHAR" property="resourcestatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, ResourceNo, ResourceType, ServiceSupplier, Address, DeptNo, UserName, EquipNo, Expenses, 
+    ChargeType, CreatorName, CreateTime, ResourceStatus
+  </sql>
+
+  <!--========================================手动添加====================================-->
+
+  <!--表格展示-->
+  <select id="selectAllResource" resultType="java.util.HashMap">
+    SELECT
+    r.id rid,
+    r.ResourceNo,
+    r.ResourceType,
+    r.ServiceSupplier,
+    d1.isSecretary d1_isSecretary,
+    d1.id d1id,
+    d1.DeptName dName,
+    d2.id d2id,
+    d2.deptName pdName,
+    r.UserName,
+    r.ChargeType,
+    r.ResourceStatus
+    FROM
+    resources r,
+    department d1,
+    department d2
+    WHERE
+    r.deptNo = d1.deptNo
+    AND d1.parentDeptNo = d2.deptNo
+
+  </select>
+
+  <!--筛选条件-->
+  <select id="selectByOption" resultType="java.util.HashMap">
+    SELECT
+    r.id rid,
+    r.ResourceNo,
+    r.ResourceType,
+    r.ServiceSupplier,
+    d1.isSecretary d1_isSecretary,
+    d1.id d1id,
+    d1.DeptName dName,
+    d2.id d2id,
+    d2.deptName pdName,
+    r.UserName,
+    r.ChargeType,
+    r.ResourceStatus
+    FROM
+    resources r,
+    department d1,
+    department d2
+    WHERE
+    r.deptNo = d1.deptNo
+    AND d1.parentDeptNo = d2.deptNo
+    <if test="ResourceNo != null and ResourceNo !=''">
+      AND r.ResourceNo = #{ResourceNo}
+    </if>
+    <if test="UserName != null and UserName !='' ">
+      AND r.UserName = #{UserName}
+    </if>
+    <if test="parentDeptNo != null and parentDeptNo != 0">
+      AND d1.parentDeptNo = #{parentDeptNo}
+    </if>
+    <if test="deptNo != null and deptNo!=0">
+      AND r.deptNo = #{deptNo}
+    </if>
+    <if test="ResourceType != null and ResourceType != 0">
+      AND r.ResourceType = #{ResourceType}
+    </if>
+    <if test="ServiceSupplier != null and ServiceSupplier != ''">
+      AND r.ServiceSupplier = #{ServiceSupplier}
+    </if>
+
+  </select>
+
+  <!--========================================自动生成====================================-->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from resources
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from resources
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Resources">
+    insert into resources (id, ResourceNo, ResourceType, 
+      ServiceSupplier, Address, DeptNo, 
+      UserName, EquipNo, Expenses, 
+      ChargeType, CreatorName, CreateTime, 
+      ResourceStatus)
+    values (#{id,jdbcType=INTEGER}, #{resourceno,jdbcType=VARCHAR}, #{resourcetype,jdbcType=VARCHAR}, 
+      #{servicesupplier,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{deptno,jdbcType=VARCHAR}, 
+      #{UserName,jdbcType=VARCHAR}, #{equipno,jdbcType=VARCHAR}, #{expenses,jdbcType=DOUBLE}, 
+      #{chargetype,jdbcType=VARCHAR}, #{CreatorName,jdbcType=VARCHAR}, #{createtime,jdbcType=DATE}, 
+      #{resourcestatus,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Resources">
+    insert into resources
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="resourceno != null">
+        ResourceNo,
+      </if>
+      <if test="resourcetype != null">
+        ResourceType,
+      </if>
+      <if test="servicesupplier != null">
+        ServiceSupplier,
+      </if>
+      <if test="address != null">
+        Address,
+      </if>
+      <if test="deptno != null">
+        DeptNo,
+      </if>
+      <if test="UserName != null">
+        UserName,
+      </if>
+      <if test="equipno != null">
+        EquipNo,
+      </if>
+      <if test="expenses != null">
+        Expenses,
+      </if>
+      <if test="chargetype != null">
+        ChargeType,
+      </if>
+      <if test="CreatorName != null">
+        CreatorName,
+      </if>
+      <if test="createtime != null">
+        CreateTime,
+      </if>
+      <if test="resourcestatus != null">
+        ResourceStatus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="resourceno != null">
+        #{resourceno,jdbcType=VARCHAR},
+      </if>
+      <if test="resourcetype != null">
+        #{resourcetype,jdbcType=VARCHAR},
+      </if>
+      <if test="servicesupplier != null">
+        #{servicesupplier,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="deptno != null">
+        #{deptno,jdbcType=VARCHAR},
+      </if>
+      <if test="UserName != null">
+        #{UserName,jdbcType=VARCHAR},
+      </if>
+      <if test="equipno != null">
+        #{equipno,jdbcType=VARCHAR},
+      </if>
+      <if test="expenses != null">
+        #{expenses,jdbcType=DOUBLE},
+      </if>
+      <if test="chargetype != null">
+        #{chargetype,jdbcType=VARCHAR},
+      </if>
+      <if test="CreatorName != null">
+        #{CreatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="resourcestatus != null">
+        #{resourcestatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.Resources">
+    update resources
+    <set>
+      <if test="resourceno != null">
+        ResourceNo = #{resourceno,jdbcType=VARCHAR},
+      </if>
+      <if test="resourcetype != null">
+        ResourceType = #{resourcetype,jdbcType=VARCHAR},
+      </if>
+      <if test="servicesupplier != null">
+        ServiceSupplier = #{servicesupplier,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        Address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="deptno != null">
+        DeptNo = #{deptno,jdbcType=VARCHAR},
+      </if>
+      <if test="UserName != null">
+        UserName = #{UserName,jdbcType=VARCHAR},
+      </if>
+      <if test="equipno != null">
+        EquipNo = #{equipno,jdbcType=VARCHAR},
+      </if>
+      <if test="expenses != null">
+        Expenses = #{expenses,jdbcType=DOUBLE},
+      </if>
+      <if test="chargetype != null">
+        ChargeType = #{chargetype,jdbcType=VARCHAR},
+      </if>
+      <if test="CreatorName != null">
+        CreatorName = #{CreatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        CreateTime = #{createtime,jdbcType=DATE},
+      </if>
+      <if test="resourcestatus != null">
+        ResourceStatus = #{resourcestatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.Resources">
+    update resources
+    set ResourceNo = #{resourceno,jdbcType=VARCHAR},
+      ResourceType = #{resourcetype,jdbcType=VARCHAR},
+      ServiceSupplier = #{servicesupplier,jdbcType=VARCHAR},
+      Address = #{address,jdbcType=VARCHAR},
+      DeptNo = #{deptno,jdbcType=VARCHAR},
+      UserName = #{UserName,jdbcType=VARCHAR},
+      EquipNo = #{equipno,jdbcType=VARCHAR},
+      Expenses = #{expenses,jdbcType=DOUBLE},
+      ChargeType = #{chargetype,jdbcType=VARCHAR},
+      CreatorName = #{CreatorName,jdbcType=VARCHAR},
+      CreateTime = #{createtime,jdbcType=DATE},
+      ResourceStatus = #{resourcestatus,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

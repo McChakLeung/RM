@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<title>Tables</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<!-- VENDOR CSS -->
+	<link rel="stylesheet" href="/js/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/js/vendor/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/js/vendor/linearicons/style.css">
+	<!-- MAIN CSS -->
+	<link rel="stylesheet" href="/css/main.css">
+	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+	<link rel="stylesheet" href="/css/demo.css">
+	<!-- GOOGLE FONTS -->
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+	<!-- ICONS -->
+	<link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/img/favicon.png">
+	<!-- Javascript -->
+	<script src="/js/vendor/jquery/jquery-3.3.1.js"></script>
+	<script src="/js/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/js/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="/js/scripts/klorofil-common.js"></script>
+	<!--datetimepicker-->
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap-datetimepicker.min.css"/>
+	<!--<script type="text/javascript" src="assets/vendor/jquery/jquery.min.js"></script>-->
+	<!--<script type="text/javascript" src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>-->
+ 	<script type="text/javascript" src="/js/bootstrap-datetimepicker.js" charset="UTF-8"/>
+	<script type="text/javascript" src="/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+	<script type="text/javascript">
+		// $("#datetimepicker1").datetimepicker({
+         //    minView: 2,
+         //    language: 'zh-CN', //汉化
+         //    format:'yyyy-mm',
+         //    autoclose:true,
+         //    startView: 2,//月视图
+         //    // pickerPosition: "bottom-left"
+		// });
+
+        $(function () {
+            $(".header").load("/html/commons/header.html");
+            $(".left_sidebar").load("/html/commons/left_sidebar.html");
+            $(".footer").load("/html/commons/footer.html");
+
+            $("#datetimepicker1").datetimepicker({
+               minView: 2,
+               language: 'zh-CN', //汉化
+               format:'yyyy-mm',
+               autoclose:true,
+               startView: 2,//月视图
+               // pickerPosition: "bottom-left"
+            });
+        })
+	</script>
+</head>
+
+<body>
+<!-- WRAPPER -->
+<div id="wrapper">
+	<!-- NAVBAR -->
+	<div class="header"></div>
+	<!-- END NAVBAR -->
+	<!-- LEFT SIDEBAR -->
+	<div class="left_sidebar"></div>
+	<!-- END LEFT SIDEBAR -->
+		<!-- MAIN -->
+		<div class="main">
+			<!-- MAIN CONTENT -->
+			<div class="main-content">
+				<div class="container-fluid">
+					<!--<h3 class="page-title">Tables</h3>-->
+                    <ol class="breadcrumb">
+                        <li><a href="#">首页</a></li>
+                        <li><a href="#">费用管理</a></li>
+                        <li class="active">账单管理</li>
+                    </ol>
+					<div class="row">
+						<div class="col-md-12">
+							<!-- BASIC TABLE -->
+							<div class="panel">
+								<!--<div class="panel-heading">-->
+									<!--<h3 class="panel-title">Basic Table</h3>-->
+								<!--</div>-->
+								<div class="panel-body">
+                                    <!--<div class="row">-->
+                                        <!--&lt;!&ndash;<h4 class="page-title">筛选条件</h4>&ndash;&gt;-->
+
+                                    <!--</div>-->
+
+									<form class="form-horizontal">
+										<!--<h4 class="page-title">筛选条件:</h4>-->
+										<div class="form-group">
+											<label class="col-md-3">筛选条件：</label>
+										</div>
+										<div class="form-group">
+											<label for="AccountDate" class="col-md-2 control-label">账单期间:</label>
+											<!--<div class="col-md-3" data-date="2019-03" data-date-format="yyyy-mm">-->
+											<div class="col-md-3" id="datetimepicker1">
+												<input type="text" class="form-control form_datetime" id="AccountDate" placeholder="">
+												<span class="add-on"><i class="icon-remove"></i></span>
+												<span class="add-on"><i class="icon-th"></i></span>
+											</div>
+											<label for="ResourceType" class="col-md-2 control-label">运营商：</label>
+											<div class="col-md-3">
+												<select class="form-control" id="ResourceType">
+													<option>1</option>
+													<option>2</option>
+													<option>3</option>
+													<option>4</option>
+													<option>5</option>
+												</select>
+											</div>
+											<!--<label for="endDate" class="col-md-2 control-label">截止日期：</label>-->
+											<!--<div class="col-md-3">-->
+												<!--<input type="datetime-local" class="form-control" id="endDate" placeholder="Date">-->
+											<!--</div>-->
+										</div>
+										<!--<div class="form-group">-->
+											<!--<label class="col-md-2 control-label">使用部门:</label>-->
+											<!--<div class="col-md-3">-->
+												<!--<select class="form-control" id="district">-->
+													<!--<option>1</option>-->
+													<!--<option>2</option>-->
+													<!--<option>3</option>-->
+													<!--<option>4</option>-->
+													<!--<option>5</option>-->
+												<!--</select>-->
+											<!--</div>-->
+											<!--&lt;!&ndash;<div class="col-md-2">&ndash;&gt;-->
+												<!--&lt;!&ndash;<select class="form-control" id="department">&ndash;&gt;-->
+													<!--&lt;!&ndash;<option>1</option>&ndash;&gt;-->
+													<!--&lt;!&ndash;<option>2</option>&ndash;&gt;-->
+													<!--&lt;!&ndash;<option>3</option>&ndash;&gt;-->
+													<!--&lt;!&ndash;<option>4</option>&ndash;&gt;-->
+													<!--&lt;!&ndash;<option>5</option>&ndash;&gt;-->
+												<!--&lt;!&ndash;</select>&ndash;&gt;-->
+											<!--&lt;!&ndash;</div>&ndash;&gt;-->
+											<!--<label for="workplace" class="col-md-2 control-label">职场：</label>-->
+											<!--<div class="col-md-3">-->
+												<!--<select class="form-control" id="workplace">-->
+													<!--<option>1</option>-->
+													<!--<option>2</option>-->
+													<!--<option>3</option>-->
+													<!--<option>4</option>-->
+													<!--<option>5</option>-->
+												<!--</select>-->
+											<!--</div>-->
+										<!--</div>-->
+										<!--<div class="form-group">-->
+											<!--<label for="operator" class="col-md-2 control-label">资源类型：</label>-->
+											<!--<div class="col-md-3">-->
+												<!--<select class="form-control" id="operator">-->
+													<!--<option>1</option>-->
+													<!--<option>2</option>-->
+													<!--<option>3</option>-->
+													<!--<option>4</option>-->
+													<!--<option>5</option>-->
+												<!--</select>-->
+											<!--</div>-->
+											<!--<label for="ResourceType" class="col-md-2 control-label">运营商：</label>-->
+											<!--<div class="col-md-3">-->
+												<!--<select class="form-control" id="ResourceType">-->
+													<!--<option>1</option>-->
+													<!--<option>2</option>-->
+													<!--<option>3</option>-->
+													<!--<option>4</option>-->
+													<!--<option>5</option>-->
+												<!--</select>-->
+											<!--</div>-->
+										<!--</div>-->
+										<div class="form-group">
+											<div class="col-sm-offset-2 col-sm-10">
+												<button type="submit" class="btn btn-primary" >筛选</button>
+												<button type="reset" class="btn btn-danger">清除</button>
+											</div>
+										</div>
+									</form>
+                                    <hr>
+									<table class="table table-bordered table-hover">
+										<thead>
+											<tr class="success">
+												<th>账期</th>
+												<th>运营商</th>
+												<th>扣费金额</th>
+												<th>发票金额</th>
+												<th>核销金额</th>
+												<th>余额</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>2017年7月</td>
+												<td>电信</td>
+												<td>300000</td>
+												<td>300000</td>
+												<td>300000</td>
+												<td>0</td>
+												<td><a href="#">明细</a> | <a href="#">修改</a> | <a href="#">删除</a></td>
+											</tr>
+											<tr>
+												<td>2017年7月</td>
+												<td>联通</td>
+												<td>400000</td>
+												<td>400000</td>
+												<td>400000</td>
+												<td>0</td>
+												<td><a href="#">明细</a> | <a href="#">修改</a> | <a href="#">删除</a></td>
+											</tr>
+										</tbody>
+									</table>
+									<button class="btn bg-primary">导入账单</button>
+									<!--分页-->
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <nav aria-label="Page navigation">
+                                                <ul class="pagination">
+                                                    <li>
+                                                        <a href="#" aria-label="Previous">
+                                                            <span aria-hidden="true">&laquo;</span>
+                                                        </a>
+                                                    </li>
+                                                    <li><a href="#">1</a></li>
+                                                    <li><a href="#">2</a></li>
+                                                    <li><a href="#">3</a></li>
+                                                    <li><a href="#">4</a></li>
+                                                    <li><a href="#">5</a></li>
+                                                    <li>
+                                                        <a href="#" aria-label="Next">
+                                                            <span aria-hidden="true">&raquo;</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+								</div>
+							</div>
+							<!-- END BASIC TABLE -->
+						</div>
+						<!--<div class="col-md-6">-->
+							<!--&lt;!&ndash; TABLE NO PADDING &ndash;&gt;-->
+							<!--<div class="panel">-->
+								<!--<div class="panel-heading">-->
+									<!--<h3 class="panel-title">Table Inside No Padding</h3>-->
+								<!--</div>-->
+								<!--<div class="panel-body no-padding">-->
+									<!--<table class="table">-->
+										<!--<thead>-->
+											<!--<tr>-->
+												<!--<th>#</th>-->
+												<!--<th>First Name</th>-->
+												<!--<th>Last Name</th>-->
+												<!--<th>Username</th>-->
+											<!--</tr>-->
+										<!--</thead>-->
+										<!--<tbody>-->
+											<!--<tr>-->
+												<!--<td>1</td>-->
+												<!--<td>Steve</td>-->
+												<!--<td>Jobs</td>-->
+												<!--<td>@steve</td>-->
+											<!--</tr>-->
+											<!--<tr>-->
+												<!--<td>2</td>-->
+												<!--<td>Simon</td>-->
+												<!--<td>Philips</td>-->
+												<!--<td>@simon</td>-->
+											<!--</tr>-->
+											<!--<tr>-->
+												<!--<td>3</td>-->
+												<!--<td>Jane</td>-->
+												<!--<td>Doe</td>-->
+												<!--<td>@jane</td>-->
+											<!--</tr>-->
+										<!--</tbody>-->
+									<!--</table>-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--&lt;!&ndash; END TABLE NO PADDING &ndash;&gt;-->
+						<!--</div>-->
+					</div>
+					<!--<div class="row">-->
+						<!--<div class="col-md-6">-->
+							<!--&lt;!&ndash; TABLE STRIPED &ndash;&gt;-->
+							<!--<div class="panel">-->
+								<!--<div class="panel-heading">-->
+									<!--<h3 class="panel-title">Striped Row</h3>-->
+								<!--</div>-->
+								<!--<div class="panel-body">-->
+									<!--<table class="table table-striped">-->
+										<!--<thead>-->
+											<!--<tr>-->
+												<!--<th>#</th>-->
+												<!--<th>First Name</th>-->
+												<!--<th>Last Name</th>-->
+												<!--<th>Username</th>-->
+											<!--</tr>-->
+										<!--</thead>-->
+										<!--<tbody>-->
+											<!--<tr>-->
+												<!--<td>1</td>-->
+												<!--<td>Steve</td>-->
+												<!--<td>Jobs</td>-->
+												<!--<td>@steve</td>-->
+											<!--</tr>-->
+											<!--<tr>-->
+												<!--<td>2</td>-->
+												<!--<td>Simon</td>-->
+												<!--<td>Philips</td>-->
+												<!--<td>@simon</td>-->
+											<!--</tr>-->
+											<!--<tr>-->
+												<!--<td>3</td>-->
+												<!--<td>Jane</td>-->
+												<!--<td>Doe</td>-->
+												<!--<td>@jane</td>-->
+											<!--</tr>-->
+										<!--</tbody>-->
+									<!--</table>-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--&lt;!&ndash; END TABLE STRIPED &ndash;&gt;-->
+						<!--</div>-->
+						<!--<div class="col-md-6">-->
+							<!--&lt;!&ndash; TABLE HOVER &ndash;&gt;-->
+							<!--<div class="panel">-->
+								<!--<div class="panel-heading">-->
+									<!--<h3 class="panel-title">Hover Row</h3>-->
+								<!--</div>-->
+								<!--<div class="panel-body">-->
+									<!--<table class="table table-hover">-->
+										<!--<thead>-->
+											<!--<tr>-->
+												<!--<th>#</th>-->
+												<!--<th>First Name</th>-->
+												<!--<th>Last Name</th>-->
+												<!--<th>Username</th>-->
+											<!--</tr>-->
+										<!--</thead>-->
+										<!--<tbody>-->
+											<!--<tr>-->
+												<!--<td>1</td>-->
+												<!--<td>Steve</td>-->
+												<!--<td>Jobs</td>-->
+												<!--<td>@steve</td>-->
+											<!--</tr>-->
+											<!--<tr>-->
+												<!--<td>2</td>-->
+												<!--<td>Simon</td>-->
+												<!--<td>Philips</td>-->
+												<!--<td>@simon</td>-->
+											<!--</tr>-->
+											<!--<tr>-->
+												<!--<td>3</td>-->
+												<!--<td>Jane</td>-->
+												<!--<td>Doe</td>-->
+												<!--<td>@jane</td>-->
+											<!--</tr>-->
+										<!--</tbody>-->
+									<!--</table>-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--&lt;!&ndash; END TABLE HOVER &ndash;&gt;-->
+						<!--</div>-->
+					<!--</div>-->
+					<!--<div class="row">-->
+						<!--<div class="col-md-6">-->
+							<!--&lt;!&ndash; BORDERED TABLE &ndash;&gt;-->
+							<!--<div class="panel">-->
+								<!--<div class="panel-heading">-->
+									<!--<h3 class="panel-title">Bordered Table</h3>-->
+								<!--</div>-->
+								<!--<div class="panel-body">-->
+									<!--<table class="table table-bordered">-->
+										<!--<thead>-->
+											<!--<tr>-->
+												<!--<th>#</th>-->
+												<!--<th>First Name</th>-->
+												<!--<th>Last Name</th>-->
+												<!--<th>Username</th>-->
+											<!--</tr>-->
+										<!--</thead>-->
+										<!--<tbody>-->
+											<!--<tr>-->
+												<!--<td>1</td>-->
+												<!--<td>Steve</td>-->
+												<!--<td>Jobs</td>-->
+												<!--<td>@steve</td>-->
+											<!--</tr>-->
+											<!--<tr>-->
+												<!--<td>2</td>-->
+												<!--<td>Simon</td>-->
+												<!--<td>Philips</td>-->
+												<!--<td>@simon</td>-->
+											<!--</tr>-->
+											<!--<tr>-->
+												<!--<td>3</td>-->
+												<!--<td>Jane</td>-->
+												<!--<td>Doe</td>-->
+												<!--<td>@jane</td>-->
+											<!--</tr>-->
+										<!--</tbody>-->
+									<!--</table>-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--&lt;!&ndash; END BORDERED TABLE &ndash;&gt;-->
+						<!--</div>-->
+						<!--<div class="col-md-6">-->
+							<!--&lt;!&ndash; CONDENSED TABLE &ndash;&gt;-->
+							<!--<div class="panel">-->
+								<!--<div class="panel-heading">-->
+									<!--<h3 class="panel-title">Condensed Table</h3>-->
+								<!--</div>-->
+								<!--<div class="panel-body">-->
+									<!--<table class="table table-condensed">-->
+										<!--<thead>-->
+											<!--<tr>-->
+												<!--<th>#</th>-->
+												<!--<th>First Name</th>-->
+												<!--<th>Last Name</th>-->
+												<!--<th>Username</th>-->
+											<!--</tr>-->
+										<!--</thead>-->
+										<!--<tbody>-->
+											<!--<tr>-->
+												<!--<td>1</td>-->
+												<!--<td>Steve</td>-->
+												<!--<td>Jobs</td>-->
+												<!--<td>@steve</td>-->
+											<!--</tr>-->
+											<!--<tr>-->
+												<!--<td>2</td>-->
+												<!--<td>Simon</td>-->
+												<!--<td>Philips</td>-->
+												<!--<td>@simon</td>-->
+											<!--</tr>-->
+											<!--<tr>-->
+												<!--<td>3</td>-->
+												<!--<td>Jane</td>-->
+												<!--<td>Doe</td>-->
+												<!--<td>@jane</td>-->
+											<!--</tr>-->
+										<!--</tbody>-->
+									<!--</table>-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--&lt;!&ndash; END CONDENSED TABLE &ndash;&gt;-->
+						<!--</div>-->
+					<!--</div>-->
+				</div>
+			</div>
+			<!-- END MAIN CONTENT -->
+		</div>
+		<!-- END MAIN -->
+		<div class="clearfix"></div>
+		<div class="footer"></div>
+		<!--<footer>-->
+			<!--<div class="container-fluid">-->
+				<!--&lt;!&ndash;<p class="copyright">Copyright &copy; 2017.Company name All rights reserved.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>&ndash;&gt;-->
+                <!--<p class="copyright">Copyright &copy; 2019  中国平安人寿保险股份有限公司东莞中心支公司</p>-->
+			<!--</div>-->
+		<!--</footer>-->
+	</div>
+	<!-- END WRAPPER -->
+
+</body>
+
+</html>

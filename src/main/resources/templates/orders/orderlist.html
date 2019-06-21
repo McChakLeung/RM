@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Tables</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<!-- VENDOR CSS -->
+	<link rel="stylesheet" th:href="@{|/js/vendor/bootstrap/css/bootstrap.min.css|}">
+	<link rel="stylesheet" th:href="@{|/js/vendor/font-awesome/css/font-awesome.min.css|}">
+	<link rel="stylesheet" th:href="@{|/js/vendor/linearicons/style.css|}">
+	<!-- MAIN CSS -->
+	<link rel="stylesheet" th:href="@{|/css/main.css|}">
+	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+	<link rel="stylesheet" th:href="@{|/css/demo.css|}">
+	<!-- GOOGLE FONTS -->
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+	<!-- ICONS -->
+	<link rel="apple-touch-icon" sizes="76x76" th:href="@{|/img/apple-icon.png|}">
+	<link rel="icon" type="image/png" sizes="96x96" th:href="@{|/img/favicon.png|}">
+	<!-- Javascript -->
+	<script th:src="@{|/js/vendor/jquery/jquery.min.js|}"></script>
+	<script th:src="@{|/js/vendor/bootstrap/js/bootstrap.min.js|}"></script>
+	<script th:src="@{|/js/vendor/jquery-slimscroll/jquery.slimscroll.min.js|}"></script>
+	<script th:src="@{|/js/scripts/klorofil-common.js|}"></script>
+	<script type="text/javascript" th:inline="javascript">
+		$(function () {
+			$("#createOrder").bind("click",function () {
+			    var locations= [[@{|/orders/toCreateOrder|}]];
+				window.location.href = locations;
+            });
+
+        })
+
+	</script>
+</head>
+
+<body>
+<!-- WRAPPER -->
+<div id="wrapper">
+	<!-- NAVBAR -->
+	<div id="header" th:include="/commons/header :: headerContext"></div>
+	<!-- END NAVBAR -->
+	<!-- LEFT SIDEBAR -->
+	<div id="left_sidebar" th:include="/commons/left_sidebar :: leftContext"></div>
+	<!-- END LEFT SIDEBAR -->
+		<!-- MAIN -->
+		<div class="main">
+			<!-- MAIN CONTENT -->
+			<div class="main-content">
+				<div class="container-fluid">
+					<!--<h3 class="page-title">Tables</h3>-->
+                    <ol class="breadcrumb">
+                        <li><a th:href="@{|#|}">首页</a></li>
+                        <li><a th:href="@{|#|}">资源管理</a></li>
+                        <li class="active">工单管理</li>
+                    </ol>
+					<div class="row">
+						<div class="col-md-12">
+							<!-- BASIC TABLE -->
+							<div class="panel">
+								<!--<div class="panel-heading">-->
+									<!--<h3 class="panel-title">Basic Table</h3>-->
+								<!--</div>-->
+								<div class="panel-body">
+                                    <!--<div class="row">-->
+                                        <!--&lt;!&ndash;<h4 class="page-title">筛选条件</h4>&ndash;&gt;-->
+
+                                    <!--</div>-->
+
+									<form class="form-horizontal" id="selectOptionForm" th:action="@{|/orders/selectByOption|}" method="post">
+										<!--<h4 class="page-title">筛选条件:</h4>-->
+										<div class="form-group">
+											<label class="col-md-3">筛选条件：</label>
+										</div>
+										<!--<div class="form-group">-->
+											<!--<label for="startDate" class="col-md-2 control-label">起始日期:</label>-->
+											<!--<div class="col-md-3">-->
+												<!--<input type="datetime-local" class="form-control" id="startDate" placeholder="Date">-->
+											<!--</div>-->
+											<!--<label for="endDate" class="col-md-2 control-label">截止日期：</label>-->
+											<!--<div class="col-md-3">-->
+												<!--<input type="datetime-local" class="form-control" id="endDate" placeholder="Date">-->
+											<!--</div>-->
+										<!--</div>-->
+										<div class="form-group">
+											<label for="OrderType" class="col-md-2 control-label">工单类型：</label>
+											<div class="col-md-3">
+												<select class="form-control" id="OrderType" name="OrderType">
+													<option value="0">请选择</option>
+													<option value="1">待审核</option>
+													<option value="2">待提交</option>
+													<option value="3">审核通过</option>
+													<option value="4">退回修改</option>
+												</select>
+											</div>
+											<!--<label for="workplace" class="col-md-2 control-label">职场：</label>-->
+											<!--<div class="col-md-3">-->
+												<!--<select class="form-control" id="workplace" name="workplace">-->
+													<!--<option value="0">请选择</option>-->
+												<!--</select>-->
+											<!--</div>-->
+											<label for="operator" class="col-md-2 control-label">资源类型：</label>
+											<div class="col-md-3">
+												<select class="form-control" id="ResourceType" name="ResourceType">
+													<option value="0">请选择</option>
+													<option value="1">固定电话</option>
+													<option value="2">网络线路</option>
+													<option value="3">手机号码</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-2 control-label">职能部门:</label>
+											<div class="col-md-3">
+												<select class="form-control" id="parentDept" name="parentDept" onchange="selectSubDept()">
+													<option value="0">请选择</option>
+													<option th:each="parentDept:${resultMap.departmentList}" th:value="${parentDept.DeptNo}" th:text="${parentDept.DeptName}">请选择</option>
+												</select>
+											</div>
+											<label for="deptNo" class="col-md-2 control-label">科室|外勤部门：</label>
+											<div class="col-md-3">
+												<select class="form-control" id="deptNo" name="deptNo">
+													<option value="0">请选择</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="ResourceType" class="col-md-2 control-label">运营商：</label>
+											<div class="col-md-3">
+												<select class="form-control" id="operator" name="operator">
+													<option value="0">请选择</option>
+													<option value="1">电信</option>
+													<option value="2">联通</option>
+												</select>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<div class="col-sm-offset-2 col-sm-10">
+												<button type="submit" class="btn btn-primary" >筛选</button>
+												<button type="reset" class="btn btn-danger">清除</button>
+											</div>
+										</div>
+									</form>
+                                    <hr>
+									<table class="table table-bordered table-hover">
+										<thead>
+											<tr class="success">
+												<td>序号</td>
+												<td>工单状态</td>
+												<td>工单编号</td>
+												<td>工单类型</td>
+												<td>资源编号</td>
+												<td>资源类型</td>
+												<td>运营商</td>
+												<td>挂账部门</td>
+												<td>使用部门</td>
+												<td>创建日期</td>
+												<td>操作</td>
+
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="orders:${resultMap.orderList}">
+												<td th:text="${ordersStat.count}"></td>
+												<td th:text="${orders.tStatus}"></td>
+												<td th:text="${orders.tNo}">xj123456</td>
+												<td th:text="${orders.tOType}">新装</td>
+												<td th:text="${orders.tRNo}">无</td>
+												<td th:text="${orders.tRType}">固话</td>
+												<td th:text="${orders.tOperator}">电信</td>
+												<td th:text="${orders.pdName}">行政部</td>
+												<td th:text="${orders.dName}">资产室</td>
+												<!--<td th:text="${orders.creatorname}">麦泽良</td>-->
+												<td th:text="${orders.tCreateTime}">2019年3月7日</td>
+												<td><a th:href="@{|/orders/toUpdateOrder/${orders.tid}|}">修改</a> | <a th:href="@{|#|}">删除</a></td>
+											</tr>
+										</tbody>
+									</table>
+									<button type="button" class="btn btn-primary" id="createOrder">新建工单</button>
+									<!--分页-->
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <nav aria-label="Page navigation">
+                                                <ul class="pagination">
+                                                    <li>
+                                                        <a th:href="@{|#|}" aria-label="Previous">
+                                                            <span aria-hidden="true">&laquo;</span>
+                                                        </a>
+                                                    </li>
+                                                    <li><a th:href="@{|#|}">1</a></li>
+                                                    <li><a th:href="@{|#|}">2</a></li>
+                                                    <li><a th:href="@{|#|}">3</a></li>
+                                                    <li><a th:href="@{|#|}">4</a></li>
+                                                    <li><a th:href="@{|#|}">5</a></li>
+                                                    <li>
+                                                        <a th:href="@{|#|}" aria-label="Next">
+                                                            <span aria-hidden="true">&raquo;</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+								</div>
+							</div>
+							<!-- END BASIC TABLE -->
+						</div>
+						<!--</div>-->
+					</div>
+
+				</div>
+			</div>
+			<!-- END MAIN CONTENT -->
+		</div>
+		<!-- END MAIN -->
+		<div class="clearfix"></div>
+		<div id="footer" th:include="/commons/footer :: footerContext"></div>
+
+	</div>
+	<!-- END WRAPPER -->
+<script type="text/javascript">
+
+    //    $(function () {
+    //        $("#deptNo").bind("change",selectSubDept());
+    //    });
+
+
+    function selectSubDept(){
+        var parentDeptNo = $("#parentDept").val();
+        //var parentDeptNo = dataOption;
+        // console.log(parentDeptNo);
+        // alert(parentDeptNo);
+        //2.将职能部门下拉列表中原有的option进行删除
+        $("#deptNo>option:gt(0)").remove();
+        //3.定位隶属于当前职能部门下的所有的子部门信息
+        $.ajax({
+            url:"/resource/selectSubDept/" + parentDeptNo,
+            type:"get",
+            dataType: "json",
+            success:function (result) {
+                //var dataOption = "";
+                $.each(result,function (index,value) {
+                    var $dataOption = $("<option></option>");
+                    // dataOption +=
+                    //     "<option value=" + value.deptNo + ">" + value.deptName + "</option>";
+                    $dataOption.text(value.deptname);
+                    $dataOption.val(value.deptno);
+                    $dataOption.appendTo($("#deptNo"));
+                })
+            }
+        });
+    }
+
+
+
+</script>
+</body>
+
+</html>
