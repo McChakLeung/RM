@@ -33,7 +33,6 @@ public class OrderController {
      */
     @PostMapping("/selectByOption")
     public String selectByOption(@RequestParam Map<String,Object> optionMap,Model model, HttpSession session){
-        System.out.println(optionMap);
         String creatorName = (String)session.getAttribute("userName");
         optionMap.put("creatorName",creatorName);
         Map resultMap = orderService.selectOrdersByOptionAndCreatorName(optionMap);
@@ -57,12 +56,20 @@ public class OrderController {
         //return  null;
     }
 
-    @RequestMapping("/todoUpdateResource")
-    public String TodoUpdateResource(Model model){
-        HashMap resultMap = orderService.selectOrdersNotIncludeOption();
-        System.out.println(resultMap);
+    @RequestMapping("/selectVerifyOrders")
+    public String selectVerifyOrders(Model model, HttpSession session){
+        String creatorName = (String)session.getAttribute("userName");
+        Map resultMap = orderService.selectVerifyOrdersNotIncludeOption(creatorName);
         model.addAttribute("resultMap",resultMap);
-        return "/orders/handelorders";
+        return "/orders/verifyorderlist";
+    }
+
+    @PostMapping("/selectVerifyOrdersByOption")
+    public String selectVerifyOrdersByOption(@RequestParam Map<String,Object> optionMap,Model model, HttpSession session){
+        String creatorName = (String)session.getAttribute("userName");
+        optionMap.put("creatorName",creatorName);
+        model.addAttribute("resultMap",orderService.selectVerifyOrdersByOption(optionMap));
+        return "/orders/verifyorderlist";
     }
 
     @RequestMapping("/toUpdateOrder/{orderId}")

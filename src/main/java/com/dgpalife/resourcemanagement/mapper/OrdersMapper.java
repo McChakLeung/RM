@@ -23,7 +23,9 @@ public interface OrdersMapper {
 
     List<HashMap> selectOrdersByCreatorName(Map<String, Object> optionMap);
 
-    List<HashMap> selectOrdersNotIncludeOption();
+    List<HashMap> selectVerifyOrdersNotIncludeOption(String creatorName);
 
-    List<HashMap<String,Object>> selectOrdersByCreatorNameAndOptionMap(Map<String, Object> optionMap);
+    List<HashMap> selectOrdersByCreatorNameAndOptionMap(Map<String, Object> optionMap);
+
+    List<HashMap> selectVerifyOrdersByOption(Map<String, Object> optionMap);
 }

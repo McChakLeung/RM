@@ -74,40 +74,24 @@
 										<div class="form-group">
 											<label class="col-md-3">筛选条件：</label>
 										</div>
-										<!--<div class="form-group">-->
-											<!--<label for="startDate" class="col-md-2 control-label">起始日期:</label>-->
-											<!--<div class="col-md-3">-->
-												<!--<input type="datetime-local" class="form-control" id="startDate" placeholder="Date">-->
-											<!--</div>-->
-											<!--<label for="endDate" class="col-md-2 control-label">截止日期：</label>-->
-											<!--<div class="col-md-3">-->
-												<!--<input type="datetime-local" class="form-control" id="endDate" placeholder="Date">-->
-											<!--</div>-->
-										<!--</div>-->
 										<div class="form-group">
-											<label for="OrderType" class="col-md-2 control-label">工单类型：</label>
+											<label for="Status" class="col-md-2 control-label">工单类型：</label>
 											<div class="col-md-3">
 												<select class="form-control" id="OrderType" name="OrderType">
-													<option value="0">请选择</option>
-													<option value="1">待审核</option>
-													<option value="2">待提交</option>
-													<option value="3">审核通过</option>
-													<option value="4">退回修改</option>
+													<option value="">请选择</option>
+													<option value="建设工单">建设工单</option>
+													<option value="业务变更工单">业务变更工单</option>
+													<option value="维护工单">维护工单</option>
 												</select>
 											</div>
-											<!--<label for="workplace" class="col-md-2 control-label">职场：</label>-->
-											<!--<div class="col-md-3">-->
-												<!--<select class="form-control" id="workplace" name="workplace">-->
-													<!--<option value="0">请选择</option>-->
-												<!--</select>-->
-											<!--</div>-->
-											<label for="operator" class="col-md-2 control-label">资源类型：</label>
+											<label for="Status" class="col-md-2 control-label">工单状态：</label>
 											<div class="col-md-3">
-												<select class="form-control" id="ResourceType" name="ResourceType">
-													<option value="0">请选择</option>
-													<option value="1">固定电话</option>
-													<option value="2">网络线路</option>
-													<option value="3">手机号码</option>
+												<select class="form-control" id="Status" name="Status">
+													<option value="">请选择</option>
+													<option value="待审核">待审核</option>
+													<option value="待提交">待提交</option>
+													<option value="审核通过">审核通过</option>
+													<option value="退回修改">退回修改</option>
 												</select>
 											</div>
 										</div>
@@ -115,24 +99,33 @@
 											<label class="col-md-2 control-label">职能部门:</label>
 											<div class="col-md-3">
 												<select class="form-control" id="parentDept" name="parentDept" onchange="selectSubDept()">
-													<option value="0">请选择</option>
+													<option value="">请选择</option>
 													<option th:each="parentDept:${resultMap.departmentList}" th:value="${parentDept.DeptNo}" th:text="${parentDept.DeptName}">请选择</option>
 												</select>
 											</div>
 											<label for="deptNo" class="col-md-2 control-label">科室|外勤部门：</label>
 											<div class="col-md-3">
 												<select class="form-control" id="deptNo" name="deptNo">
-													<option value="0">请选择</option>
+													<option value="">请选择</option>
 												</select>
 											</div>
 										</div>
 										<div class="form-group">
-											<label for="ResourceType" class="col-md-2 control-label">运营商：</label>
+											<label for="operator" class="col-md-2 control-label">运营商：</label>
 											<div class="col-md-3">
 												<select class="form-control" id="operator" name="operator">
-													<option value="0">请选择</option>
-													<option value="1">电信</option>
-													<option value="2">联通</option>
+													<option value="">请选择</option>
+													<option value="电信">电信</option>
+													<option value="联通">联通</option>
+												</select>
+											</div>
+											<label for="operator" class="col-md-2 control-label">资源类型：</label>
+											<div class="col-md-3">
+												<select class="form-control" id="ResourceType" name="ResourceType">
+													<option value="">请选择</option>
+													<option value="固定电话">固定电话</option>
+													<option value="网络线路">网络线路</option>
+													<option value="手机号码">手机号码</option>
 												</select>
 											</div>
 										</div>

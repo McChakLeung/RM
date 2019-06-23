@@ -26,11 +26,7 @@
 	<script src="/js/scripts/klorofil-common.js"></script>
 	<!--加载公共部分-->
 	<script>
-        $(function () {
-            $(".header").load("/html/commons/header.html");
-            $(".left_sidebar").load("/html/commons/left_sidebar.html");
-            $(".footer").load("/html/commons/footer.html");
-        })
+
 	</script>
 </head>
 
@@ -67,83 +63,60 @@
 
                                     <!--</div>-->
 
-									<form class="form-horizontal">
+									<form class="form-horizontal" id="selectVerifyOrdersByOption" th:action="@{|/orders/selectVerifyOrdersByOption|}" method="post">
 										<!--<h4 class="page-title">筛选条件:</h4>-->
 										<div class="form-group">
-											<label for="OrderStatus" class="col-md-2 control-label">工单状态：</label>
-											<div class="col-md-3">
-												<select class="form-control" id="OrderStatus">
-													<option>1</option>
-													<option>2</option>
-													<option>3</option>
-													<option>4</option>
-													<option>5</option>
-												</select>
-											</div>
 											<label for="OrderType" class="col-md-2 control-label">工单类型：</label>
 											<div class="col-md-3">
-												<select class="form-control" id="OrderType">
-													<option>1</option>
-													<option>2</option>
-													<option>3</option>
-													<option>4</option>
-													<option>5</option>
+												<select class="form-control" id="OrderType" name="OrderType">
+													<option value="">请选择</option>
+													<option value="建设工单">建设工单</option>
+													<option value="业务变更工单">业务变更工单</option>
+													<option value="维护工单">维护工单</option>
+												</select>
+											</div>
+											<label for="Status" class="col-md-2 control-label">工单状态：</label>
+											<div class="col-md-3">
+												<select class="form-control" id="Status" name="Status">
+													<option value="">请选择</option>
+													<option value="待审核">待审核</option>
+													<option value="审核通过">审核通过</option>
 												</select>
 											</div>
 										</div>
 										<div class="form-group">
 											<label for="parentDept" class="col-md-2 control-label">职能部门：</label>
 											<div class="col-md-3">
-												<select class="form-control" id="parentDept">
-													<option>1</option>
-													<option>2</option>
-													<option>3</option>
-													<option>4</option>
-													<option>5</option>
+												<select class="form-control" id="parentDept" name="parentDept"  onchange="selectSubDept()">
+													<option value="">请选择</option>
+													<option th:each="parentDept:${resultMap.departmentList}" th:value="${parentDept.DeptNo}" th:text="${parentDept.DeptName}">请选择</option>
 												</select>
 											</div>
 											<label for="deptNo" class="col-md-2 control-label">使用部门:</label>
 											<div class="col-md-3">
-												<select class="form-control" id="deptNo">
-													<option>1</option>
-													<option>2</option>
-													<option>3</option>
-													<option>4</option>
-													<option>5</option>
+												<select class="form-control"  id="deptNo" name="deptNo">
+													<option value="">请选择</option>
 												</select>
 											</div>
-											<!--<div class="col-md-2">-->
-												<!--<select class="form-control" id="department">-->
-													<!--<option>1</option>-->
-													<!--<option>2</option>-->
-													<!--<option>3</option>-->
-													<!--<option>4</option>-->
-													<!--<option>5</option>-->
-												<!--</select>-->
-											<!--</div>-->
-
 										</div>
 										<div class="form-group">
-											<label for="operator" class="col-md-2 control-label">资源类型：</label>
+											<label for="operator" class="col-md-2 control-label">运营商：</label>
 											<div class="col-md-3">
-												<select class="form-control" id="operator">
-													<option>1</option>
-													<option>2</option>
-													<option>3</option>
-													<option>4</option>
-													<option>5</option>
+												<select class="form-control" id="operator" name="operator">
+													<option value="">请选择</option>
+													<option value="电信">电信</option>
+													<option value="联通">联通</option>
 												</select>
 											</div>
-											<label for="ResourceType" class="col-md-2 control-label">运营商：</label>
+											<label for="ResourceType" class="col-md-2 control-label">资源类型：</label>
 											<div class="col-md-3">
-												<select class="form-control" id="ResourceType">
-													<option>1</option>
-													<option>2</option>
-													<option>3</option>
-													<option>4</option>
-													<option>5</option>
+												<select class="form-control"  id="ResourceType" name="ResourceType">
+													<option value="固定电话">固定电话</option>
+													<option value="网络线路">网络线路</option>
+													<option value="手机号码">手机号码</option>
 												</select>
 											</div>
+
 										</div>
 
 										<div class="form-group">
@@ -164,28 +137,27 @@
 												<th>资源编号</th>
 												<th>资源类型</th>
 												<th>运营商</th>
-												<th>职能部门</th>
-												<th>使用部门/科室</th>
-												<th>申请人</th>
+												<th>挂账部门</th>
+												<th>使用部门</th>
 												<th>创建日期</th>
 												<th>操作</th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr th:each="orders:${resultMap.orderList}">
-												<td th:text="${ordersStat.count}">1</td>
-												<td th:text="${orders.status}">待审核</td>
-												<td th:text="${orders.ordersno}">建设工单</td>
-												<td th:text="${orders.orderstype}">建设工单</td>
-												<td th:text="${orders.resourceno}">无</td>
-												<td th:text="${orders.resourcetype}">固话</td>
-												<td th:text="${orders.operator}">电信</td>
-												<td th:text="${orders.accountdeptno}"></td>
-												<td th:text="${orders.usedeptno}"></td>
-												<td th:text="${orders.creatorname}">麦泽良</td>
-												<td th:text="${orders.createtime}">2019年3月7日</td>
+												<td th:text="${ordersStat.count}"></td>
+												<td th:text="${orders.tStatus}"></td>
+												<td th:text="${orders.tNo}">xj123456</td>
+												<td th:text="${orders.tOType}">新装</td>
+												<td th:text="${orders.tRNo}">无</td>
+												<td th:text="${orders.tRType}">固话</td>
+												<td th:text="${orders.tOperator}">电信</td>
+												<td th:text="${orders.pdName}">行政部</td>
+												<td th:text="${orders.dName}">资产室</td>
+												<td th:text="${orders.tCreateTime}">2019年3月7日</td>
 												<td>
-													<a th:href="@{|/orders/confirmPrehandleOrder/${orders.id}|}">审核</a>| <a th:href="@{|/orders/generateResource/${orders.id}|}">生成资源</a>
+													<a th:href="@{|/orders/confirmPrehandleOrder/${orders.tid}|}">审核</a>
+													<a th:href="@{|/orders/generateResource/${orders.tid}|}">生成资源</a>
 												</td>
 											</tr>
 										</tbody>
@@ -231,7 +203,42 @@
 
 	</div>
 	<!-- END WRAPPER -->
+<script type="text/javascript">
 
+    //    $(function () {
+    //        $("#deptNo").bind("change",selectSubDept());
+    //    });
+
+
+    function selectSubDept(){
+        var parentDeptNo = $("#parentDept").val();
+        //var parentDeptNo = dataOption;
+        // console.log(parentDeptNo);
+        // alert(parentDeptNo);
+        //2.将职能部门下拉列表中原有的option进行删除
+        $("#deptNo>option:gt(0)").remove();
+        //3.定位隶属于当前职能部门下的所有的子部门信息
+        $.ajax({
+            url:"/resource/selectSubDept/" + parentDeptNo,
+            type:"get",
+            dataType: "json",
+            success:function (result) {
+                //var dataOption = "";
+                $.each(result,function (index,value) {
+                    var $dataOption = $("<option></option>");
+                    // dataOption +=
+                    //     "<option value=" + value.deptNo + ">" + value.deptName + "</option>";
+                    $dataOption.text(value.deptname);
+                    $dataOption.val(value.deptno);
+                    $dataOption.appendTo($("#deptNo"));
+                })
+            }
+        });
+    }
+
+
+
+</script>
 </body>
 
 </html>

@@ -10,9 +10,11 @@ public interface OrderService {
 
     void insertOrder(Orders orders);
 
-    HashMap selectOrdersNotIncludeOption();
+    HashMap selectVerifyOrdersNotIncludeOption(String creatorName);
 
     HashMap<String,Object>  selectOrderByID(Long orderId);
 
     Map selectOrdersByOptionAndCreatorName(Map<String, Object> optionMap);
+
+    Map selectVerifyOrdersByOption(Map<String, Object> optionMap);
 }

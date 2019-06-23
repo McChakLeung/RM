@@ -46,11 +46,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public HashMap selectOrdersNotIncludeOption() {
+    public HashMap selectVerifyOrdersNotIncludeOption(String creatorName) {
         HashMap<String,Object> resultMap = new HashMap();
 
         //查询资源信息数据
-        List<HashMap> orderList = ordersMapper.selectOrdersNotIncludeOption();
+        List<HashMap> orderList = ordersMapper.selectVerifyOrdersNotIncludeOption(creatorName);
 
         //查询部门信息
         List<HashMap> departmentList = departmentMapper.selectParentDept();
@@ -76,12 +76,21 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Map selectOrdersByOptionAndCreatorName(Map<String, Object> optionMap) {
         Map<String,Object> resultMap = new HashMap<>();
-        List<HashMap<String,Object>> orderList = ordersMapper.selectOrdersByCreatorNameAndOptionMap(optionMap);
+        List<HashMap> orderList = ordersMapper.selectOrdersByCreatorNameAndOptionMap(optionMap);
         //查询部门信息
         List<HashMap> departmentList = departmentMapper.selectParentDept();
         resultMap.put("orderList",orderList);
         resultMap.put("departmentList",departmentList);
-        System.out.println(resultMap.entrySet());
+        return resultMap;
+    }
+
+    @Override
+    public Map selectVerifyOrdersByOption(Map<String, Object> optionMap) {
+        Map<String,Object> resultMap = new HashMap<>();
+        //查询部门信息
+        List<HashMap> departmentList = departmentMapper.selectParentDept();
+        resultMap.put("orderList",ordersMapper.selectVerifyOrdersByOption(optionMap));
+        resultMap.put("departmentList",departmentList);
         return resultMap;
     }
 }
