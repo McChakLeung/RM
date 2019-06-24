@@ -16,6 +16,8 @@ import java.util.Map;
 @Service("orderService")
 public class OrderServiceImpl implements OrderService {
 
+    private Map<String,Object> resultMap = new HashMap<>();
+
     @Autowired
     private OrdersMapper ordersMapper;
 
@@ -27,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
         System.out.println(creatorName);
         Map optionMap = new HashMap();
         optionMap.put("creatorName",creatorName);
-        Map resultMap = new HashMap();
+        //Map resultMap = new HashMap();
         //查询订单数据
         List<HashMap> orderList = ordersMapper.selectOrdersByCreatorName(optionMap);
         //查询部门信息
@@ -46,8 +48,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public HashMap selectVerifyOrdersNotIncludeOption(String creatorName) {
-        HashMap<String,Object> resultMap = new HashMap();
+    public Map selectVerifyOrdersNotIncludeOption(String creatorName) {
+        //HashMap<String,Object> resultMap = new HashMap();
 
         //查询资源信息数据
         List<HashMap> orderList = ordersMapper.selectVerifyOrdersNotIncludeOption(creatorName);
@@ -62,8 +64,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public HashMap<String,Object> selectOrderByID(Long orderId) {
-        HashMap<String,Object> resultMap = new HashMap();
+    public Map selectOrderByID(Long orderId) {
+        //HashMap<String,Object> resultMap = new HashMap();
         Orders orders =ordersMapper.selectByPrimaryKey(orderId);
         //查询部门信息
         List<HashMap> departmentList = departmentMapper.selectParentDept();
@@ -73,9 +75,16 @@ public class OrderServiceImpl implements OrderService {
         return resultMap;
     }
 
+    /**
+     * 功能：我的工单
+     * 通过筛选条件查询筛选结果
+     *
+     * @param optionMap 筛选项及session用户名的集合作为查询条件
+     * @return 查询结果集
+     */
     @Override
     public Map selectOrdersByOptionAndCreatorName(Map<String, Object> optionMap) {
-        Map<String,Object> resultMap = new HashMap<>();
+        //Map<String,Object> resultMap = new HashMap<>();
         List<HashMap> orderList = ordersMapper.selectOrdersByCreatorNameAndOptionMap(optionMap);
         //查询部门信息
         List<HashMap> departmentList = departmentMapper.selectParentDept();
@@ -84,13 +93,20 @@ public class OrderServiceImpl implements OrderService {
         return resultMap;
     }
 
+    /**
+     * 功能：待生成资源工单
+     * 通过筛选条件查询筛选结果
+     *
+     * @param optionMap 筛选项及session用户名的集合作为查询条件
+     * @return 查询结果集
+     */
+
     @Override
     public Map selectVerifyOrdersByOption(Map<String, Object> optionMap) {
-        Map<String,Object> resultMap = new HashMap<>();
+
         //查询部门信息
-        List<HashMap> departmentList = departmentMapper.selectParentDept();
         resultMap.put("orderList",ordersMapper.selectVerifyOrdersByOption(optionMap));
-        resultMap.put("departmentList",departmentList);
+        resultMap.put("departmentList",departmentMapper.selectParentDept());
         return resultMap;
     }
 }

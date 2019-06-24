@@ -15,13 +15,15 @@ import java.util.Map;
 @RequestMapping("/orders")
 public class OrderController {
 
+    private Map resultMap = new HashMap();
+
     @Autowired
     private OrderService orderService;
 
     @RequestMapping("/selectOrders")
     public String selectOrders(Model model, HttpSession session){
         String creatorName = (String)session.getAttribute("userName");
-        Map resultMap = orderService.selectOrdersByCreatorName(creatorName);
+        resultMap = orderService.selectOrdersByCreatorName(creatorName);
         model.addAttribute("resultMap",resultMap);
         return "/orders/orderlist";
     }
@@ -35,7 +37,7 @@ public class OrderController {
     public String selectByOption(@RequestParam Map<String,Object> optionMap,Model model, HttpSession session){
         String creatorName = (String)session.getAttribute("userName");
         optionMap.put("creatorName",creatorName);
-        Map resultMap = orderService.selectOrdersByOptionAndCreatorName(optionMap);
+        resultMap = orderService.selectOrdersByOptionAndCreatorName(optionMap);
         model.addAttribute("resultMap",resultMap);
 
         return "/orders/orderlist";
@@ -51,15 +53,13 @@ public class OrderController {
     public String CreateOrder(Orders orders){
         orders.setStatus("待提交");
         orderService.insertOrder(orders);
-
         return "redirect:/orders/selectOrders";
-        //return  null;
     }
 
     @RequestMapping("/selectVerifyOrders")
     public String selectVerifyOrders(Model model, HttpSession session){
         String creatorName = (String)session.getAttribute("userName");
-        Map resultMap = orderService.selectVerifyOrdersNotIncludeOption(creatorName);
+        resultMap = orderService.selectVerifyOrdersNotIncludeOption(creatorName);
         model.addAttribute("resultMap",resultMap);
         return "/orders/verifyorderlist";
     }
@@ -74,16 +74,16 @@ public class OrderController {
 
     @RequestMapping("/toUpdateOrder/{orderId}")
     public String toUpdateOrder(@PathVariable Long orderId,Model model){
-        HashMap<String,Object> resultMap = orderService.selectOrderByID(orderId);
+        resultMap = orderService.selectOrderByID(orderId);
         model.addAttribute("resultMap",resultMap);
         return "/orders/updateOrder";
     }
 
-    @RequestMapping("/confirmPrehandleOrder/{orderId}")
-    public String confirmPrehandleOrder(@PathVariable Long orderId,Model model){
-        HashMap<String,Object> resultMap = orderService.selectOrderByID(orderId);
-        model.addAttribute("orders",resultMap);
-        return "/orders/prehandleOrderConfirm";
+    @RequestMapping("/verifyOrder/{orderId}")
+    public String verifyOrder(@PathVariable Long orderId,Model model){
+//        resultMap = orderService.selectOrderByID(orderId);
+//        model.addAttribute("orders",resultMap);
+        return "/orders/verifyorder";
     }
 
 }

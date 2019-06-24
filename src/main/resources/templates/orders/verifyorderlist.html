@@ -111,6 +111,7 @@
 											<label for="ResourceType" class="col-md-2 control-label">资源类型：</label>
 											<div class="col-md-3">
 												<select class="form-control"  id="ResourceType" name="ResourceType">
+													<option value="">请选择</option>
 													<option value="固定电话">固定电话</option>
 													<option value="网络线路">网络线路</option>
 													<option value="手机号码">手机号码</option>
@@ -156,7 +157,7 @@
 												<td th:text="${orders.dName}">资产室</td>
 												<td th:text="${orders.tCreateTime}">2019年3月7日</td>
 												<td>
-													<a th:href="@{|/orders/confirmPrehandleOrder/${orders.tid}|}">审核</a>
+													<a th:href="@{|/orders/verifyOrder/${orders.tid}|}">审核</a>
 													<a th:href="@{|/orders/generateResource/${orders.tid}|}">生成资源</a>
 												</td>
 											</tr>
