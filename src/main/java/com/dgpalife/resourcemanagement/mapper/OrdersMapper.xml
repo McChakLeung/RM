@@ -19,20 +19,17 @@
     <result column="Expenses" jdbcType="DECIMAL" property="expenses" />
     <result column="CreatorName" jdbcType="VARCHAR" property="creatorname" />
     <result column="CreateTime" jdbcType="DATE" property="createtime" />
-    <result column="Status" jdbcType="VARCHAR" property="status" />
+    <result column="isVerify" jdbcType="VARCHAR" property="isverify" />
     <result column="UsingNumber" jdbcType="VARCHAR" property="usingnumber" />
   </resultMap>
   <sql id="Base_Column_List">
     ID, OrdersNo, OrdersType, ResourceNo, ResourceType, Operator, Address, NewAddress, 
     Project, AccountDeptNo, UseDeptNo, UserName, Contact, ChargeType, Expenses, CreatorName, 
-    CreateTime, Status, UsingNumber
+    CreateTime, isVerify, UsingNumber
   </sql>
 
-  <!--======================================手动添加============================================-->
-
-  <select id="selectOrdersByCreatorName"  resultType="java.util.HashMap">
-    SELECT
-      t1.id tid,
+  <sql id="Personal_Column_List">
+    t1.id tid,
       t1.OrdersNo tNo,
       t1.OrdersType tOType,
       t1.ResourceNo tRNo,
@@ -50,8 +47,15 @@
       t1.Expenses tExpenses,
       t1.CreatorName,
       t1.CreateTime tCreateTime,
-      t1.Status tStatus,
+      t1.isVerify tStatus,
       t1.UsingNumber tUNumber
+  </sql>
+
+  <!--======================================手动添加============================================-->
+
+  <select id="selectOrdersByCreatorName"  resultType="java.util.HashMap">
+    SELECT
+      <include refid="Personal_Column_List" />
     FROM
       orders t1,
       department d1,
@@ -64,26 +68,7 @@
 
   <select id="selectOrdersByCreatorNameAndOptionMap" resultType="java.util.HashMap">
     SELECT
-    t1.id tid,
-    t1.OrdersNo tNo,
-    t1.OrdersType tOType,
-    t1.ResourceNo tRNo,
-    t1.ResourceType tRType,
-    t1.Operator tOperator,
-    t1.Address tAdd,
-    t1.NewAddress tNewAdd,
-    d1.id d1id,
-    d1.DeptName pdName,
-    d2.id d2id,
-    d2.deptName dName,
-    t1.UserName t1Uname,
-    t1.Contact tContact,
-    t1.ChargeType tChType,
-    t1.Expenses tExpenses,
-    t1.CreatorName,
-    t1.CreateTime tCreateTime,
-    t1.Status tStatus,
-    t1.UsingNumber tUNumber
+      <include refid="Personal_Column_List" />
     FROM
     orders t1,
     department d1,
@@ -96,9 +81,9 @@
     <if test="OrderType != null and OrderType !=''">
       AND t1.OrdersType = #{OrderType}
     </if>
-    <if test="Status != null and Status !=''">
-      AND t1.Status = #{Status}
-    </if>
+    <!--<if test="Status != null and Status !=''">-->
+      <!--AND t1.Status = #{Status}-->
+    <!--</if>-->
     <if test="parentDept != null and parentDept !=''">
       AND t1.AccountDeptNo = #{parentDept}
     </if>
@@ -116,33 +101,14 @@
 
   <select id="selectVerifyOrdersNotIncludeOption" resultType="java.util.HashMap">
     SELECT
-      t1.id tid,
-      t1.OrdersNo tNo,
-      t1.OrdersType tOType,
-      t1.ResourceNo tRNo,
-      t1.ResourceType tRType,
-      t1.Operator tOperator,
-      t1.Address tAdd,
-      t1.NewAddress tNewAdd,
-      d1.id d1id,
-      d1.DeptName pdName,
-      d2.id d2id,
-      d2.deptName dName,
-      t1.UserName t1Uname,
-      t1.Contact tContact,
-      t1.ChargeType tChType,
-      t1.Expenses tExpenses,
-      t1.CreatorName,
-      t1.CreateTime tCreateTime,
-      t1.Status tStatus,
-      t1.UsingNumber tUNumber
+      <include refid="Personal_Column_List" />
     FROM
       orders t1,
       department d1,
       department d2
     WHERE t1.AccountDeptNo = d1.deptNo
       AND t1.UseDeptNo = d2.deptNo
-      AND t1.Status not in ('待提交','退回修改')
+--       AND t1.Status not in ('待提交','退回修改')
       AND t1.CreatorName = #{creatorName}
       ORDER BY tid DESC
 
@@ -150,42 +116,23 @@
 
   <select id="selectVerifyOrdersByOption" resultType="java.util.HashMap">
     SELECT
-    t1.id tid,
-    t1.OrdersNo tNo,
-    t1.OrdersType tOType,
-    t1.ResourceNo tRNo,
-    t1.ResourceType tRType,
-    t1.Operator tOperator,
-    t1.Address tAdd,
-    t1.NewAddress tNewAdd,
-    d1.id d1id,
-    d1.DeptName pdName,
-    d2.id d2id,
-    d2.deptName dName,
-    t1.UserName t1Uname,
-    t1.Contact tContact,
-    t1.ChargeType tChType,
-    t1.Expenses tExpenses,
-    t1.CreatorName,
-    t1.CreateTime tCreateTime,
-    t1.Status tStatus,
-    t1.UsingNumber tUNumber
+    <include refid="Personal_Column_List" />
     FROM
     orders t1,
     department d1,
     department d2
     WHERE t1.AccountDeptNo = d1.deptNo
     AND t1.UseDeptNo = d2.deptNo
-    AND t1.Status not in ('待提交','退回修改')
+--     AND t1.Status not in ('待提交','退回修改')
     <if test="creatorName != null" >
       AND t1.CreatorName = #{creatorName}
     </if>
     <if test="OrderType != null and OrderType !=''">
       AND t1.OrdersType = #{OrderType}
     </if>
-    <if test="Status != null and Status !=''">
-      AND t1.Status = #{Status}
-    </if>
+    <!--<if test="isVerify != null and isVerify !=''">-->
+      <!--AND t1.Status = #{Status}-->
+    <!--</if>-->
     <if test="parentDept != null and parentDept !=''">
       AND t1.AccountDeptNo = #{parentDept}
     </if>

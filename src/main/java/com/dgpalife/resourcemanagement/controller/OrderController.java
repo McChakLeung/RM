@@ -51,7 +51,7 @@ public class OrderController {
 
     @RequestMapping("/createOrder")
     public String CreateOrder(Orders orders){
-        orders.setStatus("待提交");
+        //orders.setStatus("待提交");
         orderService.insertOrder(orders);
         return "redirect:/orders/selectOrders";
     }

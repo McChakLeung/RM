@@ -39,7 +39,7 @@ public class Orders  implements Serializable{
 
     private Date createtime;
 
-    private String status;
+    private Boolean isverify;
 
     private String usingnumber;
 
@@ -179,19 +179,19 @@ public class Orders  implements Serializable{
         this.createtime = createtime;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getUsingnumber() {
         return usingnumber;
     }
 
     public void setUsingnumber(String usingnumber) {
         this.usingnumber = usingnumber;
+    }
+
+    public Boolean getVerify() {
+        return isverify;
+    }
+
+    public void setVerify(Boolean verify) {
+        isverify = verify;
     }
 }
