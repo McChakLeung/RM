@@ -8,10 +8,17 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class  BasicController {
 
-    @RequestMapping("/")
+    @RequestMapping("/index")
     public String index(HttpSession session){
         //临时写死
         session.setAttribute("userName","maizeliang098");
         return "/index";
     }
+
+    @RequestMapping("/login")
+    public String login(){
+
+        return "/login";
+    }
+
 }
