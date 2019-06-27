@@ -1,6 +1,7 @@
 package com.dgpalife.resourcemanagement.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
@@ -8,17 +9,18 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class  BasicController {
 
-    @RequestMapping("/index")
-    public String index(HttpSession session){
-        //临时写死
-        session.setAttribute("userName","maizeliang098");
+    @RequestMapping("/")
+    public String index(HttpSession session,Model model){
+        if(session.getAttribute("username") ==null || "".equals(session.getAttribute("username"))){
+            return "/login";
+        }
+        model.addAttribute("session",session);
         return "/index";
     }
 
-    @RequestMapping("/login")
-    public String login(){
-
-        return "/login";
+    @RequestMapping("/toLogin")
+    public String toLogin(){
+        return "login";
     }
 
 }
