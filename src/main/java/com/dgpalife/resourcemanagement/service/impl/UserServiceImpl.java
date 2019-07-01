@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 @Service("userService")
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -16,6 +18,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User selectUserByUserNameAndPassword(String username, String password) {
-        return userMapper.selectUserByUserNameAndPassword(username,password);
+        User user = userMapper.selectUserByUserNameAndPassword(username,password);
+        if(user == null){
+            return null;
+        }
+        user.setLastlogin(new Date());
+        userMapper.updateLastLoginTime(user);
+        return user;
     }
 }

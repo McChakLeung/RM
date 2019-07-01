@@ -10,12 +10,12 @@ import javax.servlet.http.HttpSession;
 public class  BasicController {
 
     @RequestMapping("/")
-    public String index(HttpSession session,Model model){
-        if(session.getAttribute("username") ==null || "".equals(session.getAttribute("username"))){
-            return "/login";
-        }
-        model.addAttribute("session",session);
-        return "/index";
+    public String index(){
+//        if(session.getAttribute("username") ==null || "".equals(session.getAttribute("username"))){
+//            return "login";
+//        }
+        //model.addAttribute("session",session);
+        return "index";
     }
 
     @RequestMapping("/toLogin")

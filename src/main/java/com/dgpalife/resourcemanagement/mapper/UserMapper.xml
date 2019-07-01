@@ -25,7 +25,10 @@
       password = #{password,jdbcType=VARCHAR}
   </select>
 
+  <update id="updateLastLoginTime">
+    UPDATE user set LastLogin = #{lastlogin}  where id = #{id}
 
+  </update>
 
   <!--====================自动生成========================-->
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">

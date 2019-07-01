@@ -17,19 +17,19 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/login")
-    public String login(String username, String password,Boolean remember_me, Model model, HttpSession session){
+    @RequestMapping("/login")
+    public String login(String username, String password,String remember_me, Model model, HttpSession session){
 
         User user = userService.selectUserByUserNameAndPassword(username,password);
         if(user == null){
             model.addAttribute("errorMessage","用户名或密码不正确");
             return "login";
         }
-        if(remember_me==true){
-            session.setMaxInactiveInterval(7*24*60*60);
+        if("on".equals(remember_me) && remember_me !=null){
+            session.setMaxInactiveInterval(604800);
         }
         session.setAttribute("user",user);
-        return "redirect:/index";
+        return "redirect:/";
     }
 
 }
