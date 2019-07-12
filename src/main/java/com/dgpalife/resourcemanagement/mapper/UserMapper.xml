@@ -3,6 +3,7 @@
 <mapper namespace="com.dgpalife.resourcemanagement.mapper.UserMapper">
   <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.User">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="LoginAcc" jdbcType="VARCHAR" property="loginacc" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
@@ -10,7 +11,7 @@
     <result column="Status" jdbcType="BIT" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, username, password, CreateTime, LastLogin, Status
+    id, LoginAcc, username, password, CreateTime, LastLogin, Status
   </sql>
 
   <!--=====================手动添加=======================-->
@@ -20,7 +21,7 @@
       <include refid="Base_Column_List" />
     from user
     where
-      username= #{username,jdbcType=VARCHAR}
+      LoginAcc = #{loginacc,jdbcType=VARCHAR}
     and
       password = #{password,jdbcType=VARCHAR}
   </select>
@@ -42,10 +43,10 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.User">
-    insert into user (id, username, password, 
+    insert into user (id, LoginAcc,username, password,
       CreateTime, LastLogin, Status
       )
-    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT},#{loginacc,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{createtime,jdbcType=TIMESTAMP}, #{lastlogin,jdbcType=TIMESTAMP}, #{status,jdbcType=BIT}
       )
   </insert>
@@ -54,6 +55,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="loginacc != null">
+        LoginAcc,
       </if>
       <if test="username != null">
         username,
@@ -75,6 +79,9 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
+      <if test="LoginAcc != null">
+        #{loginacc,jdbcType=VARCHAR},
+      </if>
       <if test="username != null">
         #{username,jdbcType=VARCHAR},
       </if>
@@ -95,6 +102,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.User">
     update user
     <set>
+      <if test="LoginAcc != null">
+        LoginAcc =  #{loginacc,jdbcType=VARCHAR},
+      </if>
       <if test="username != null">
         username = #{username,jdbcType=VARCHAR},
       </if>
@@ -115,7 +125,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.User">
     update user
-    set username = #{username,jdbcType=VARCHAR},
+    set  LoginAcc = #{loginacc,jdbcType=VARCHAR}
+      username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       CreateTime = #{createtime,jdbcType=TIMESTAMP},
       LastLogin = #{lastlogin,jdbcType=TIMESTAMP},

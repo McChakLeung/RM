@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class  BasicController {
 
-    @RequestMapping("/")
+    @RequestMapping("/index")
     public String index(){
 //        if(session.getAttribute("username") ==null || "".equals(session.getAttribute("username"))){
 //            return "login";
