@@ -18,7 +18,7 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
-    User selectUserByUserNameAndPassword(@Param("loginacc") String loginacc, @Param("password") String password);
+    User selectUserByUserNameAndPassword(@Param("username") String username, @Param("password") String password);
 
     void updateLastLoginTime(User user);
 }
