@@ -4,6 +4,9 @@ import com.dgpalife.resourcemanagement.model.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+import java.util.Map;
+
 @Mapper
 public interface UserMapper {
     int deleteByPrimaryKey(Long id);
@@ -18,7 +21,11 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
-    User selectUserByUserNameAndPassword(@Param("username") String username, @Param("password") String password);
+    User selectUserByUserNameAndPassword(@Param("loginacct") String loginacct, @Param("password") String password);
 
     void updateLastLoginTime(User user);
+
+    List<User> selectUserList(Map<String, Object> params);
+
+    Integer selectCount(Map<String, Object> params);
 }

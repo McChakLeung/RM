@@ -6,8 +6,18 @@ public class AjaxResult {
 
     private String message;
 
+    private Page page;
+
     public boolean isSuccess() {
         return success;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
     }
 
     public void setSuccess(boolean success) {

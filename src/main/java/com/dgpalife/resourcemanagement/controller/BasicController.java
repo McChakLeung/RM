@@ -43,10 +43,10 @@ public class  BasicController {
 
     @ResponseBody
     @RequestMapping("/login")
-    public Object login(String username, String password,String remember_me, HttpSession session){
+    public Object login(String loginacct, String password,String remember_me, HttpSession session){
 
         try{
-            User user = userService.selectUserByUserNameAndPassword(username, MD5Util.digest(password));
+            User user = userService.selectUserByUserNameAndPassword(loginacct, MD5Util.digest(password));
             if(user == null){
                 result.setMessage("用户名或密码错误，请确认后重新登录");
                 result.setSuccess(false);

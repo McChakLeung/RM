@@ -5,6 +5,8 @@ import java.util.Date;
 public class User {
     private Long id;
 
+    private String loginacct;
+
     private String username;
 
     private String password;
@@ -61,6 +63,14 @@ public class User {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public String getLoginacct() {
+        return loginacct;
+    }
+
+    public void setLoginacct(String loginacct) {
+        this.loginacct = loginacct;
     }
 
 }

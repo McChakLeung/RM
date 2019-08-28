@@ -3,6 +3,7 @@
 <mapper namespace="com.dgpalife.resourcemanagement.mapper.UserMapper">
   <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.User">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="LoginAcct" jdbcType="VARCHAR" property="loginacct" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
@@ -10,7 +11,7 @@
     <result column="Status" jdbcType="BIT" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, username, password, CreateTime, LastLogin, Status
+    id, LoginAcct, username, password, CreateTime, LastLogin, Status
   </sql>
 
   <!--=====================手动添加=======================-->
@@ -20,7 +21,7 @@
       <include refid="Base_Column_List" />
     from user
     where
-      username = #{username,jdbcType=VARCHAR}
+      LoginAcct = #{loginacct,jdbcType=VARCHAR}
     and
       password = #{password,jdbcType=VARCHAR}
   </select>
@@ -29,6 +30,28 @@
     UPDATE user set LastLogin = #{lastlogin}  where id = #{id}
 
   </update>
+
+  <select id="selectUserList"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from user
+    <where>
+      <if test="queryText != null">
+        username like concat("%",#{queryText},"%")
+      </if>
+    </where>
+    ORDER BY createtime DESC
+    limit #{startline}, #{pagesize}
+  </select>
+
+  <select id="selectCount" resultType="java.lang.Integer">
+    select count(id) from user
+    <where>
+      <if test="queryText!=null">
+        username like concat("%",#{queryText},"%")
+      </if>
+    </where>
+  </select>
 
   <!--====================自动生成========================-->
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -45,7 +68,7 @@
     insert into user (id, username, password,
       CreateTime, LastLogin, Status
       )
-    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+    values (#{id,jdbcType=BIGINT},#{LoginAcct,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{createtime,jdbcType=TIMESTAMP}, #{lastlogin,jdbcType=TIMESTAMP}, #{status,jdbcType=BIT}
       )
   </insert>
@@ -54,6 +77,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="loginacct != null">
+        LoginAcct,
       </if>
       <if test="username != null">
         username,
@@ -75,6 +101,9 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
+      <if test="loginacct != null">
+        #{loginacct,jdbcType=VARCHAR},
+      </if>
       <if test="username != null">
         #{username,jdbcType=VARCHAR},
       </if>
@@ -95,6 +124,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.User">
     update user
     <set>
+      <if test="loginacct != null">
+        LoginAcct = #{loginacct,jdbcType=VARCHAR},
+      </if>
       <if test="username != null">
         username = #{username,jdbcType=VARCHAR},
       </if>
@@ -115,7 +147,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.User">
     update user
-    set  username = #{username,jdbcType=VARCHAR},
+    set  LoginAcct = #{loginacct,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       CreateTime = #{createtime,jdbcType=TIMESTAMP},
       LastLogin = #{lastlogin,jdbcType=TIMESTAMP},
