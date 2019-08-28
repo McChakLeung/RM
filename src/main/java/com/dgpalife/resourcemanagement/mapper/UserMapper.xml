@@ -6,8 +6,8 @@
     <result column="LoginAcct" jdbcType="VARCHAR" property="loginacct" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
-    <result column="LastLogin" jdbcType="TIMESTAMP" property="lastlogin" />
+    <result column="CreateTime" jdbcType="VARCHAR" property="createtime" />
+    <result column="LastLogin" jdbcType="VARCHAR" property="lastlogin" />
     <result column="Status" jdbcType="BIT" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -68,8 +68,8 @@
     insert into user (id, username, password,
       CreateTime, LastLogin, Status
       )
-    values (#{id,jdbcType=BIGINT},#{LoginAcct,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
-      #{createtime,jdbcType=TIMESTAMP}, #{lastlogin,jdbcType=TIMESTAMP}, #{status,jdbcType=BIT}
+    values (#{id,jdbcType=BIGINT},#{loginacct,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+      #{createtime,jdbcType=VARCHAR}, #{lastlogin,jdbcType=VARCHAR}, #{status,jdbcType=BIT}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.User">
@@ -111,10 +111,10 @@
         #{password,jdbcType=VARCHAR},
       </if>
       <if test="createtime != null">
-        #{createtime,jdbcType=TIMESTAMP},
+        #{createtime,jdbcType=VARCHAR},
       </if>
       <if test="lastlogin != null">
-        #{lastlogin,jdbcType=TIMESTAMP},
+        #{lastlogin,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=BIT},
@@ -134,10 +134,10 @@
         password = #{password,jdbcType=VARCHAR},
       </if>
       <if test="createtime != null">
-        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+        CreateTime = #{createtime,jdbcType=VARCHAR},
       </if>
       <if test="lastlogin != null">
-        LastLogin = #{lastlogin,jdbcType=TIMESTAMP},
+        LastLogin = #{lastlogin,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         Status = #{status,jdbcType=BIT},
@@ -150,8 +150,8 @@
     set  LoginAcct = #{loginacct,jdbcType=VARCHAR},
       username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
-      CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      LastLogin = #{lastlogin,jdbcType=TIMESTAMP},
+      CreateTime = #{createtime,jdbcType=VARCHAR},
+      LastLogin = #{lastlogin,jdbcType=VARCHAR},
       Status = #{status,jdbcType=BIT}
     where id = #{id,jdbcType=BIGINT}
   </update>

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Tables</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <!-- VENDOR CSS -->
+    <link rel="stylesheet" th:href="@{|/js/vendor/bootstrap/css/bootstrap.min.css|}">
+    <link rel="stylesheet" th:href="@{|/js/vendor/font-awesome/css/font-awesome.min.css|}">
+    <link rel="stylesheet" th:href="@{|/js/vendor/linearicons/style.css|}">
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" th:href="@{|/css/main.css|}">
+    <!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+    <link rel="stylesheet" th:href="@{|/css/demo.css|}">
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+    <!-- ICONS -->
+    <link rel="apple-touch-icon" sizes="76x76" th:href="@{|/img/apple-icon.png|}">
+    <link rel="icon" type="image/png" sizes="96x96" th:href="@{|/img/favicon.png|}">
+    <!-- Javascript -->
+    <script th:src="@{|/js/vendor/jquery/jquery.min.js|}"></script>
+    <script th:src="@{|/js/vendor/bootstrap/js/bootstrap.min.js|}"></script>
+    <script th:src="@{|/js/vendor/jquery-slimscroll/jquery.slimscroll.min.js|}"></script>
+    <script th:src="@{|/js/layer/layer.js|}"></script>
+    <script th:src="@{|/js/common.js|}"></script>
+</head>
+
+<body>
+<!-- WRAPPER -->
+<div id="header" th:include="/commons/header :: headerContext"></div>
+<div id="wrapper">
+    <!-- NAVBAR -->
+    <!--<div class="header"></div>-->
+    <div id="left_sidebar" th:include="/commons/left_sidebar :: leftContext"></div>
+    <!-- END LEFT SIDEBAR -->
+    <!-- MAIN -->
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid">
+                <!--<h3 class="page-title">Tables</h3>-->
+                <ol class="breadcrumb">
+                    <li><a th:href="@{|#|}">首页</a></li>
+                    <li><a th:href="@{|#|}">资源管理</a></li>
+                    <li class="active">资源台账</li>
+                </ol>
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- BASIC TABLE -->
+                        <div class="panel">
+                            <div class="panel-body">
+                                <form id="form">
+                                <div class="form-group">
+                                    <label for="floginacct">登陆账号</label>
+                                    <input type="text" class="form-control" id="floginacct" th:value="${user.loginacct}" placeholder="请输入登陆账号">
+                                </div>
+                                <div class="form-group">
+                                    <label for="fusername">用户名称</label>
+                                    <input type="text" class="form-control" id="fusername" th:value="${user.username}" placeholder="请输入用户名称">
+                                </div>
+                                <!--<div class="form-group">-->
+                                    <!--<label for="fpassword">用户密码</label>-->
+                                    <!--<input type="password" class="form-control" id="fpassword" placeholder="请输入密码">-->
+                                    <!--&lt;!&ndash;<p class="help-block label label-warning">请输入合法的邮箱地址, 格式为： xxxx@xxxx.com</p>&ndash;&gt;-->
+                                <!--</div>-->
+                                <div class="form-group">
+                                    <input type="hidden" class="form-control" id="fid" th:value="${user.id}">
+                                </div>
+                                <button type="button" id="editBtn" class="btn btn-success"><i class="glyphicon glyphicon-edit"></i> 修改</button>
+                                <button type="button" class="btn btn-danger" id="resetBtn"><i class="glyphicon glyphicon-refresh"></i> 重置</button>
+                            </form>
+                            </div>
+                        </div>
+                        <!-- END BASIC TABLE -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+    </div>
+    <!-- END MAIN -->
+    <div class="clearfix"></div>
+    <!--<div class="footer"></div>-->
+    <div id="footer" th:include="/commons/footer :: footerContext"></div>
+</div>
+<!-- END WRAPPER -->
+<script type="text/javascript">
+
+    //获取表单提交的数据
+    var floginacct = $("#floginacct");
+    var fusername = $("#fusername");
+    var fid = $("#fid");
+    var loadingIndex = -1;
+
+    $("#editBtn").click(function () {
+        $.ajax({
+            type:"post",
+            url:"[[@{|/auth/user/doUpdate/|}]]",
+            data:{
+                loginacct:floginacct.val(),
+                username:fusername.val(),
+                id:fid.val()
+            },
+            beforeSend:function () {
+                if($.trim(floginacct.val()) == ""){
+                    layer.msg("登录账号不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                        floginacct.val("");
+                        floginacct.focus();
+                    })
+                    return false
+                }
+
+                //验证用户名
+                if($.trim(fusername.val()) == ""){
+                    layer.msg("用户名不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                        fusername.val("");
+                        fusername.focus();
+                    })
+                    return false
+                }
+                loadingIndex = layer.load(3, {time: 10*1000});
+            },
+            
+            success:function (result) {
+                layer.close(loadingIndex);
+                if(result.success==true) {
+                    window.location.href='[[@{|/auth/user/toIndex|}]]';
+                }else{
+                    layer.msg(result.message,{time:2000, icon:5, shift:5})
+                }
+
+            },
+
+        })
+    })
+
+    $("#resetBtn").click(function () {
+        $("#form")[0].reset();
+    })
+</script>
+</body>
+
+</html>

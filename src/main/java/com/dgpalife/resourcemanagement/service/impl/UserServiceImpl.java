@@ -1,5 +1,7 @@
 package com.dgpalife.resourcemanagement.service.impl;
 
+import com.dgpalife.resourcemanagement.common.Const;
+import com.dgpalife.resourcemanagement.common.MD5Util;
 import com.dgpalife.resourcemanagement.common.Page;
 import com.dgpalife.resourcemanagement.mapper.UserMapper;
 import com.dgpalife.resourcemanagement.model.User;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +28,9 @@ public class UserServiceImpl implements UserService {
         if(user == null){
             return null;
         }
-        user.setLastlogin(new Date());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String lastlogin = simpleDateFormat.format(new Date());
+        user.setLastlogin(lastlogin);
         userMapper.updateLastLoginTime(user);
         return user;
     }
@@ -44,5 +49,31 @@ public class UserServiceImpl implements UserService {
         //将查询结果存放到公共的Page类中
         page.setTotalsize(totalsize);
         return page;
+    }
+
+    @Override
+    public Integer saveUser(User user) {
+        //将日期类转换成字符串
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String createtime = simpleDateFormat.format(new Date());
+        user.setCreatetime(createtime);
+        user.setStatus(true);
+        user.setPassword(MD5Util.digest(Const.PASSWORD));
+        return userMapper.insertSelective(user);
+    }
+
+    @Override
+    public User selectUserByID(Long id) {
+        return userMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer updateUser(User user) {
+        return userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    public Integer deleteUserById(Long id) {
+        return userMapper.deleteByPrimaryKey(id);
     }
 }

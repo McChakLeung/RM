@@ -9,4 +9,12 @@ public interface UserService {
     User selectUserByUserNameAndPassword(String loginacct, String password);
 
     Page<User> selectUserList(Map<String, Object> params);
+
+    Integer saveUser(User user);
+
+    User selectUserByID(Long id);
+
+    Integer updateUser(User user);
+
+    Integer deleteUserById(Long id);
 }

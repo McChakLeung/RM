@@ -1,7 +1,5 @@
 package com.dgpalife.resourcemanagement.model;
 
-import java.util.Date;
-
 public class User {
     private Long id;
 
@@ -11,9 +9,9 @@ public class User {
 
     private String password;
 
-    private Date createtime;
+    private String createtime;
 
-    private Date lastlogin;
+    private String lastlogin;
 
     private Boolean status;
 
@@ -41,19 +39,19 @@ public class User {
         this.password = password;
     }
 
-    public Date getCreatetime() {
+    public String getCreatetime() {
         return createtime;
     }
 
-    public void setCreatetime(Date createtime) {
+    public void setCreatetime(String createtime) {
         this.createtime = createtime;
     }
 
-    public Date getLastlogin() {
+    public String getLastlogin() {
         return lastlogin;
     }
 
-    public void setLastlogin(Date lastlogin) {
+    public void setLastlogin(String lastlogin) {
         this.lastlogin = lastlogin;
     }
 

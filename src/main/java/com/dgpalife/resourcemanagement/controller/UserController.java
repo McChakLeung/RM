@@ -6,10 +6,7 @@ import com.dgpalife.resourcemanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -19,7 +16,7 @@ import java.util.Map;
 @RequestMapping("/auth/user")
 public class UserController {
 
-    private AjaxResult result = new AjaxResult();
+
 
     @Autowired
     private UserService userService;
@@ -27,6 +24,24 @@ public class UserController {
     @RequestMapping("/toIndex")
     public String toIndex(){
         return "/auth/user/index";
+    }
+
+    @RequestMapping("/toAdd")
+    public String toAdd(){
+        return "/auth/user/add";
+    }
+
+    /**
+     * 接收update前台的数据，根据id查询user，并通过map传回到前端
+     * @param id 用户id
+     * @param model  返回前台数据
+     * @return
+     */
+    @RequestMapping("/toUpdate/{id}")
+    public String toUpdate(@PathVariable Long id, Model model) {
+        User user = userService.selectUserByID(id);
+        model.addAttribute("user",user);
+        return "/auth/user/update";
     }
 
     /**
@@ -40,6 +55,9 @@ public class UserController {
     public Object toIndex(@RequestParam(value = "pageno",required = false,defaultValue = "1") Integer pageno,
                           @RequestParam(value = "pagesize",required = false,defaultValue = "10") Integer pagesize,
                           String queryText){
+
+        AjaxResult result = new AjaxResult();
+
         try{
             Map<String,Object> params = new HashMap<>();
             params.put("pageno",pageno);
@@ -61,6 +79,69 @@ public class UserController {
         }catch (Exception e){
             result.setSuccess(false);
             result.setMessage("查询异常，请联系管理员处理");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * 执行添加
+     * @return 返回查询结果集
+     */
+    @ResponseBody
+    @RequestMapping("/doAdd")
+    public Object doAdd(User user){
+
+        AjaxResult result = new AjaxResult();
+
+        try{
+            Integer count = userService.saveUser(user);
+            result.setSuccess(count>0);
+        }catch (Exception e){
+            result.setSuccess(false);
+            result.setMessage("保存异常，请联系管理员处理");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * 执行更新
+     * @return 返回查询结果集
+     */
+    @ResponseBody
+    @RequestMapping("/doUpdate")
+    public Object doUpdate(User user){
+
+        AjaxResult result = new AjaxResult();
+
+        try{
+            Integer count = userService.updateUser(user);
+            result.setSuccess(count>0);
+        }catch (Exception e){
+            result.setSuccess(false);
+            result.setMessage("更新异常，请联系管理员处理");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * 单条记录删除
+     * @return 返回查询结果集
+     */
+    @ResponseBody
+    @RequestMapping("/doDelete")
+    public Object doDelete(Long id){
+
+        AjaxResult result = new AjaxResult();
+
+        try{
+            Integer count = userService.deleteUserById(id);
+            result.setSuccess(count>0);
+        }catch (Exception e){
+            result.setSuccess(false);
+            result.setMessage("删除异常，请联系管理员处理");
             e.printStackTrace();
         }
         return result;

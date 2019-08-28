@@ -24,6 +24,7 @@
 	<script th:src="@{|/js/vendor/bootstrap/js/bootstrap.min.js|}"></script>
 	<script th:src="@{|/js/vendor/jquery-slimscroll/jquery.slimscroll.min.js|}"></script>
 	<script th:src="@{|/js/layer/layer.js|}"></script>
+	<script th:src="@{|/js/common.js|}"></script>
 </head>
 
 <body>
@@ -63,7 +64,7 @@
 										<button id="queryBtn" type="button" class="btn btn-warning" ><i class="glyphicon glyphicon-search"></i> 查询</button>
 									</form>
 									<!--<button type="button" id="deleteBatch" class="btn btn-danger" style="float:right;margin-left:10px;"><i class=" glyphicon glyphicon-remove"></i> 删除</button>-->
-									<button type="button" class="btn btn-primary" style="float:right;" onclick="window.location.href='#'"><i class="glyphicon glyphicon-plus"></i> 新增</button>
+									<button type="button" class="btn btn-primary" style="float:right;" th:onclick="'window.location.href = \''+ @{|/auth/user/toAdd|}+ '\''"><i class="glyphicon glyphicon-plus"></i> 新增</button>
 									<br>
 									<hr style="clear:both;">
 									<div class="table-responsive">
@@ -165,13 +166,13 @@
                         content+='  <td>'+(i+1)+'</td>';
                         content+='  <td>'+n.loginacct+'</td>';
                         content+='  <td>'+n.username+'</td>';
-                        content+='  <td>'+n.lastlogin+'</td>';
+                        content+='  <td>'+n.createtime+'</td>';
                         content+='  <td>'+n.status+'</td>';
                         content+='  <td>';
                         content+='	  <button type="button" class="btn btn-success btn-xs" onclick="window.location.href=\'${APP_PATH}/user/assignRole.htm?id='+n.id+'\'"><i class=" glyphicon glyphicon-check"></i></button>';
                         content+='	  <button type="button" class="btn btn-primary btn-xs" onclick="toUpdate('+n.id+')"><i class=" glyphicon glyphicon-pencil"></i></button>';
-                        content+='	  <button type="button" class="btn btn-warning btn-xs" onclick="toUpdate('+n.id+')"><i class=" glyphicon glyphicon-remove"></i></button>';
-                        content+='	  <button type="button" class="btn btn-danger btn-xs" onclick="deleteUser('+n.id+',\''+n.loginacct+'\')"><i class=" glyphicon glyphicon-trash"></i></button>';
+                        content+='	  <button type="button" class="btn btn-warning btn-xs" onclick="startup('+n.id+')"><i class=" glyphicon glyphicon-remove"></i></button>';
+                        content+='	  <button type="button" class="btn btn-danger btn-xs" onclick="deleteUser('+n.id+',\''+n.username+'\')"><i class=" glyphicon glyphicon-trash"></i></button>';
                         content+='  </td>';
                         content+='</tr>';
                     });
@@ -214,21 +215,25 @@
     });
 
     function toUpdate(id) {
-        window.location.href = '${APP_PATH}/user/toUpdate.htm?id=' + id;
+        window.location.href = '[[@{|/auth/user/toUpdate/|}]]'+id;
     }
 
-    function deleteUser(id,loginacct) {
-        layer.confirm("确定要删除【"+loginacct+"】用户吗？",  {icon: 3, title:'提示'}, function(cindex){
+    function startup(id) {
+
+    }
+
+    function deleteUser(id,username) {
+        layer.confirm("确定要删除【"+username+"】用户吗？",  {icon: 3, title:'提示'}, function(cindex){
             layer.close(cindex);
             $.ajax({
                 type:"post",
-                url:"${APP_PATH}/user/doDelete.do",
+                url:"[[@{|/auth/user/doDelete|}]]",
                 data:{
                     "id":id
                 },
                 success:function (result) {
                     if(result.success){
-                        window.location.href='${APP_PATH}/user/toIndex.do';
+                        window.location.href='[[@{|/auth/user/toIndex|}]]';
                     }else{
                         layer.msg(result.message,{time:2000, icon:5, shift:5});
                     }

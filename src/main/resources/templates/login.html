@@ -21,6 +21,8 @@
 	<script th:src="@{|/js/vendor/jquery/jquery.min.js|}"></script>
 	<script th:src="@{|/js/jQuery.md5.js|}"></script>
 	<script th:src="@{|/js/vendor/bootstrap/js/bootstrap.min.js|}"></script>
+	<script th:src="@{|/js/layer/layer.js|}"></script>
+	<script th:src="@{|/js/common.js|}"></script>
 	<script type="text/javascript">
         $(function (){
             $("#loginBtn").bind("click",function(){
@@ -38,21 +40,41 @@
 					},
                     //该函数用于在发生ajax请求前的处理，一般用于表单校验、加载进度条等
                     beforeSend:function (XMLHttpRequest) {
-                        //验证用户名
                         if($.trim(floginacct.val()) == ""){
-                            $("#fmessage").text("用户名不能为空，请重新输入");
-                            floginacct.val("");
-                            floginacct.focus();
+                            // $("#fmessage").text("用户名不能为空，请重新输入");
+                            layer.msg("登录账号不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                                floginacct.val("");
+                                floginacct.focus();
+                            })
+
                             return false
                         }
 
-                        //验证密码
+                        // //验证用户名
+                        // if($.trim(fusername.val()) == ""){
+                        //     // $("#fmessage").text("密码不能为空，请重新输入");
+                        //     layer.msg("用户名不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                        //         fusername.val("");
+                        //         fusername.focus();
+                        //     })
+                        //     return false
+                        // }
+
+                        //验证密码是否为空
                         if($.trim(fpassword.val()) == ""){
-                            $("#fmessage").text("密码不能为空，请重新输入");
-                            fpassword.val("");
-                            fpassword.focus();
+                            layer.msg("密码不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                                fpassword.val("");
+                                fpassword.focus();
+                            })
                             return false
                         }
+
+                        // if(checkPassword(fpassword.val())==false){
+                        //     layer.msg("密码必须由数字和字母组成，且长度不小于8，请重新输入", {time: 2000, icon: 5, shift: 5}, function () {
+                        //         fpassword.focus();
+                        //     })
+                        //     return false;
+                        // }
 
                     },
 
@@ -68,6 +90,8 @@
 
             })
         })
+
+
 
 	</script>
 </head>
