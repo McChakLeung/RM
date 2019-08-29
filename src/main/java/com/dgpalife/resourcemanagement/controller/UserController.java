@@ -1,7 +1,10 @@
 package com.dgpalife.resourcemanagement.controller;
 
 import com.dgpalife.resourcemanagement.common.*;
+import com.dgpalife.resourcemanagement.model.Role;
 import com.dgpalife.resourcemanagement.model.User;
+import com.dgpalife.resourcemanagement.service.RoleService;
+import com.dgpalife.resourcemanagement.service.UserRoleService;
 import com.dgpalife.resourcemanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,17 +12,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping("/auth/user")
 public class UserController {
 
-
+    @Autowired
+    private RoleService roleService;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRoleService userRoleService;
 
     @RequestMapping("/toIndex")
     public String toIndex(){
@@ -145,6 +154,37 @@ public class UserController {
             e.printStackTrace();
         }
         return result;
+    }
+
+    /**
+     * 跳转页面并查询相关权限信息
+     * @param id
+     * @return
+     */
+    @RequestMapping("/assignRole/{id}")
+    public String assignRole(@PathVariable Long id,Model model){
+        //查询所有角色
+        List<Role> roleList = roleService.queryAllRole();
+        //查询当前用户所拥有的角色
+        List<Integer> ids = userRoleService.queryRoleByUserId(id);
+        //创建两个集合，分别存放已分配角色和未分配角色
+        List<Role> unAssignList = new ArrayList(); //未分配角色集合
+        List<Role> assignList = new ArrayList();  //已分配角色集合
+        //循环遍历
+        for(Role role:roleList){
+            //判断当前遍历出来的元素id是否包含在ids中，
+            // 如果包含，则将其放在assignList，
+            // 反之放在unassignList
+            if(ids.contains(role.getId())){
+                assignList.add(role);
+            }else{
+                unAssignList.add(role);
+            }
+        }
+        //将两个值存放在map中
+        model.addAttribute("assignList",assignList);
+        model.addAttribute("unAssignList",unAssignList);
+        return "/auth/user/assignRole";
     }
 
 }

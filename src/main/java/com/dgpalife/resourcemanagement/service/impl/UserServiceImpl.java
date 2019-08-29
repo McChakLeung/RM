@@ -76,4 +76,5 @@ public class UserServiceImpl implements UserService {
     public Integer deleteUserById(Long id) {
         return userMapper.deleteByPrimaryKey(id);
     }
+
 }

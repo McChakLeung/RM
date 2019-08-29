@@ -3,6 +3,7 @@ package com.dgpalife.resourcemanagement.service;
 import com.dgpalife.resourcemanagement.common.Page;
 import com.dgpalife.resourcemanagement.model.User;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserService {
@@ -17,4 +18,6 @@ public interface UserService {
     Integer updateUser(User user);
 
     Integer deleteUserById(Long id);
+
+
 }

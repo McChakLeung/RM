@@ -54,47 +54,31 @@
 									<!--<h3 class="panel-title">Basic Table</h3>-->
 								<!--</div>-->
 								<div class="panel-body">
-									<form class="form-inline" role="form" style="float:left;" >
-										<div class="form-group has-feedback">
-											<div class="input-group">
-												<div class="input-group-addon">查询条件</div>
-												<input id="fqueryText" class="form-control has-success" type="text" placeholder="请输入查询条件">
-											</div>
+									<form role="form" class="form-inline">
+										<div class="form-group">
+											<label for="leftRoleList">未分配角色列表</label><br>
+											<select id="leftRoleList" class="form-control" multiple size="10" style="width:250px;overflow-y:auto;">
+												<option th:each="role:${assignList}" th:value="${role.id}" th:text="${role.name}">请选择</option>
+													<!--<option value=""></option>-->
+
+											</select>
 										</div>
-										<button id="queryBtn" type="button" class="btn btn-warning" ><i class="glyphicon glyphicon-search"></i> 查询</button>
+										<div class="form-group">
+											<ul>
+												<li class="btn btn-default glyphicon glyphicon-chevron-right" id="leftRoleBtn"></li>
+												<br>
+												<li class="btn btn-default glyphicon glyphicon-chevron-left" style="margin-top:20px;" id="rightRoleBtn"></li>
+											</ul>
+										</div>
+										<div class="form-group" style="margin-left:40px;">
+											<label for="rightRoleList">已分配角色列表</label><br>
+											<select id="rightRoleList" class="form-control" multiple size="10" style="width:250px;overflow-y:auto;">
+
+													<option value=""></option>
+
+											</select>
+										</div>
 									</form>
-									<!--<button type="button" id="deleteBatch" class="btn btn-danger" style="float:right;margin-left:10px;"><i class=" glyphicon glyphicon-remove"></i> 删除</button>-->
-									<button type="button" class="btn btn-primary" style="float:right;" th:onclick="'window.location.href = \''+ @{|/auth/user/toAdd|}+ '\''"><i class="glyphicon glyphicon-plus"></i> 新增</button>
-									<br>
-									<hr style="clear:both;">
-									<div class="table-responsive">
-										<table class="table table-bordered table-hover">
-											<thead>
-											<tr class="success">
-												<th>序号</th>
-												<!--<th width="30"><input id="AllCheckbox" type="checkbox"></th>-->
-												<th>登录账号</th>
-												<th>用户名</th>
-												<th>创建日期</th>
-												<!--<th>状态</th>-->
-												<th width="230">操作</th>
-											</tr>
-											</thead>
-											<tbody>
-
-											</tbody>
-											<tfoot>
-											<tr >
-												<td colspan="6" align="center">
-													<ul class="pagination">
-
-													</ul>
-												</td>
-											</tr>
-
-											</tfoot>
-										</table>
-									</div>
 								</div>
 							</div>
 							<!-- END BASIC TABLE -->
@@ -169,7 +153,7 @@
                         content+='  <td>'+n.createtime+'</td>';
                         //content+='  <td>'+n.status+'</td>';
                         content+='  <td>';
-                        content+='	  <button type="button" class="btn btn-success btn-xs" onclick="toAssignRole('+n.id+')"><i class=" glyphicon glyphicon-check"></i></button>';
+                        content+='	  <button type="button" class="btn btn-success btn-xs" onclick="window.location.href=\'${APP_PATH}/user/assignRole.htm?id='+n.id+'\'"><i class=" glyphicon glyphicon-check"></i></button>';
                         content+='	  <button type="button" class="btn btn-primary btn-xs" onclick="toUpdate('+n.id+')"><i class=" glyphicon glyphicon-pencil"></i></button>';
                         // content+='	  <button type="button" class="btn btn-warning btn-xs" onclick="startup('+n.id+')"><i class=" glyphicon glyphicon-remove"></i></button>';
                         content+='	  <button type="button" class="btn btn-danger btn-xs" onclick="deleteUser('+n.id+',\''+n.username+'\')"><i class=" glyphicon glyphicon-trash"></i></button>';
@@ -213,10 +197,6 @@
         jsonObj.queryText = queryText;
         queryPageUser(1);
     });
-
-    function toAssignRole(id) {
-        window.location.href = '[[@{|/auth/user/assignRole/|}]]'+id;
-    }
 
     function toUpdate(id) {
         window.location.href = '[[@{|/auth/user/toUpdate/|}]]'+id;
