@@ -1,6 +1,7 @@
 package com.dgpalife.resourcemanagement.mapper;
 
 import com.dgpalife.resourcemanagement.model.User;
+import com.dgpalife.resourcemanagement.model.UserRole;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -28,4 +29,6 @@ public interface UserMapper {
     List<User> selectUserList(Map<String, Object> params);
 
     Integer selectCount(Map<String, Object> params);
+
+    void saveUserRoleByBatch(List<UserRole> userRoleList);
 }

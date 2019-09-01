@@ -73,4 +73,19 @@
     select role_id from user_role
     where user_id = #{id}
   </select>
+
+  <!--<insert id="saveUserRoleByBatch">-->
+    <!--<foreach collection="list" item="userrole" separator=";">-->
+      <!--INSERT INTO user_role (userid,roleid) values (#{userrole.userId},#{userrole.roleId})-->
+    <!--</foreach>-->
+  <!--</insert>-->
+  <delete id="deleteByRoleId">
+    DELETE from user_role
+    where role_id = #{roleId, jdbcType=INTEGER}
+  </delete>
+
+  <delete id="deleteByUserId">
+    DELETE from user_role
+    where user_id = #{userId, jdbcType=INTEGER}
+  </delete>
 </mapper>

@@ -14,46 +14,6 @@
     id, LoginAcct, username, password, CreateTime, LastLogin, Status
   </sql>
 
-  <!--=====================手动添加=======================-->
-
-  <select id="selectUserByUserNameAndPassword" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-      <include refid="Base_Column_List" />
-    from user
-    where
-      LoginAcct = #{loginacct,jdbcType=VARCHAR}
-    and
-      password = #{password,jdbcType=VARCHAR}
-  </select>
-
-  <update id="updateLastLoginTime">
-    UPDATE user set LastLogin = #{lastlogin}  where id = #{id}
-
-  </update>
-
-  <select id="selectUserList"  resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from user
-    <where>
-      <if test="queryText != null">
-        username like concat("%",#{queryText},"%")
-      </if>
-    </where>
-    ORDER BY createtime DESC
-    limit #{startline}, #{pagesize}
-  </select>
-
-  <select id="selectCount" resultType="java.lang.Integer">
-    select count(id) from user
-    <where>
-      <if test="queryText!=null">
-        username like concat("%",#{queryText},"%")
-      </if>
-    </where>
-  </select>
-
-  <!--====================自动生成========================-->
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -155,4 +115,42 @@
       Status = #{status,jdbcType=BIT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectUserByUserNameAndPassword" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where
+    LoginAcct = #{loginacct,jdbcType=VARCHAR}
+    and
+    password = #{password,jdbcType=VARCHAR}
+  </select>
+
+  <update id="updateLastLoginTime">
+    UPDATE user set LastLogin = #{lastlogin}  where id = #{id}
+
+  </update>
+
+  <select id="selectUserList"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from user
+    <where>
+      <if test="queryText != null">
+        username like concat("%",#{queryText},"%")
+      </if>
+    </where>
+    ORDER BY createtime DESC
+    limit #{startline}, #{pagesize}
+  </select>
+
+  <select id="selectCount" resultType="java.lang.Integer">
+    select count(id) from user
+    <where>
+      <if test="queryText!=null">
+        username like concat("%",#{queryText},"%")
+      </if>
+    </where>
+  </select>
+
 </mapper>

@@ -58,7 +58,7 @@
 										<div class="form-group">
 											<label for="leftRoleList">未分配角色列表</label><br>
 											<select id="leftRoleList" class="form-control" multiple size="10" style="width:250px;overflow-y:auto;">
-												<option th:each="role:${assignList}" th:value="${role.id}" th:text="${role.name}">请选择</option>
+												<option th:each="role:${unAssignList}" th:value="${role.id}" th:text="${role.name}">请选择</option>
 													<!--<option value=""></option>-->
 
 											</select>
@@ -73,9 +73,7 @@
 										<div class="form-group" style="margin-left:40px;">
 											<label for="rightRoleList">已分配角色列表</label><br>
 											<select id="rightRoleList" class="form-control" multiple size="10" style="width:250px;overflow-y:auto;">
-
-													<option value=""></option>
-
+												<option th:each="role:${assignList}" th:value="${role.id}" th:text="${role.name}">请选择</option>
 											</select>
 										</div>
 									</form>
@@ -96,34 +94,33 @@
 	<!-- END WRAPPER -->
 <script type="text/javascript" th:inline="javascript">
 
+    var loadingIndex = -1;
+
+
+
     //leftRoleBtn单击事件
     $("#leftRoleBtn").click(function () {
         var leftRoleList = $("#leftRoleList option:selected");
 
-        //遍历leftRoleListDOM对象，并将其中的roleid组装到jsonObj中
-        // $.each(leftRoleList,function (i,n) {
-        //     jsonObj["ids["+i+"]"] = this.value;
-        // })
-        //console.log(jsonObj)
-
-
+        var jsonObj = new Array();
 
         //遍历leftRoleListDOM对象，并将其中的roleid组装到jsonObj中
         $.each(leftRoleList,function (i,n) {
-            jsonObj.push({userid: [[${id}]], roleid: this.value})
+            jsonObj.push({userId: [[${id}]], roleId: this.value})
         })
 
+		console.log(jsonObj);
 
         //发送ajax添加功能
         $.ajax({
             type:"post",
             data:JSON.stringify(jsonObj),
-            url:"${APP_PATH}/user/doAssignRole.do",
+            url:[[@{|/auth/user/doAssignRole|}]],
             datatype:'json',
             contentType : "application/json;charset=utf-8",
             beforSend: function(){
                 loadingIndex = layer.load(3, {time: 10*1000});
-                return false;
+                return true;
             },
             success: function (result) {
                 layer.close(loadingIndex);
@@ -132,16 +129,17 @@
                 }else{
                     layer.msg(result.message,{time:2000, icon:5, shift:5})
                 }
-            },
-            error:function () {
-                layer.msg("分配角色失败，请联系管理员处理",{time:2000, icon:5, shift:5})
             }
+
         })
     })
 
     //rightRoleBtn单击事件
     $("#rightRoleBtn").click(function () {
         var rightRoleList = $("#rightRoleList option:selected");
+
+        var jsonObj = new Array();
+
         //遍历leftRoleListDOM对象，并将其中的roleid组装到jsonObj中
         $.each(rightRoleList,function (i,n) {
             jsonObj.push({userid: "${param.id}", roleid: this.value})
@@ -152,7 +150,7 @@
         $.ajax({
             type:"post",
             data:JSON.stringify(jsonObj),
-            url:"${APP_PATH}/user/doUnAssignRole.do",
+            url:[[@{|/auth/user/doUnAssignRole|}]],
             datatype:'json',
             contentType : "application/json;charset=utf-8",
             beforSend: function(){
@@ -166,9 +164,6 @@
                 }else{
                     layer.msg(result.message,{time:2000, icon:5, shift:5})
                 }
-            },
-            error:function () {
-                layer.msg("删除角色失败，请联系管理员处理",{time:2000, icon:5, shift:5})
             }
         })
     })

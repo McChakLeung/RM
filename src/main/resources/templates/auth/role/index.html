@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Tables</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<!-- VENDOR CSS -->
+	<link rel="stylesheet" th:href="@{|/js/vendor/bootstrap/css/bootstrap.min.css|}">
+	<link rel="stylesheet" th:href="@{|/js/vendor/font-awesome/css/font-awesome.min.css|}">
+	<link rel="stylesheet" th:href="@{|/js/vendor/linearicons/style.css|}">
+	<!-- MAIN CSS -->
+	<link rel="stylesheet" th:href="@{|/css/main.css|}">
+	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+	<link rel="stylesheet" th:href="@{|/css/demo.css|}">
+	<!-- GOOGLE FONTS -->
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+	<!-- ICONS -->
+	<link rel="apple-touch-icon" sizes="76x76" th:href="@{|/img/apple-icon.png|}">
+	<link rel="icon" type="image/png" sizes="96x96" th:href="@{|/img/favicon.png|}">
+	<!-- Javascript -->
+	<script th:src="@{|/js/vendor/jquery/jquery.min.js|}"></script>
+	<script th:src="@{|/js/vendor/bootstrap/js/bootstrap.min.js|}"></script>
+	<script th:src="@{|/js/vendor/jquery-slimscroll/jquery.slimscroll.min.js|}"></script>
+	<script th:src="@{|/js/layer/layer.js|}"></script>
+	<script th:src="@{|/js/common.js|}"></script>
+</head>
+
+<body>
+<!-- WRAPPER -->
+<div id="header" th:include="/commons/header :: headerContext"></div>
+<div id="wrapper">
+	<!-- NAVBAR -->
+	<!--<div class="header"></div>-->
+	<div id="left_sidebar" th:include="/commons/left_sidebar :: leftContext"></div>
+		<!-- END LEFT SIDEBAR -->
+		<!-- MAIN -->
+		<div class="main">
+			<!-- MAIN CONTENT -->
+			<div class="main-content">
+				<div class="container-fluid">
+					<!--<h3 class="page-title">Tables</h3>-->
+                    <ol class="breadcrumb">
+                        <li><a th:href="@{|#|}">首页</a></li>
+                        <li><a th:href="@{|#|}">资源管理</a></li>
+                        <li class="active">资源台账</li>
+                    </ol>
+					<div class="row">
+						<div class="col-md-12">
+							<!-- BASIC TABLE -->
+							<div class="panel">
+								<!--<div class="panel-heading">-->
+									<!--<h3 class="panel-title">Basic Table</h3>-->
+								<!--</div>-->
+								<div class="panel-body">
+									<!--<form class="form-inline" role="form" style="float:left;">-->
+										<!--<div class="form-group has-feedback">-->
+											<!--<div class="input-group">-->
+												<!--<div class="input-group-addon">查询条件</div>-->
+												<!--<input class="form-control has-success" type="text" placeholder="请输入查询条件">-->
+											<!--</div>-->
+										<!--</div>-->
+										<!--<button type="button" class="btn btn-warning"><i class="glyphicon glyphicon-search"></i> 查询</button>-->
+									<!--</form>-->
+									<!--<button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"><i class=" glyphicon glyphicon-remove"></i> 删除</button>-->
+									<button type="button" class="btn btn-primary" style="float:right;" onclick="toAdd()"><i class="glyphicon glyphicon-plus"></i> 新增</button>
+									<br>
+									<hr style="clear:both;">
+									<div class="table-responsive">
+										<table class="table table-bordered table-hover">
+											<thead>
+											<tr class="success">
+												<th>序号</th>
+												<th>名称</th>
+												<th>操作</th>
+											</tr>
+											</thead>
+											<tbody>
+
+											</tbody>
+											<tfoot>
+											<tr >
+												<td colspan="6" align="center">
+													<ul class="pagination">
+														<!--<li class="disabled"><a href="#">上一页</a></li>-->
+														<!--<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>-->
+														<!--<li><a href="#">2</a></li>-->
+														<!--<li><a href="#">3</a></li>-->
+														<!--<li><a href="#">4</a></li>-->
+														<!--<li><a href="#">5</a></li>-->
+														<!--<li><a href="#">下一页</a></li>-->
+													</ul>
+												</td>
+											</tr>
+
+											</tfoot>
+										</table>
+									</div>
+								</div>
+							</div>
+							<!-- END BASIC TABLE -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- END MAIN CONTENT -->
+		</div>
+		<!-- END MAIN -->
+		<div class="clearfix"></div>
+		<!--<div class="footer"></div>-->
+	<div id="footer" th:include="/commons/footer :: footerContext"></div>
+	</div>
+	<!-- END WRAPPER -->
+<script type="text/javascript">
+
+    $(function () {
+        queryPage(1);
+    });
+
+    function pageChange(pageno){
+        //window.location.href="${APP_PATH}/user/index.do?pageno="+pageno ;
+        queryPageUser(pageno);
+    }
+
+    function toAdd() {
+        window.location.href =  '[[@{|/auth/role/toAdd/|}]]';
+    }
+
+    function toAssignPermission(roleId) {
+		window.location.href =  '[[@{|/auth/role/toAssignPermission/|}]]'+roleId;
+    }
+
+    function toUpdate(roleId) {
+        window.location.href =  '[[@{|/auth/role/toUpdate/|}]]'+roleId;
+    }
+
+    function doDelete(roleId,name) {
+        layer.confirm("确定要删除【"+name+"】角色吗？",  {icon: 3, title:'提示'}, function(cindex){
+            layer.close(cindex);
+            $.ajax({
+                type:"post",
+                url:"[[@{|/auth/role/doDelete|}]]",
+                data:{
+                    "id":roleId
+                },
+                success:function (result) {
+                    if(result.success){
+                        window.location.href='[[@{|/auth/role/toIndex|}]]';
+                    }else{
+                        layer.msg(result.message,{time:2000, icon:5, shift:5});
+                    }
+                }
+
+            });
+
+        }, function(cindex){
+            layer.close(cindex);
+        });
+    }
+
+    var loadingIndex = -1;
+
+    var jsonObj = {
+        "pageno":1,
+        "pagesize":10
+    };
+
+    function queryPage(pageno) {
+        jsonObj.pageno = pageno;
+        $.ajax({
+            type:"post",
+            url:"[[@{|/auth/role/queryPage|}]]",
+            data:jsonObj,
+            beforeSend:function () {
+                loadingIndex = layer.load(3, {time: 10*1000});
+                return true;
+            },
+            success:function (result) {
+                if(result.success){
+                    layer.close(loadingIndex);
+                    //从result对象中获取page对象
+                    var page = result.page;
+                    //从page对象中获取page数据行
+                    var data = page.datalist;
+
+                    //定义一个content进行拼接表格
+                    var content = '';
+
+                    //遍历data对象，并拼接表格
+                    $.each(data,function (i,n) {
+                        content += '<tr>';
+                        content += '<td>'+(i+1)+'</td>';
+                        content += '<td>'+n.name+'</td>';
+                        content += '<td>';
+                        content += '<button type="button" class="btn btn-success btn-xs" onclick="toAssignPermission('+n.id+')"><i class=" glyphicon glyphicon-check"></i></button>';
+                        content += '<button type="button" class="btn btn-primary btn-xs" onclick="toUpdate('+n.id+')"><i class=" glyphicon glyphicon-pencil"></i></button>';
+                        content += '<button type="button" class="btn btn-danger btn-xs" onclick="doDelete('+n.id+',\''+n.name+'\')"><i class=" glyphicon glyphicon-remove"></i></button>';
+                        content += '</td>';
+                        content += '</tr>';
+                    })
+                    $("tbody").html(content);
+
+                    //分页
+                    var contentbar = '';
+                    if(page.pageno==1){
+                        contentbar += '<li class="disabled"><a href="#">上一页</a></li>';
+                    }else{
+                        contentbar += '<li><a href="#" onclick="pageChange('+(page.pageno-1)+')">上一页</a></li>';
+                    }
+
+                    for(var i =1; i <= page.totalno;i++) {
+                        contentbar += '<li ';
+                        if(page.pageno == i) {
+                            contentbar += 'class= "active"';
+                        }
+                        contentbar += '><a href="#" onclick="pageChange(' + i + ')">' + i + '</a></li>';
+                    }
+                    if(page.pageno==page.totalno) {
+                        contentbar += '<li class="disabled"><a href="#">下一页</a></li>';
+                    }else{
+                        contentbar += '<li><a href="#" onclick="pageChange('+(page.pageno+1)+')">下一页</a></li>';
+                    }
+                    $(".pagination").html(contentbar);
+                }else{
+                    layer.msg(result.message,{time:2000, icon:5, shift:5})
+                }
+            }
+        })
+    }
+
+    $("tbody .btn-success").click(function(){
+        window.location.href = "assignPermission.html";
+    });
+
+
+</script>
+</body>
+
+</html>

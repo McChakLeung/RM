@@ -20,4 +20,10 @@ public interface UserRoleMapper {
     int updateByPrimaryKey(UserRole record);
 
     List<Integer> queryRoleByUserId(Long id);
+
+    void deleteByRoleId(Long roleId);
+
+    void deleteByUserId(Long id);
+
+    //void saveUserRoleByBatch(List<UserRole> userRoleList);
 }

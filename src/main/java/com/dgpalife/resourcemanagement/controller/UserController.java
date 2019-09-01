@@ -3,6 +3,7 @@ package com.dgpalife.resourcemanagement.controller;
 import com.dgpalife.resourcemanagement.common.*;
 import com.dgpalife.resourcemanagement.model.Role;
 import com.dgpalife.resourcemanagement.model.User;
+import com.dgpalife.resourcemanagement.model.UserRole;
 import com.dgpalife.resourcemanagement.service.RoleService;
 import com.dgpalife.resourcemanagement.service.UserRoleService;
 import com.dgpalife.resourcemanagement.service.UserService;
@@ -146,8 +147,8 @@ public class UserController {
         AjaxResult result = new AjaxResult();
 
         try{
-            Integer count = userService.deleteUserById(id);
-            result.setSuccess(count>0);
+            userService.deleteUserById(id);
+            result.setSuccess(true);
         }catch (Exception e){
             result.setSuccess(false);
             result.setMessage("删除异常，请联系管理员处理");
@@ -185,6 +186,36 @@ public class UserController {
         model.addAttribute("assignList",assignList);
         model.addAttribute("unAssignList",unAssignList);
         return "/auth/user/assignRole";
+    }
+
+    @ResponseBody
+    @RequestMapping("/doAssignRole")
+    public Object doAssignRole(@RequestBody List<UserRole> userRoleList){
+        AjaxResult result = new AjaxResult();
+        try{
+            userService.saveUserRoleByBatch(userRoleList);
+            result.setSuccess(true);
+        }catch (Exception e){
+            result.setSuccess(false);
+            result.setMessage("分配角色错误，请联系管理员");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @ResponseBody
+    @RequestMapping("/doUnAssignRole")
+    public Object doUnAssignRole(@RequestBody List<UserRole> userRoleList){
+        AjaxResult result = new AjaxResult();
+        try{
+            userService.deleteUserRoleByBatch(userRoleList);
+            result.setSuccess(true);
+        }catch (Exception e){
+            result.setSuccess(false);
+            result.setMessage("分配角色错误，重新分配");
+            e.printStackTrace();
+        }
+        return result;
     }
 
 }

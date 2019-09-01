@@ -61,4 +61,23 @@
     <include refid="Base_Column_List"></include>
     FROM role
   </select>
+
+  <select id="queryRoleListByParams" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from role
+    limit #{startline},#{pagesize}
+  </select>
+
+  <select id="queryPermissionByRoleID" parameterType="int" resultType="int">
+    select permission_id
+    FROM role_permission
+    WHERE role_id = #{roleId}
+  </select>
+
+  <delete id="deletePermissionByRoleID" parameterType="long">
+    DELETE FROM role_permission
+    WHERE role_id = #{roleId}
+  </delete>
+
 </mapper>

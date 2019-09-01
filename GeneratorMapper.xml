@@ -40,21 +40,14 @@
         </javaClientGenerator>
 
         <!-- 数据库表名及对应的Java模型类名 -->
-        <table tableName="role"
-               domainObjectName="Role"
+        <table tableName="glyphicon"
+               domainObjectName="Glyphicon"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
                selectByExampleQueryId="false"/>
 
-        <table tableName="user_role"
-               domainObjectName="UserRole"
-               enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
     </context>
 
 </generatorConfiguration>

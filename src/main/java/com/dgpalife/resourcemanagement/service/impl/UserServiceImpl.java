@@ -4,7 +4,9 @@ import com.dgpalife.resourcemanagement.common.Const;
 import com.dgpalife.resourcemanagement.common.MD5Util;
 import com.dgpalife.resourcemanagement.common.Page;
 import com.dgpalife.resourcemanagement.mapper.UserMapper;
+import com.dgpalife.resourcemanagement.mapper.UserRoleMapper;
 import com.dgpalife.resourcemanagement.model.User;
+import com.dgpalife.resourcemanagement.model.UserRole;
 import com.dgpalife.resourcemanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     @Override
     public User selectUserByUserNameAndPassword(String loginacct, String password) {
@@ -73,8 +78,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer deleteUserById(Long id) {
-        return userMapper.deleteByPrimaryKey(id);
+    public void deleteUserById(Long id) {
+         userMapper.deleteByPrimaryKey(id);
+         userRoleMapper.deleteByUserId(id);
+    }
+
+    @Override
+    public void saveUserRoleByBatch(List<UserRole> userRoleList) {
+        for(UserRole userRole : userRoleList){
+            userRoleMapper.insertSelective(userRole);
+        }
+
+    }
+
+    @Override
+    public void deleteUserRoleByBatch(List<UserRole> userRoleList) {
+        for(UserRole userRole : userRoleList){
+            userRoleMapper.deleteByRoleId(userRole.getRoleId());
+        }
     }
 
 }

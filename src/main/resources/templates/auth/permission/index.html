@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Tables</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<!-- VENDOR CSS -->
+	<link rel="stylesheet" th:href="@{|/js/vendor/bootstrap/css/bootstrap.min.css|}">
+	<link rel="stylesheet" th:href="@{|/js/vendor/font-awesome/css/font-awesome.min.css|}">
+	<link rel="stylesheet" th:href="@{|/js/vendor/linearicons/style.css|}">
+	<!-- MAIN CSS -->
+	<link rel="stylesheet" th:href="@{|/css/main.css|}">
+	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+	<link rel="stylesheet" th:href="@{|/css/demo.css|}">
+	<!--ztree-->
+	<link rel="stylesheet" th:href="@{|/ztree/zTreeStyle.css|}">
+	<!-- GOOGLE FONTS -->
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+	<!-- ICONS -->
+	<link rel="apple-touch-icon" sizes="76x76" th:href="@{|/img/apple-icon.png|}">
+	<link rel="icon" type="image/png" sizes="96x96" th:href="@{|/img/favicon.png|}">
+	<!-- Javascript -->
+	<script th:src="@{|/js/vendor/jquery/jquery.min.js|}"></script>
+	<script th:src="@{|/js/vendor/bootstrap/js/bootstrap.min.js|}"></script>
+	<script th:src="@{|/js/vendor/jquery-slimscroll/jquery.slimscroll.min.js|}"></script>
+	<script th:src="@{|/js/layer/layer.js|}"></script>
+	<script th:src="@{|/js/common.js|}"></script>
+	<script th:src="@{|/ztree/jquery.ztree.all-3.5.min.js|}"></script>
+</head>
+
+<body>
+<!-- WRAPPER -->
+<div id="header" th:include="/commons/header :: headerContext"></div>
+<div id="wrapper">
+	<!-- NAVBAR -->
+	<!--<div class="header"></div>-->
+	<div id="left_sidebar" th:include="/commons/left_sidebar :: leftContext"></div>
+		<!-- END LEFT SIDEBAR -->
+		<!-- MAIN -->
+		<div class="main">
+			<!-- MAIN CONTENT -->
+			<div class="main-content">
+				<div class="container-fluid">
+					<!--<h3 class="page-title">Tables</h3>-->
+                    <ol class="breadcrumb">
+                        <li><a th:href="@{|#|}">首页</a></li>
+                        <li><a th:href="@{|#|}">资源管理</a></li>
+                        <li class="active">资源台账</li>
+                    </ol>
+					<div class="row">
+						<div class="col-md-12">
+							<!-- BASIC TABLE -->
+							<div class="panel">
+								<div class="panel-body">
+									<ul id="treeDemo" class="ztree"></ul>
+								</div>
+							</div>
+							<!-- END BASIC TABLE -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- END MAIN CONTENT -->
+		</div>
+		<!-- END MAIN -->
+		<div class="clearfix"></div>
+		<!--<div class="footer"></div>-->
+	<div id="footer" th:include="/commons/footer :: footerContext"></div>
+	</div>
+	<!-- END WRAPPER -->
+<script type="text/javascript">
+
+    $(function () {
+        loadData();
+    });
+
+    function toAdd(pid) {
+        window.location.href= '[[@{|/auth/permission/toAdd/|}]]'+ pid;
+    }
+
+    function toUpdate(id) {
+        window.location.href= '[[@{|/auth/permission/toUpdate/|}]]'+ id;
+    }
+
+    function loadData() {
+        var setting = {
+
+            view: {
+                addDiyDom: function (treeId, treeNode) {
+                    var icoObj = $("#" + treeNode.tId + "_ico"); // tId = permissionTree_1, $("#permissionTree_1_ico")
+                    if (treeNode.icon) {
+                        icoObj.removeClass("button ico_docu ico_open").addClass(treeNode.icon).css("background", "");
+                    }
+                },
+                addHoverDom: function(treeId, treeNode){
+                    var aObj = $("#" + treeNode.tId + "_a"); // tId = permissionTree_1, ==> $("#permissionTree_1_a")
+                    aObj.attr("href", "javascript:;");
+                    if (treeNode.editNameFlag || $("#btnGroup"+treeNode.tId).length>0) return;
+                    var s = '<span id="btnGroup'+treeNode.tId+'">';
+
+                    //判断是否为根节点
+                    if(treeNode.level == 0){
+                        s += '<a class="btn btn-info dropdown-toggle btn-xs" style="margin-left:10px;padding-top:0px;" href="#" onclick="toAdd('+treeNode.id+')" title="添加权限信息">&nbsp;&nbsp;<i class="fa fa-fw fa-plus rbg "></i></a>';
+                        //判断是否为子节点，该节点可以添加，修改和删除
+                    }else if(treeNode.children.length == 0){
+                        s += '<a class="btn btn-info dropdown-toggle btn-xs" style="margin-left:10px;padding-top:0px;"  href="#" onclick="toUpdate('+treeNode.id+')" title="修改权限信息">&nbsp;&nbsp;<i class="fa fa-fw fa-edit rbg "></i></a>';
+                        s += '<a class="btn btn-info dropdown-toggle btn-xs" style="margin-left:10px;padding-top:0px;"  href="#" onclick="deletePermission('+treeNode.id+',\''+treeNode.name+'\')" title="删除权限信息">&nbsp;&nbsp;<i class="fa fa-fw fa-times rbg "></i></a>';
+                        s += '<a class="btn btn-info dropdown-toggle btn-xs" style="margin-left:10px;padding-top:0px;" href="#" onclick="toAdd('+treeNode.id+')" title="添加权限信息" >&nbsp;&nbsp;<i class="fa fa-fw fa-plus rbg "></i></a>';
+                        //判断其他节点，该节点只有修改和添加权限，不能删除
+                    }else{
+                        s += '<a class="btn btn-info dropdown-toggle btn-xs" style="margin-left:10px;padding-top:0px;"  href="#" onclick="toUpdate('+treeNode.id+')" title="修改权限信息">&nbsp;&nbsp;<i class="fa fa-fw fa-edit rbg "></i></a>';
+                        s += '<a class="btn btn-info dropdown-toggle btn-xs" style="margin-left:10px;padding-top:0px;" href="#" onclick="toAdd('+treeNode.id+')" title="添加权限信息">&nbsp;&nbsp;<i class="fa fa-fw fa-plus rbg "></i></a>';
+                    }
+
+                    s += '</span>';
+                    aObj.after(s);
+                },
+                removeHoverDom: function(treeId, treeNode){
+                    $("#btnGroup"+treeNode.tId).remove();
+                }
+            }
+        }
+
+        $.ajax({
+            type:"post",
+            url:"[[@{|/auth/permission/loadData|}]]",
+            success: function (result) {
+                if(result.success){
+                    var zNodes = result.datas;
+                    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                }else{
+                    layer.msg("加载许可树数据失败...", {time:1000, icon:5, shift:6});
+                }
+            }
+        })
+    }
+
+    function deletePermission(id,name) {
+        layer.confirm("确认要删除["+name+"]这条数据吗？",  {icon: 3, title:'提示'}, function(cindex){
+            layer.close(cindex);
+            $.ajax({
+                type:"post",
+                url:"[[@{|/auth/permission/deletePermission|}]]",
+                data:{
+                    id:id
+                },
+                beforeSend: function () {
+                    return true;
+                },
+                success:function (result) {
+                    if(result.success){
+                        loadData();
+                    }else{
+                        layer.msg("删除许可数据失败...", {time:1000, icon:5, shift:6});
+                    }
+                }
+            })
+        }, function(cindex){
+            layer.close(cindex);
+        });
+    }
+
+</script>
+</body>
+
+</html>
