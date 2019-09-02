@@ -23,4 +23,6 @@ public interface RoleService {
     Integer updateRole(Role role);
 
     void deleteRoleByKey(Long roleId);
+
+    List queryRoleInfo(Long id);
 }

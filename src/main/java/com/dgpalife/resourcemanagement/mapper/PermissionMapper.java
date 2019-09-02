@@ -4,6 +4,7 @@ import com.dgpalife.resourcemanagement.model.Permission;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface PermissionMapper {
@@ -20,4 +21,6 @@ public interface PermissionMapper {
     int updateByPrimaryKey(Permission record);
 
     List<Permission> selectAllPermission();
+
+    List<Permission> queryPermissionByUserIDAndRoleID(Map<String, Object> params);
 }

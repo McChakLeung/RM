@@ -23,4 +23,6 @@ public interface UserService {
     void saveUserRoleByBatch(List<UserRole> userRoleList);
 
     void deleteUserRoleByBatch(List<UserRole> userRoleList);
+
+    User selectUserByLoginAccAndUserPassword(Map<String, Object> params);
 }

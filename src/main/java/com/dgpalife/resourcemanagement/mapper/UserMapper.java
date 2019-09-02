@@ -31,4 +31,6 @@ public interface UserMapper {
     Integer selectCount(Map<String, Object> params);
 
     void saveUserRoleByBatch(List<UserRole> userRoleList);
+
+    User selectUserByLoginAccAndUserPassword(Map<String, Object> params);
 }

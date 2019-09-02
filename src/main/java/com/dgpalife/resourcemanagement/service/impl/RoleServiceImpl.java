@@ -86,4 +86,9 @@ public class RoleServiceImpl implements RoleService {
         roleMapper.deleteByPrimaryKey(roleId);
         rolePermissionMapper.deleteByRoleId(roleId);
     }
+
+    @Override
+    public List queryRoleInfo(Long id) {
+        return roleMapper.queryRoleInfo(id);
+    }
 }

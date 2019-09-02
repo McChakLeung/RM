@@ -98,4 +98,10 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public User selectUserByLoginAccAndUserPassword(Map<String, Object> params) {
+        User user = userMapper.selectUserByLoginAccAndUserPassword(params);
+        return user;
+    }
+
 }

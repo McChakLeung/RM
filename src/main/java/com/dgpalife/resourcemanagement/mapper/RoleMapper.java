@@ -30,4 +30,5 @@ public interface RoleMapper {
 
     void deletePermissionByRoleID(Long roleId);
 
+    List queryRoleInfo(Long id);
 }

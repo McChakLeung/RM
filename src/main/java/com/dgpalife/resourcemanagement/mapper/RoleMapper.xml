@@ -80,4 +80,10 @@
     WHERE role_id = #{roleId}
   </delete>
 
+  <select id="queryRoleInfo" parameterType="long" resultMap="BaseResultMap">
+    SELECT  role.id id,role.name name  FROM user_role, role
+    WHERE user_role.role_id = role.id
+    AND user_role.user_id = #{id}
+  </select>
+
 </mapper>
