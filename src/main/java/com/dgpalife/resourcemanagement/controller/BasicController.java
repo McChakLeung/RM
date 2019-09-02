@@ -48,7 +48,7 @@ public class  BasicController {
      */
     @ResponseBody
     @RequestMapping("/preLogin")
-    public Object preLogin(String loginacct, String userpswd, HttpSession session){
+    public Object preLogin(String loginacct, String password, HttpSession session){
 
         AjaxResult result = new AjaxResult();
 
@@ -56,7 +56,7 @@ public class  BasicController {
             //创建一个map来接收参数
             Map<String,Object> params = new HashMap();
             params.put("loginacct",loginacct);
-            params.put("userpswd", MD5Util.digest(userpswd));
+            params.put("password", MD5Util.digest(password));
             //params.put("type",type);
             User user = userService.selectUserByLoginAccAndUserPassword(params);
             //判断是否能查询到user对象，如果查询不到，则说明用户名或密码错误
@@ -66,7 +66,7 @@ public class  BasicController {
                 return result;
             }
             //创建一个Const工具类，存放常量
-            session.setAttribute(Const.LOGIN_USER,user);
+            session.setAttribute("username",user.getUsername());
             //查询用户登陆角色
             List roleList = roleService.queryRoleInfo(user.getId());
 //            if(roleList==null){
@@ -131,7 +131,7 @@ public class  BasicController {
         }
         //将查询结果放到session中
         session.setAttribute("permissionRoot", permissionRoot);
-        return "/main";
+        return "/index";
     }
 
     @RequestMapping("logout")

@@ -8,10 +8,18 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.PrintWriter;
 
 public class CommonInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String XRequested =request.getHeader("X-Requested-With");
+        if("XMLHttpRequest".equals(XRequested)){
+            response.getWriter().write("IsAjax");
+        }else{
+            response.sendRedirect(request.getContextPath() + "/toLogin");
+        }
+
         //从session中获取登陆用户是否存在
         HttpSession session = request.getSession();
         User user = (User)session.getAttribute(Const.LOGIN_USER);

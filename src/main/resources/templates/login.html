@@ -23,90 +23,7 @@
 	<script th:src="@{|/static/js/vendor/bootstrap/js/bootstrap.min.js|}"></script>
 	<script th:src="@{|/static/js/layer/layer.js|}"></script>
 	<script th:src="@{|/static/js/common.js|}"></script>
-	<script type="text/javascript" th:inline="javascript">
-        $(function (){
-            $("#loginBtn").bind("click",function(){
 
-				var floginacct = $("#floginacct");
-				var fpassword = $("#fpassword");
-
-                var loadingIndex = -1;
-
-                $("#ftype>option:gt(0)").remove();
-
-				//异步请求
-				$.ajax({
-					type:"post",
-					url: [[@{|/preLogin|}]],
-					data:{
-                        loginacct:floginacct.val(),
-					    password:fpassword.val()
-					},
-                    //该函数用于在发生ajax请求前的处理，一般用于表单校验、加载进度条等
-                    beforeSend:function (XMLHttpRequest) {
-                        if($.trim(floginacct.val()) == ""){
-                            // $("#fmessage").text("用户名不能为空，请重新输入");
-                            layer.msg("登录账号不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
-                                floginacct.val("");
-                                floginacct.focus();
-                            })
-
-                            return false
-                        }
-
-
-                        //验证密码是否为空
-                        if($.trim(fpassword.val()) == ""){
-                            layer.msg("密码不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
-                                fpassword.val("");
-                                fpassword.focus();
-                            })
-                            return false
-                        }
-
-                    },
-
-                    success:function (result) {
-                        layer.close(loadingIndex);
-                        if(result.success==true) {
-                            $.each(result.datas,function (i,n) {
-                                var $optionContent = $("<option></option>");
-                                $optionContent.text(n.name);
-                                $optionContent.val(n.id);
-                                $optionContent.appendTo($("#ftype"));
-                            })
-                            layer.open({
-                                type: 1,
-                                title:"当前登陆账号为：" + [[${session.user.username}]],
-                                area: ['350px', '200px'],
-                                content: $("#loginType"),
-                                btn: ['确定'],
-                                yes:function () {
-                                    if($("#ftype").val()==0){
-                                        layer.msg("角色未选择，请重新选择", {time:2000, icon:5, shift:5})
-                                        return false
-                                    }
-                                    var roleId = $("#ftype").val();
-                                    //alert(roleId)
-                                    window.location.href= [[@{|/doLogin/|}]] + roleId;
-                                },
-                                cancel:function (index, layer) {
-                                    layer.close(index)
-                                }
-                            });
-                        }else{
-                            layer.msg(result.message,{time:2000, icon:5, shift:5})
-                        }
-                    }
-
-				});
-
-            })
-        })
-
-
-
-	</script>
 </head>
 
 <body>
@@ -171,5 +88,88 @@
 	</div>
 	<!-- END WRAPPER -->
 </body>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    $("#loginBtn").bind("click",function(){
 
+        var floginacct = $("#floginacct");
+        var fpassword = $("#fpassword");
+
+        var loadingIndex = -1;
+
+        $("#ftype>option:gt(0)").remove();
+
+        //异步请求
+        $.ajax({
+            type:"post",
+            url: [[@{|/preLogin|}]],
+            data:{
+                loginacct:floginacct.val(),
+				password:fpassword.val()
+            },
+            //该函数用于在发生ajax请求前的处理，一般用于表单校验、加载进度条等
+            beforeSend:function (XMLHttpRequest) {
+                if($.trim(floginacct.val()) == ""){
+                    // $("#fmessage").text("用户名不能为空，请重新输入");
+                    layer.msg("登录账号不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                        floginacct.val("");
+                        floginacct.focus();
+                    })
+
+                    return false
+                }
+
+
+                //验证密码是否为空
+                if($.trim(fpassword.val()) == ""){
+                    layer.msg("密码不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                        fpassword.val("");
+                        fpassword.focus();
+                    })
+                    return false
+                }
+
+            },
+
+            success:function (result,data) {
+                layer.close(loadingIndex);
+                if(result.success==true && data == "IsAjax") {
+                    $.each(result.datas,function (i,n) {
+                        var $optionContent = $("<option></option>");
+                        $optionContent.text(n.name);
+                        $optionContent.val(n.id);
+                        $optionContent.appendTo($("#ftype"));
+                    })
+
+					layer.open({
+						type: 1,
+						title:"当前登陆账号为：" + /*[[${session.username}]]*/,
+						area: ['350px', '200px'],
+						content: $("#loginType"),
+						btn: ['确定'],
+						yes:function () {
+							if($("#ftype").val()==0){
+								layer.msg("角色未选择，请重新选择", {time:2000, icon:5, shift:5})
+								return false
+							}
+							var roleId = $("#ftype").val();
+							window.location.href= [[@{|/doLogin/|}]] + roleId;
+						},
+						cancel:function (index, layer) {
+							layer.close(index)
+						}
+					});
+
+
+                }else{
+                    layer.msg(result.message,{time:2000, icon:5, shift:5})
+                }
+
+            },
+
+        });
+
+    })
+    /*]]>*/
+</script>
 </html>

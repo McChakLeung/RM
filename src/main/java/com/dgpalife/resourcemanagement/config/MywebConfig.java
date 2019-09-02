@@ -20,7 +20,7 @@ import java.util.Set;
 public class MywebConfig implements WebMvcConfigurer {
 
     public void addInterceptors(InterceptorRegistry registry){
-
+        System.out.println("拦截器起作用");
         List<String> excludePath = new ArrayList<>();
         excludePath.add("/toLogin");
         excludePath.add("/preLogin");
