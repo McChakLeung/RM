@@ -4,8 +4,18 @@
     <!--<div class="sidebar-scroll">-->
     <div class="sidebar sidebar-scroll">
         <nav>
-            <ul class="nav" th:each="permission:${session.permissionRoot}">
-                <li th:if="${permission.children !=null}"><a th:href="@{|/index|}" class="active"><i class="lnr lnr-home"></i> <span>总览</span></a></li>
+            <ul class="nav">
+                <li><a th:href="@{|/index|}" class="active"><i class="lnr lnr-home"></i> <span>总览</span></a></li>
+            </ul>
+            <ul class="nav" th:each="permission:${session.permissionRoot.children}">
+                <li th:if="${permission.children != null}"><a th:href="'#'+${permission.id}" data-toggle="collapse" class="collapsed"><i th:class="${permission.icon}"></i> <span th:text="${permission.name}"></span><i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                        <div th:id="${permission.id}" class="collapse ">
+                            <ul class="nav" th:each="innerChildren:${permission.children}">
+                                <li><a th:href="@{|/${innerChildren.url}|}" ><i th:class="${innerChildren.icon}"></i> <span th:text="${innerChildren.name}"></span><i class=""></i></a></li>
+                            </ul>
+                        </div>
+
+                </li>
                 <!--<c:forEach items="${sessionScope.permissionRoot.children }" var="permission">-->
                     <!--<c:if test="${empty permission.children}">-->
                         <!--<li class="list-group-item tree-closed" >-->
@@ -26,14 +36,13 @@
                     <!--</c:if>-->
                 <!--</c:forEach>-->
                 <!--<li><a th:href="@{|/index|}" class="active"><i class="lnr lnr-home"></i> <span>总览</span></a></li>-->
+
                 <!--<li>-->
-                    <!--&lt;!&ndash;<a th:href="@{|elements.html" class=""><i class="lnr lnr-code"></i> <span>资源管理</span></a>&ndash;&gt;-->
-                    <!--<a href="#subPages1" data-toggle="collapse" class="collapsed"><i class="lnr lnr-code"></i> <span>工单管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>-->
-                    <!--<div id="subPages1" class="collapse ">-->
+                    <!--<a th:href="'#' + ${permission.id}" data-toggle="collapse" class="collapsed"><i class="lnr lnr-code"></i> <span>工单管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>-->
+                    <!--<div th:id="${permission.id}" class="collapse ">-->
                         <!--<ul class="nav">-->
                             <!--<li><a th:href="@{|/orders/selectOrders|}" class="">我的工单</a></li>-->
                             <!--<li><a th:href="@{|/orders/selectVerifyOrders|}" class="">待生成资源工单</a></li>-->
-                            <!--&lt;!&ndash;<li><a th:href="@{|/orders/selectNormalOrders|}" class="">一般工单</a></li>&ndash;&gt;-->
                         <!--</ul>-->
                     <!--</div>-->
                 <!--</li>-->
