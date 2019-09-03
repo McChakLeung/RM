@@ -66,7 +66,7 @@ public class  BasicController {
                 return result;
             }
             //创建一个Const工具类，存放常量
-            session.setAttribute("username",user.getUsername());
+            session.setAttribute("user",user);
             //查询用户登陆角色
             List roleList = roleService.queryRoleInfo(user.getId());
 //            if(roleList==null){
@@ -95,7 +95,7 @@ public class  BasicController {
 
         //创建Map集合接收参数
         Map<String,Object> params = new HashMap<>();
-        params.put("userid",user.getId());
+        params.put("userId",user.getId());
         params.put("roleId",roleId);
 
         //查询当前用户所选择的角色，获取登陆权限菜单列表

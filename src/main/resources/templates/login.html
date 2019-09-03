@@ -89,7 +89,7 @@
 	<!-- END WRAPPER -->
 </body>
 <script type="text/javascript" th:inline="javascript">
-    /*<![CDATA[*/
+
     $("#loginBtn").bind("click",function(){
 
         var floginacct = $("#floginacct");
@@ -131,45 +131,46 @@
 
             },
 
-            success:function (result,data) {
+            success:function (result) {
                 layer.close(loadingIndex);
-                if(result.success==true && data == "IsAjax") {
+                if(result.success==true) {
                     $.each(result.datas,function (i,n) {
                         var $optionContent = $("<option></option>");
                         $optionContent.text(n.name);
                         $optionContent.val(n.id);
                         $optionContent.appendTo($("#ftype"));
                     })
-
-					layer.open({
-						type: 1,
-						title:"当前登陆账号为：" + /*[[${session.username}]]*/,
-						area: ['350px', '200px'],
-						content: $("#loginType"),
-						btn: ['确定'],
-						yes:function () {
-							if($("#ftype").val()==0){
-								layer.msg("角色未选择，请重新选择", {time:2000, icon:5, shift:5})
-								return false
-							}
-							var roleId = $("#ftype").val();
-							window.location.href= [[@{|/doLogin/|}]] + roleId;
-						},
-						cancel:function (index, layer) {
-							layer.close(index)
-						}
-					});
-
-
-                }else{
-                    layer.msg(result.message,{time:2000, icon:5, shift:5})
                 }
 
+				layer.open({
+					type: 1,
+					area: ['350px', '200px'],
+					content: $("#loginType"),
+					btn: ['确定'],
+					yes: function(){
+                        if($("#ftype").val()==0){
+                            layer.msg("角色未选择，请重新选择", {time:2000, icon:5, shift:5})
+                            return false
+                        }
+                        var roleId = $("#ftype").val();
+                        window.location.href= [[@{|/doLogin/|}]] + roleId;
+
+					},
+
+					cancel:function (index, layer) {
+						layer.close(index)
+					}
+				});
             },
+
+            error:function(result){
+                layer.msg(result.message,{time:2000, icon:5, shift:5})
+            }
 
         });
 
     })
-    /*]]>*/
+
+
 </script>
 </html>

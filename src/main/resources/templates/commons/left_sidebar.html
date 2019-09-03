@@ -4,80 +4,100 @@
     <!--<div class="sidebar-scroll">-->
     <div class="sidebar sidebar-scroll">
         <nav>
-            <ul class="nav">
-                <li><a th:href="@{|/index|}" class="active"><i class="lnr lnr-home"></i> <span>总览</span></a></li>
-                <li>
-                    <!--<a th:href="@{|elements.html" class=""><i class="lnr lnr-code"></i> <span>资源管理</span></a>-->
-                    <a href="#subPages1" data-toggle="collapse" class="collapsed"><i class="lnr lnr-code"></i> <span>工单管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
-                    <div id="subPages1" class="collapse ">
-                        <ul class="nav">
-                            <li><a th:href="@{|/orders/selectOrders|}" class="">我的工单</a></li>
-                            <li><a th:href="@{|/orders/selectVerifyOrders|}" class="">待生成资源工单</a></li>
-                            <!--<li><a th:href="@{|/orders/selectNormalOrders|}" class="">一般工单</a></li>-->
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <!--<a th:href="@{|elements.html" class=""><i class="lnr lnr-code"></i> <span>资源管理</span></a>-->
-                    <a href="#subPages2" data-toggle="collapse" class="collapsed"><i class="lnr lnr-code"></i> <span>资源管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
-                    <div id="subPages2" class="collapse ">
-                        <ul class="nav">
-                            <li><a th:href="@{|/resource/selectResource|}" class="">资源台账</a></li>
-                        </ul>
-                    </div>
-                </li>
+            <ul class="nav" th:each="permission:${session.permissionRoot}">
+                <li th:if="${permission.children !=null}"><a th:href="@{|/index|}" class="active"><i class="lnr lnr-home"></i> <span>总览</span></a></li>
+                <!--<c:forEach items="${sessionScope.permissionRoot.children }" var="permission">-->
+                    <!--<c:if test="${empty permission.children}">-->
+                        <!--<li class="list-group-item tree-closed" >-->
+                            <!--<a href="${APP_PATH }/${permission.url }"><i class="${permission.icon}"></i> ${permission.name }</a>-->
+                        <!--</li>-->
+                    <!--</c:if>-->
+                    <!--<c:if test="${not empty permission.children}" >-->
+                        <!--<li class="list-group-item tree-closed">-->
+                            <!--<span><i class="${permission.icon}"></i> ${permission.name } <span class="badge" style="float:right">${fn:length(permission.children)}    <%&#45;&#45; ${permission.children.size() } &#45;&#45;%></span></span>-->
+                            <!--<ul style="margin-top:10px;display:none;">-->
+                                <!--<c:forEach items="${permission.children }" var="innerPermission">-->
+                                    <!--<li style="height:30px;">-->
+                                        <!--<a href="${APP_PATH }/${innerPermission.url}"><i class="${innerPermission.icon }"></i> ${innerPermission.name }</a>-->
+                                    <!--</li>-->
+                                <!--</c:forEach>-->
+                            <!--</ul>-->
+                        <!--</li>-->
+                    <!--</c:if>-->
+                <!--</c:forEach>-->
+                <!--<li><a th:href="@{|/index|}" class="active"><i class="lnr lnr-home"></i> <span>总览</span></a></li>-->
+                <!--<li>-->
+                    <!--&lt;!&ndash;<a th:href="@{|elements.html" class=""><i class="lnr lnr-code"></i> <span>资源管理</span></a>&ndash;&gt;-->
+                    <!--<a href="#subPages1" data-toggle="collapse" class="collapsed"><i class="lnr lnr-code"></i> <span>工单管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>-->
+                    <!--<div id="subPages1" class="collapse ">-->
+                        <!--<ul class="nav">-->
+                            <!--<li><a th:href="@{|/orders/selectOrders|}" class="">我的工单</a></li>-->
+                            <!--<li><a th:href="@{|/orders/selectVerifyOrders|}" class="">待生成资源工单</a></li>-->
+                            <!--&lt;!&ndash;<li><a th:href="@{|/orders/selectNormalOrders|}" class="">一般工单</a></li>&ndash;&gt;-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--&lt;!&ndash;<a th:href="@{|elements.html" class=""><i class="lnr lnr-code"></i> <span>资源管理</span></a>&ndash;&gt;-->
+                    <!--<a href="#subPages2" data-toggle="collapse" class="collapsed"><i class="lnr lnr-code"></i> <span>资源管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>-->
+                    <!--<div id="subPages2" class="collapse ">-->
+                        <!--<ul class="nav">-->
+                            <!--<li><a th:href="@{|/resource/selectResource|}" class="">资源台账</a></li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                <!--</li>-->
 
-                <li>
-                    <!--<a th:href="@{|charts.html" class=""><i class="lnr lnr-chart-bars"></i> <span>费用管理</span></a>-->
-                    <a href="#subPages3" data-toggle="collapse" class="collapsed"><i class="lnr lnr-dice"></i> <span>费用管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
-                    <div id="subPages3" class="collapse ">
-                        <ul class="nav">
-                            <li><a th:href="@{|/FeeManagement/accounting.html|}" class="">账单管理</a></li>
-                            <li><a th:href="@{|/FeeManagement/budget.html|}" class="">预算管理</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <!--<a th:href="@{|notifications.html" class=""><i class="lnr lnr-alarm"></i> <span>基础设置</span></a>-->
-                    <a href="#subPages4" data-toggle="collapse" class="collapsed"><i class="lnr lnr-linearicons"></i> <span>基础设置</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
-                    <div id="subPages4" class="collapse ">
-                        <ul class="nav">
-                            <li><a th:href="@{|/Setting/workplace.html|}" class="">职场及机房设置</a></li>
-                            <li><a th:href="@{|/Setting/department.html|}" class="">部门设置</a></li>
-                            <li><a th:href="@{|/Setting/accountSubjects.html|}" class="">科目设置</a></li>
-                            <li>
-                                <a href="#subPages4-1" data-toggle="collapse" class="collapsed"><span>设备管理</span><i class="icon-submenu lnr lnr-chevron-left"></i></a>
-                                <div id="subPages4-1" class="collapse ">
-                                    <ul class="nav">
-                                        <li><a th:href="@{|/Setting/equipmentType.html|}" class=""><i class="lnr lnr-dice"></i>设备类型管理</a></li>
-                                        <li><a th:href="@{|/Setting/equipmentList.html|}" class=""><i class="lnr lnr-dice"></i>设备列表</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <!--<li><a th:href="@{|/Setting/setmeal.html" class="">套餐管理</a></li>-->
+                <!--<li>-->
+                    <!--&lt;!&ndash;<a th:href="@{|charts.html" class=""><i class="lnr lnr-chart-bars"></i> <span>费用管理</span></a>&ndash;&gt;-->
+                    <!--<a href="#subPages3" data-toggle="collapse" class="collapsed"><i class="lnr lnr-dice"></i> <span>费用管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>-->
+                    <!--<div id="subPages3" class="collapse ">-->
+                        <!--<ul class="nav">-->
+                            <!--<li><a th:href="@{|/FeeManagement/accounting.html|}" class="">账单管理</a></li>-->
+                            <!--<li><a th:href="@{|/FeeManagement/budget.html|}" class="">预算管理</a></li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--&lt;!&ndash;<a th:href="@{|notifications.html" class=""><i class="lnr lnr-alarm"></i> <span>基础设置</span></a>&ndash;&gt;-->
+                    <!--<a href="#subPages4" data-toggle="collapse" class="collapsed"><i class="lnr lnr-linearicons"></i> <span>基础设置</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>-->
+                    <!--<div id="subPages4" class="collapse ">-->
+                        <!--<ul class="nav">-->
+                            <!--<li><a th:href="@{|/Setting/workplace.html|}" class="">职场及机房设置</a></li>-->
+                            <!--<li><a th:href="@{|/Setting/department.html|}" class="">部门设置</a></li>-->
+                            <!--<li><a th:href="@{|/Setting/accountSubjects.html|}" class="">科目设置</a></li>-->
+                            <!--<li>-->
+                                <!--<a href="#subPages4-1" data-toggle="collapse" class="collapsed"><span>设备管理</span><i class="icon-submenu lnr lnr-chevron-left"></i></a>-->
+                                <!--<div id="subPages4-1" class="collapse ">-->
+                                    <!--<ul class="nav">-->
+                                        <!--<li><a th:href="@{|/Setting/equipmentType.html|}" class=""><i class="lnr lnr-dice"></i>设备类型管理</a></li>-->
+                                        <!--<li><a th:href="@{|/Setting/equipmentList.html|}" class=""><i class="lnr lnr-dice"></i>设备列表</a></li>-->
+                                    <!--</ul>-->
+                                <!--</div>-->
+                            <!--</li>-->
+                            <!--&lt;!&ndash;<li><a th:href="@{|/Setting/setmeal.html" class="">套餐管理</a></li>&ndash;&gt;-->
 
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <a href="#subPages5" data-toggle="collapse" class="collapsed"><i class="lnr lnr-chart-bars"></i> <span>权限管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
-                    <div id="subPages5" class="collapse ">
-                        <ul class="nav">
-                            <li><a th:href="@{|/auth/user/toIndex|}" class="">用户管理</a></li>
-                            <li><a th:href="@{|/auth/role/toIndex|}" class="">角色维护</a></li>
-                            <li><a th:href="@{|/auth/permission/toIndex|}" class="">许可维护</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <a href="#subPages6" data-toggle="collapse" class="collapsed"><i class="lnr lnr-chart-bars"></i> <span>黑名单管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
-                    <div id="subPages6" class="collapse ">
-                        <ul class="nav">
-                            <li><a th:href="@{|/Statistic/blacklist.html|}" class="">黑名单列表</a></li>
-                            <!--<li><a th:href="@{|/Statistic/ordersStatistic.html" class="">工单统计</a></li>-->
-                        </ul>
-                    </div>
-                </li>
+                        <!--</ul>-->
+                    <!--</div>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<a href="#subPages5" data-toggle="collapse" class="collapsed"><i class="lnr lnr-chart-bars"></i> <span>权限管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>-->
+                    <!--<div id="subPages5" class="collapse ">-->
+                        <!--<ul class="nav">-->
+                            <!--<li><a th:href="@{|/auth/user/toIndex|}" class="">用户管理</a></li>-->
+                            <!--<li><a th:href="@{|/auth/role/toIndex|}" class="">角色维护</a></li>-->
+                            <!--<li><a th:href="@{|/auth/permission/toIndex|}" class="">许可维护</a></li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<a href="#subPages6" data-toggle="collapse" class="collapsed"><i class="lnr lnr-chart-bars"></i> <span>黑名单管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>-->
+                    <!--<div id="subPages6" class="collapse ">-->
+                        <!--<ul class="nav">-->
+                            <!--<li><a th:href="@{|/Statistic/blacklist.html|}" class="">黑名单列表</a></li>-->
+                            <!--&lt;!&ndash;<li><a th:href="@{|/Statistic/ordersStatistic.html" class="">工单统计</a></li>&ndash;&gt;-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                <!--</li>-->
                 <!--<li><a th:href="@{|basic_res.html" class=""><i class="lnr lnr-dice"></i> <span>Tables</span></a></li>-->
                 <!--<li><a th:href="@{|typography.html" class=""><i class="lnr lnr-text-format"></i> <span>Typography</span></a></li>-->
                 <!--<li><a th:href="@{|icons.html" class=""><i class="lnr lnr-linearicons"></i> <span>Icons</span></a></li>-->
