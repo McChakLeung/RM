@@ -2,61 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dgpalife.resourcemanagement.mapper.DepartmentMapper">
   <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.Department">
-    <id column="ID" jdbcType="INTEGER" property="id" />
-    <result column="isSecretary" jdbcType="VARCHAR" property="issecretary" />
-    <result column="DeptNo" jdbcType="VARCHAR" property="deptno" />
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="parentDeptID" jdbcType="BIGINT" property="parentdeptid" />
     <result column="DeptName" jdbcType="VARCHAR" property="deptname" />
+    <result column="isSecretary" jdbcType="VARCHAR" property="issecretary" />
     <result column="CreatorUM" jdbcType="VARCHAR" property="creatorum" />
     <result column="CreateTime" jdbcType="DATE" property="createtime" />
-    <result column="parentDeptNo" jdbcType="VARCHAR" property="parentdeptno" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, isSecretary, DeptNo, DeptName, CreatorUM, CreateTime, parentDeptNo
+    ID, parentDeptID, DeptName, isSecretary, CreatorUM, CreateTime
   </sql>
-
-  <!--====================================自定义======================================-->
-
-  <!--父部门下拉列表展示-->
-  <select id="selectParentDept" resultType="java.util.HashMap">
-    SELECT
-    id, DeptNo, DeptName
-    FROM
-    department
-    WHERE
-    parentDeptNo IS NULL
-  </select>
-
-  <!--子部门下拉列表展示-->
-  <select id="selectSubDept" parameterType="java.lang.String" resultMap="BaseResultMap">
-    SELECT
-    deptno, DeptName
-    FROM
-    department
-    WHERE
-    parentDeptNo = #{parentDeptNo};
-
-  </select>
-
-
-
-  <!--===============================系统自动生成=====================================-->
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from department
-    where ID = #{id,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from department
-    where ID = #{id,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Department">
-    insert into department (ID, isSecretary, DeptNo, 
-      DeptName, CreatorUM, CreateTime, 
-      parentDeptNo)
-    values (#{id,jdbcType=INTEGER}, #{issecretary,jdbcType=VARCHAR}, #{deptno,jdbcType=VARCHAR}, 
-      #{deptname,jdbcType=VARCHAR}, #{creatorum,jdbcType=VARCHAR}, #{createtime,jdbcType=DATE}, 
-      #{parentdeptno,jdbcType=VARCHAR})
+    insert into department (ID, parentDeptID, DeptName, 
+      isSecretary, CreatorUM, CreateTime
+      )
+    values (#{id,jdbcType=BIGINT}, #{parentdeptid,jdbcType=BIGINT}, #{deptname,jdbcType=VARCHAR}, 
+      #{issecretary,jdbcType=VARCHAR}, #{creatorum,jdbcType=VARCHAR}, #{createtime,jdbcType=DATE}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Department">
     insert into department
@@ -64,14 +36,14 @@
       <if test="id != null">
         ID,
       </if>
-      <if test="issecretary != null">
-        isSecretary,
-      </if>
-      <if test="deptno != null">
-        DeptNo,
+      <if test="parentdeptid != null">
+        parentDeptID,
       </if>
       <if test="deptname != null">
         DeptName,
+      </if>
+      <if test="issecretary != null">
+        isSecretary,
       </if>
       <if test="creatorum != null">
         CreatorUM,
@@ -79,22 +51,19 @@
       <if test="createtime != null">
         CreateTime,
       </if>
-      <if test="parentdeptno != null">
-        parentDeptNo,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=BIGINT},
       </if>
-      <if test="issecretary != null">
-        #{issecretary,jdbcType=VARCHAR},
-      </if>
-      <if test="deptno != null">
-        #{deptno,jdbcType=VARCHAR},
+      <if test="parentdeptid != null">
+        #{parentdeptid,jdbcType=BIGINT},
       </if>
       <if test="deptname != null">
         #{deptname,jdbcType=VARCHAR},
+      </if>
+      <if test="issecretary != null">
+        #{issecretary,jdbcType=VARCHAR},
       </if>
       <if test="creatorum != null">
         #{creatorum,jdbcType=VARCHAR},
@@ -102,22 +71,19 @@
       <if test="createtime != null">
         #{createtime,jdbcType=DATE},
       </if>
-      <if test="parentdeptno != null">
-        #{parentdeptno,jdbcType=VARCHAR},
-      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.Department">
     update department
     <set>
-      <if test="issecretary != null">
-        isSecretary = #{issecretary,jdbcType=VARCHAR},
-      </if>
-      <if test="deptno != null">
-        DeptNo = #{deptno,jdbcType=VARCHAR},
+      <if test="parentdeptid != null">
+        parentDeptID = #{parentdeptid,jdbcType=BIGINT},
       </if>
       <if test="deptname != null">
         DeptName = #{deptname,jdbcType=VARCHAR},
+      </if>
+      <if test="issecretary != null">
+        isSecretary = #{issecretary,jdbcType=VARCHAR},
       </if>
       <if test="creatorum != null">
         CreatorUM = #{creatorum,jdbcType=VARCHAR},
@@ -125,20 +91,16 @@
       <if test="createtime != null">
         CreateTime = #{createtime,jdbcType=DATE},
       </if>
-      <if test="parentdeptno != null">
-        parentDeptNo = #{parentdeptno,jdbcType=VARCHAR},
-      </if>
     </set>
-    where ID = #{id,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.Department">
     update department
-    set isSecretary = #{issecretary,jdbcType=VARCHAR},
-      DeptNo = #{deptno,jdbcType=VARCHAR},
+    set parentDeptID = #{parentdeptid,jdbcType=BIGINT},
       DeptName = #{deptname,jdbcType=VARCHAR},
+      isSecretary = #{issecretary,jdbcType=VARCHAR},
       CreatorUM = #{creatorum,jdbcType=VARCHAR},
-      CreateTime = #{createtime,jdbcType=DATE},
-      parentDeptNo = #{parentdeptno,jdbcType=VARCHAR}
-    where ID = #{id,jdbcType=INTEGER}
+      CreateTime = #{createtime,jdbcType=DATE}
+    where ID = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

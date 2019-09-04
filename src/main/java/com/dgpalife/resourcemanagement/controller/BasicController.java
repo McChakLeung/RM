@@ -134,11 +134,15 @@ public class  BasicController {
         return "/index";
     }
 
-    @RequestMapping("logout")
+    @RequestMapping("/logout")
     public String logout(HttpSession session){
         session.invalidate();
         return "redirect:/toLogin";
     }
 
+    @RequestMapping("/auth")
+    public String auth(){
+        return "/auth";
+    }
 
 }

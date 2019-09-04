@@ -1,16 +1,12 @@
 package com.dgpalife.resourcemanagement.config;
 
-import com.dgpalife.resourcemanagement.interceptor.CommonInterceptor;
-import com.dgpalife.resourcemanagement.listener.SystemLaunchListener;
-import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
-import org.springframework.context.annotation.Bean;
+import com.dgpalife.resourcemanagement.interceptor.AuthInterceptor;
+import com.dgpalife.resourcemanagement.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 @Configuration
@@ -27,7 +23,8 @@ public class MywebConfig implements WebMvcConfigurer {
         excludePath.add("/static/**");
 
         //对来自 /rm/** 链接的请求进行拦截，对例外的登录请求不进行拦截
-        registry.addInterceptor(new CommonInterceptor()).addPathPatterns("/**").excludePathPatterns(excludePath);
+        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**").excludePathPatterns(excludePath);
+        registry.addInterceptor(new AuthInterceptor()).addPathPatterns("/**").excludePathPatterns(excludePath);
         //super.addInterceptors(registry);
     }
 

@@ -1,10 +1,9 @@
 package com.dgpalife.resourcemanagement.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class Resources implements Serializable {
-    private Integer id;
+public class Resource {
+    private Long id;
 
     private String resourceno;
 
@@ -14,27 +13,59 @@ public class Resources implements Serializable {
 
     private String address;
 
-    private String deptno;
+    private Long accountdeptid;
 
-    private String UserName;
+    public Department getAccountdept() {
+        return accountdept;
+    }
 
-    private String equipno;
+    public void setAccountdept(Department accountdept) {
+        this.accountdept = accountdept;
+    }
+
+    public Department getUserdept() {
+        return userdept;
+    }
+
+    public void setUserdept(Department userdept) {
+        this.userdept = userdept;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    private Department accountdept;
+
+    private Long userdeptid;
+
+    private Department userdept;
+
+    private String username;
+
+    private Long equipmentid;
 
     private Double expenses;
 
     private String chargetype;
 
-    private String CreatorName;
+    private Long userId;
+
+    private User user;
 
     private Date createtime;
 
     private String resourcestatus;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -70,28 +101,36 @@ public class Resources implements Serializable {
         this.address = address;
     }
 
-    public String getDeptno() {
-        return deptno;
+    public Long getAccountdeptid() {
+        return accountdeptid;
     }
 
-    public void setDeptno(String deptno) {
-        this.deptno = deptno;
+    public void setAccountdeptid(Long accountdeptid) {
+        this.accountdeptid = accountdeptid;
     }
 
-    public String getUserName() {
-        return UserName;
+    public Long getUserdeptid() {
+        return userdeptid;
     }
 
-    public void setUserName(String UserName) {
-        this.UserName = UserName;
+    public void setUserdeptid(Long userdeptid) {
+        this.userdeptid = userdeptid;
     }
 
-    public String getEquipno() {
-        return equipno;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEquipno(String equipno) {
-        this.equipno = equipno;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Long getEquipmentid() {
+        return equipmentid;
+    }
+
+    public void setEquipmentid(Long equipmentid) {
+        this.equipmentid = equipmentid;
     }
 
     public Double getExpenses() {
@@ -110,12 +149,12 @@ public class Resources implements Serializable {
         this.chargetype = chargetype;
     }
 
-    public String getCreatorName() {
-        return CreatorName;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setCreatorName(String CreatorName) {
-        this.CreatorName = CreatorName;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Date getCreatetime() {

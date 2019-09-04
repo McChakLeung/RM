@@ -40,8 +40,24 @@
         </javaClientGenerator>
 
         <!-- 数据库表名及对应的Java模型类名 -->
-        <table tableName="glyphicon"
-               domainObjectName="Glyphicon"
+        <table tableName="department"
+               domainObjectName="Department"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+
+        <table tableName="order"
+               domainObjectName="Order"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+
+        <table tableName="resource"
+               domainObjectName="Resource"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"

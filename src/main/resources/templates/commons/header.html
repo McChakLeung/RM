@@ -2,7 +2,7 @@
     <span th:fragment="headerContext">
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="brand">
-                <a href="/html/index.html"><img src="/img/logo-dark.png" alt="Klorofil Logo" class="img-responsive logo"></a>
+                <a th:href="@{|/toIndex|}"><img th:src="@{|/static/img/logo-dark.png|}" alt="Klorofil Logo" class="img-responsive logo"></a>
             </div>
             <div class="container-fluid">
                 <div class="navbar-btn">
@@ -48,7 +48,7 @@
                                 <li><a href="#"><i class="lnr lnr-user"></i> <span>个人信息</span></a></li>
                                 <li><a href="#"><i class="lnr lnr-envelope"></i> <span>消息</span></a></li>
                                 <li><a href="#"><i class="lnr lnr-cog"></i> <span>设置</span></a></li>
-                                <li><a th:href="@{|/user/logout|}"><i class="lnr lnr-exit"></i> <span>退出登录</span></a></li>
+                                <li><a th:href="@{|/logout|}"><i class="lnr lnr-exit"></i> <span>退出登录</span></a></li>
                             </ul>
                         </li>
                         <!-- <li>

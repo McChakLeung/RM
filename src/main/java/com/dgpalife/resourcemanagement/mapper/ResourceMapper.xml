@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dgpalife.resourcemanagement.mapper.ResourceMapper">
+  <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.Resource">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="ResourceNo" jdbcType="VARCHAR" property="resourceno" />
+    <result column="ResourceType" jdbcType="VARCHAR" property="resourcetype" />
+    <result column="ServiceSupplier" jdbcType="VARCHAR" property="servicesupplier" />
+    <result column="Address" jdbcType="VARCHAR" property="address" />
+    <result column="AccountDeptID" jdbcType="BIGINT" property="accountdeptid" />
+    <result column="UserDeptID" jdbcType="BIGINT" property="userdeptid" />
+    <result column="UserName" jdbcType="VARCHAR" property="username" />
+    <result column="EquipmentID" jdbcType="BIGINT" property="equipmentid" />
+    <result column="Expenses" jdbcType="DOUBLE" property="expenses" />
+    <result column="ChargeType" jdbcType="VARCHAR" property="chargetype" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="CreateTime" jdbcType="DATE" property="createtime" />
+    <result column="ResourceStatus" jdbcType="VARCHAR" property="resourcestatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, ResourceNo, ResourceType, ServiceSupplier, Address, AccountDeptID, UserDeptID, 
+    UserName, EquipmentID, Expenses, ChargeType, user_id, CreateTime, ResourceStatus
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from resource
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from resource
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Resource">
+    insert into resource (id, ResourceNo, ResourceType, 
+      ServiceSupplier, Address, AccountDeptID, 
+      UserDeptID, UserName, EquipmentID, 
+      Expenses, ChargeType, user_id, 
+      CreateTime, ResourceStatus)
+    values (#{id,jdbcType=BIGINT}, #{resourceno,jdbcType=VARCHAR}, #{resourcetype,jdbcType=VARCHAR}, 
+      #{servicesupplier,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{accountdeptid,jdbcType=BIGINT}, 
+      #{userdeptid,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{equipmentid,jdbcType=BIGINT}, 
+      #{expenses,jdbcType=DOUBLE}, #{chargetype,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, 
+      #{createtime,jdbcType=DATE}, #{resourcestatus,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Resource">
+    insert into resource
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="resourceno != null">
+        ResourceNo,
+      </if>
+      <if test="resourcetype != null">
+        ResourceType,
+      </if>
+      <if test="servicesupplier != null">
+        ServiceSupplier,
+      </if>
+      <if test="address != null">
+        Address,
+      </if>
+      <if test="accountdeptid != null">
+        AccountDeptID,
+      </if>
+      <if test="userdeptid != null">
+        UserDeptID,
+      </if>
+      <if test="username != null">
+        UserName,
+      </if>
+      <if test="equipmentid != null">
+        EquipmentID,
+      </if>
+      <if test="expenses != null">
+        Expenses,
+      </if>
+      <if test="chargetype != null">
+        ChargeType,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="createtime != null">
+        CreateTime,
+      </if>
+      <if test="resourcestatus != null">
+        ResourceStatus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="resourceno != null">
+        #{resourceno,jdbcType=VARCHAR},
+      </if>
+      <if test="resourcetype != null">
+        #{resourcetype,jdbcType=VARCHAR},
+      </if>
+      <if test="servicesupplier != null">
+        #{servicesupplier,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="accountdeptid != null">
+        #{accountdeptid,jdbcType=BIGINT},
+      </if>
+      <if test="userdeptid != null">
+        #{userdeptid,jdbcType=BIGINT},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentid != null">
+        #{equipmentid,jdbcType=BIGINT},
+      </if>
+      <if test="expenses != null">
+        #{expenses,jdbcType=DOUBLE},
+      </if>
+      <if test="chargetype != null">
+        #{chargetype,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="resourcestatus != null">
+        #{resourcestatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.Resource">
+    update resource
+    <set>
+      <if test="resourceno != null">
+        ResourceNo = #{resourceno,jdbcType=VARCHAR},
+      </if>
+      <if test="resourcetype != null">
+        ResourceType = #{resourcetype,jdbcType=VARCHAR},
+      </if>
+      <if test="servicesupplier != null">
+        ServiceSupplier = #{servicesupplier,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        Address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="accountdeptid != null">
+        AccountDeptID = #{accountdeptid,jdbcType=BIGINT},
+      </if>
+      <if test="userdeptid != null">
+        UserDeptID = #{userdeptid,jdbcType=BIGINT},
+      </if>
+      <if test="username != null">
+        UserName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentid != null">
+        EquipmentID = #{equipmentid,jdbcType=BIGINT},
+      </if>
+      <if test="expenses != null">
+        Expenses = #{expenses,jdbcType=DOUBLE},
+      </if>
+      <if test="chargetype != null">
+        ChargeType = #{chargetype,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="createtime != null">
+        CreateTime = #{createtime,jdbcType=DATE},
+      </if>
+      <if test="resourcestatus != null">
+        ResourceStatus = #{resourcestatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.Resource">
+    update resource
+    set ResourceNo = #{resourceno,jdbcType=VARCHAR},
+      ResourceType = #{resourcetype,jdbcType=VARCHAR},
+      ServiceSupplier = #{servicesupplier,jdbcType=VARCHAR},
+      Address = #{address,jdbcType=VARCHAR},
+      AccountDeptID = #{accountdeptid,jdbcType=BIGINT},
+      UserDeptID = #{userdeptid,jdbcType=BIGINT},
+      UserName = #{username,jdbcType=VARCHAR},
+      EquipmentID = #{equipmentid,jdbcType=BIGINT},
+      Expenses = #{expenses,jdbcType=DOUBLE},
+      ChargeType = #{chargetype,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=BIGINT},
+      CreateTime = #{createtime,jdbcType=DATE},
+      ResourceStatus = #{resourcestatus,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

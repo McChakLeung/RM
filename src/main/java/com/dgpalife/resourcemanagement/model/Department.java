@@ -1,45 +1,46 @@
 package com.dgpalife.resourcemanagement.model;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class Department implements Serializable{
-    private Integer id;
+public class Department {
+    private Long id;
 
-    private String issecretary;
-
-    private String deptno;
+    private Long parentdeptid;
 
     private String deptname;
+
+    private String issecretary;
 
     private String creatorum;
 
     private Date createtime;
 
-    private String parentdeptno;
+    public List<Department> getChildren() {
+        return children;
+    }
 
-    public Integer getId() {
+    public void setChildren(List<Department> children) {
+        this.children = children;
+    }
+
+    private List<Department> children = new ArrayList();
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getIssecretary() {
-        return issecretary;
+    public Long getParentdeptid() {
+        return parentdeptid;
     }
 
-    public void setIssecretary(String issecretary) {
-        this.issecretary = issecretary;
-    }
-
-    public String getDeptno() {
-        return deptno;
-    }
-
-    public void setDeptno(String deptno) {
-        this.deptno = deptno;
+    public void setParentdeptid(Long parentdeptid) {
+        this.parentdeptid = parentdeptid;
     }
 
     public String getDeptname() {
@@ -48,6 +49,14 @@ public class Department implements Serializable{
 
     public void setDeptname(String deptname) {
         this.deptname = deptname;
+    }
+
+    public String getIssecretary() {
+        return issecretary;
+    }
+
+    public void setIssecretary(String issecretary) {
+        this.issecretary = issecretary;
     }
 
     public String getCreatorum() {
@@ -64,13 +73,5 @@ public class Department implements Serializable{
 
     public void setCreatetime(Date createtime) {
         this.createtime = createtime;
-    }
-
-    public String getParentdeptno() {
-        return parentdeptno;
-    }
-
-    public void setParentdeptno(String parentdeptno) {
-        this.parentdeptno = parentdeptno;
     }
 }

@@ -1,15 +1,10 @@
 package com.dgpalife.resourcemanagement.service.impl;
 
-import com.dgpalife.resourcemanagement.mapper.DepartmentMapper;
-import com.dgpalife.resourcemanagement.mapper.OrdersMapper;
-import com.dgpalife.resourcemanagement.model.Orders;
-import com.dgpalife.resourcemanagement.service.DepartmentService;
 import com.dgpalife.resourcemanagement.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 

@@ -1,6 +1,5 @@
 package com.dgpalife.resourcemanagement.controller;
 
-import com.dgpalife.resourcemanagement.model.Orders;
 import com.dgpalife.resourcemanagement.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,12 +19,12 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @RequestMapping("/selectOrders")
-    public String selectOrders(Model model, HttpSession session){
-        String creatorName = (String)session.getAttribute("userName");
-        resultMap = orderService.selectOrdersByCreatorName(creatorName);
-        model.addAttribute("resultMap",resultMap);
-        return "/orders/orderlist";
+    @RequestMapping("/toIndex")
+    public String toIndex(Model model, HttpSession session){
+//        String creatorName = (String)session.getAttribute("userName");
+//        resultMap = orderService.selectOrdersByCreatorName(creatorName);
+//        model.addAttribute("resultMap",resultMap);
+        return "/orders/index";
     }
 
     /**
@@ -56,21 +55,21 @@ public class OrderController {
         return "redirect:/orders/selectOrders";
     }
 
-    @RequestMapping("/selectVerifyOrders")
-    public String selectVerifyOrders(Model model, HttpSession session){
-        String creatorName = (String)session.getAttribute("userName");
-        resultMap = orderService.selectVerifyOrdersNotIncludeOption(creatorName);
-        model.addAttribute("resultMap",resultMap);
-        return "/orders/verifyorderlist";
-    }
+//    @RequestMapping("/selectVerifyOrders")
+//    public String selectVerifyOrders(Model model, HttpSession session){
+//        String creatorName = (String)session.getAttribute("userName");
+//        resultMap = orderService.selectVerifyOrdersNotIncludeOption(creatorName);
+//        model.addAttribute("resultMap",resultMap);
+//        return "/orders/verifyorderlist";
+//    }
 
-    @PostMapping("/selectVerifyOrdersByOption")
-    public String selectVerifyOrdersByOption(@RequestParam Map<String,Object> optionMap,Model model, HttpSession session){
-        String creatorName = (String)session.getAttribute("userName");
-        optionMap.put("creatorName",creatorName);
-        model.addAttribute("resultMap",orderService.selectVerifyOrdersByOption(optionMap));
-        return "/orders/verifyorderlist";
-    }
+//    @PostMapping("/selectVerifyOrdersByOption")
+//    public String selectVerifyOrdersByOption(@RequestParam Map<String,Object> optionMap,Model model, HttpSession session){
+//        String creatorName = (String)session.getAttribute("userName");
+//        optionMap.put("creatorName",creatorName);
+//        model.addAttribute("resultMap",orderService.selectVerifyOrdersByOption(optionMap));
+//        return "/orders/verifyorderlist";
+//    }
 
     @RequestMapping("/toUpdateOrder/{orderId}")
     public String toUpdateOrder(@PathVariable Long orderId,Model model){

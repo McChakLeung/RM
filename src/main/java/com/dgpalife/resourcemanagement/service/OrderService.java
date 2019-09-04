@@ -1,8 +1,5 @@
 package com.dgpalife.resourcemanagement.service;
 
-import com.dgpalife.resourcemanagement.model.Orders;
-
-import java.util.HashMap;
 import java.util.Map;
 
 public interface OrderService {
