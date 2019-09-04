@@ -23,11 +23,11 @@ public class Order {
 
     private String projectid;
 
-    private String accountdeptid;
+    private Long accountdeptid;
 
     private Department accountdept;
 
-    private String usedeptid;
+    private Long usedeptid;
 
     private Department usedept;
 
@@ -161,19 +161,19 @@ public class Order {
         this.projectid = projectid;
     }
 
-    public String getAccountdeptid() {
+    public Long getAccountdeptid() {
         return accountdeptid;
     }
 
-    public void setAccountdeptid(String accountdeptid) {
+    public void setAccountdeptid(Long accountdeptid) {
         this.accountdeptid = accountdeptid;
     }
 
-    public String getUsedeptid() {
+    public Long getUsedeptid() {
         return usedeptid;
     }
 
-    public void setUsedeptid(String usedeptid) {
+    public void setUsedeptid(Long usedeptid) {
         this.usedeptid = usedeptid;
     }
 

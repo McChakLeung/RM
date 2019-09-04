@@ -139,7 +139,7 @@
 												<td>工单编号</td>
 												<td>工单类型</td>
 												<td>资源编号</td>
-												<!--<td>资源类型</td>-->
+												<td>资源类型</td>
 												<td>运营商</td>
 												<td>挂账部门</td>
 												<td>使用部门</td>
@@ -149,43 +149,15 @@
 											</tr>
 										</thead>
 										<tbody>
-											<!--<tr th:each="orders:${resultMap.orderList}">-->
-												<!--<td th:text="${ordersStat.count}"></td>-->
-												<!--<td th:text="${orders.tStatus}"></td>-->
-												<!--<td th:text="${orders.tNo}">xj123456</td>-->
-												<!--<td th:text="${orders.tOType}">新装</td>-->
-												<!--<td th:text="${orders.tRNo}">无</td>-->
-												<!--<td th:text="${orders.tRType}">固话</td>-->
-												<!--<td th:text="${orders.tOperator}">电信</td>-->
-												<!--<td th:text="${orders.pdName}">行政部</td>-->
-												<!--<td th:text="${orders.dName}">资产室</td>-->
-												<!--&lt;!&ndash;<td th:text="${orders.creatorname}">麦泽良</td>&ndash;&gt;-->
-												<!--<td th:text="${orders.tCreateTime}">2019年3月7日</td>-->
-												<!--<td><a th:href="@{|/orders/toUpdateOrder/${orders.tid}|}">修改</a> | <a th:href="@{|#|}">删除</a></td>-->
-											<!--</tr>-->
+
 										</tbody>
 									</table>
-									<!--<button type="button" class="btn btn-primary" id="createOrder">新建工单</button>-->
 									<!--分页-->
                                     <div class="row">
                                         <div class="col-md-12">
                                             <nav aria-label="Page navigation">
                                                 <ul class="pagination">
-                                                    <!--<li>-->
-                                                        <!--<a th:href="@{|#|}" aria-label="Previous">-->
-                                                            <!--<span aria-hidden="true">&laquo;</span>-->
-                                                        <!--</a>-->
-                                                    <!--</li>-->
-                                                    <!--<li><a th:href="@{|#|}">1</a></li>-->
-                                                    <!--<li><a th:href="@{|#|}">2</a></li>-->
-                                                    <!--<li><a th:href="@{|#|}">3</a></li>-->
-                                                    <!--<li><a th:href="@{|#|}">4</a></li>-->
-                                                    <!--<li><a th:href="@{|#|}">5</a></li>-->
-                                                    <!--<li>-->
-                                                        <!--<a th:href="@{|#|}" aria-label="Next">-->
-                                                            <!--<span aria-hidden="true">&raquo;</span>-->
-                                                        <!--</a>-->
-                                                    <!--</li>-->
+
                                                 </ul>
                                             </nav>
                                         </div>
@@ -207,13 +179,17 @@
 
 	</div>
 	<!-- END WRAPPER -->
-<script type="text/javascript" th:inline="javascript">
+<script type="text/javascript">
 
-	var user_id = [[${session.user.id}]];
+	//var user_id = [[${session.user.id}]];
 
-    $(function () {
-    	queryOrderByUser(user_id,1)
+	$(function () {
+        queryOrderByUser(1);
     })
+
+	function toUpdate(id) {
+		window.location.href = '[[@{|/order/toUpdate/|}]]' + id;
+    }
 
 	//查询用户当前用户,并发送异步请求
     var loadingIndex = -1;
@@ -224,11 +200,11 @@
     };
 
     //异步查询数据页
-    function queryOrderByUser(user_id,pageno) {
+    function queryOrderByUser(pageno) {
         jsonObj.pageno = pageno;
         $.ajax({
             type:"post",
-            url:"[[@{|/orders/index|}]]",
+            url:"[[@{|/order/index|}]]",
             data:jsonObj,
             dataType: "json",
             beforeSend:function () {
@@ -249,10 +225,11 @@
                         content+='  <td>'+n.ordersno+'</td>';
                         content+='  <td>'+n.orderstype+'</td>';
                         content+='  <td>'+n.resource.resourceno+'</td>';
+                        content+='  <td>'+n.resource.resourcetype+'</td>';
                         content+='  <td>'+n.operator+'</td>';
-                        content+='  <td>'+n.accountdeptno+'</td>';
-                        content+='  <td>'+n.usedeptno+'</td>';
-                        content+='  <td>'+n.usedeptno+'</td>';
+                        content+='  <td>'+n.accountdept.deptname+'</td>';
+                        content+='  <td>'+n.usedept.deptname+'</td>';
+                        content+='  <td>'+n.createtime+'</td>';
                         content+='  <td>';
                         content+='	  <button type="button" class="btn btn-primary btn-xs" onclick="toUpdate('+n.id+')"><i class=" glyphicon glyphicon-pencil"></i></button>';
                         content+='	  <button type="button" class="btn btn-danger btn-xs" onclick="deleteUser('+n.id+',\''+n.username+'\')"><i class=" glyphicon glyphicon-trash"></i></button>';

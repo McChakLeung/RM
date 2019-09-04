@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Tables</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <!-- VENDOR CSS -->
+    <link rel="stylesheet" th:href="@{|/static/js/vendor/bootstrap/css/bootstrap.min.css|}">
+    <link rel="stylesheet" th:href="@{|/static/js/vendor/font-awesome/css/font-awesome.min.css|}">
+    <link rel="stylesheet" th:href="@{|/static/js/vendor/linearicons/style.css|}">
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" th:href="@{|/static/css/main.css|}">
+    <!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+    <link rel="stylesheet" th:href="@{|/static/css/demo.css|}">
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+    <!-- ICONS -->
+    <link rel="apple-touch-icon" sizes="76x76" th:href="@{|/static/img/apple-icon.png|}">
+    <link rel="icon" type="image/png" sizes="96x96" th:href="@{|/static/img/favicon.png|}">
+    <!-- Javascript -->
+    <script th:src="@{|/static/js/vendor/jquery/jquery.min.js|}"></script>
+    <script th:src="@{|/static/js/vendor/bootstrap/js/bootstrap.min.js|}"></script>
+    <script th:src="@{|/static/js/vendor/jquery-slimscroll/jquery.slimscroll.min.js|}"></script>
+    <script th:src="@{|/static/js/scripts/klorofil-common.js|}"></script>
+    <script type="text/javascript" th:inline="javascript">
+
+
+    </script>
+</head>
+
+<body>
+<!-- WRAPPER -->
+<div id="wrapper">
+    <!-- NAVBAR -->
+    <div id="header" th:include="/commons/header :: headerContext"></div>
+    <!-- END NAVBAR -->
+    <!-- LEFT SIDEBAR -->
+    <div id="left_sidebar" th:include="/commons/left_sidebar :: leftContext"></div>
+    <!-- END LEFT SIDEBAR -->
+    <!-- MAIN -->
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid">
+                <!--<h3 class="page-title">Tables</h3>-->
+                <ol class="breadcrumb">
+                    <li><a th:href="@{|#|}">首页</a></li>
+                    <li><a th:href="@{|#|}">资源管理</a></li>
+                    <li class="active">工单管理</li>
+                </ol>
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- BASIC TABLE -->
+                        <div class="panel">
+
+                            <div class="panel-body">
+
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="forderstype" class="col-sm-2 control-label">工单类型</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" name="orderstype" id="forderstype" disabled th:value="${order.orderstype}">
+                                        </div>
+                                    <!--</div>-->
+                                    <!--<div class="form-group">-->
+                                        <div th:if="${order.orderstype} == '建设工单'">
+                                            <label for="fresourceno" class="col-sm-2 control-label" th:style="'display:none;'">资源号码</label>
+                                            <div class="col-sm-3" >
+                                                <input type="text" class="form-control" name="resourceno" id="fresourceno" th:style="'display:none;'">
+                                            </div>
+                                        </div>
+                                        <div th:if="${order.orderstype} != '建设工单'">
+                                            <label for="fresourceno" class="col-sm-2 control-label">资源号码</label>
+                                            <div class="col-sm-3" >
+                                                <input type="text" class="form-control" name="resourceno" id="fresourceno" th:value="${order.resource.resourceno}">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="faccountdeptno" class="col-sm-2 control-label">挂账部门</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" name="accountdeptno" id="faccountdeptno" th:value="${order.accountdept.deptname}">
+                                            <!--<select class="form-control" name="accountdeptno" id="faccountdeptno" onchange="selectSubDept()">-->
+                                                <!--<option th:value="${order.accountdept.id}" th:text="${order.accountdept.deptname}" selected="selected">请选择</option>-->
+                                                <!--&lt;!&ndash;<option th:each="parentDept:${resultMap.departmentList}" th:value="${parentDept.DeptNo}" th:text="${parentDept.DeptName}">请选择</option>&ndash;&gt;-->
+                                            <!--</select>-->
+                                        </div>
+                                    <!--</div>-->
+                                    <!--<div class="form-group">-->
+                                        <label for="fusedeptno" class="col-sm-2 control-label">使用部门|科室</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" name="usedeptno" id="fusedeptno" th:value="${order.usedept.deptname}">
+                                            <!--<select class="form-control" name="usedeptno" id="fusedeptno">-->
+                                                <!--<option th:value="${order.usedept.id}" th:text="${order.usedept.deptname}" selected="selected"></option>-->
+                                            <!--</select>-->
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fusername" class="col-sm-2 control-label">使用人</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" name="username" id="fusername" th:value="${order.username}">
+                                        </div>
+                                    <!--</div>-->
+                                    <!--<div class="form-group">-->
+                                        <label for="fcontact" class="col-sm-2 control-label">联系方式</label>
+                                        <div class="col-sm-3">
+                                            <input type="number" class="form-control" name="contact" id="fcontact" th:value="${order.contact}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fusingnumber" class="col-sm-2 control-label">在用号码</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" name="usingnumber" id="fusingnumber" th:value="${order.usingnumber.resourceno}">
+                                        </div>
+                                        <label for="foperator" class="col-sm-2 control-label">运营商</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" name="operator" id="foperator" th:value="${order.operator}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fchargetype" class="col-sm-2 control-label">交费方式</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" name="chargetype" id="fchargetype" th:value="${order.chargetype}">
+                                        </div>
+                                        <label for="fexpenses" class="col-sm-2 control-label">资费</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" name="expenses" id="fexpenses" th:value="${order.expenses}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="faddress" class="col-sm-2 control-label">当前地址</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="address" id="faddress" th:value="${order.address}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fnewaddress" class="col-sm-2 control-label">新装地址</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="newaddress" id="fnewaddress" th:value="${order.newaddress}">
+                                        </div>
+                                    </div>
+                                    <input type="hidden" class="form-control" name="creatorname" id="fcreatorname" th:value="${order.creator.username}">
+                                    <input type="hidden" class="form-control" name="orderid" id="forderid" th:value="${order.id}">
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button id="saveBtn" type="submit" class="btn btn-success">保存</button>
+                                            <button type="reset" class="btn btn-warning">重置</button>
+                                            <button id="auditBtn" class="btn btn-danger">提交审核</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+
+                            </div>
+                        </div>
+                        <!-- END BASIC TABLE -->
+                    </div>
+                    <!--</div>-->
+                </div>
+
+            </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+    </div>
+    <!-- END MAIN -->
+    <div class="clearfix"></div>
+    <div id="footer" th:include="/commons/footer :: footerContext"></div>
+
+</div>
+<!-- END WRAPPER -->
+<script type="text/javascript">
+
+    //    $(function () {
+    //        $("#deptNo").bind("change",selectSubDept());
+    //    });
+
+
+    // function selectSubDept(){
+    //     var AccountDeptNo = $("#AccountDeptNo").val();
+    //     //var parentDeptNo = dataOption;
+    //     // console.log(parentDeptNo);
+    //     // alert(parentDeptNo);
+    //     //2.将职能部门下拉列表中原有的option进行删除
+    //     $("#UseDeptNo>option:gt(0)").remove();
+    //     //3.定位隶属于当前职能部门下的所有的子部门信息
+    //     $.ajax({
+    //         url:"/resource/selectSubDept/" + AccountDeptNo,
+    //         type:"get",
+    //         dataType: "json",
+    //         success:function (result) {
+    //             //var dataOption = "";
+    //             $.each(result,function (index,value) {
+    //                 var $dataOption = $("<option></option>");
+    //                 // dataOption +=
+    //                 //     "<option value=" + value.deptNo + ">" + value.deptName + "</option>";
+    //                 $dataOption.text(value.deptname);
+    //                 $dataOption.val(value.deptno);
+    //                 $dataOption.appendTo($("#UseDeptNo"));
+    //             })
+    //         }
+    //     });
+    // }
+
+
+
+</script>
+</body>
+
+</html>

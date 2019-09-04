@@ -11,8 +11,8 @@
     <result column="Address" jdbcType="VARCHAR" property="address" />
     <result column="NewAddress" jdbcType="VARCHAR" property="newaddress" />
     <result column="ProjectID" jdbcType="VARCHAR" property="projectid" />
-    <result column="AccountDeptID" jdbcType="VARCHAR" property="accountdeptid" />
-    <result column="UseDeptID" jdbcType="VARCHAR" property="usedeptid" />
+    <result column="AccountDeptID" jdbcType="BIGINT" property="accountdeptid" />
+    <result column="UseDeptID" jdbcType="BIGINT" property="usedeptid" />
     <result column="UserName" jdbcType="VARCHAR" property="username" />
     <result column="Contact" jdbcType="VARCHAR" property="contact" />
     <result column="ChargeType" jdbcType="VARCHAR" property="chargetype" />
@@ -29,15 +29,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from order
+    from orders
     where ID = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from order
+    delete from orders
     where ID = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Order">
-    insert into order (ID, status, OrdersNo, 
+    insert into orders (ID, status, OrdersNo,
       OrdersType, ResourceID, Operator, 
       Address, NewAddress, ProjectID, 
       AccountDeptID, UseDeptID, UserName, 
@@ -47,13 +47,13 @@
     values (#{id,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, #{ordersno,jdbcType=VARCHAR}, 
       #{orderstype,jdbcType=VARCHAR}, #{resourceid,jdbcType=BIGINT}, #{operator,jdbcType=VARCHAR}, 
       #{address,jdbcType=VARCHAR}, #{newaddress,jdbcType=VARCHAR}, #{projectid,jdbcType=VARCHAR}, 
-      #{accountdeptid,jdbcType=VARCHAR}, #{usedeptid,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
+      #{accountdeptid,jdbcType=BIGINT}, #{usedeptid,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR},
       #{contact,jdbcType=VARCHAR}, #{chargetype,jdbcType=VARCHAR}, #{expenses,jdbcType=DECIMAL}, 
       #{createtime,jdbcType=VARCHAR}, #{usingnumberid,jdbcType=VARCHAR}, #{creatorId,jdbcType=BIGINT}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Order">
-    insert into order
+    insert into orders
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         ID,
@@ -139,10 +139,10 @@
         #{projectid,jdbcType=VARCHAR},
       </if>
       <if test="accountdeptid != null">
-        #{accountdeptid,jdbcType=VARCHAR},
+        #{accountdeptid,jdbcType=BIGINT},
       </if>
       <if test="usedeptid != null">
-        #{usedeptid,jdbcType=VARCHAR},
+        #{usedeptid,jdbcType=BIGINT},
       </if>
       <if test="username != null">
         #{username,jdbcType=VARCHAR},
@@ -168,7 +168,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.Order">
-    update order
+    update orders
     <set>
       <if test="status != null">
         status = #{status,jdbcType=VARCHAR},
@@ -195,10 +195,10 @@
         ProjectID = #{projectid,jdbcType=VARCHAR},
       </if>
       <if test="accountdeptid != null">
-        AccountDeptID = #{accountdeptid,jdbcType=VARCHAR},
+        AccountDeptID = #{accountdeptid,jdbcType=BIGINT},
       </if>
       <if test="usedeptid != null">
-        UseDeptID = #{usedeptid,jdbcType=VARCHAR},
+        UseDeptID = #{usedeptid,jdbcType=BIGINT},
       </if>
       <if test="username != null">
         UserName = #{username,jdbcType=VARCHAR},
@@ -225,7 +225,7 @@
     where ID = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.Order">
-    update order
+    update orders
     set status = #{status,jdbcType=VARCHAR},
       OrdersNo = #{ordersno,jdbcType=VARCHAR},
       OrdersType = #{orderstype,jdbcType=VARCHAR},
@@ -234,8 +234,8 @@
       Address = #{address,jdbcType=VARCHAR},
       NewAddress = #{newaddress,jdbcType=VARCHAR},
       ProjectID = #{projectid,jdbcType=VARCHAR},
-      AccountDeptID = #{accountdeptid,jdbcType=VARCHAR},
-      UseDeptID = #{usedeptid,jdbcType=VARCHAR},
+      AccountDeptID = #{accountdeptid,jdbcType=BIGINT},
+      UseDeptID = #{usedeptid,jdbcType=BIGINT},
       UserName = #{username,jdbcType=VARCHAR},
       Contact = #{contact,jdbcType=VARCHAR},
       ChargeType = #{chargetype,jdbcType=VARCHAR},
@@ -245,4 +245,16 @@
       creator_id = #{creatorId,jdbcType=BIGINT}
     where ID = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectOrderListByUserID" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"></include>
+    FROM orders
+    WHERE
+    creator_id = #{userId}
+  </select>
+
+  <select id="selectCount" resultType="java.lang.Integer">
+    select count(id) from orders
+  </select>
 </mapper>
