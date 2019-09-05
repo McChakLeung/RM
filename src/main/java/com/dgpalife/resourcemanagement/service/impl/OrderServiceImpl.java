@@ -79,6 +79,16 @@ public class OrderServiceImpl implements OrderService {
         return getRelateObject(order);
     }
 
+    /**
+     * 更新工单
+     * @param order
+     * @return
+     */
+    @Override
+    public int updateOrder(Order order) {
+        return orderMapper.updateByPrimaryKeySelective(order);
+    }
+
 
 //    @Override
 //    public Map selectOrdersByCreatorName(String creatorName) {

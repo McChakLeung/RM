@@ -188,7 +188,7 @@
     })
 
 	function toUpdate(id) {
-		window.location.href = '[[@{|/order/toUpdate/|}]]' + id;
+		window.location.href = '[[@{|/order/myorder/toUpdate/|}]]' + id;
     }
 
 	//查询用户当前用户,并发送异步请求
@@ -204,7 +204,7 @@
         jsonObj.pageno = pageno;
         $.ajax({
             type:"post",
-            url:"[[@{|/order/index|}]]",
+            url:"[[@{|/order/myorder/index|}]]",
             data:jsonObj,
             dataType: "json",
             beforeSend:function () {

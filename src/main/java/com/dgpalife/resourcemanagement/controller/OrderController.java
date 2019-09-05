@@ -1,5 +1,6 @@
 package com.dgpalife.resourcemanagement.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.dgpalife.resourcemanagement.common.AjaxResult;
 import com.dgpalife.resourcemanagement.common.Const;
 import com.dgpalife.resourcemanagement.common.Page;
@@ -23,9 +24,9 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @RequestMapping("/toIndex")
+    @RequestMapping("/myorder/toIndex")
     public String toIndex(){
-        return "/order/index";
+        return "/order/myorder/index";
     }
 
     /**
@@ -35,7 +36,7 @@ public class OrderController {
      * @return 返回查询页面
      */
     @ResponseBody
-    @RequestMapping("/index")
+    @RequestMapping("/myorder/index")
     public Object toIndex(@RequestParam(value = "pageno",required = false,defaultValue = "1") Integer pageno,
                           @RequestParam(value = "pagesize",required = false,defaultValue = "10") Integer pagesize,
                           HttpSession session){
@@ -66,12 +67,42 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping("/toUpdate/{id}")
+    @RequestMapping("/myorder/toUpdate/{id}")
     public String toUpdate(@PathVariable Long id, Model model){
         Order order = orderService.selectOrderByID(id);
         model.addAttribute("order",order);
-        return "/order/update";
+        return "/order/myorder/update";
     }
+
+    /**
+     * 以异步的方式更新用户修改的数据
+     * @param order 前台传入的order，以json格式传送
+     * @return 返回result结果
+     */
+    @ResponseBody
+    @RequestMapping("/myorder/doUpdate")
+    public Object doUpdate(@RequestBody JSONObject jsonObject){
+
+        AjaxResult result = new AjaxResult();
+
+        Order order = jsonObject.toJavaObject(Order.class);
+
+        try{
+            int count = orderService.updateOrder(order);
+            result.setSuccess(count>0);
+        }catch (Exception e){
+            result.setSuccess(false);
+            result.setMessage("更新异常，请联系管理员处理");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @RequestMapping("/construction/toAdd")
+    public String toAdd(){
+        return "/order/construction/add";
+    }
+
 
 //    /**
 //     * 筛选查询

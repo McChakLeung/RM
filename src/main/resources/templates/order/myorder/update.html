@@ -24,10 +24,8 @@
     <script th:src="@{|/static/js/vendor/bootstrap/js/bootstrap.min.js|}"></script>
     <script th:src="@{|/static/js/vendor/jquery-slimscroll/jquery.slimscroll.min.js|}"></script>
     <script th:src="@{|/static/js/scripts/klorofil-common.js|}"></script>
-    <script type="text/javascript" th:inline="javascript">
-
-
-    </script>
+    <script th:src="@{|/static/js/layer/layer.js|}"></script>
+    <script th:src="@{|/static/js/common.js|}"></script>
 </head>
 
 <body>
@@ -57,7 +55,7 @@
 
                             <div class="panel-body">
 
-                                <form class="form-horizontal">
+                                <form class="form-horizontal" id="form">
                                     <div class="form-group">
                                         <label for="forderstype" class="col-sm-2 control-label">工单类型</label>
                                         <div class="col-sm-3">
@@ -65,55 +63,62 @@
                                         </div>
                                     <!--</div>-->
                                     <!--<div class="form-group">-->
-                                        <div th:if="${order.orderstype} == '建设工单'">
-                                            <label for="fresourceno" class="col-sm-2 control-label" th:style="'display:none;'">资源号码</label>
-                                            <div class="col-sm-3" >
-                                                <input type="text" class="form-control" name="resourceno" id="fresourceno" th:style="'display:none;'">
-                                            </div>
-                                        </div>
+                                        <!--<div th:if="${order.orderstype} == '建设工单'">-->
+                                            <!--<label for="fresourceid" class="col-sm-2 control-label" th:style="'display:none;'">资源号码</label>-->
+                                            <!--<div class="col-sm-3" >-->
+                                                <!--<input type="text" class="form-control" name="resourceid" id="fresourceid" th:style="'display:none;'">-->
+                                            <!--</div>-->
+                                        <!--</div>-->
                                         <div th:if="${order.orderstype} != '建设工单'">
-                                            <label for="fresourceno" class="col-sm-2 control-label">资源号码</label>
+                                            <label for="fresourceid" class="col-sm-2 control-label">资源号码</label>
                                             <div class="col-sm-3" >
-                                                <input type="text" class="form-control" name="resourceno" id="fresourceno" th:value="${order.resource.resourceno}">
+                                                <!--<input type="text" class="form-control" name="resourceno" id="fresourceno" th:value="${order.resource.resourceno}" >-->
+                                                <select class="form-control" name="resourceid" id="fresourceid" onchange="selectSubDept()">
+                                                    <option th:value="${order.resource.id}" th:text="${order.resource.resourceno}" selected="selected">请选择</option>
+                                                    <!--<option th:each="parentDept:${resultMap.departmentList}" th:value="${parentDept.DeptNo}" th:text="${parentDept.DeptName}">请选择</option>-->
+                                                </select>
                                             </div>
                                         </div>
 
                                     </div>
                                     <div class="form-group">
-                                        <label for="faccountdeptno" class="col-sm-2 control-label">挂账部门</label>
+                                        <label for="faccountdeptid" class="col-sm-2 control-label">挂账部门</label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="accountdeptno" id="faccountdeptno" th:value="${order.accountdept.deptname}">
-                                            <!--<select class="form-control" name="accountdeptno" id="faccountdeptno" onchange="selectSubDept()">-->
-                                                <!--<option th:value="${order.accountdept.id}" th:text="${order.accountdept.deptname}" selected="selected">请选择</option>-->
-                                                <!--&lt;!&ndash;<option th:each="parentDept:${resultMap.departmentList}" th:value="${parentDept.DeptNo}" th:text="${parentDept.DeptName}">请选择</option>&ndash;&gt;-->
-                                            <!--</select>-->
+                                            <!--<input type="text" class="form-control" name="accountdeptno" id="faccountdeptno" th:value="${order.accountdept.deptname}">-->
+                                            <select class="form-control" name="accountdeptid" id="faccountdeptid" onchange="selectSubDept()">
+                                                <option th:value="${order.accountdept.id}" th:text="${order.accountdept.deptname}" selected="selected">请选择</option>
+                                                <!--<option th:each="parentDept:${resultMap.departmentList}" th:value="${parentDept.DeptNo}" th:text="${parentDept.DeptName}">请选择</option>-->
+                                            </select>
                                         </div>
                                     <!--</div>-->
                                     <!--<div class="form-group">-->
-                                        <label for="fusedeptno" class="col-sm-2 control-label">使用部门|科室</label>
+                                        <label for="fusedeptid" class="col-sm-2 control-label">使用部门|科室</label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="usedeptno" id="fusedeptno" th:value="${order.usedept.deptname}">
-                                            <!--<select class="form-control" name="usedeptno" id="fusedeptno">-->
-                                                <!--<option th:value="${order.usedept.id}" th:text="${order.usedept.deptname}" selected="selected"></option>-->
-                                            <!--</select>-->
+                                            <!--<input type="text" class="form-control" name="usedeptno" id="fusedeptno" th:value="${order.usedept.deptname}">-->
+                                            <select class="form-control" name="usedeptid" id="fusedeptid">
+                                                <option th:value="${order.usedept.id}" th:text="${order.usedept.deptname}" selected="selected"></option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="fusername" class="col-sm-2 control-label">使用人</label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="username" id="fusername" th:value="${order.username}">
+                                            <input type="text" class="form-control" name="username" id="fusername" th:value="${order.username}" >
                                         </div>
                                     <!--</div>-->
                                     <!--<div class="form-group">-->
                                         <label for="fcontact" class="col-sm-2 control-label">联系方式</label>
                                         <div class="col-sm-3">
-                                            <input type="number" class="form-control" name="contact" id="fcontact" th:value="${order.contact}">
+                                            <input type="text" class="form-control" name="contact" id="fcontact" th:value="${order.contact}">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="fusingnumber" class="col-sm-2 control-label">在用号码</label>
+                                        <label for="fusingnumberid" class="col-sm-2 control-label">在用号码</label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="usingnumber" id="fusingnumber" th:value="${order.usingnumber.resourceno}">
+                                            <!--<input type="text" class="form-control" name="usingnumber" id="fusingnumber" th:value="${order.usingnumber.resourceno}">-->
+                                            <select class="form-control" name="usingnumberid" id="fusingnumberid">
+                                                <option th:value="${order.usingnumber.id}" th:text="${order.usingnumber.resourceno}" selected="selected"></option>
+                                            </select>
                                         </div>
                                         <label for="foperator" class="col-sm-2 control-label">运营商</label>
                                         <div class="col-sm-3">
@@ -142,12 +147,12 @@
                                             <input type="text" class="form-control" name="newaddress" id="fnewaddress" th:value="${order.newaddress}">
                                         </div>
                                     </div>
-                                    <input type="hidden" class="form-control" name="creatorname" id="fcreatorname" th:value="${order.creator.username}">
-                                    <input type="hidden" class="form-control" name="orderid" id="forderid" th:value="${order.id}">
+                                    <input type="hidden" class="form-control" name="creatorId" id="fcreatorId" th:value="${order.creator.id}" >
+                                    <input type="hidden" class="form-control" name="id" id="fid" th:value="${order.id}">
                                     <div class="form-group">
                                         <div class="col-sm-offset-2 col-sm-10">
-                                            <button id="saveBtn" type="submit" class="btn btn-success">保存</button>
-                                            <button type="reset" class="btn btn-warning">重置</button>
+                                            <button id="saveBtn" type="button" class="btn btn-success">保存</button>
+                                            <button id="resetBtn" type="reset" class="btn btn-warning">重置</button>
                                             <button id="auditBtn" class="btn btn-danger">提交审核</button>
                                         </div>
                                     </div>
@@ -172,6 +177,62 @@
 </div>
 <!-- END WRAPPER -->
 <script type="text/javascript">
+
+    var loadingIndex = -1;
+
+
+
+    function arrayToJson(formArray){
+        var dataArray = {};
+        $.each(formArray,function(){
+            if(dataArray[this.name]){
+                if(!dataArray[this.name].push){
+                    dataArray[this.name] = [dataArray[this.name]];
+                }
+                dataArray[this.name].push(this.value || "");
+            }else{
+                dataArray[this.name] = this.value || "";
+            }
+        });
+        return JSON.stringify(dataArray);
+    }
+
+    $(function () {
+        //console.log(arrayToJson(formArray))
+    })
+
+    //保存数据
+    $("#saveBtn").click(function () {
+        var formArray = $("#form").serializeArray();
+        var jsonObj = arrayToJson(formArray);
+        $.ajax({
+            type:"post",
+            data:jsonObj,
+            url:"[[@{|/order/myorder/doUpdate|}]]",
+            dataType: 'json',
+            contentType: 'application/json',
+            beforeSend:function () {
+                loadingIndex = layer.load(3, {time: 10*1000});
+                return true;
+            },
+            success:function (result) {
+                layer.close(loadingIndex);
+                if(result.success == true){
+                    layer.msg("保存成功",{icon:1, shift:5});
+                }else{
+                    layer.msg(result.message,{time:2000, icon:5, shift:5});
+                }
+            }
+            // error:function (result) {
+            //     layer.msg(result.message,{time:2000, icon:5, shift:5});
+            // }
+        })
+    })
+
+    //重置按钮
+    $("#resetBtn").click(function () {
+        $("#form")[0].reset();
+    })
 
     //    $(function () {
     //        $("#deptNo").bind("change",selectSubDept());

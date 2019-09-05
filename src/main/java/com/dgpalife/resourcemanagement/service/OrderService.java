@@ -21,4 +21,6 @@ public interface OrderService {
     Page<Order> selectOrderListByUserID(Map<String, Object> params);
 
     Order selectOrderByID(Long id);
+
+    int updateOrder(Order order);
 }
