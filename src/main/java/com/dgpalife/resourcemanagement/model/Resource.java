@@ -1,65 +1,27 @@
 package com.dgpalife.resourcemanagement.model;
 
-import java.util.Date;
-
 public class Resource {
     private Long id;
 
-    private String resourceno;
+    private String resourceNo;
 
-    private String resourcetype;
+    private String resourcType;
 
-    private String servicesupplier;
+    private String operator;
 
-    private String address;
+    private Long networkRoomId;
 
-    private Long accountdeptid;
-
-    public Department getAccountdept() {
-        return accountdept;
-    }
-
-    public void setAccountdept(Department accountdept) {
-        this.accountdept = accountdept;
-    }
-
-    public Department getUserdept() {
-        return userdept;
-    }
-
-    public void setUserdept(Department userdept) {
-        this.userdept = userdept;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    private Department accountdept;
-
-    private Long userdeptid;
-
-    private Department userdept;
-
-    private String username;
-
-    private Long equipmentid;
-
-    private Double expenses;
-
-    private String chargetype;
+    private Long departmentId;
 
     private Long userId;
 
-    private User user;
+    private Long equipmentPortId;
 
-    private Date createtime;
+    private Long expenseId;
 
-    private String resourcestatus;
+    private String createTime;
+
+    private Long creatorId;
 
     public Long getId() {
         return id;
@@ -69,84 +31,44 @@ public class Resource {
         this.id = id;
     }
 
-    public String getResourceno() {
-        return resourceno;
+    public String getResourceNo() {
+        return resourceNo;
     }
 
-    public void setResourceno(String resourceno) {
-        this.resourceno = resourceno;
+    public void setResourceNo(String resourceNo) {
+        this.resourceNo = resourceNo;
     }
 
-    public String getResourcetype() {
-        return resourcetype;
+    public String getResourcType() {
+        return resourcType;
     }
 
-    public void setResourcetype(String resourcetype) {
-        this.resourcetype = resourcetype;
+    public void setResourcType(String resourcType) {
+        this.resourcType = resourcType;
     }
 
-    public String getServicesupplier() {
-        return servicesupplier;
+    public String getOperator() {
+        return operator;
     }
 
-    public void setServicesupplier(String servicesupplier) {
-        this.servicesupplier = servicesupplier;
+    public void setOperator(String operator) {
+        this.operator = operator;
     }
 
-    public String getAddress() {
-        return address;
+    public Long getNetworkRoomId() {
+        return networkRoomId;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setNetworkRoomId(Long networkRoomId) {
+        this.networkRoomId = networkRoomId;
     }
 
-    public Long getAccountdeptid() {
-        return accountdeptid;
+    public Long getDepartmentId() {
+        return departmentId;
     }
 
-    public void setAccountdeptid(Long accountdeptid) {
-        this.accountdeptid = accountdeptid;
-    }
-
-    public Long getUserdeptid() {
-        return userdeptid;
-    }
-
-    public void setUserdeptid(Long userdeptid) {
-        this.userdeptid = userdeptid;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Long getEquipmentid() {
-        return equipmentid;
-    }
-
-    public void setEquipmentid(Long equipmentid) {
-        this.equipmentid = equipmentid;
-    }
-
-    public Double getExpenses() {
-        return expenses;
-    }
-
-    public void setExpenses(Double expenses) {
-        this.expenses = expenses;
-    }
-
-    public String getChargetype() {
-        return chargetype;
-    }
-
-    public void setChargetype(String chargetype) {
-        this.chargetype = chargetype;
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
     }
 
     public Long getUserId() {
@@ -157,19 +79,35 @@ public class Resource {
         this.userId = userId;
     }
 
-    public Date getCreatetime() {
-        return createtime;
+    public Long getEquipmentPortId() {
+        return equipmentPortId;
     }
 
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
+    public void setEquipmentPortId(Long equipmentPortId) {
+        this.equipmentPortId = equipmentPortId;
     }
 
-    public String getResourcestatus() {
-        return resourcestatus;
+    public Long getExpenseId() {
+        return expenseId;
     }
 
-    public void setResourcestatus(String resourcestatus) {
-        this.resourcestatus = resourcestatus;
+    public void setExpenseId(Long expenseId) {
+        this.expenseId = expenseId;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
     }
 }

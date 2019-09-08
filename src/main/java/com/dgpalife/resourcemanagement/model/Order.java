@@ -1,93 +1,23 @@
 package com.dgpalife.resourcemanagement.model;
 
-import java.math.BigDecimal;
-
 public class Order {
     private Long id;
 
+    private String type;
+
     private String status;
 
-    private String ordersno;
+    private String title;
 
-    private String orderstype;
+    private Long approvalLinkId;
 
-    private Long resourceid;
+    private Long applyDepartmentId;
 
-    private Resource resource;
+    private Long proposerId;
 
-    private String operator;
+    private String createTime;
 
-    private String address;
-
-    private String newaddress;
-
-    private String projectid;
-
-    private Long accountdeptid;
-
-    private Department accountdept;
-
-    private Long usedeptid;
-
-    private Department usedept;
-
-    private String username;
-
-    private String contact;
-
-    private String chargetype;
-
-    private BigDecimal expenses;
-
-    private String createtime;
-
-    private String usingnumberid;
-
-    private Resource usingnumber;
-
-    private Long creatorId;
-
-    private User creator;
-
-    public Resource getResource() {
-        return resource;
-    }
-
-    public void setResource(Resource resource) {
-        this.resource = resource;
-    }
-
-    public Department getAccountdept() {
-        return accountdept;
-    }
-
-    public void setAccountdept(Department accountdept) {
-        this.accountdept = accountdept;
-    }
-
-    public Department getUsedept() {
-        return usedept;
-    }
-
-    public void setUsedept(Department usedept) {
-        this.usedept = usedept;
-    }
-
-    public Resource getUsingnumber() {
-        return usingnumber;
-    }
-
-    public void setUsingnumber(Resource usingnumber) {
-        this.usingnumber = usingnumber;
-    }
-
-    public User getCreator() {
-        return creator;
-    }
-
-    public void setCreator(User creator) {
-        this.creator = creator;
-    }
+    private String reason;
 
     public Long getId() {
         return id;
@@ -95,6 +25,14 @@ public class Order {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getStatus() {
@@ -105,131 +43,51 @@ public class Order {
         this.status = status;
     }
 
-    public String getOrdersno() {
-        return ordersno;
+    public String getTitle() {
+        return title;
     }
 
-    public void setOrdersno(String ordersno) {
-        this.ordersno = ordersno;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getOrderstype() {
-        return orderstype;
+    public Long getApprovalLinkId() {
+        return approvalLinkId;
     }
 
-    public void setOrderstype(String orderstype) {
-        this.orderstype = orderstype;
+    public void setApprovalLinkId(Long approvalLinkId) {
+        this.approvalLinkId = approvalLinkId;
     }
 
-    public Long getResourceid() {
-        return resourceid;
+    public Long getApplyDepartmentId() {
+        return applyDepartmentId;
     }
 
-    public void setResourceid(Long resourceid) {
-        this.resourceid = resourceid;
+    public void setApplyDepartmentId(Long applyDepartmentId) {
+        this.applyDepartmentId = applyDepartmentId;
     }
 
-    public String getOperator() {
-        return operator;
+    public Long getProposerId() {
+        return proposerId;
     }
 
-    public void setOperator(String operator) {
-        this.operator = operator;
+    public void setProposerId(Long proposerId) {
+        this.proposerId = proposerId;
     }
 
-    public String getAddress() {
-        return address;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
-    public String getNewaddress() {
-        return newaddress;
+    public String getReason() {
+        return reason;
     }
 
-    public void setNewaddress(String newaddress) {
-        this.newaddress = newaddress;
-    }
-
-    public String getProjectid() {
-        return projectid;
-    }
-
-    public void setProjectid(String projectid) {
-        this.projectid = projectid;
-    }
-
-    public Long getAccountdeptid() {
-        return accountdeptid;
-    }
-
-    public void setAccountdeptid(Long accountdeptid) {
-        this.accountdeptid = accountdeptid;
-    }
-
-    public Long getUsedeptid() {
-        return usedeptid;
-    }
-
-    public void setUsedeptid(Long usedeptid) {
-        this.usedeptid = usedeptid;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
-    public String getChargetype() {
-        return chargetype;
-    }
-
-    public void setChargetype(String chargetype) {
-        this.chargetype = chargetype;
-    }
-
-    public BigDecimal getExpenses() {
-        return expenses;
-    }
-
-    public void setExpenses(BigDecimal expenses) {
-        this.expenses = expenses;
-    }
-
-    public String getCreatetime() {
-        return createtime;
-    }
-
-    public void setCreatetime(String createtime) {
-        this.createtime = createtime;
-    }
-
-    public String getUsingnumberid() {
-        return usingnumberid;
-    }
-
-    public void setUsingnumberid(String usingnumberid) {
-        this.usingnumberid = usingnumberid;
-    }
-
-    public Long getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(Long creatorId) {
-        this.creatorId = creatorId;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

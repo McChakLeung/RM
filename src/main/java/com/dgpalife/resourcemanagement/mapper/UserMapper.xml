@@ -8,7 +8,7 @@
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="CreateTime" jdbcType="VARCHAR" property="createtime" />
     <result column="LastLogin" jdbcType="VARCHAR" property="lastlogin" />
-    <result column="Status" jdbcType="BIT" property="status" />
+    <result column="Status" jdbcType="VARCHAR" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
     id, LoginAcct, username, password, CreateTime, LastLogin, Status
@@ -17,23 +17,23 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from user
+    from t_user
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from user
+    delete from t_user
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.User">
-    insert into user (id, username, password,
+    insert into t_user (id, username, password,
       CreateTime, LastLogin, Status
       )
     values (#{id,jdbcType=BIGINT},#{loginacct,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
-      #{createtime,jdbcType=VARCHAR}, #{lastlogin,jdbcType=VARCHAR}, #{status,jdbcType=BIT}
+      #{createtime,jdbcType=VARCHAR}, #{lastlogin,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.User">
-    insert into user
+    insert into t_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -77,12 +77,12 @@
         #{lastlogin,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        #{status,jdbcType=BIT},
+        #{status,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.User">
-    update user
+    update t_user
     <set>
       <if test="loginacct != null">
         LoginAcct = #{loginacct,jdbcType=VARCHAR},
@@ -100,26 +100,26 @@
         LastLogin = #{lastlogin,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        Status = #{status,jdbcType=BIT},
+        Status = #{status,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.User">
-    update user
+    update t_user
     set  LoginAcct = #{loginacct,jdbcType=VARCHAR},
       username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       CreateTime = #{createtime,jdbcType=VARCHAR},
       LastLogin = #{lastlogin,jdbcType=VARCHAR},
-      Status = #{status,jdbcType=BIT}
+      Status = #{status,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
   <select id="selectUserByUserNameAndPassword" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from user
+    from t_user
     where
     LoginAcct = #{loginacct,jdbcType=VARCHAR}
     and
@@ -127,14 +127,14 @@
   </select>
 
   <update id="updateLastLoginTime">
-    UPDATE user set LastLogin = #{lastlogin}  where id = #{id}
+    UPDATE t_user set LastLogin = #{lastlogin}  where id = #{id}
 
   </update>
 
   <select id="selectUserList"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
-    from user
+    from t_user
     <where>
       <if test="queryText != null">
         username like concat("%",#{queryText},"%")
@@ -145,7 +145,7 @@
   </select>
 
   <select id="selectCount" resultType="java.lang.Integer">
-    select count(id) from user
+    select count(id) from t_user
     <where>
       <if test="queryText!=null">
         username like concat("%",#{queryText},"%")
@@ -156,7 +156,7 @@
   <select id="selectUserByLoginAccAndUserPassword" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
-    from user
+    from t_user
     where
     LoginAcct = #{loginacct}
     and

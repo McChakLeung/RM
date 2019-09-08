@@ -12,21 +12,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from role_permission
+    from t_role_permission
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from role_permission
+    delete from t_role_permission
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.RolePermission">
-    insert into role_permission (id, role_id, permission_id
+    insert into t_role_permission (id, role_id, permission_id
       )
     values (#{id,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT}, #{permissionId,jdbcType=BIGINT}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.RolePermission">
-    insert into role_permission
+    insert into t_role_permission
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -51,7 +51,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.RolePermission">
-    update role_permission
+    update t_role_permission
     <set>
       <if test="roleId != null">
         role_id = #{roleId,jdbcType=BIGINT},
@@ -63,14 +63,14 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.RolePermission">
-    update role_permission
+    update t_role_permission
     set role_id = #{roleId,jdbcType=BIGINT},
       permission_id = #{permissionId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
   <delete id="deleteByRoleId">
-    DELETE FROM role_permission
+    DELETE FROM t_role_permission
     where role_id = #{role_id}
   </delete>
 </mapper>

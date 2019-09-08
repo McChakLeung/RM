@@ -1,11 +1,11 @@
 package com.dgpalife.resourcemanagement.model;
 
-public class Department {
+public class Workplace {
     private Long id;
 
-    private Long pid;
+    private String address;
 
-    private String departmentName;
+    private String district;
 
     private Long creatorId;
 
@@ -19,20 +19,20 @@ public class Department {
         this.id = id;
     }
 
-    public Long getPid() {
-        return pid;
+    public String getAddress() {
+        return address;
     }
 
-    public void setPid(Long pid) {
-        this.pid = pid;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getDepartmentName() {
-        return departmentName;
+    public String getDistrict() {
+        return district;
     }
 
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
     public Long getCreatorId() {

@@ -2,259 +2,158 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dgpalife.resourcemanagement.mapper.OrderMapper">
   <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.Order">
-    <id column="ID" jdbcType="BIGINT" property="id" />
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="OrdersNo" jdbcType="VARCHAR" property="ordersno" />
-    <result column="OrdersType" jdbcType="VARCHAR" property="orderstype" />
-    <result column="ResourceID" jdbcType="BIGINT" property="resourceid" />
-    <result column="Operator" jdbcType="VARCHAR" property="operator" />
-    <result column="Address" jdbcType="VARCHAR" property="address" />
-    <result column="NewAddress" jdbcType="VARCHAR" property="newaddress" />
-    <result column="ProjectID" jdbcType="VARCHAR" property="projectid" />
-    <result column="AccountDeptID" jdbcType="BIGINT" property="accountdeptid" />
-    <result column="UseDeptID" jdbcType="BIGINT" property="usedeptid" />
-    <result column="UserName" jdbcType="VARCHAR" property="username" />
-    <result column="Contact" jdbcType="VARCHAR" property="contact" />
-    <result column="ChargeType" jdbcType="VARCHAR" property="chargetype" />
-    <result column="Expenses" jdbcType="DECIMAL" property="expenses" />
-    <result column="CreateTime" jdbcType="VARCHAR" property="createtime" />
-    <result column="UsingNumberID" jdbcType="VARCHAR" property="usingnumberid" />
-    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="approval_link_id" jdbcType="BIGINT" property="approvalLinkId" />
+    <result column="apply_department_id" jdbcType="BIGINT" property="applyDepartmentId" />
+    <result column="proposer_id" jdbcType="BIGINT" property="proposerId" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.dgpalife.resourcemanagement.model.Order">
+    <result column="reason" jdbcType="LONGVARCHAR" property="reason" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, status, OrdersNo, OrdersType, ResourceID, Operator, Address, NewAddress, ProjectID, 
-    AccountDeptID, UseDeptID, UserName, Contact, ChargeType, Expenses, CreateTime, UsingNumberID, 
-    creator_id
+    id, type, status, title, approval_link_id, apply_department_id, proposer_id, create_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <sql id="Blob_Column_List">
+    reason
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
-    from orders
-    where ID = #{id,jdbcType=BIGINT}
+    ,
+    <include refid="Blob_Column_List" />
+    from t_order
+    where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from orders
-    where ID = #{id,jdbcType=BIGINT}
+    delete from t_order
+    where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Order">
-    insert into orders (ID, status, OrdersNo,
-      OrdersType, ResourceID, Operator, 
-      Address, NewAddress, ProjectID, 
-      AccountDeptID, UseDeptID, UserName, 
-      Contact, ChargeType, Expenses, 
-      CreateTime, UsingNumberID, creator_id
+    insert into t_order (id, type, status, 
+      title, approval_link_id, apply_department_id, 
+      proposer_id, create_time, reason
       )
-    values (#{id,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, #{ordersno,jdbcType=VARCHAR}, 
-      #{orderstype,jdbcType=VARCHAR}, #{resourceid,jdbcType=BIGINT}, #{operator,jdbcType=VARCHAR}, 
-      #{address,jdbcType=VARCHAR}, #{newaddress,jdbcType=VARCHAR}, #{projectid,jdbcType=VARCHAR}, 
-      #{accountdeptid,jdbcType=BIGINT}, #{usedeptid,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR},
-      #{contact,jdbcType=VARCHAR}, #{chargetype,jdbcType=VARCHAR}, #{expenses,jdbcType=DECIMAL}, 
-      #{createtime,jdbcType=VARCHAR}, #{usingnumberid,jdbcType=VARCHAR}, #{creatorId,jdbcType=BIGINT}
+    values (#{id,jdbcType=BIGINT}, #{type,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{approvalLinkId,jdbcType=BIGINT}, #{applyDepartmentId,jdbcType=BIGINT}, 
+      #{proposerId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}, #{reason,jdbcType=LONGVARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Order">
-    insert into orders
+    insert into t_order
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
-        ID,
+        id,
+      </if>
+      <if test="type != null">
+        type,
       </if>
       <if test="status != null">
         status,
       </if>
-      <if test="ordersno != null">
-        OrdersNo,
+      <if test="title != null">
+        title,
       </if>
-      <if test="orderstype != null">
-        OrdersType,
+      <if test="approvalLinkId != null">
+        approval_link_id,
       </if>
-      <if test="resourceid != null">
-        ResourceID,
+      <if test="applyDepartmentId != null">
+        apply_department_id,
       </if>
-      <if test="operator != null">
-        Operator,
+      <if test="proposerId != null">
+        proposer_id,
       </if>
-      <if test="address != null">
-        Address,
+      <if test="createTime != null">
+        create_time,
       </if>
-      <if test="newaddress != null">
-        NewAddress,
-      </if>
-      <if test="projectid != null">
-        ProjectID,
-      </if>
-      <if test="accountdeptid != null">
-        AccountDeptID,
-      </if>
-      <if test="usedeptid != null">
-        UseDeptID,
-      </if>
-      <if test="username != null">
-        UserName,
-      </if>
-      <if test="contact != null">
-        Contact,
-      </if>
-      <if test="chargetype != null">
-        ChargeType,
-      </if>
-      <if test="expenses != null">
-        Expenses,
-      </if>
-      <if test="createtime != null">
-        CreateTime,
-      </if>
-      <if test="usingnumberid != null">
-        UsingNumberID,
-      </if>
-      <if test="creatorId != null">
-        creator_id,
+      <if test="reason != null">
+        reason,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
       <if test="status != null">
         #{status,jdbcType=VARCHAR},
       </if>
-      <if test="ordersno != null">
-        #{ordersno,jdbcType=VARCHAR},
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
       </if>
-      <if test="orderstype != null">
-        #{orderstype,jdbcType=VARCHAR},
+      <if test="approvalLinkId != null">
+        #{approvalLinkId,jdbcType=BIGINT},
       </if>
-      <if test="resourceid != null">
-        #{resourceid,jdbcType=BIGINT},
+      <if test="applyDepartmentId != null">
+        #{applyDepartmentId,jdbcType=BIGINT},
       </if>
-      <if test="operator != null">
-        #{operator,jdbcType=VARCHAR},
+      <if test="proposerId != null">
+        #{proposerId,jdbcType=BIGINT},
       </if>
-      <if test="address != null">
-        #{address,jdbcType=VARCHAR},
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
       </if>
-      <if test="newaddress != null">
-        #{newaddress,jdbcType=VARCHAR},
-      </if>
-      <if test="projectid != null">
-        #{projectid,jdbcType=VARCHAR},
-      </if>
-      <if test="accountdeptid != null">
-        #{accountdeptid,jdbcType=BIGINT},
-      </if>
-      <if test="usedeptid != null">
-        #{usedeptid,jdbcType=BIGINT},
-      </if>
-      <if test="username != null">
-        #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="contact != null">
-        #{contact,jdbcType=VARCHAR},
-      </if>
-      <if test="chargetype != null">
-        #{chargetype,jdbcType=VARCHAR},
-      </if>
-      <if test="expenses != null">
-        #{expenses,jdbcType=DECIMAL},
-      </if>
-      <if test="createtime != null">
-        #{createtime,jdbcType=VARCHAR},
-      </if>
-      <if test="usingnumberid != null">
-        #{usingnumberid,jdbcType=VARCHAR},
-      </if>
-      <if test="creatorId != null">
-        #{creatorId,jdbcType=BIGINT},
+      <if test="reason != null">
+        #{reason,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.Order">
-    update orders
+    update t_order
     <set>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
       <if test="status != null">
         status = #{status,jdbcType=VARCHAR},
       </if>
-      <if test="ordersno != null">
-        OrdersNo = #{ordersno,jdbcType=VARCHAR},
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
       </if>
-      <if test="orderstype != null">
-        OrdersType = #{orderstype,jdbcType=VARCHAR},
+      <if test="approvalLinkId != null">
+        approval_link_id = #{approvalLinkId,jdbcType=BIGINT},
       </if>
-      <if test="resourceid != null">
-        ResourceID = #{resourceid,jdbcType=BIGINT},
+      <if test="applyDepartmentId != null">
+        apply_department_id = #{applyDepartmentId,jdbcType=BIGINT},
       </if>
-      <if test="operator != null">
-        Operator = #{operator,jdbcType=VARCHAR},
+      <if test="proposerId != null">
+        proposer_id = #{proposerId,jdbcType=BIGINT},
       </if>
-      <if test="address != null">
-        Address = #{address,jdbcType=VARCHAR},
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
       </if>
-      <if test="newaddress != null">
-        NewAddress = #{newaddress,jdbcType=VARCHAR},
-      </if>
-      <if test="projectid != null">
-        ProjectID = #{projectid,jdbcType=VARCHAR},
-      </if>
-      <if test="accountdeptid != null">
-        AccountDeptID = #{accountdeptid,jdbcType=BIGINT},
-      </if>
-      <if test="usedeptid != null">
-        UseDeptID = #{usedeptid,jdbcType=BIGINT},
-      </if>
-      <if test="username != null">
-        UserName = #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="contact != null">
-        Contact = #{contact,jdbcType=VARCHAR},
-      </if>
-      <if test="chargetype != null">
-        ChargeType = #{chargetype,jdbcType=VARCHAR},
-      </if>
-      <if test="expenses != null">
-        Expenses = #{expenses,jdbcType=DECIMAL},
-      </if>
-      <if test="createtime != null">
-        CreateTime = #{createtime,jdbcType=VARCHAR},
-      </if>
-      <if test="usingnumberid != null">
-        UsingNumberID = #{usingnumberid,jdbcType=VARCHAR},
-      </if>
-      <if test="creatorId != null">
-        creator_id = #{creatorId,jdbcType=BIGINT},
+      <if test="reason != null">
+        reason = #{reason,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where ID = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.dgpalife.resourcemanagement.model.Order">
+    update t_order
+    set type = #{type,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      approval_link_id = #{approvalLinkId,jdbcType=BIGINT},
+      apply_department_id = #{applyDepartmentId,jdbcType=BIGINT},
+      proposer_id = #{proposerId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      reason = #{reason,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.Order">
-    update orders
-    set status = #{status,jdbcType=VARCHAR},
-      OrdersNo = #{ordersno,jdbcType=VARCHAR},
-      OrdersType = #{orderstype,jdbcType=VARCHAR},
-      ResourceID = #{resourceid,jdbcType=BIGINT},
-      Operator = #{operator,jdbcType=VARCHAR},
-      Address = #{address,jdbcType=VARCHAR},
-      NewAddress = #{newaddress,jdbcType=VARCHAR},
-      ProjectID = #{projectid,jdbcType=VARCHAR},
-      AccountDeptID = #{accountdeptid,jdbcType=BIGINT},
-      UseDeptID = #{usedeptid,jdbcType=BIGINT},
-      UserName = #{username,jdbcType=VARCHAR},
-      Contact = #{contact,jdbcType=VARCHAR},
-      ChargeType = #{chargetype,jdbcType=VARCHAR},
-      Expenses = #{expenses,jdbcType=DECIMAL},
-      CreateTime = #{createtime,jdbcType=VARCHAR},
-      UsingNumberID = #{usingnumberid,jdbcType=VARCHAR},
-      creator_id = #{creatorId,jdbcType=BIGINT}
-    where ID = #{id,jdbcType=BIGINT}
+    update t_order
+    set type = #{type,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      approval_link_id = #{approvalLinkId,jdbcType=BIGINT},
+      apply_department_id = #{applyDepartmentId,jdbcType=BIGINT},
+      proposer_id = #{proposerId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
   </update>
-
-  <select id="selectOrderListByUserID" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List"></include>
-    FROM orders
-    WHERE
-    creator_id = #{userId}
-  </select>
-
-  <select id="selectCount" resultType="java.lang.Integer">
-    select count(id) from orders
-  </select>
 </mapper>

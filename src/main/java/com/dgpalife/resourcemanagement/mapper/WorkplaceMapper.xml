@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dgpalife.resourcemanagement.mapper.DepartmentMapper">
-  <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.Department">
+<mapper namespace="com.dgpalife.resourcemanagement.mapper.WorkplaceMapper">
+  <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.Workplace">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="pid" jdbcType="BIGINT" property="pid" />
-    <result column="department_name" jdbcType="VARCHAR" property="departmentName" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="district" jdbcType="VARCHAR" property="district" />
     <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, pid, department_name, creator_id, create_time
+    id, address, district, creator_id, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from t_department
+    from t_workplace
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_department
+    delete from t_workplace
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Department">
-    insert into t_department (id, pid, department_name, 
+  <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Workplace">
+    insert into t_workplace (id, address, district, 
       creator_id, create_time)
-    values (#{id,jdbcType=BIGINT}, #{pid,jdbcType=BIGINT}, #{departmentName,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{address,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
       #{creatorId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Department">
-    insert into t_department
+  <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Workplace">
+    insert into t_workplace
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="pid != null">
-        pid,
+      <if test="address != null">
+        address,
       </if>
-      <if test="departmentName != null">
-        department_name,
+      <if test="district != null">
+        district,
       </if>
       <if test="creatorId != null">
         creator_id,
@@ -50,11 +50,11 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="pid != null">
-        #{pid,jdbcType=BIGINT},
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
       </if>
-      <if test="departmentName != null">
-        #{departmentName,jdbcType=VARCHAR},
+      <if test="district != null">
+        #{district,jdbcType=VARCHAR},
       </if>
       <if test="creatorId != null">
         #{creatorId,jdbcType=BIGINT},
@@ -64,14 +64,14 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.Department">
-    update t_department
+  <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.Workplace">
+    update t_workplace
     <set>
-      <if test="pid != null">
-        pid = #{pid,jdbcType=BIGINT},
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
       </if>
-      <if test="departmentName != null">
-        department_name = #{departmentName,jdbcType=VARCHAR},
+      <if test="district != null">
+        district = #{district,jdbcType=VARCHAR},
       </if>
       <if test="creatorId != null">
         creator_id = #{creatorId,jdbcType=BIGINT},
@@ -82,10 +82,10 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.Department">
-    update t_department
-    set pid = #{pid,jdbcType=BIGINT},
-      department_name = #{departmentName,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.Workplace">
+    update t_workplace
+    set address = #{address,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
       creator_id = #{creatorId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}

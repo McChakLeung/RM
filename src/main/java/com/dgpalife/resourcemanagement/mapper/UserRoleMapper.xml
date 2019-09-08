@@ -12,21 +12,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from user_role
+    from t_user_role
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from user_role
+    delete from t_user_role
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.UserRole">
-    insert into user_role (id, user_id, role_id
+    insert into t_user_role (id, user_id, role_id
       )
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.UserRole">
-    insert into user_role
+    insert into t_user_role
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -51,7 +51,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.UserRole">
-    update user_role
+    update t_user_role
     <set>
       <if test="userId != null">
         user_id = #{userId,jdbcType=BIGINT},
@@ -63,14 +63,14 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.UserRole">
-    update user_role
+    update t_user_role
     set user_id = #{userId,jdbcType=BIGINT},
       role_id = #{roleId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
   <select id="queryRoleByUserId" resultType="java.lang.Long">
-    select role_id from user_role
+    select role_id from t_user_role
     where user_id = #{id}
   </select>
 
@@ -80,12 +80,12 @@
     <!--</foreach>-->
   <!--</insert>-->
   <delete id="deleteByRoleId">
-    DELETE from user_role
+    DELETE from t_user_role
     where role_id = #{roleId, jdbcType=INTEGER}
   </delete>
 
   <delete id="deleteByUserId">
-    DELETE from user_role
+    DELETE from t_user_role
     where user_id = #{userId, jdbcType=INTEGER}
   </delete>
 </mapper>

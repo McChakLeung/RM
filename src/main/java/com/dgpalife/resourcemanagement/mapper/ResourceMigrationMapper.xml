@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dgpalife.resourcemanagement.mapper.ResourceMigrationMapper">
+  <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.ResourceMigration">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="resource_id" jdbcType="BIGINT" property="resourceId" />
+    <result column="new_network_room_id" jdbcType="BIGINT" property="newNetworkRoomId" />
+    <result column="expense_id" jdbcType="BIGINT" property="expenseId" />
+    <result column="project_id" jdbcType="BIGINT" property="projectId" />
+    <result column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="template_id" jdbcType="BIGINT" property="templateId" />
+    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, resource_id, new_network_room_id, expense_id, project_id, order_id, template_id, 
+    creator_id, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_resource_migration
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_resource_migration
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.ResourceMigration">
+    insert into t_resource_migration (id, resource_id, new_network_room_id, 
+      expense_id, project_id, order_id, 
+      template_id, creator_id, create_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{resourceId,jdbcType=BIGINT}, #{newNetworkRoomId,jdbcType=BIGINT}, 
+      #{expenseId,jdbcType=BIGINT}, #{projectId,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, 
+      #{templateId,jdbcType=BIGINT}, #{creatorId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.ResourceMigration">
+    insert into t_resource_migration
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="resourceId != null">
+        resource_id,
+      </if>
+      <if test="newNetworkRoomId != null">
+        new_network_room_id,
+      </if>
+      <if test="expenseId != null">
+        expense_id,
+      </if>
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="templateId != null">
+        template_id,
+      </if>
+      <if test="creatorId != null">
+        creator_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="resourceId != null">
+        #{resourceId,jdbcType=BIGINT},
+      </if>
+      <if test="newNetworkRoomId != null">
+        #{newNetworkRoomId,jdbcType=BIGINT},
+      </if>
+      <if test="expenseId != null">
+        #{expenseId,jdbcType=BIGINT},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=BIGINT},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="templateId != null">
+        #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="creatorId != null">
+        #{creatorId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.ResourceMigration">
+    update t_resource_migration
+    <set>
+      <if test="resourceId != null">
+        resource_id = #{resourceId,jdbcType=BIGINT},
+      </if>
+      <if test="newNetworkRoomId != null">
+        new_network_room_id = #{newNetworkRoomId,jdbcType=BIGINT},
+      </if>
+      <if test="expenseId != null">
+        expense_id = #{expenseId,jdbcType=BIGINT},
+      </if>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=BIGINT},
+      </if>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="templateId != null">
+        template_id = #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="creatorId != null">
+        creator_id = #{creatorId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.ResourceMigration">
+    update t_resource_migration
+    set resource_id = #{resourceId,jdbcType=BIGINT},
+      new_network_room_id = #{newNetworkRoomId,jdbcType=BIGINT},
+      expense_id = #{expenseId,jdbcType=BIGINT},
+      project_id = #{projectId,jdbcType=BIGINT},
+      order_id = #{orderId,jdbcType=BIGINT},
+      template_id = #{templateId,jdbcType=BIGINT},
+      creator_id = #{creatorId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

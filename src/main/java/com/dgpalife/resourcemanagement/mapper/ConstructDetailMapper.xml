@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dgpalife.resourcemanagement.mapper.ConstructDetailMapper">
+  <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.ConstructDetail">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="resource_type" jdbcType="VARCHAR" property="resourceType" />
+    <result column="number" jdbcType="INTEGER" property="number" />
+    <result column="expense_id" jdbcType="BIGINT" property="expenseId" />
+    <result column="network_room_id" jdbcType="BIGINT" property="networkRoomId" />
+    <result column="project_id" jdbcType="BIGINT" property="projectId" />
+    <result column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="template_id" jdbcType="BIGINT" property="templateId" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, operator, resource_type, number, expense_id, network_room_id, project_id, order_id, 
+    template_id, create_time, creator_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_construct_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_construct_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.ConstructDetail">
+    insert into t_construct_detail (id, operator, resource_type, 
+      number, expense_id, network_room_id, 
+      project_id, order_id, template_id, 
+      create_time, creator_id)
+    values (#{id,jdbcType=BIGINT}, #{operator,jdbcType=VARCHAR}, #{resourceType,jdbcType=VARCHAR}, 
+      #{number,jdbcType=INTEGER}, #{expenseId,jdbcType=BIGINT}, #{networkRoomId,jdbcType=BIGINT}, 
+      #{projectId,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{templateId,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=VARCHAR}, #{creatorId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.ConstructDetail">
+    insert into t_construct_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="operator != null">
+        operator,
+      </if>
+      <if test="resourceType != null">
+        resource_type,
+      </if>
+      <if test="number != null">
+        number,
+      </if>
+      <if test="expenseId != null">
+        expense_id,
+      </if>
+      <if test="networkRoomId != null">
+        network_room_id,
+      </if>
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="templateId != null">
+        template_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="creatorId != null">
+        creator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceType != null">
+        #{resourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="expenseId != null">
+        #{expenseId,jdbcType=BIGINT},
+      </if>
+      <if test="networkRoomId != null">
+        #{networkRoomId,jdbcType=BIGINT},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=BIGINT},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="templateId != null">
+        #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorId != null">
+        #{creatorId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.ConstructDetail">
+    update t_construct_detail
+    <set>
+      <if test="operator != null">
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceType != null">
+        resource_type = #{resourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="expenseId != null">
+        expense_id = #{expenseId,jdbcType=BIGINT},
+      </if>
+      <if test="networkRoomId != null">
+        network_room_id = #{networkRoomId,jdbcType=BIGINT},
+      </if>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=BIGINT},
+      </if>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="templateId != null">
+        template_id = #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorId != null">
+        creator_id = #{creatorId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.ConstructDetail">
+    update t_construct_detail
+    set operator = #{operator,jdbcType=VARCHAR},
+      resource_type = #{resourceType,jdbcType=VARCHAR},
+      number = #{number,jdbcType=INTEGER},
+      expense_id = #{expenseId,jdbcType=BIGINT},
+      network_room_id = #{networkRoomId,jdbcType=BIGINT},
+      project_id = #{projectId,jdbcType=BIGINT},
+      order_id = #{orderId,jdbcType=BIGINT},
+      template_id = #{templateId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      creator_id = #{creatorId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
