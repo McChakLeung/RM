@@ -52,103 +52,58 @@
                     <div class="col-md-12">
                         <!-- BASIC TABLE -->
                         <div class="panel">
-
                             <div class="panel-body">
-
                                 <form class="form-horizontal" id="form">
                                     <div class="form-group">
-                                        <label for="forderstype" class="col-sm-2 control-label">工单类型</label>
+                                        <label for="ftype" class="col-sm-2 control-label">工单类型</label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="orderstype" id="forderstype" disabled th:value="${order.orderstype}">
+                                            <!--<input type="text" class="form-control" name="orderstype" id="forderstype" disabled th:value="${order.orderstype}">-->
+                                            <input type="text" class="form-control" name="type" id="ftype" disabled>
                                         </div>
-                                    <!--</div>-->
-                                    <!--<div class="form-group">-->
-                                        <!--<div th:if="${order.orderstype} == '建设工单'">-->
-                                            <!--<label for="fresourceid" class="col-sm-2 control-label" th:style="'display:none;'">资源号码</label>-->
-                                            <!--<div class="col-sm-3" >-->
-                                                <!--<input type="text" class="form-control" name="resourceid" id="fresourceid" th:style="'display:none;'">-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                        <!--<div th:if="${order.orderstype} != '建设工单'">-->
-                                            <!--<label for="fresourceid" class="col-sm-2 control-label">资源号码</label>-->
-                                            <!--<div class="col-sm-3" >-->
-                                                <!--&lt;!&ndash;<input type="text" class="form-control" name="resourceno" id="fresourceno" th:value="${order.resource.resourceno}" >&ndash;&gt;-->
-                                                <!--<select class="form-control" name="resourceid" id="fresourceid" onchange="selectSubDept()">-->
-                                                    <!--<option th:value="${order.resource.id}" th:text="${order.resource.resourceno}" selected="selected">请选择</option>-->
-                                                    <!--&lt;!&ndash;<option th:each="parentDept:${resultMap.departmentList}" th:value="${parentDept.DeptNo}" th:text="${parentDept.DeptName}">请选择</option>&ndash;&gt;-->
-                                                <!--</select>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="faccountdeptid" class="col-sm-2 control-label">挂账部门</label>
-                                        <div class="col-sm-3">
-                                            <!--<input type="text" class="form-control" name="accountdeptno" id="faccountdeptno" th:value="${order.accountdept.deptname}">-->
-                                            <select class="form-control" name="accountdeptid" id="faccountdeptid" onchange="selectSubDept()">
-                                                <option th:value="${order.accountdept.id}" th:text="${order.accountdept.deptname}" selected="selected">请选择</option>
-                                                <!--<option th:each="parentDept:${resultMap.departmentList}" th:value="${parentDept.DeptNo}" th:text="${parentDept.DeptName}">请选择</option>-->
-                                            </select>
-                                        </div>
-                                    <!--</div>-->
-                                    <!--<div class="form-group">-->
-                                        <label for="fusedeptid" class="col-sm-2 control-label">使用部门|科室</label>
-                                        <div class="col-sm-3">
-                                            <!--<input type="text" class="form-control" name="usedeptno" id="fusedeptno" th:value="${order.usedept.deptname}">-->
-                                            <select class="form-control" name="usedeptid" id="fusedeptid">
-                                                <option th:value="${order.usedept.id}" th:text="${order.usedept.deptname}" selected="selected"></option>
-                                            </select>
+                                        <label for="fstatus" class="col-sm-2 control-label">资源状态</label>
+                                        <div class="col-sm-3" >
+                                            <input type="text" class="form-control" name="status" id="fstatus" disabled>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="fusername" class="col-sm-2 control-label">使用人</label>
+                                        <label for="ftitle" class="col-sm-2 control-label">标题</label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="username" id="fusername" th:value="${order.username}" >
+                                            <input type="text" class="form-control" name="title" id="ftitle">
                                         </div>
-                                    <!--</div>-->
-                                    <!--<div class="form-group">-->
+                                        </div>
+                                    <div class="form-group">
+                                        <label for="fapprovalLinkId" class="col-sm-2 control-label">审批链</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" name="approvalLinkId" id="fapprovalLinkId" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fapplyDepartment" class="col-sm-2 control-label">申请部门</label>
+                                        <div class="col-sm-3">
+                                            <select class="form-control" name="applyDepartment" id="fapplyDepartment">
+                                                <option value="" text="" selected="selected"></option>
+                                            </select>
+                                        </div>
+                                        <label for="fproposer" class="col-sm-2 control-label">申请人</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" name="proposer" id="fproposer" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="fcontact" class="col-sm-2 control-label">联系方式</label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="contact" id="fcontact" th:value="${order.contact}">
+                                            <input type="text" class="form-control" name="contact" id="fcontact" value="">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="fusingnumberid" class="col-sm-2 control-label">在用号码</label>
+                                        <label for="freason" class="col-sm-2 control-label">申请原因</label>
                                         <div class="col-sm-3">
-                                            <!--<input type="text" class="form-control" name="usingnumber" id="fusingnumber" th:value="${order.usingnumber.resourceno}">-->
-                                            <select class="form-control" name="usingnumberid" id="fusingnumberid">
-                                                <option th:value="${order.usingnumber.id}" th:text="${order.usingnumber.resourceno}" selected="selected"></option>
-                                            </select>
-                                        </div>
-                                        <label for="foperator" class="col-sm-2 control-label">运营商</label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="operator" id="foperator" th:value="${order.operator}">
+                                            <input type="text" class="form-control" name="reason" id="freason">
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="fchargetype" class="col-sm-2 control-label">交费方式</label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="chargetype" id="fchargetype" th:value="${order.chargetype}">
-                                        </div>
-                                        <label for="fexpenses" class="col-sm-2 control-label">资费</label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="expenses" id="fexpenses" th:value="${order.expenses}">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="faddress" class="col-sm-2 control-label">当前地址</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="address" id="faddress" th:value="${order.address}">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="fnewaddress" class="col-sm-2 control-label">新装地址</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="newaddress" id="fnewaddress" th:value="${order.newaddress}">
-                                        </div>
-                                    </div>
-                                    <input type="hidden" class="form-control" name="creatorId" id="fcreatorId" th:value="${order.creator.id}" >
-                                    <input type="hidden" class="form-control" name="id" id="fid" th:value="${order.id}">
+
+                                    <input type="hidden" class="form-control" name="creatorId" id="fcreatorId" value="" >
+                                    <input type="hidden" class="form-control" name="id" id="fid" value="">
                                     <div class="form-group">
                                         <div class="col-sm-offset-2 col-sm-10">
                                             <button id="saveBtn" type="button" class="btn btn-success">保存</button>
@@ -156,11 +111,9 @@
                                             <button id="auditBtn" class="btn btn-danger">提交审核</button>
                                         </div>
                                     </div>
+
+
                                 </form>
-
-
-                            </div>
-                        </div>
                         <!-- END BASIC TABLE -->
                     </div>
                     <!--</div>-->

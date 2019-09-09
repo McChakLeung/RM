@@ -15,7 +15,11 @@ public class Order {
 
     private Long applyDepartmentId;
 
+    private Department applyDepartment;
+
     private Long proposerId;
+
+    private User proposer;
 
     private String createTime;
 
