@@ -1,5 +1,7 @@
 package com.dgpalife.resourcemanagement.model;
 
+import java.util.List;
+
 public class Order {
     private Long id;
 
@@ -18,6 +20,46 @@ public class Order {
     private String createTime;
 
     private String reason;
+
+    private List<ConstructDetail> constructDetailList;
+
+    private List<ResourceMigration> resourceMigrationList;
+
+    private List<ResourceRemovement> resourceRemovementList;
+
+    private List<ChangeItemRecord> changeItemRecordList;
+
+    public List<ConstructDetail> getConstructDetailList() {
+        return constructDetailList;
+    }
+
+    public void setConstructDetailList(List<ConstructDetail> constructDetailList) {
+        this.constructDetailList = constructDetailList;
+    }
+
+    public List<ResourceMigration> getResourceMigrationList() {
+        return resourceMigrationList;
+    }
+
+    public void setResourceMigrationList(List<ResourceMigration> resourceMigrationList) {
+        this.resourceMigrationList = resourceMigrationList;
+    }
+
+    public List<ResourceRemovement> getResourceRemovementList() {
+        return resourceRemovementList;
+    }
+
+    public void setResourceRemovementList(List<ResourceRemovement> resourceRemovementList) {
+        this.resourceRemovementList = resourceRemovementList;
+    }
+
+    public List<ChangeItemRecord> getChangeItemRecordList() {
+        return changeItemRecordList;
+    }
+
+    public void setChangeItemRecordList(List<ChangeItemRecord> changeItemRecordList) {
+        this.changeItemRecordList = changeItemRecordList;
+    }
 
     public Long getId() {
         return id;
