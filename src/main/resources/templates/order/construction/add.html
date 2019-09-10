@@ -53,63 +53,78 @@
                         <!-- BASIC TABLE -->
                         <div class="panel">
                             <div class="panel-body">
-                                <form class="form-horizontal" id="form">
+                                <form id="form">
                                     <div class="form-group">
-                                        <label for="ftype" class="col-sm-2 control-label">工单类型</label>
-                                        <div class="col-sm-3">
+                                        <label for="ftype">工单类型</label>
                                             <!--<input type="text" class="form-control" name="orderstype" id="forderstype" disabled th:value="${order.orderstype}">-->
                                             <input type="text" class="form-control" name="type" id="ftype" disabled>
                                         </div>
-                                        <label for="fstatus" class="col-sm-2 control-label">资源状态</label>
-                                        <div class="col-sm-3" >
-                                            <input type="text" class="form-control" name="status" id="fstatus" disabled>
-                                        </div>
+                                    <div class="form-group">
+                                        <label for="fstatus">资源状态</label>
+                                        <input type="text" class="form-control" name="status" id="fstatus" disabled>
                                     </div>
                                     <div class="form-group">
-                                        <label for="ftitle" class="col-sm-2 control-label">标题</label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="title" id="ftitle">
-                                        </div>
-                                        </div>
-                                    <div class="form-group">
-                                        <label for="fapprovalLinkId" class="col-sm-2 control-label">审批链</label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="approvalLinkId" id="fapprovalLinkId" >
-                                        </div>
+                                        <label for="ftitle">标题</label>
+                                        <input type="text" class="form-control" name="title" id="ftitle">
                                     </div>
                                     <div class="form-group">
-                                        <label for="fapplyDepartment" class="col-sm-2 control-label">申请部门</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control" name="applyDepartment" id="fapplyDepartment">
-                                                <option value="" text="" selected="selected"></option>
-                                            </select>
-                                        </div>
-                                        <label for="fproposer" class="col-sm-2 control-label">申请人</label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="proposer" id="fproposer" >
-                                        </div>
+                                        <label for="fapprovalLinkId">审批链</label>
+                                        <input type="text" class="form-control" name="approvalLinkId" id="fapprovalLinkId" >
                                     </div>
                                     <div class="form-group">
-                                        <label for="fcontact" class="col-sm-2 control-label">联系方式</label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="contact" id="fcontact" value="">
-                                        </div>
+                                        <label for="fapplyDepartment">申请部门</label>
+                                        <select class="form-control" name="applyDepartment" id="fapplyDepartment">
+                                            <option value="" text="" selected="selected"></option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="freason" class="col-sm-2 control-label">申请原因</label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="reason" id="freason">
-                                        </div>
+                                        <label for="fproposer">申请人</label>
+                                        <input type="text" class="form-control" name="proposer" id="fproposer" >
                                     </div>
+                                    <div class="form-group">
+                                        <label for="fcontact">联系方式</label>
+                                        <input type="text" class="form-control" name="contact" id="fcontact" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <button id="addResource" type="button" class="btn btn-success">添加明细</button>
+                                        <div class="panel">
+                                            <div class="panel-body">
+                                                <table class="table table-bordered table-hover">
+                                                    <thead>
+                                                    <tr class="success">
+                                                        <!--<td>序号</td>-->
+                                                        <td>工单状态</td>
+                                                        <td>工单编号</td>
+                                                        <td>工单类型</td>
+                                                        <td>资源编号</td>
+                                                        <td>资源类型</td>
+                                                        <td>运营商</td>
+                                                        <td>挂账部门</td>
+                                                        <td>使用部门</td>
+                                                        <td>创建日期</td>
+                                                        <td>操作</td>
 
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="freason">申请原因</label>
+                                        <!--<input type="textarea"  rows="5" cols="30" class="form-control" name="reason" id="freason">-->
+                                        <textarea  rows="5" cols="30" class="form-control" name="reason" id="freason">
+                                        </textarea>
+                                    </div>
                                     <input type="hidden" class="form-control" name="creatorId" id="fcreatorId" value="" >
                                     <input type="hidden" class="form-control" name="id" id="fid" value="">
                                     <div class="form-group">
-                                        <div class="col-sm-offset-2 col-sm-10">
-                                            <button id="saveBtn" type="button" class="btn btn-success">保存</button>
-                                            <button id="resetBtn" type="reset" class="btn btn-warning">重置</button>
-                                            <button id="auditBtn" class="btn btn-danger">提交审核</button>
-                                        </div>
+                                        <button id="saveBtn" type="button" class="btn btn-success">保存</button>
+                                        <button id="resetBtn" type="reset" class="btn btn-warning">重置</button>
+                                        <button id="auditBtn" class="btn btn-danger">提交审核</button>
                                     </div>
 
 
