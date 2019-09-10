@@ -86,9 +86,14 @@
                                         <input type="text" class="form-control" name="contact" id="fcontact" value="">
                                     </div>
                                     <div class="form-group">
-                                        <button id="addResource" type="button" class="btn btn-success">添加明细</button>
-                                        <div class="panel">
-                                            <div class="panel-body">
+                                        <label for="freason">申请原因</label>
+                                        <!--<input type="textarea"  rows="5" cols="30" class="form-control" name="reason" id="freason">-->
+                                        <textarea  rows="5" cols="30" class="form-control" name="reason" id="freason">
+                                        </textarea>
+                                    </div>
+                                    <div class="panel">
+                                        <div class="panel-head">
+                                            <button id="addResource" type="button" class="btn btn-success">添加明细</button>
                                                 <table class="table table-bordered table-hover">
                                                     <thead>
                                                     <tr class="success">
@@ -106,19 +111,17 @@
 
                                                     </tr>
                                                     </thead>
-                                                    <tbody>
+                                                    <tbody id="construction_detail">
 
                                                     </tbody>
                                                 </table>
-                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+
+
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="freason">申请原因</label>
-                                        <!--<input type="textarea"  rows="5" cols="30" class="form-control" name="reason" id="freason">-->
-                                        <textarea  rows="5" cols="30" class="form-control" name="reason" id="freason">
-                                        </textarea>
-                                    </div>
+
                                     <input type="hidden" class="form-control" name="creatorId" id="fcreatorId" value="" >
                                     <input type="hidden" class="form-control" name="id" id="fid" value="">
                                     <div class="form-group">
