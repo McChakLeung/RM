@@ -53,7 +53,7 @@
                         <!-- BASIC TABLE -->
                         <div class="panel">
                             <div class="panel-body">
-                                <form id="form">
+                                <!--<form id="form">-->
                                     <div class="form-group">
                                         <label for="ftype">工单类型</label>
                                             <!--<input type="text" class="form-control" name="orderstype" id="forderstype" disabled th:value="${order.orderstype}">-->
@@ -91,47 +91,73 @@
                                         <textarea  rows="5" cols="30" class="form-control" name="reason" id="freason">
                                         </textarea>
                                     </div>
-                                    <div class="panel">
-                                        <div class="panel-head">
-                                            <button id="addResource" type="button" class="btn btn-success">添加明细</button>
-                                                <table class="table table-bordered table-hover">
-                                                    <thead>
-                                                    <tr class="success">
-                                                        <!--<td>序号</td>-->
-                                                        <td>工单状态</td>
-                                                        <td>工单编号</td>
-                                                        <td>工单类型</td>
-                                                        <td>资源编号</td>
-                                                        <td>资源类型</td>
-                                                        <td>运营商</td>
-                                                        <td>挂账部门</td>
-                                                        <td>使用部门</td>
-                                                        <td>创建日期</td>
-                                                        <td>操作</td>
+                                    <!--<div class="panel">-->
+                                        <!--<div class="panel-head">-->
+                                <div class="form-group">
+                                    <label for="ftable"></label>
+                                    <table class="table table-bordered table-hover" id="ftable">
+                                        <thead>
+                                        <tr class="success">
+                                            <!--<td>序号</td>-->
+                                            <td>运营商</td>
+                                            <td>资源类型</td>
+                                            <td>装机数量</td>
+                                            <td>资费</td>
+                                            <td>所在机房</td>
+                                            <td>所属项目</td>
+                                            <td>pdf模板</td>
+                                            <td>操作</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="construction_detail">
 
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody id="construction_detail">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <button id="addResource" type="button" class="btn btn-success">添加明细</button>
+                                </div>
+                                        <!--<div class="panel-body "  style="border-style: dashed;background-color:#eceeef">-->
+                                        <!--<div class="panel-body "  style="background-color:#eceeef">-->
+                                <!--<div  class="col-sm-12">-->
+                                    <div class="form-group" style="background-color:#eceeef" >
+                                        <label for="foperator">运营商</label>
+                                        <select id="foperator" name="operator" class="form-control">
+                                            <option value="0">请选择</option>
+                                            <option value="电信">电信</option>
+                                            <option value="联通">联通</option>
+                                        </select>
 
-                                                    </tbody>
-                                                </table>
-                                        </div>
-                                        <div class="panel-body">
+                                    <!--</div>-->
+                                    <!--<div class="form-group">-->
+                                        <label for="fresourceType">资源类型</label>
+                                        <select id="fresourceType" name="resourceType" class="form-control">
+                                            <option value="0">请选择</option>
+                                            <option value="电话">电话</option>
+                                            <option value="宽带">宽带</option>
+                                            <option value="专线网络">专线网络</option>
+                                        </select>
 
+                                    <!--</div>-->
+                                    <!--<div class="form-group">-->
+                                        <label for="fnumber">装机数量</label>
+                                        <input type="number" class="form-control" id="fnumber" name="number">
 
-                                        </div>
+                                        <input type="hidden" class="form-control" name="creatorId" id="fcreatorId" value="" >
+                                        <input type="hidden" class="form-control" name="id" id="fid" value="">
                                     </div>
+                                <!--</div>-->
+                                <!--</div>-->
+                                <div class="form-group">
 
-                                    <input type="hidden" class="form-control" name="creatorId" id="fcreatorId" value="" >
-                                    <input type="hidden" class="form-control" name="id" id="fid" value="">
-                                    <div class="form-group">
-                                        <button id="saveBtn" type="button" class="btn btn-success">保存</button>
-                                        <button id="resetBtn" type="reset" class="btn btn-warning">重置</button>
-                                        <button id="auditBtn" class="btn btn-danger">提交审核</button>
-                                    </div>
+                                    <button id="saveBtn" type="button" class="btn btn-success">保存</button>
+                                    <button id="resetBtn" type="reset" class="btn btn-warning">重置</button>
+                                    <button id="auditBtn" class="btn btn-danger">提交审核</button>
+                                </div>
 
 
-                                </form>
+                                <!--</form>-->
                         <!-- END BASIC TABLE -->
                     </div>
                     <!--</div>-->
