@@ -91,77 +91,234 @@
                                         <textarea  rows="5" cols="30" class="form-control" name="reason" id="freason">
                                         </textarea>
                                     </div>
-                                    <!--<div class="panel">-->
+                            </div>
+                            <div class="panel-body">
+
+                                <div class="container-fluid">
+                                    <div class="row clearfix">
+                                        <div class="col-md-12 column">
+                                            <blockquote style="border-left: 5px solid #f60;color:#f60;padding: 0 0 0 20px;">
+                                                <b>
+                                                    装机明细
+                                                </b>
+                                            </blockquote>
+                                        </div>
+                                        <div class="col-md-12 column">
+                                            <table class="table table-bordered" style="text-align:center;">
+                                                <thead>
+                                                <tr style="background-color:#ddd;">
+                                                    <td>序号</td>
+                                                    <td>运营商</td>
+                                                    <td>资源类型</td>
+                                                    <td>装机数量</td>
+                                                    <td>资费</td>
+                                                    <td>所在机房</td>
+                                                    <td>所属项目</td>
+                                                    <td>pdf模板</td>
+                                                    <td>操作</td>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <!--<td    scope="row">1</td>-->
+                                                    <!--<td>￥1.00</td>-->
+                                                    <!--<td>无限制</td>-->
+                                                    <!--<td>1</td>-->
+                                                    <!--<td>1</td>-->
+                                                    <!--<td>项目结束后的30天</td>-->
+                                                    <!--<td>包邮</td>-->
+                                                    <!--<td>-->
+                                                        <!--<button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>-->
+                                                        <!--<button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>-->
+                                                    <!--</td>-->
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <button type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> 添加回报</button><div style="border:10px solid #f60;border-bottom-color: #eceeef;border-width: 10px;width:20px;margin-left:20px;border-left-color: rgba(221, 221, 221, 0);border-top-color: rgba(221, 221, 221, 0);border-right-color: rgba(221, 221, 221, 0);"></div>
+                                            <div class="panel panel-default" style="border-style: dashed;background-color:#eceeef">
+                                                <div class="panel-body">
+
+                                                    <div class="col-md-12 column">
+                                                        <form class="form-horizontal">
+                                                            <div class="form-group">
+                                                                <label class="col-sm-2 control-label">运营商</label>
+                                                                <div class="col-sm-4">
+                                                                    <label class="select-inline">
+                                                                        <!--<input type="radio" name="operator" value="电信"> 电信-->
+                                                                        <select class="form-control" style="width:200px;display:inline">
+                                                                            <option>电信</option>
+                                                                            <option>联通</option>
+                                                                        </select>
+                                                                    </label>
+                                                                </div>
+                                                                <label class="col-sm-2 control-label">资源类型</label>
+                                                                <div class="col-sm-4">
+                                                                    <label class="select-inline">
+                                                                        <select class="form-control" style="width:200px;display:inline">
+                                                                            <option>电话</option>
+                                                                            <option>宽带</option>
+                                                                            <option>专线</option>
+                                                                        </select>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-sm-2 control-label">装机数量</label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="number" class="form-control" style="width:200px;display:inline">
+                                                                </div>
+                                                                <label class="col-sm-2 control-label">资费</label>
+                                                                <div class="col-sm-4">
+                                                                    <input type="number" class="form-control" style="width:200px;display:inline">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-sm-2 control-label">说明图片</label>
+                                                                <div class="col-sm-10">
+                                                                    <button type="button" class="btn btn-primary btn-lg active">上传图片</button>
+                                                                    <label class="control-label">支持jpg、jpeg、png、gif格式，大小不超过2M，建议尺寸：760*510px选择文件</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-sm-2 control-label">回报数量（名）</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-control" style="width:100px;display:inline" >
+                                                                    <label class="control-label">“0”为不限回报数量</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-sm-2 control-label">单笔限购</label>
+                                                                <div class="col-sm-10">
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" name="inlineRadioOptions2" id="inlineRadio1" value="option1"> 不限购
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="option2"> 限购
+                                                                    </label>
+                                                                    <input type="text" class="form-control" style="width:100px;display:inline" >
+                                                                    <label class="radio-inline">默认数量为1，且不超过上方已设置的回报数量</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-sm-2 control-label">运费(元)</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-control" style="width:100px;display:inline" value="0" >
+                                                                    <label class="control-label">“0”为包邮</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-sm-2 control-label">发票</label>
+                                                                <div class="col-sm-10">
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" name="inlineRadioOptions1" id="inlineRadio1" value="option1"> 不可开发票
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" name="inlineRadioOptions1" id="inlineRadio2" value="option2"> 可开发票（包括个人发票和自定义抬头发票）
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-sm-2 control-label">回报时间</label>
+                                                                <div class="col-sm-10">
+                                                                    <label class="radio-inline">
+                                                                        项目结束后
+                                                                    </label>
+                                                                    <input type="text" class="form-control" style="width:100px;display:inline" >
+                                                                    <label class="radio-inline">天，向支持者发送回报</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-sm-2 control-label"></label>
+                                                                <div class="col-sm-10">
+                                                                    <button type="button" class="btn btn-primary">确定</button>
+                                                                    <button type="button" class="btn btn-default">取消</button>
+                                                                </div>
+                                                            </div>
+
+                                                        </form>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button id="saveBtn" type="button" class="btn btn-success">保存</button>
+                                                <button id="resetBtn" type="reset" class="btn btn-warning">重置</button>
+                                                <button id="auditBtn" class="btn btn-danger">提交审核</button>
+                                            </div>
+                                        </div>
+
+                                        <!--<div class="panel">-->
                                         <!--<div class="panel-head">-->
-                                <div class="form-group">
-                                    <label for="ftable"></label>
-                                    <table class="table table-bordered table-hover" id="ftable">
-                                        <thead>
-                                        <tr class="success">
-                                            <!--<td>序号</td>-->
-                                            <td>运营商</td>
-                                            <td>资源类型</td>
-                                            <td>装机数量</td>
-                                            <td>资费</td>
-                                            <td>所在机房</td>
-                                            <td>所属项目</td>
-                                            <td>pdf模板</td>
-                                            <td>操作</td>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="construction_detail">
+                                <!--<div class="panel-body">-->
+                                    <!--<label for="ftable"></label>-->
+                                    <!--<table class="table table-bordered table-hover" id="ftable">-->
+                                        <!--<thead>-->
+                                        <!--<tr class="success">-->
+                                            <!--&lt;!&ndash;<td>序号</td>&ndash;&gt;-->
+                                            <!--<td>运营商</td>-->
+                                            <!--<td>资源类型</td>-->
+                                            <!--<td>装机数量</td>-->
+                                            <!--<td>资费</td>-->
+                                            <!--<td>所在机房</td>-->
+                                            <!--<td>所属项目</td>-->
+                                            <!--<td>pdf模板</td>-->
+                                            <!--<td>操作</td>-->
+                                        <!--</tr>-->
+                                        <!--</thead>-->
+                                        <!--<tbody id="construction_detail">-->
 
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <hr>
-                                <div class="form-group">
-                                    <button id="addResource" type="button" class="btn btn-success">添加明细</button>
-                                </div>
-                                        <!--<div class="panel-body "  style="border-style: dashed;background-color:#eceeef">-->
-                                        <!--<div class="panel-body "  style="background-color:#eceeef">-->
-                                <!--<div  class="col-sm-12">-->
-                                    <div class="form-group" style="background-color:#eceeef" >
-                                        <label for="foperator">运营商</label>
-                                        <select id="foperator" name="operator" class="form-control">
-                                            <option value="0">请选择</option>
-                                            <option value="电信">电信</option>
-                                            <option value="联通">联通</option>
-                                        </select>
+                                        <!--</tbody>-->
+                                    <!--</table>-->
 
-                                    <!--</div>-->
-                                    <!--<div class="form-group">-->
-                                        <label for="fresourceType">资源类型</label>
-                                        <select id="fresourceType" name="resourceType" class="form-control">
-                                            <option value="0">请选择</option>
-                                            <option value="电话">电话</option>
-                                            <option value="宽带">宽带</option>
-                                            <option value="专线网络">专线网络</option>
-                                        </select>
-
-                                    <!--</div>-->
-                                    <!--<div class="form-group">-->
-                                        <label for="fnumber">装机数量</label>
-                                        <input type="number" class="form-control" id="fnumber" name="number">
-
-                                        <input type="hidden" class="form-control" name="creatorId" id="fcreatorId" value="" >
-                                        <input type="hidden" class="form-control" name="id" id="fid" value="">
-                                    </div>
+                                <!--<hr>-->
+                                <!--<div class="form-group">-->
+                                    <!--<button id="addResource" type="button" class="btn btn-success">添加明细</button>-->
                                 <!--</div>-->
+                                        <!--&lt;!&ndash;<div class="panel-body "  style="border-style: dashed;background-color:#eceeef">&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<div class="panel-body "  style="background-color:#eceeef">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<div  class="col-sm-12">&ndash;&gt;-->
+                                    <!--<div class="form-group" style="background-color:#eceeef" >-->
+                                        <!--<label for="foperator">运营商</label>-->
+                                        <!--<select id="foperator" name="operator" class="form-control">-->
+                                            <!--<option value="0">请选择</option>-->
+                                            <!--<option value="电信">电信</option>-->
+                                            <!--<option value="联通">联通</option>-->
+                                        <!--</select>-->
+
+                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
+                                        <!--<label for="fresourceType">资源类型</label>-->
+                                        <!--<select id="fresourceType" name="resourceType" class="form-control">-->
+                                            <!--<option value="0">请选择</option>-->
+                                            <!--<option value="电话">电话</option>-->
+                                            <!--<option value="宽带">宽带</option>-->
+                                            <!--<option value="专线网络">专线网络</option>-->
+                                        <!--</select>-->
+
+                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
+                                        <!--<label for="fnumber">装机数量</label>-->
+                                        <!--<input type="number" class="form-control" id="fnumber" name="number">-->
+
+                                        <!--<input type="hidden" class="form-control" name="creatorId" id="fcreatorId" value="" >-->
+                                        <!--<input type="hidden" class="form-control" name="id" id="fid" value="">-->
+                                    <!--</div>-->
+                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                <!--<div class="form-group">-->
+
+                                    <!--<button id="saveBtn" type="button" class="btn btn-success">保存</button>-->
+                                    <!--<button id="resetBtn" type="reset" class="btn btn-warning">重置</button>-->
+                                    <!--<button id="auditBtn" class="btn btn-danger">提交审核</button>-->
                                 <!--</div>-->
-                                <div class="form-group">
 
-                                    <button id="saveBtn" type="button" class="btn btn-success">保存</button>
-                                    <button id="resetBtn" type="reset" class="btn btn-warning">重置</button>
-                                    <button id="auditBtn" class="btn btn-danger">提交审核</button>
-                                </div>
-
-
+                                <!--</div>-->
                                 <!--</form>-->
                         <!-- END BASIC TABLE -->
                     </div>
                     <!--</div>-->
-                </div>
+
 
             </div>
         </div>
