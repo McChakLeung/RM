@@ -11,6 +11,8 @@ public class ConstructDetail {
 
     private Long expenseId;
 
+    private Long workplaceId;
+
     private Long networkRoomId;
 
     private Long projectId;
@@ -109,5 +111,13 @@ public class ConstructDetail {
 
     public void setCreatorId(Long creatorId) {
         this.creatorId = creatorId;
+    }
+
+    public Long getWorkplaceId() {
+        return workplaceId;
+    }
+
+    public void setWorkplaceId(Long workplaceId) {
+        this.workplaceId = workplaceId;
     }
 }

@@ -5,6 +5,8 @@ public class ResourceMigration {
 
     private Long resourceId;
 
+    private Long workplaceId;
+
     private Long newNetworkRoomId;
 
     private Long expenseId;
@@ -89,5 +91,13 @@ public class ResourceMigration {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public Long getWorkplaceId() {
+        return workplaceId;
+    }
+
+    public void setWorkplaceId(Long workplaceId) {
+        this.workplaceId = workplaceId;
     }
 }
