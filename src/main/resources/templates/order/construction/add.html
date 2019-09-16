@@ -55,6 +55,9 @@
                             <div class="panel-body">
                                 <!--<form id="form">-->
                                     <div class="form-group">
+                                        <input type="hidden" class="form-control" name="type" id="fid">
+                                    </div>
+                                    <div class="form-group">
                                         <label for="ftype">工单类型</label>
                                         <input type="text" class="form-control" name="type" id="ftype" value="建设工单" disabled>
                                     </div>
@@ -247,15 +250,45 @@
 
     var orderId = null;
     var loadingIndex = -1;
+    var type = "建设工单";
 
     //当页面加载时自动调用
     $(function () {
-        //预先
+
+        //预先创建一个空的订单记录，当页面退出时如果不保存则删除
+        orderId = createOrder();
+        alert(orderId)
+        //将获得的订单id传入并查询明细数据
         showDetail(orderId);
     })
 
+    //预先创建空订单记录
+    function createOrder() {
+
+        $.ajax({
+            type:"post",
+            url:"[[@{|/order/construction/createOrder|}]]",
+            data:{
+                type:type
+            },
+            success:function (result) {
+                if(result.success == true){
+                    orderId = result.datas;
+                    //$("#fid").val(result.datas)
+                    //alert(orderId);
+                }
+            },
+            error:function () {
+
+            }
+        });
+        return orderId;
+    }
+
     //异步加载装机明细数据
     function showDetail(orderId) {
+        //orderId = $("#fid").val()
+        //alert(orderId)
         //清空表格中原有的数据行
         $("#detailList tr:gt(0)").empty("");
 
