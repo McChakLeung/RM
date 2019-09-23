@@ -109,6 +109,7 @@
                                                     <td>资源类型</td>
                                                     <td>装机数量</td>
                                                     <td>资费</td>
+                                                    <td>职场地址</td>
                                                     <td>所在机房</td>
                                                     <td>所属项目</td>
                                                     <td>pdf模板</td>
@@ -247,67 +248,38 @@
 <!-- END WRAPPER -->
 </div>
 <script type="text/javascript">
-
-    var orderId = null;
-    var loadingIndex = -1;
-    var type = "建设工单";
-
-    //当页面加载时自动调用
+    
+    //定义一个json接收工单数据，用于临时存放，临时数据的增删改查都在这个json数据中处理
+    var order_detail_obj = {};
+    
     $(function () {
-
-        //预先创建一个空的订单记录，当页面退出时如果不保存则删除
-        var promise = createOrder();
-        alert(promise.success( data => result.datas)
-        //将获得的订单id传入并查询明细数据
-        //showDetail(orderId);
+        showDetail();
     })
 
-    //预先创建空订单记录
-    function createOrder() {
+    function showDetail() {
 
-       return $.ajax({
-            type:"post",
-            url:"[[@{|/order/construction/createOrder|}]]",
-            data:{
-                type:type
-            }
-            // success:function (result) {
-            //     if(result.success == true){
-            //         return result.datas;
-            //         //$("#fid").val(result.datas)
-            //
-            //     }
-            // },
-            // error:function () {
-            //
-            // }
+        order_detail_obj = [{operator:"电信",resourceType:"电话",number:"21683709",expense:"100",workplace:{address:"test"},networkRoom:{name:"testaaa"},createtime:"2019-09-23",user:{username:"麦泽良"}}];
+
+        var content = '';
+
+        $.each(order_detail_obj,function(i,n){
+            content+='<tr>';
+            content+='  <td>'+(i+1)+'</td>';
+            content+='  <td>'+n.operator+'</td>';
+            content+='  <td>'+n.resourceType+'</td>';
+            content+='  <td>'+n.number+'</td>';
+            content+='  <td>'+n.expense+'</td>';
+            content+='  <td>'+n.workplace.address + '</td>';
+            content+='  <td>'+n.networkRoom.name+'</td>';
+            content+='  <td>'+n.createtime+'</td>';
+            content+='  <td>'+n.user.username+'</td>';
+            content+='  <td>';
+            content+='	  <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+            content+='	  <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+            content+='  </td>';
+            content+='</tr>';
         });
-        //return orderId;
-    }
-
-    //异步加载装机明细数据
-    function showDetail(orderId) {
-        //orderId = $("#fid").val()
-        alert(orderId)
-        //清空表格中原有的数据行
-        $("#detailList tr:gt(0)").empty("");
-
-        //异步重新加载数据库数据
-        $.ajax({
-            type:"post",
-            url:"",
-            data:orderId,
-            beforeSend:function(){
-
-            },
-            success:function () {
-
-            },
-            error:function () {
-
-            }
-
-        });
+        $("tbody").html(content);
 
     }
 
