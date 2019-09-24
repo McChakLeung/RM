@@ -152,7 +152,7 @@
                                                                 <label class="col-sm-2 control-label">资源类型</label>
                                                                 <div class="col-sm-4">
                                                                     <label class="select-inline">
-                                                                        <select class="form-control" style="width:200px;display:inline" id="fresourceType">
+                                                                        <select class="form-control" style="width:200px;display:inline" id="fresourceType" name="resourceType">
                                                                             <option>电话</option>
                                                                             <option>宽带</option>
                                                                             <option>专线</option>
@@ -173,7 +173,7 @@
                                                             <div class="form-group">
                                                                 <label class="col-sm-2 control-label">所在职场</label>
                                                                 <div class="col-sm-10">
-                                                                    <select class="form-control" style="width:620px;display:inline" id="fworkplace" name="workplace.address">
+                                                                    <select class="form-control" style="width:620px;display:inline" id="fworkplace" name="Workplace.address">
                                                                         <option>广发金融大厦17楼</option>
                                                                     </select>
                                                                 </div>
@@ -181,7 +181,7 @@
                                                             <div class="form-group">
                                                                 <label class="col-sm-2 control-label">机房</label>
                                                                 <div class="col-sm-10">
-                                                                    <select class="form-control" style="width:200px;display:inline" id="fnetworkRoom" name="networkRoom.name">
+                                                                    <select class="form-control" style="width:200px;display:inline" id="fnetworkRoom" name="name">
                                                                         <option>机房1</option>
                                                                     </select>
                                                                 </div>
@@ -262,7 +262,7 @@
         $.each(formData,function(){
             if(dataArray[this.name]){
                 if(!dataArray[this.name].push){
-                    dataArray[this.name] = [dataArray[this.name]];
+                    dataArray[this.name] = [dataArray[this.name],this.value];
                 }
                 dataArray[this.name].push(this.value || "");
             }else{
