@@ -143,7 +143,7 @@
                                                                 <div class="col-sm-4">
                                                                     <label class="select-inline">
                                                                         <!--<input type="radio" name="operator" value="电信"> 电信-->
-                                                                        <select class="form-control" style="width:200px;display:inline" id="foperator">
+                                                                        <select class="form-control" style="width:200px;display:inline" id="foperator" name="operator">
                                                                             <option>电信</option>
                                                                             <option>联通</option>
                                                                         </select>
@@ -163,17 +163,17 @@
                                                             <div class="form-group">
                                                                 <label class="col-sm-2 control-label">装机数量</label>
                                                                 <div class="col-sm-4">
-                                                                    <input type="number" class="form-control" style="width:200px;display:inline" id="fnumber">
+                                                                    <input type="number" class="form-control" style="width:200px;display:inline" id="fnumber" name="number">
                                                                 </div>
                                                                 <label class="col-sm-2 control-label">资费</label>
                                                                 <div class="col-sm-4">
-                                                                    <input type="number" class="form-control" style="width:200px;display:inline" id="fexpense">
+                                                                    <input type="number" class="form-control" style="width:200px;display:inline" id="fexpense" name="expense">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-sm-2 control-label">所在职场</label>
                                                                 <div class="col-sm-10">
-                                                                    <select class="form-control" style="width:620px;display:inline" id="fworkplace" name="Workplace.address">
+                                                                    <select class="form-control" style="width:620px;display:inline" id="fworkplace" name="workplace.address">
                                                                         <option>广发金融大厦17楼</option>
                                                                     </select>
                                                                 </div>
@@ -189,7 +189,7 @@
                                                             <div class="form-group">
                                                                 <label class="col-sm-2 control-label">所属项目</label>
                                                                 <div class="col-sm-10">
-                                                                    <select class="form-control" style="width:620px;display:inline" id="fproject">
+                                                                    <select class="form-control" style="width:620px;display:inline" id="fproject" name="project.projectName">
                                                                         <option>xx职场搬迁项目</option>
                                                                     </select>
                                                                 </div>
@@ -197,22 +197,25 @@
                                                             <div class="form-group">
                                                                 <label class="col-sm-2 control-label">pdf模板</label>
                                                                 <div class="col-sm-10">
-                                                                    <select class="form-control" style="width:100px;display:inline" id="ftemplateType">
+                                                                    <select class="form-control" style="width:100px;display:inline" id="ftemplateType" name="template.templateType">
                                                                         <option>电话</option>
                                                                         <option>宽带</option>
                                                                         <option>专线</option>
                                                                     </select>
-                                                                    <select class="form-control" style="width:260px;display:inline" id="ftemplateUseage">
+                                                                    <select class="form-control" style="width:260px;display:inline" id="ftemplateUseage" name="template.templateUseage">
                                                                         <option>新装</option>
                                                                         <option>迁移</option>
                                                                         <option>拆机</option>
                                                                     </select>
-                                                                    <select class="form-control" style="width:260px;display:inline" id="ftemplateName">
+                                                                    <select class="form-control" style="width:260px;display:inline" id="ftemplateName" name="template.templateName">
                                                                         <option>模板1</option>
                                                                         <option>模板2</option>
                                                                         <option>模板3</option>
                                                                     </select>
                                                                 </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="hidden" name="user.username" th:value="${session.user.username}">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-sm-2 control-label"></label>
@@ -251,12 +254,12 @@
     
     //定义一个json接收工单数据，用于临时存放，临时数据的增删改查都在这个json数据中处理
     var order_detail_obj = new Array();
-    
+
     $(function () {
         showDetail(order_detail_obj);
     })
 
-    $("#addBtn").click(function (order_detail_obj) {
+    $("#addBtn").click(function () {
         var dataArray = {};
         var formData = $("#forder_detail").serializeArray();
         console.log(formData)
@@ -297,6 +300,7 @@
         });
         console.log(dataArray)
         order_detail_obj.push(dataArray)
+        console.log(order_detail_obj)
         showDetail(order_detail_obj);
     })
 
@@ -315,8 +319,10 @@
             content+='  <td>'+n.expense+'</td>';
             content+='  <td>'+n.workplace.address + '</td>';
             content+='  <td>'+n.networkRoom.name+'</td>';
-            content+='  <td>'+n.createtime+'</td>';
-            content+='  <td>'+n.user.username+'</td>';
+            content+='  <td>'+n.project.projectName+'</td>';
+            content+='  <td>'+n.template.templateName+'</td>';
+            // content+='  <td>'+n.createtime+'</td>';
+            // content+='  <td>'+n.user.username+'</td>';
             content+='  <td>';
             content+='	  <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
             content+='	  <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
