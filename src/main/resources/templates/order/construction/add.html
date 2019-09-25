@@ -181,7 +181,7 @@
                                                             <div class="form-group">
                                                                 <label class="col-sm-2 control-label">机房</label>
                                                                 <div class="col-sm-10">
-                                                                    <select class="form-control" style="width:200px;display:inline" id="fnetworkRoom" name="name">
+                                                                    <select class="form-control" style="width:200px;display:inline" id="fnetworkRoom" name="networkRoom.name">
                                                                         <option>机房1</option>
                                                                     </select>
                                                                 </div>
@@ -250,26 +250,54 @@
 <script type="text/javascript">
     
     //定义一个json接收工单数据，用于临时存放，临时数据的增删改查都在这个json数据中处理
-    var order_detail_obj = [];
+    var order_detail_obj = new Array();
     
     $(function () {
         showDetail(order_detail_obj);
     })
 
-    $("#addBtn").click(function () {
+    $("#addBtn").click(function (order_detail_obj) {
         var dataArray = {};
         var formData = $("#forder_detail").serializeArray();
+        console.log(formData)
         $.each(formData,function(){
-            if(dataArray[this.name]){
-                if(!dataArray[this.name].push){
-                    dataArray[this.name] = [dataArray[this.name],this.value];
+            //var name = this.name;
+            var value = this.value;
+            //分割name属性，并返回一个数组
+            var paths = this.name.split(".");
+            console.log(paths)
+            //返回数组的长度
+            var len = paths.length;
+            var obj = dataArray;
+            $.each(paths,function(i,e){
+                //判断当前的遍历的数据是否有二级数组；i == len-1 为true说明是二级数组，false说明为一级数组
+                if(i == len-1){
+                    console.log(obj[e])
+                    //判断该数组是否存在当前遍历的属性
+                    if (obj[e]) {
+                        //push()方法的返回值是把指定的值添加到数组后的新长度，
+                        // "!"是一个布尔操作符，用于将操作的值强制转换为布尔值并取反,
+                        // 即!obj[e].push的值为false
+                        if (!obj[e].push) {
+                            obj[e] = [obj[e]];
+                        }
+                        obj[e].push(value || '');
+                    } else {
+                        obj[e] = value || '';
+                    }
+                }else{
+                    //如一级数组不为空，则将值设置为{}
+                    if(!obj[e]){
+                        obj[e] = {};
+                    }
                 }
-                dataArray[this.name].push(this.value || "");
-            }else{
-                dataArray[this.name] = this.value || "";
-            }
+                obj = dataArray[e];
+            });
+
         });
-        console.log(JSON.stringify(dataArray));
+        console.log(dataArray)
+        order_detail_obj.push(dataArray)
+        showDetail(order_detail_obj);
     })
 
     function showDetail(order_detail_obj) {
