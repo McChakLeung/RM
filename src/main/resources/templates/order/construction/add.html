@@ -53,7 +53,7 @@
                         <!-- BASIC TABLE -->
                         <div class="panel">
                             <div class="panel-body">
-                                <!--<form id="form">-->
+                                <form id="form">
                                     <div class="form-group">
                                         <input type="hidden" class="form-control" name="type" id="fid">
                                     </div>
@@ -89,6 +89,7 @@
                                         <textarea  rows="5" cols="30" class="form-control" name="reason" id="freason">
                                         </textarea>
                                     </div>
+                                </form>
                             </div>
                             <div class="panel-body">
                                 <div class="container-fluid">
@@ -300,8 +301,6 @@
         showDetail(order_detail_obj);
     })
 
-
-
     function showDetail(order_detail_obj) {
 
         //order_detail_obj = [{operator:"电信",resourceType:"电话",number:"2",expense:"100",workplace:{address:"东莞市南城区石竹路广发金融大厦17楼"},networkRoom:{name:"机房1"},createtime:"2019-09-23",user:{username:"麦泽良"}}];
@@ -341,31 +340,76 @@
         })
     }
 
+    $("#resetBtn").click(function () {
+        $("#form")[0].reset();
+    })
+    
+    $("#saveBtn").click(function () {
+        var form = $("#form").serializeArray();
+        $.each(form, function() {
+            if (order_detail_obj[this.name]) {
+                if (!order_detail_obj[this.name].push) {
+                    order_detail_obj[this.name] = [order_detail_obj[this.name]];
+                }
+                order_detail_obj[this.name].push(this.value || '');
+            } else {
+                order_detail_obj[this.name] = this.value || '';
+            }
+        });
+        //console.log(order_detail_obj)
+        $.ajax({
+            type:"post",
+            url:"[[@{|/order/construction/doConstructionAdd|}]]",
+            data:order_detail_obj,
+            beforeSend:function () {
+                // if($.trim(floginacct.val()) == ""){
+                //     layer.msg("登录账号不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                //         floginacct.val("");
+                //         floginacct.focus();
+                //     })
+                //     return false
+                // }
+                //
+                // //验证用户名
+                // if($.trim(fusername.val()) == ""){
+                //     layer.msg("用户名不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                //         fusername.val("");
+                //         fusername.focus();
+                //     })
+                //     return false
+                // }
+                //
+                // // //验证密码是否为空
+                // // if($.trim(fpassword.val()) == ""){
+                // //     layer.msg("密码不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                // //         fpassword.val("");
+                // //         fpassword.focus();
+                // //     })
+                // //     return false
+                // // }
+                // //
+                // // if(checkPassword(fpassword.val())==false){
+                // //     layer.msg("密码必须由数字和字母组成，且长度不小于8，请重新输入", {time: 2000, icon: 5, shift: 5}, function () {
+                // //         fpassword.focus();
+                // //     })
+                // //     return false;
+                // // }
+                //
+                // loadingIndex = layer.load(3, {time: 10*1000});
+            },
 
-        // layer.confirm("确定要删除此行记录吗？" ,{icon: 3, title:'提示'}, function(cindex){
-        //     layer.close(cindex);
-        //     console.log($(this))
-        //     showDetail(order_detail_obj)
-        // },function (cindex) {
-        //     layer.close(cindex);
-        // })
+            success:function (result) {
+                layer.close(loadingIndex);
+                if(result.success==true) {
+                    window.location.href='[[@{|/order/construction/toConstructionAdd|}]]';
+                }else{
+                    layer.msg(result.message,{time:2000, icon:5, shift:5})
+                }
 
+            },
 
-        // layer.confirm("确定要删除此行记录吗？",  {icon: 3, title:'提示'}, function(cindex){
-        //     layer.close(cindex);
-        //     this.parents().parents().remove();
-        //     showDetail(order_detail_obj)
-        // }, function(cindex){
-        //     layer.close(cindex);
-        // });
-        // layer.confirm("确定要删除此行记录吗？" ,{icon: 3, title:'提示'}, function(cindex){
-        //     layer.close(cindex);
-        //     this.parents().parents().remove();
-        //     showDetail(order_detail_obj)
-        // },function (cindex) {
-        //     layer.close(cindex);
-        // })
-
+        })
+    })
 
 </script>
 

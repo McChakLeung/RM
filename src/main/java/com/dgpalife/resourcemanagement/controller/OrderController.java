@@ -22,7 +22,7 @@ public class OrderController {
     }
 
     @ResponseBody
-    @RequestMapping("/construction/createOrder")
+    @RequestMapping("/construction/doConstructionAdd")
     public Object createOrder(Order order){
         AjaxResult result = new AjaxResult();
         try{
