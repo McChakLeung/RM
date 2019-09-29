@@ -32,12 +32,12 @@ public class  BasicController {
 
     @RequestMapping("/index")
     public String index(){
-        return "index";
+        return "/index";
     }
 
     @RequestMapping("/toLogin")
     public String toLogin(){
-        return "login";
+        return "/login";
     }
 
 
