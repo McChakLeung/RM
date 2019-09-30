@@ -5,6 +5,7 @@ import com.dgpalife.resourcemanagement.model.Order;
 import com.dgpalife.resourcemanagement.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,7 +24,7 @@ public class OrderController {
 
     @ResponseBody
     @RequestMapping("/construction/doConstructionAdd")
-    public Object createOrder(Order order){
+    public Object createOrder(@RequestBody Order order){
         AjaxResult result = new AjaxResult();
         try{
             Long orderId = orderService.createOrder(order);
