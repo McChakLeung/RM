@@ -1,7 +1,12 @@
 package com.dgpalife.resourcemanagement.mapper;
 
 import com.dgpalife.resourcemanagement.model.ConstructDetail;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
+@Mapper
 public interface ConstructDetailMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -14,4 +19,6 @@ public interface ConstructDetailMapper {
     int updateByPrimaryKeySelective(ConstructDetail record);
 
     int updateByPrimaryKey(ConstructDetail record);
+
+    void insertByBatch(@Param("constructDetailList") List<ConstructDetail> constructDetailList);
 }

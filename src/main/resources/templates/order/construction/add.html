@@ -168,7 +168,7 @@
                                                                 </div>
                                                                 <label class="col-sm-2 control-label">资费</label>
                                                                 <div class="col-sm-4">
-                                                                    <input type="number" class="form-control" style="width:200px;display:inline" id="fexpense" name="expense">
+                                                                    <input type="number" class="form-control" style="width:200px;display:inline" id="fprice" name="price">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -255,7 +255,8 @@
 
     var loadingIndex = -1;
     //定义一个json接收工单数据，用于临时存放，临时数据的增删改查都在这个json数据中处理
-    var order_detail_obj = new Array();
+    var order_detail_obj = new Object();
+    var constructDetailList = new Array();
 
     $(function () {
         showDetail(order_detail_obj);
@@ -297,34 +298,32 @@
             });
 
         });
-        //var constructDetailList = new Array();
-        //constructDetailList["constructDetail"] = dataArray;
-        order_detail_obj["constructDetailList"] = dataArray;
-        console.log(order_detail_obj)
+
+
+        constructDetailList.push(dataArray);
+        order_detail_obj.constructDetailList = constructDetailList;
+        console.log(JSON.stringify(order_detail_obj))
         showDetail(order_detail_obj);
     })
 
     function showDetail(order_detail_obj) {
 
         //order_detail_obj = [{operator:"电信",resourceType:"电话",number:"2",expense:"100",workplace:{address:"东莞市南城区石竹路广发金融大厦17楼"},networkRoom:{name:"机房1"},createtime:"2019-09-23",user:{username:"麦泽良"}}];
-        console.log(order_detail_obj)
+        //console.log(order_detail_obj)
         var content = '';
-        var constructDetailList = order_detail_obj["constructDetailList"]
-        console.log(constructDetailList)
+        var constructDetailList = order_detail_obj.constructDetailList
+        //console.log(constructDetailList)
         $.each(constructDetailList,function(i,n){
-            console.log(n)
             content+='<tr>';
             content+='  <td>'+(i+1)+'</td>';
             content+='  <td>'+n.operator+'</td>';
             content+='  <td>'+n.resourceType+'</td>';
             content+='  <td>'+n.number+'</td>';
-            content+='  <td>'+n.expense+'</td>';
-            // content+='  <td>'+n.workplace.address + '</td>';
-            // content+='  <td>'+n.networkRoom.name+'</td>';
-            // content+='  <td>'+n.project.projectName+'</td>';
-            // content+='  <td>'+n.template.templateName+'</td>';
-            // content+='  <td>'+n.createtime+'</td>';
-            // content+='  <td>'+n.user.username+'</td>';
+            content+='  <td>'+n.price+'</td>';
+            content+='  <td>'+n.workplace.address + '</td>';
+            content+='  <td>'+n.networkRoom.name+'</td>';
+            content+='  <td>'+n.project.projectName+'</td>';
+            content+='  <td>'+n.template.templateName+'</td>';
             content+='  <td>';
             // content+='	  <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
             content+='	  <button type="button" onclick="deleteBtn('+i+')" class="btn btn-danger btn-xs delteBtn" value="aaa"><i class=" glyphicon glyphicon-remove"></i></button>';
@@ -363,7 +362,7 @@
                 order_detail_obj[this.name] = this.value || '';
             }
         });
-        //console.log(order_detail_obj)
+        console.log(JSON.stringify(order_detail_obj))
         $.ajax({
             type:"post",
             url:"[[@{|/order/construction/doConstructionAdd|}]]",
@@ -409,6 +408,7 @@
             success:function (result) {
                 layer.close(loadingIndex);
                 if(result.success==true) {
+                    layer.msg("订单创建成功",{time:2000, icon:5, shift:5})
                     window.location.href='[[@{|/order/construction/toConstructionAdd|}]]';
                 }else{
                     layer.msg(result.message,{time:2000, icon:5, shift:5})

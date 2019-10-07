@@ -27,9 +27,8 @@ public class OrderController {
     public Object createOrder(@RequestBody Order order){
         AjaxResult result = new AjaxResult();
         try{
-            Long orderId = orderService.createOrder(order);
-            result.setDatas(orderId);
-            result.setSuccess(true);
+            Integer count = orderService.createOrder(order);
+            result.setSuccess(count>0);
         }catch (Exception e){
             e.printStackTrace();
             result.setSuccess(false);
