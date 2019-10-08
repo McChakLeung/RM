@@ -173,84 +173,92 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="insertByBatch" >
-    <foreach collection="list" item="constructDetail" separator=";">
-      insert into t_construct_detail
-      <trim prefix="(" suffix=")" suffixOverrides=",">
-        <if test="constructDetail.id != null">
-          id,
-        </if>
-        <if test="constructDetail.operator != null">
-          operator,
-        </if>
-        <if test="constructDetail.resourceType != null">
-          resource_type,
-        </if>
-        <if test="constructDetail.number != null">
-          number,
-        </if>
-        <if test="constructDetail.expenseId != null">
-          expense_id,
-        </if>
-        <if test="constructDetail.workplaceId != null">
-          workplace_id,
-        </if>
-        <if test="constructDetail.networkRoomId != null">
-          network_room_id,
-        </if>
-        <if test="constructDetail.projectId != null">
-          project_id,
-        </if>
-        <if test="constructDetail.orderId != null">
-          order_id,
-        </if>
-        <if test="constructDetail.templateId != null">
-          template_id,
-        </if>
-        <if test="constructDetail.createTime != null">
-          create_time,
-        </if>
-        <if test="constructDetail.creatorId != null">
-          creator_id,
-        </if>
-      </trim>
-      <trim prefix="values (" suffix=")" suffixOverrides=",">
-        <if test="constructDetail.id != null">
-          #{id,jdbcType=BIGINT},
-        </if>
-        <if test="constructDetail.operator != null">
-          #{operator,jdbcType=VARCHAR},
-        </if>
-        <if test="constructDetail.resourceType != null">
-          #{resourceType,jdbcType=VARCHAR},
-        </if>
-        <if test="constructDetail.number != null">
-          #{number,jdbcType=INTEGER},
-        </if>
-        <if test="constructDetail.expenseId != null">
-          #{expenseId,jdbcType=BIGINT},
-        </if>
-        <if test="constructDetail.workplaceId != null">
-          #{workplaceId,jdbcType=BIGINT},
-        </if>
-        <if test="constructDetail.networkRoomId != null">
-          #{networkRoomId,jdbcType=BIGINT},
-        </if>
-        <if test="constructDetail.projectId != null">
-          #{projectId,jdbcType=BIGINT},
-        </if>
-        <if test="constructDetail.orderId != null">
-          #{orderId,jdbcType=BIGINT},
-        </if>
-        <if test="constructDetail.templateId != null">
-          #{templateId,jdbcType=BIGINT},
-        </if>
-        <if test="constructDetail.createTime != null">
-          #{createTime,jdbcType=VARCHAR},
-        </if>
-        <if test="constructDetail.creatorId != null">
-          #{creatorId,jdbcType=BIGINT},
-        </if>
-      </trim>
-    </foreach>
+      insert into t_construct_detail (operator, resource_type,
+      number, expense_id, workplace_id,network_room_id,
+      project_id, order_id, template_id,
+      create_time, creator_id) values
+      <foreach collection="constructDetailList" item="constructDetail" separator=",">
+        (#{constructDetail.operator,jdbcType=VARCHAR}, #{constructDetail.resourceType,jdbcType=VARCHAR},
+        #{constructDetail.number,jdbcType=INTEGER}, #{constructDetail.expenseId,jdbcType=BIGINT},#{constructDetail.workplaceId,jdbcType=BIGINT}, #{constructDetail.networkRoomId,jdbcType=BIGINT},
+        #{constructDetail.projectId,jdbcType=BIGINT}, #{constructDetail.orderId,jdbcType=BIGINT}, #{constructDetail.templateId,jdbcType=BIGINT},
+        #{constructDetail.createTime,jdbcType=VARCHAR}, #{constructDetail.creatorId,jdbcType=BIGINT})
+        <!--insert into t_construct_detail-->
+        <!--<trim prefix="(" suffix=")" suffixOverrides=",">-->
+          <!--<if test="constructDetail.id != null">-->
+            <!--id-->
+          <!--</if>-->
+          <!--<if test="constructDetail.operator != null">-->
+            <!--operator-->
+          <!--</if>-->
+          <!--<if test="constructDetail.resourceType != null">-->
+            <!--resource_type-->
+          <!--</if>-->
+          <!--<if test="constructDetail.number != null">-->
+            <!--number-->
+          <!--</if>-->
+          <!--<if test="constructDetail.expenseId != null">-->
+            <!--expense_id-->
+          <!--</if>-->
+          <!--<if test="constructDetail.workplaceId != null">-->
+            <!--workplace_id-->
+          <!--</if>-->
+          <!--<if test="constructDetail.networkRoomId != null">-->
+            <!--network_room_id-->
+          <!--</if>-->
+          <!--<if test="constructDetail.projectId != null">-->
+            <!--project_id-->
+          <!--</if>-->
+          <!--<if test="constructDetail.orderId != null">-->
+            <!--order_id-->
+          <!--</if>-->
+          <!--<if test="constructDetail.templateId != null">-->
+            <!--template_id-->
+          <!--</if>-->
+          <!--<if test="constructDetail.createTime != null">-->
+            <!--create_time-->
+          <!--</if>-->
+          <!--<if test="constructDetail.creatorId != null">-->
+            <!--creator_id-->
+          <!--</if>-->
+        <!--</trim>-->
+        <!--<trim prefix="values (" suffix=")" suffixOverrides=",">-->
+          <!--<if test="constructDetail.id != null">-->
+            <!--#{constructDetail.id,jdbcType=BIGINT}-->
+          <!--</if>-->
+          <!--<if test="constructDetail.operator != null">-->
+            <!--#{constructDetail.operator,jdbcType=VARCHAR}-->
+          <!--</if>-->
+          <!--<if test="constructDetail.resourceType != null">-->
+            <!--#{constructDetail.resourceType,jdbcType=VARCHAR}-->
+          <!--</if>-->
+          <!--<if test="constructDetail.number != null">-->
+            <!--#{constructDetail.number,jdbcType=INTEGER}-->
+          <!--</if>-->
+          <!--<if test="constructDetail.expenseId != null">-->
+            <!--#{constructDetail.expenseId,jdbcType=BIGINT}-->
+          <!--</if>-->
+          <!--<if test="constructDetail.workplaceId != null">-->
+            <!--#{constructDetail.workplaceId,jdbcType=BIGINT}-->
+          <!--</if>-->
+          <!--<if test="constructDetail.networkRoomId != null">-->
+            <!--#{constructDetail.networkRoomId,jdbcType=BIGINT}-->
+          <!--</if>-->
+          <!--<if test="constructDetail.projectId != null">-->
+            <!--#{constructDetail.projectId,jdbcType=BIGINT}-->
+          <!--</if>-->
+          <!--<if test="constructDetail.orderId != null">-->
+            <!--#{constructDetail.orderId,jdbcType=BIGINT}-->
+          <!--</if>-->
+          <!--<if test="constructDetail.templateId != null">-->
+            <!--#{constructDetail.templateId,jdbcType=BIGINT}-->
+          <!--</if>-->
+          <!--<if test="constructDetail.createTime != null">-->
+            <!--#{constructDetail.createTime,jdbcType=VARCHAR}-->
+          <!--</if>-->
+          <!--<if test="constructDetail.creatorId != null">-->
+            <!--#{constructDetail.creatorId,jdbcType=BIGINT}-->
+          <!--</if>-->
+        <!--</trim>-->
+      </foreach>
   </insert>
 </mapper>
