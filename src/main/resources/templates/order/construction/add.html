@@ -339,7 +339,7 @@
     function deleteBtn(i) {
         layer.confirm("确定要删除此行记录吗？" ,{icon: 3, title:'提示'}, function(cindex){
             layer.close(cindex);
-            order_detail_obj.splice(i,1);
+            order_detail_obj.constructDetailList.splice(i,1);
             showDetail(order_detail_obj);
         },function (cindex) {
             layer.close(cindex);
