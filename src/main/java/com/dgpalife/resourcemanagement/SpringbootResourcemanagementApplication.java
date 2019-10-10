@@ -11,8 +11,8 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
-//@SpringBootApplication
+//@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+@SpringBootApplication
 @ServletComponentScan
 public class SpringbootResourcemanagementApplication extends SpringBootServletInitializer {
 
