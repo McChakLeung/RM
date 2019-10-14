@@ -23,6 +23,7 @@ public class ActivitiConfig {
         Resource[] resources = new PathMatchingResourcePatternResolver().getResources(ResourceLoader.CLASSPATH_URL_PREFIX + "processes/*.bpmn");
         configuration.setTransactionManager(transactionManager);
         configuration.setDataSource(dataSource);
+        configuration.setDatabaseSchema("ACT");
         configuration.setDatabaseSchemaUpdate("true");
         configuration.setDeploymentResources(resources);
         configuration.setDbIdentityUsed(false);
