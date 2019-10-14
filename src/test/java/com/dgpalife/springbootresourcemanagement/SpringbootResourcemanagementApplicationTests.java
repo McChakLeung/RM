@@ -4,10 +4,13 @@ import com.dgpalife.resourcemanagement.SpringbootResourcemanagementApplication;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskQuery;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +80,28 @@ public class SpringbootResourcemanagementApplicationTests {
 		ProcessInstance processInstance = runtimeService.startProcessInstanceById(processDefinition.getId());
 		System.out.println(processInstance);
 
+	}
+
+	@Test
+	public void test04(){
+		//创建流程查询对象，找到需要启动的流程
+		RepositoryService repositoryService = processEngine.getRepositoryService();
+		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey("myProcess_2").latestVersion().singleResult();
+
+		//获取流程任务 ，执行任务
+		TaskService taskService = processEngine.getTaskService();
+		TaskQuery taskQuery = taskService.createTaskQuery();
+		List<Task> taskList1 = taskQuery.taskAssignee("zhangsan").list();
+		List<Task> taskList2 = taskQuery.taskAssignee("lisi").list();
+
+		for (Task task : taskList1) {
+			System.out.println("zhangsan的任务="+task.getName());
+			//taskService.complete(task.getId());
+		}
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		for (Task task : taskList2) {
+			System.out.println("lisi的任务="+task.getName());
+			//taskService.complete(task.getId());
+		}
 	}
 }
