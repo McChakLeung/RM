@@ -1,10 +1,9 @@
 package com.dgpalife.springbootresourcemanagement;
 
 import com.dgpalife.resourcemanagement.SpringbootResourcemanagementApplication;
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
+import org.activiti.engine.*;
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
@@ -172,5 +171,17 @@ public class SpringbootResourcemanagementApplicationTests {
 
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
+	}
+
+
+	/**
+	 * 获取历史服务对象，查看历史流程
+	 */
+	@Test
+	public void test5(){
+		HistoryService historyService = processEngine.getHistoryService();
+		HistoricProcessInstanceQuery historicProcessInstanceQuery = historyService.createHistoricProcessInstanceQuery();
+		HistoricProcessInstance historicProcessInstance = historicProcessInstanceQuery.processInstanceId("10001").finished().singleResult();
+		System.out.println(historicProcessInstance);
 	}
 }
