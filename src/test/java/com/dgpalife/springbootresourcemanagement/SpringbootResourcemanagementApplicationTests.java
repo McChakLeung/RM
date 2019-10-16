@@ -88,20 +88,89 @@ public class SpringbootResourcemanagementApplicationTests {
 		RepositoryService repositoryService = processEngine.getRepositoryService();
 		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey("myProcess_2").latestVersion().singleResult();
 
-		//获取流程任务 ，执行任务
+		//根据查询的流程，创建流程实例并启动
+		RuntimeService runtimeService = processEngine.getRuntimeService();
+		ProcessInstance processInstance = runtimeService.startProcessInstanceById(processDefinition.getId());
+		System.out.println(processInstance);
+
+
+		//获取流程任务
 		TaskService taskService = processEngine.getTaskService();
 		TaskQuery taskQuery = taskService.createTaskQuery();
 		List<Task> taskList1 = taskQuery.taskAssignee("zhangsan").list();
 		List<Task> taskList2 = taskQuery.taskAssignee("lisi").list();
 
+		//查询用户完成前的任务
+		System.out.println("zhangsan的任务");
 		for (Task task : taskList1) {
-			System.out.println("zhangsan的任务="+task.getName());
+			System.out.println(task.getName());
 			//taskService.complete(task.getId());
 		}
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("lisi的任务");
 		for (Task task : taskList2) {
-			System.out.println("lisi的任务="+task.getName());
+			System.out.println(task.getName());
 			//taskService.complete(task.getId());
 		}
+
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+		//重新查询
+		//taskQuery = taskService.createTaskQuery();
+		taskList1 = taskQuery.taskAssignee("zhangsan").list();
+		taskList2 = taskQuery.taskAssignee("lisi").list();
+
+		//假定张三完成任务，看看是否流转至李四
+		System.out.println("zhangsan的任务");
+		for (Task task : taskList1) {
+			System.out.println(task.getName());
+			taskService.complete(task.getId());
+		}
+		System.out.println("lisi的任务");
+		for (Task task : taskList2) {
+			System.out.println(task.getName());
+			//taskService.complete(task.getId());
+		}
+
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+		//重新查询
+		//taskQuery = taskService.createTaskQuery();
+		taskList1 = taskQuery.taskAssignee("zhangsan").list();
+		taskList2 = taskQuery.taskAssignee("lisi").list();
+
+		//假定lisi完成任务，看看最终结果
+		System.out.println("zhangsan的任务");
+		for (Task task : taskList1) {
+			System.out.println(task.getName());
+			//taskService.complete(task.getId());
+		}
+
+		System.out.println("lisi的任务");
+		for (Task task : taskList2) {
+			System.out.println(task.getName());
+			taskService.complete(task.getId());
+		}
+
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+		//重新查询
+		//taskQuery = taskService.createTaskQuery();
+		taskList1 = taskQuery.taskAssignee("zhangsan").list();
+		taskList2 = taskQuery.taskAssignee("lisi").list();
+
+		System.out.println("zhangsan的任务");
+		for (Task task : taskList1) {
+			System.out.println(task.getName());
+			//taskService.complete(task.getId());
+		}
+
+		System.out.println("lisi的任务");
+		for (Task task : taskList2) {
+			System.out.println(task.getName());
+			//taskService.complete(task.getId());
+		}
+
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
 	}
 }
