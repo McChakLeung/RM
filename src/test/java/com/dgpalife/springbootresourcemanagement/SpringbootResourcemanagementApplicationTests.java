@@ -186,4 +186,56 @@ public class SpringbootResourcemanagementApplicationTests {
 		System.out.println(historicProcessInstance.getDeploymentId());
 		System.out.println(historicProcessInstance.getEndTime());
 	}
+
+	/**
+	 * Activiti流程框架-任务领取
+	 */
+	@Test
+	public void test6(){
+		//1.创建流程定义
+		Deployment deploy = processEngine.getRepositoryService().createDeployment().addClasspathResource("processes/test06.bpmn").deploy();
+		System.out.println(deploy);
+
+		System.out.println("---------------------------");
+
+		//2.查询流程定义
+		ProcessDefinition processDefinition = processEngine.getRepositoryService().createProcessDefinitionQuery().processDefinitionKey("myProcess_3").latestVersion().singleResult();
+		System.out.println(processDefinition);
+
+		System.out.println("---------------------------");
+
+		//3.根据查询的流程定义，启动流程实例
+		ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId());
+		System.out.println(processInstance);
+
+		System.out.println("---------------------------");
+
+		//4.查询张三所分配的任务
+
+		List<Task> taskList = processEngine.getTaskService().createTaskQuery().taskAssignee("zhangsan").processInstanceId(processInstance.getId()).list();
+
+		for (Task task : taskList){
+			System.out.println("zhangsan领取之前的任务名称："+task.getName());
+		}
+
+		System.out.println("---------------------------");
+
+		//5.查询当前的任务，并将当前的任务分配给张三
+		List<Task> groupTaskList = processEngine.getTaskService().createTaskQuery().taskCandidateGroup("tl").list();
+		for (Task task: groupTaskList){
+			processEngine.getTaskService().claim(task.getId(),"zhangsan");
+		}
+
+		System.out.println("---------------------------");
+
+		//6.再次查询张三所分配的任务
+
+		taskList = processEngine.getTaskService().createTaskQuery().taskAssignee("zhangsan").processInstanceId(processInstance.getId()).list();
+
+		for (Task task : taskList){
+			System.out.println("zhangsan领取之后的任务名称："+task.getName());
+			processEngine.getTaskService().complete(task.getId());
+			System.out.println("zhangsan完成之后的任务名称："+task.getName());
+		}
+	}
 }
