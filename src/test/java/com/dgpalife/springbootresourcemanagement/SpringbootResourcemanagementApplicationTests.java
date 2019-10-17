@@ -180,8 +180,10 @@ public class SpringbootResourcemanagementApplicationTests {
 	@Test
 	public void test5(){
 		HistoryService historyService = processEngine.getHistoryService();
-		HistoricProcessInstanceQuery historicProcessInstanceQuery = historyService.createHistoricProcessInstanceQuery();
-		HistoricProcessInstance historicProcessInstance = historicProcessInstanceQuery.processInstanceId("10001").finished().singleResult();
+		HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId("7501").finished().singleResult();
 		System.out.println(historicProcessInstance);
+		System.out.println(historicProcessInstance.getId());
+		System.out.println(historicProcessInstance.getDeploymentId());
+		System.out.println(historicProcessInstance.getEndTime());
 	}
 }
