@@ -17,7 +17,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SpringbootResourcemanagementApplication.class)
@@ -237,5 +239,90 @@ public class SpringbootResourcemanagementApplicationTests {
 			processEngine.getTaskService().complete(task.getId());
 			System.out.println("zhangsan完成之后的任务名称："+task.getName());
 		}
+	}
+
+	/**
+	 * Activiti流程框架-流程变量
+	 */
+	@Test
+	public void test7(){
+		//1.创建流程定义
+		Deployment deployment = processEngine.getRepositoryService().createDeployment().addClasspathResource("processes/test07.bpmn").deploy();
+		System.out.println(deployment);
+
+		System.out.println("--------------------------------------");
+
+		//2.查询流程定义
+		ProcessDefinition processDefinition = processEngine.getRepositoryService().createProcessDefinitionQuery().processDefinitionKey("myProcess_7").latestVersion().singleResult();
+		System.out.println(processDefinition);
+
+		System.out.println("--------------------------------------");
+
+		//3.根据查询的流程定义，启动流程实例(会存在报错,原因：未对${tl}进行赋值）
+		//org.activiti.engine.ActivitiException: Unknown property used in expression: ${tl}
+//		ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId());
+//		System.out.println(processInstance);
+
+
+		//需传值，封装为一个map集合
+		Map<String,Object> value = new HashMap<>();
+		value.put("tl","zhangsan");
+		value.put("pm","lisi");
+
+		ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId(),value);
+		System.out.println(processInstance);
+
+		System.out.println("--------------------------------------");
+
+		//4.查询张三及李四分配的任务
+		List<Task> zhangsan = processEngine.getTaskService().createTaskQuery().taskAssignee("zhangsan").processInstanceId(processInstance.getId()).list();
+		for(Task task: zhangsan){
+			System.out.println("zhangsan的任务："+ task.getName());
+			processEngine.getTaskService().complete(task.getId());
+		}
+
+		List<Task> lisi = processEngine.getTaskService().createTaskQuery().taskAssignee("lisi").processInstanceId(processInstance.getId()).list();
+		for(Task task: lisi){
+			System.out.println("lisi的任务："+ task.getName());
+			processEngine.getTaskService().complete(task.getId());
+		}
+
+		System.out.println("--------------------------------------");
+	}
+
+	/**
+	 * Activiti流程框架-排他网关-决策
+	 */
+	@Test
+	public void test8(){
+		//1.创建流程定义
+		Deployment deployment = processEngine.getRepositoryService().createDeployment().addClasspathResource("processes/test08.bpmn").deploy();
+		System.out.println(deployment);
+
+		System.out.println("--------------------------------------");
+
+		//2.查询流程定义
+		ProcessDefinition processDefinition = processEngine.getRepositoryService().createProcessDefinitionQuery().processDefinitionKey("myProcess_8").latestVersion().singleResult();
+		System.out.println(processDefinition);
+
+		System.out.println("--------------------------------------");
+
+		//3.创建流程实例,并传入条件参数
+		Map<String,Object> value = new HashMap<>();
+		value.put("days","2");
+		ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId(),value);
+		System.out.println(processInstance);
+
+		System.out.println("--------------------------------------");
+
+		//4.查询两个任务节点的状态
+		TaskService taskService = processEngine.getTaskService();
+		Task zhangsan = taskService.createTaskQuery().taskAssignee("zhangsan").processDefinitionId(processDefinition.getId()).singleResult();
+		System.out.println("zhangsan的任务：" + zhangsan.toString());
+
+		Task lisi = taskService.createTaskQuery().taskAssignee("lisi").processDefinitionId(processDefinition.getId()).singleResult();
+		System.out.println("lisi的任务：" + lisi.toString());
+
+		System.out.println("--------------------------------------");
 	}
 }
