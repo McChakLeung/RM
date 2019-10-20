@@ -2,16 +2,16 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1571389629781" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
   <process id="myProcess_8" isClosed="false" isExecutable="true" processType="None">
     <startEvent id="_2" name="StartEvent"/>
-    <userTask activiti:assignee="zhangsan" activiti:exclusive="true" id="_3" name="主任审批"/>
+    <userTask activiti:assignee="zhangsan" activiti:exclusive="true" id="_3" name="tl"/>
     <exclusiveGateway gatewayDirection="Unspecified" id="_4" name="ExclusiveGateway"/>
     <sequenceFlow id="_5" sourceRef="_2" targetRef="_3"/>
     <sequenceFlow id="_6" sourceRef="_3" targetRef="_4"/>
     <endEvent id="_7" name="EndEvent"/>
-    <sequenceFlow id="_8" name="请假天数小于等于3�?" sourceRef="_4" targetRef="_7">
+    <sequenceFlow id="_8" name="days&lt;=3" sourceRef="_4" targetRef="_7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${days<=3}]]></conditionExpression>
     </sequenceFlow>
-    <userTask activiti:assignee="lisi" activiti:exclusive="true" id="_9" name="经理审批"/>
-    <sequenceFlow id="_10" name="请假天数大于3�?" sourceRef="_4" targetRef="_9">
+    <userTask activiti:assignee="lisi" activiti:exclusive="true" id="_9" name="pm"/>
+    <sequenceFlow id="_10" name="days&gt;3" sourceRef="_4" targetRef="_9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${days>3}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="_11" name="EndEvent"/>

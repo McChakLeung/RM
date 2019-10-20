@@ -309,20 +309,160 @@ public class SpringbootResourcemanagementApplicationTests {
 
 		//3.创建流程实例,并传入条件参数
 		Map<String,Object> value = new HashMap<>();
-		value.put("days","2");
+		value.put("days","3");
 		ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId(),value);
 		System.out.println(processInstance);
 
 		System.out.println("--------------------------------------");
 
 		//4.查询两个任务节点的状态
-		TaskService taskService = processEngine.getTaskService();
-		Task zhangsan = taskService.createTaskQuery().taskAssignee("zhangsan").processDefinitionId(processDefinition.getId()).singleResult();
-		System.out.println("zhangsan的任务：" + zhangsan.toString());
+		List<Task> zhangsan = processEngine.getTaskService().createTaskQuery().taskAssignee("zhangsan").processInstanceId(processInstance.getId()).list();
+		for(Task task: zhangsan){
+			System.out.println("zhangsan的任务："+ task.getName());
+			processEngine.getTaskService().complete(task.getId());
+		}
 
-		Task lisi = taskService.createTaskQuery().taskAssignee("lisi").processDefinitionId(processDefinition.getId()).singleResult();
-		System.out.println("lisi的任务：" + lisi.toString());
+		List<Task> lisi = processEngine.getTaskService().createTaskQuery().taskAssignee("lisi").processInstanceId(processInstance.getId()).list();
+		for(Task task: lisi){
+			System.out.println("lisi的任务："+ task.getName());
+			processEngine.getTaskService().complete(task.getId());
+		}
 
 		System.out.println("--------------------------------------");
+
+		HistoricProcessInstance historicProcessInstance = processEngine.getHistoryService().createHistoricProcessInstanceQuery().processInstanceId(processInstance.getId()).finished().singleResult();
+		System.out.println(historicProcessInstance.toString());
+	}
+
+	/**
+	 * Activiti流程框架-并行网关-会签
+	 */
+	@Test
+	public void test9(){
+		//1.创建流程定义
+		Deployment deploy = processEngine.getRepositoryService().createDeployment().addClasspathResource("processes/test09.bpmn").deploy();
+		System.out.println(deploy.toString());
+
+		System.out.println("--------------------------------------");
+
+		//2.查询流程定义
+		ProcessDefinition processDefinition = processEngine.getRepositoryService().createProcessDefinitionQuery().processDefinitionKey("myProcess_9").latestVersion().singleResult();
+		System.out.println(processDefinition.toString());
+
+		System.out.println("--------------------------------------");
+
+		//3.创建流程实例
+		ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId());
+		System.out.println(processInstance.toString());
+
+		System.out.println("--------------------------------------");
+
+		//4-1.pm完成审批
+		List<Task> zhangsan = processEngine.getTaskService().createTaskQuery().taskAssignee("zhangsan").processDefinitionId(processDefinition.getId()).list();
+		for(Task task:zhangsan){
+			System.out.println("zhangsan的任务："+ task.getName());
+			processEngine.getTaskService().complete(task.getId());
+		}
+
+		System.out.println("--------------------------------------");
+
+		//查询流程历史记录
+		HistoricProcessInstance historicProcessInstance = processEngine.getHistoryService().createHistoricProcessInstanceQuery().processInstanceId(processInstance.getId()).finished().singleResult();
+		System.out.println(historicProcessInstance!=null);
+
+		System.out.println("--------------------------------------");
+
+		//4-2.fm完成审判
+		List<Task> lisi = processEngine.getTaskService().createTaskQuery().taskAssignee("lisi").processDefinitionId(processDefinition.getId()).list();
+		for(Task task: lisi){
+			System.out.println("lisi的任务：" + task.getName());
+			processEngine.getTaskService().complete(task.getId());
+		}
+		System.out.println("--------------------------------------");
+
+		//5.查询流程历史记录
+		historicProcessInstance = processEngine.getHistoryService().createHistoricProcessInstanceQuery().processInstanceId(processInstance.getId()).finished().singleResult();
+		System.out.println(historicProcessInstance!=null);
+
+		System.out.println("--------------------------------------");
+	}
+
+	/**
+	 * Activiti流程框架-包含网关（排他+并行）
+	 * 如果当前条件只有一个成立则执行后续流程-相当于排他网关，比如出差5天，费用申请2000，则只需要pm审批通过即可
+	 * 如果当前所有条件成立，则必须所有条件成立的任务完成才会执行后续流程-相当于并行网关，比如出差5天，费用申请8000，则两个流程都需要审批
+	 * 如果当前所有条件都不成立，则无需审批该流程（还会报错），比如出差2天，费用申请1000块，不需要审批
+	 */
+	@Test
+	public void test10(){
+		//1.创建流程定义
+		Deployment deployment = processEngine.getRepositoryService().createDeployment().addClasspathResource("processes/test10.bpmn").deploy();
+		System.out.println(deployment.toString());
+
+		System.out.println("--------------------------------------");
+
+		//2.查询流程定义
+		ProcessDefinition processDefinition = processEngine.getRepositoryService().createProcessDefinitionQuery().processDefinitionKey("myProcess_10").latestVersion().singleResult();
+		System.out.println(processDefinition.toString());
+
+		System.out.println("--------------------------------------");
+
+		//3.创建流程实例
+		Map<String, Object> value = new HashMap<>();
+		value.put("days",3);
+		value.put("cost",6000);
+
+		ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId(),value);
+		System.out.println(processInstance.toString());
+
+		System.out.println("--------------------------------------");
+
+		//4-1.查询pm用户任务
+		List<Task> zhangsan = processEngine.getTaskService().createTaskQuery().taskAssignee("zhangsan").processDefinitionId(processDefinition.getId()).list();
+		for(Task task:zhangsan){
+			System.out.println("zhangsan的任务："+ task.getName());
+			processEngine.getTaskService().complete(task.getId());
+		}
+
+		//查询实例流程历史
+		HistoricProcessInstance historicProcessInstance = processEngine.getHistoryService().createHistoricProcessInstanceQuery().processInstanceId(processInstance.getId()).finished().singleResult();
+		System.out.println(historicProcessInstance!=null);
+
+		System.out.println("--------------------------------------");
+
+		//4-2.查询fm用户任务
+		List<Task> lisi = processEngine.getTaskService().createTaskQuery().taskAssignee("lisi").processDefinitionId(processDefinition.getId()).list();
+		for(Task task:lisi){
+			System.out.println("lisi的任务："+task.getName());
+			processEngine.getTaskService().complete(task.getId());
+		}
+		//查询实例流程历史
+		historicProcessInstance = processEngine.getHistoryService().createHistoricProcessInstanceQuery().processInstanceId(processInstance.getId()).finished().singleResult();
+		System.out.println(historicProcessInstance!=null);
+	}
+
+	/**
+	 * 完成自动发送邮件功能
+	 */
+	@Test
+	public void test11(){
+		//1.创建流程定义
+		Deployment deployment = processEngine.getRepositoryService().createDeployment().addClasspathResource("processes/test11.bpmn").deploy();
+		System.out.println(deployment);
+
+		System.out.println("--------------------------------------");
+
+		//2.查询流程定义
+		ProcessDefinition processDefinition = processEngine.getRepositoryService().createProcessDefinitionQuery().processDefinitionKey("myProcess_11").latestVersion().singleResult();
+		System.out.println(processDefinition);
+
+		System.out.println("--------------------------------------");
+
+		//3.对参数进行赋值，并启动流程实例
+		Map<String,Object> value = new HashMap<>();
+		value.put("to","test@atguigu.com");
+
+		ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId(),value);
+		System.out.println(processInstance);
 	}
 }
