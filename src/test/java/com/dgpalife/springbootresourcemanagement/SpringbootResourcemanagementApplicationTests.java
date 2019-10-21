@@ -465,4 +465,35 @@ public class SpringbootResourcemanagementApplicationTests {
 		ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId(),value);
 		System.out.println(processInstance);
 	}
+
+
+	/**
+	 * 邮件任务流程监听器
+	 */
+	@Test
+	public void test12(){
+		//1.创建流程定义
+		Deployment deployment = processEngine.getRepositoryService().createDeployment().addClasspathResource("processes/test12.bpmn").deploy();
+		System.out.println(deployment.toString());
+
+		//2.查询流程定义
+		ProcessDefinition processDefinition = processEngine.getRepositoryService().createProcessDefinitionQuery().processDefinitionKey("myProcess_12").latestVersion().singleResult();
+		System.out.println(processDefinition.toString());
+
+		//3.创建流程实例
+		ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId());
+		System.out.println(processInstance);
+
+		//4.查询用户任务并完成任务，查看控制台输出结果
+		Map<String,Object> values = new HashMap<>();
+		values.put("flag",true);
+
+		TaskService taskService = processEngine.getTaskService();
+		List<Task> taskList = taskService.createTaskQuery().taskAssignee("zhangsan").processDefinitionId(processDefinition.getId()).list();
+		for(Task task:taskList){
+			taskService.setVariable(task.getId(),"flag",values);
+			taskService.complete(task.getId());
+		}
+
+	}
 }
