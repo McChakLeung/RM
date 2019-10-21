@@ -1,6 +1,8 @@
 package com.dgpalife.springbootresourcemanagement;
 
 import com.dgpalife.resourcemanagement.SpringbootResourcemanagementApplication;
+import com.dgpalife.resourcemanagement.listener.activiti.listener.NoListener;
+import com.dgpalife.resourcemanagement.listener.activiti.listener.YesListener;
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricProcessInstanceQuery;
@@ -481,17 +483,20 @@ public class SpringbootResourcemanagementApplicationTests {
 		System.out.println(processDefinition.toString());
 
 		//3.创建流程实例
-		ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId());
+		Map<String,Object> values = new HashMap<>();
+		values.put("yesListener",new YesListener());
+		values.put("noListener",new NoListener());
+
+		ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId(),values);
 		System.out.println(processInstance);
 
 		//4.查询用户任务并完成任务，查看控制台输出结果
-		Map<String,Object> values = new HashMap<>();
-		values.put("flag",true);
+
 
 		TaskService taskService = processEngine.getTaskService();
 		List<Task> taskList = taskService.createTaskQuery().taskAssignee("zhangsan").processDefinitionId(processDefinition.getId()).list();
 		for(Task task:taskList){
-			taskService.setVariable(task.getId(),"flag",values);
+			taskService.setVariable(task.getId(),"flag",false);
 			taskService.complete(task.getId());
 		}
 
