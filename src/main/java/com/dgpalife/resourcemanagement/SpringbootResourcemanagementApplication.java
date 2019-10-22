@@ -10,6 +10,8 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 
 //@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @SpringBootApplication
@@ -25,4 +27,5 @@ public class SpringbootResourcemanagementApplication extends SpringBootServletIn
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		return builder.sources(this.getClass());
 	}
+
 }
