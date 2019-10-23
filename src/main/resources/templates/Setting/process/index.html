@@ -21,11 +21,13 @@
     <!-- ICONS -->
     <link rel="apple-touch-icon" sizes="76x76" th:href="@{|/static/img/apple-icon.png|}">
     <link rel="icon" type="image/png" sizes="96x96" th:href="@{|/static/img/favicon.png|}">
+    <link rel="stylesheet" th:href="@{|/static/js/layui/css/layui.css|}">
     <!-- Javascript -->
     <script th:src="@{|/static/js/vendor/jquery/jquery.min.js|}"></script>
     <script th:src="@{|/static/js/vendor/bootstrap/js/bootstrap.min.js|}"></script>
     <script th:src="@{|/static/js/vendor/jquery-slimscroll/jquery.slimscroll.min.js|}"></script>
     <script th:src="@{|/static/js/layer/layer.js|}"></script>
+    <script th:src="@{|/static/js/layui/layui.js|}"></script>
     <script th:src="@{|/static/js/common.js|}"></script>
     <script th:src="@{|/static/ztree/jquery.ztree.all-3.5.min.js|}"></script>
 </head>
@@ -63,7 +65,19 @@
                                     <!--</div>-->
                                     <!--<button type="button" class="btn btn-warning"><i class="glyphicon glyphicon-search"></i> 查询</button>-->
                                 <!--</form>-->
-                                <button type="button" class="btn btn-primary" style="float:right;" onclick="window.location.href='form.html'"><i class="glyphicon glyphicon-upload"></i> 上传流程定义文件</button>
+                                <div id="uploadProcessDefinition" style="display: none">
+                                    <div style="margin-left: 50px">
+                                        <label for="fattachFile">请选择上传的文件：</label>
+                                        <input type="file" name="attachFile" id="fattachFile" size="80">
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <div style="margin-left: 100px">
+                                        <button type="button" class="layui-btn" id="fConfirmUpload">上传</button>
+                                        <button type="button" class="layui-btn" id="fclose">关闭</button>
+                                    </div>
+                                </div>
+                                <button type="button" id="openUploadBtn" class="btn btn-primary" style="float:right;" ><i class="glyphicon glyphicon-upload"></i> 上传流程定义文件</button>
                                 <br>
                                 <hr style="clear:both;">
                                 <div class="table-responsive">
@@ -71,6 +85,7 @@
                                         <thead>
                                             <tr class="success">
                                                 <th width="30">#</th>
+                                                <th>流程ID</th>
                                                 <th>流程名称</th>
                                                 <th>流程版本</th>
                                                 <th>任务名称</th>
@@ -141,13 +156,14 @@
 
                         content+='<tr>';
                         content+='  <td>'+(i+1)+'</td>';
-                        content+='  <td>'+n.key+'</td>';
-                        content+='  <td>'+n.version+'</td>';
+                        content+='  <td>'+n.id+'</td>';
                         content+='  <td>'+n.name+'</td>';
+                        content+='  <td>'+n.version+'</td>';
+                        content+='  <td>'+n.key+'</td>';
                         //content+='  <td>'+n.status+'</td>';
                         content+='  <td>';
                         content+='	  <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-eye-open"></i></button>';
-                        content+='	  <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+                        content+='	  <button type="button" onclick="deleteProcessDefinition(\''+n.id + '\',\''+ n.name+'\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
                         content+='  </td>';
                         content+='</tr>';
                     });
@@ -182,19 +198,59 @@
         })
     }
 
-    function deleteUser(id,username) {
-        layer.confirm("确定要删除【"+username+"】用户吗？",  {icon: 3, title:'提示'}, function(cindex){
+    $("#openUploadBtn").click(function () {
+        layer.open({
+            type: 1,
+            area: ['500px', '200px'],
+            content: $("#uploadProcessDefinition")
+        });
+    })
+
+    $("#fclose").click(function () {
+        layer.closeAll();
+    })
+
+    //上传bpmn文件
+    layui.use('upload', function(){
+        var upload = layui.upload; //得到 upload 对象
+        //创建一个上传组件
+        upload.render({
+            elem: '#fattachFile',
+            url: '[[@{|/setting/process/doUpload|}]]',
+            auto: false,
+            accept:'file',
+            exts:'bpmn|xml',
+            bindAction: '#fConfirmUpload',
+            done: function(){
+                layer.closeAll();
+                layer.msg("上传成功",{time:2000, icon:1, shift:5})
+                queryPageProcessDefinition(1)
+            },
+            error:function (result) {
+                layer.msg(result.message,{time:2000, icon:5, shift:5})
+            }
+        })
+
+    })
+
+
+    function deleteProcessDefinition(id,name) {
+        layer.confirm("确定要删除【"+name+"】流程定义吗？",  {icon: 3, title:'提示'}, function(cindex){
             layer.close(cindex);
             $.ajax({
                 type:"post",
-                url:"[[@{|/auth/user/doDelete|}]]",
+                url:"[[@{|/setting/process/doDelete|}]]",
                 data:{
                     "id":id
                 },
                 success:function (result) {
-                    if(result.success){
-                        window.location.href='[[@{|/auth/user/toIndex|}]]';
-                    }else{
+                    if(result.success == true){
+                        queryPageProcessDefinition(1);
+                        layer.msg("删除成功！",{time:2000, icon:1, shift:5});
+                    }
+                },
+                error:function (result) {
+                    if(result.success == false){
                         layer.msg(result.message,{time:2000, icon:5, shift:5});
                     }
                 }
