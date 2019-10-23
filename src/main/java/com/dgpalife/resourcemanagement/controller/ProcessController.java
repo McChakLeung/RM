@@ -12,7 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -106,4 +109,33 @@ public class ProcessController {
         }
         return result;
     }
+
+    /**
+     * 通过异步请求方式上传流程定义文件
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/doUpload")
+    public Object doUpload(MultipartFile attachFile){
+
+        AjaxResult result = new AjaxResult();
+
+        try{
+            //从请求域对象中，通过input的name属性获取文件
+            //MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
+            //MultipartFile attachFile = multipartHttpServletRequest.getFile("attachFile");
+
+            // 部署流程定义文件
+            repositoryService.createDeployment().addInputStream(attachFile.getOriginalFilename(), attachFile.getInputStream()).deploy();
+
+            //将属性设置到result对象中
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("上传异常，请联系管理员处理");
+        }
+        return result;
+    }
+
 }
