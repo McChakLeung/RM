@@ -37,23 +37,23 @@ public class  BasicController {
 
     @RequestMapping("/toLogin")
     public String toLogin(HttpServletRequest request){
-
-        //从HttpServletRequest对象中获取cookies，判断当前客户端是否存在loginCode的cookies
-        Cookie[] cookies = request.getCookies();
-        if(cookies != null) { //如果客户端禁用了Cookie，那么无法获取Cookie信息
-            //遍历cookies对象，并获取logiCode的cookie，用于分割数据
-            for (Cookie cookie : cookies) {
-                if ("loginCode".equals(cookie.getName())) {
-                    String[] split = cookie.getValue().split("&");
-                    //判断经过分割的split的长度，如果等于2，则说明数据正确
-                    if(split.length==2){
-                        //再次截取数组第一个数据loginacct=zhangsan,获取新数组的第二个值zhangsan，作为登录用户
-                        String loginacct = split[0].split("=")[1];
-                        String password = split[1].split("=")[1];
-                    }
-                }
-            }
-        }
+// { public String toLogin(HttpServletRequest request){
+//        //从HttpServletRequest对象中获取cookies，判断当前客户端是否存在loginCode的cookies
+//        Cookie[] cookies = request.getCookies();
+//        if(cookies != null) { //如果客户端禁用了Cookie，那么无法获取Cookie信息
+//            //遍历cookies对象，并获取logiCode的cookie，用于分割数据
+//            for (Cookie cookie : cookies) {
+//                if ("loginCode".equals(cookie.getName())) {
+//                    String[] split = cookie.getValue().split("&");
+//                    //判断经过分割的split的长度，如果等于2，则说明数据正确
+//                    if(split.length==2){
+//                        //再次截取数组第一个数据loginacct=zhangsan,获取新数组的第二个值zhangsan，作为登录用户
+//                        String loginacct = split[0].split("=")[1];
+//                        String password = split[1].split("=")[1];
+//                    }
+//                }
+//            }
+//        }
         return "/login";
     }
 
@@ -65,7 +65,7 @@ public class  BasicController {
      */
     @ResponseBody
     @RequestMapping("/preLogin")
-    public Object preLogin(String loginacct, String password, Boolean remember_me, HttpSession session, HttpServletResponse response){
+    public Object preLogin(String loginacct, String password, HttpSession session, HttpServletResponse response){
 
         AjaxResult result = new AjaxResult();
 
@@ -95,13 +95,13 @@ public class  BasicController {
             //查询当前用户登陆的角色所拥有的权限
 
             //判断传入的remember_me的值，如果是true，则创建cookie对象
-            if(remember_me){
-                String loginCode = "loginacct="+ params.get("loginacct") + "&passsword=" + params.get("password");
-                Cookie cookie = new Cookie("loginCode",loginCode);
-                cookie.setMaxAge(60*60*24*7);
-                cookie.setPath("/");
-                response.addCookie(cookie);
-            }
+//            if(remember_me){
+//                String loginCode = "loginacct="+ params.get("loginacct") + "&passsword=" + params.get("password");
+//                Cookie cookie = new Cookie("loginCode",loginCode);
+//                cookie.setMaxAge(60*60*24*7);
+//                cookie.setPath("/");
+//                response.addCookie(cookie);
+//            }
 
             result.setDatas(roleList);
             result.setSuccess(roleList.size()>0);
