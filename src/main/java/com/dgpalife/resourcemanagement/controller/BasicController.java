@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.util.*;
 
 @Controller
@@ -36,7 +36,24 @@ public class  BasicController {
     }
 
     @RequestMapping("/toLogin")
-    public String toLogin(){
+    public String toLogin(HttpServletRequest request){
+
+        //从HttpServletRequest对象中获取cookies，判断当前客户端是否存在loginCode的cookies
+        Cookie[] cookies = request.getCookies();
+        if(cookies != null) { //如果客户端禁用了Cookie，那么无法获取Cookie信息
+            //遍历cookies对象，并获取logiCode的cookie，用于分割数据
+            for (Cookie cookie : cookies) {
+                if ("loginCode".equals(cookie.getName())) {
+                    String[] split = cookie.getValue().split("&");
+                    //判断经过分割的split的长度，如果等于2，则说明数据正确
+                    if(split.length==2){
+                        //再次截取数组第一个数据loginacct=zhangsan,获取新数组的第二个值zhangsan，作为登录用户
+                        String loginacct = split[0].split("=")[1];
+                        String password = split[1].split("=")[1];
+                    }
+                }
+            }
+        }
         return "/login";
     }
 
@@ -48,16 +65,18 @@ public class  BasicController {
      */
     @ResponseBody
     @RequestMapping("/preLogin")
-    public Object preLogin(String loginacct, String password, HttpSession session){
+    public Object preLogin(String loginacct, String password, Boolean remember_me, HttpSession session, HttpServletResponse response){
 
         AjaxResult result = new AjaxResult();
+
 
         try {
             //创建一个map来接收参数
             Map<String,Object> params = new HashMap();
             params.put("loginacct",loginacct);
             params.put("password", MD5Util.digest(password));
-            //params.put("type",type);
+
+            //根据传入的值查询客户是否存在
             User user = userService.selectUserByLoginAccAndUserPassword(params);
             //判断是否能查询到user对象，如果查询不到，则说明用户名或密码错误
             if(user == null){
@@ -66,7 +85,7 @@ public class  BasicController {
                 return result;
             }
             //创建一个Const工具类，存放常量
-            session.setAttribute("user",user);
+            session.setAttribute(Const.LOGIN_USER,user);
             //查询用户登陆角色
             List roleList = roleService.queryRoleInfo(user.getId());
 //            if(roleList==null){
@@ -75,6 +94,14 @@ public class  BasicController {
 //            }
             //查询当前用户登陆的角色所拥有的权限
 
+            //判断传入的remember_me的值，如果是true，则创建cookie对象
+            if(remember_me){
+                String loginCode = "loginacct="+ params.get("loginacct") + "&passsword=" + params.get("password");
+                Cookie cookie = new Cookie("loginCode",loginCode);
+                cookie.setMaxAge(60*60*24*7);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            }
 
             result.setDatas(roleList);
             result.setSuccess(roleList.size()>0);

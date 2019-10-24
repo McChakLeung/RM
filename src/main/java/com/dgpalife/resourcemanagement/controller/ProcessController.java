@@ -7,15 +7,20 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.impl.transformer.LongToInteger;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
+import org.apache.ibatis.annotations.Param;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.ui.Model;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -136,6 +141,34 @@ public class ProcessController {
             result.setMessage("上传异常，请联系管理员处理");
         }
         return result;
+    }
+
+    @RequestMapping("/toShowImg/{id}")
+    public String toShowImg(@PathVariable String id, Model model){
+        model.addAttribute("id",id);
+        return "/setting/process/showImg";
+    }
+
+    @ResponseBody
+    @RequestMapping("/doShowImg/{id}")
+    public void doShowImg(@PathVariable String id, HttpServletResponse response) throws IOException {
+        //1.根据传入的id，从数据库中表act_re_procdef获取流程定义数据
+        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(id).singleResult();
+
+        //2.根据查询出的流程定义对象，获取其deploymentID和DGRM_RESOURCE_NAME_，通过这两个字段查询出act_ge_bytearray表中的BYTES_数据
+        //这些数据即为流程定义的图片数据，并作为输入流对象存放在虚拟机内存中
+        InputStream inputStream = repositoryService.getResourceAsStream(processDefinition.getDeploymentId(), processDefinition.getDiagramResourceName());
+        ServletOutputStream outputStream = response.getOutputStream();
+
+        //3.将数据转成为输出流,并输出给客户端
+//        int i = -1;
+//        while((i = inputStream.read()) != -1){
+//            outputStream.write(i);
+//        }
+
+        IOUtils.copy(inputStream,outputStream);
+
+
     }
 
 }

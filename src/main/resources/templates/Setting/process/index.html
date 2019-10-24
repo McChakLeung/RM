@@ -162,7 +162,7 @@
                         content+='  <td>'+n.key+'</td>';
                         //content+='  <td>'+n.status+'</td>';
                         content+='  <td>';
-                        content+='	  <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-eye-open"></i></button>';
+                        content+='	  <button type="button" onclick="toShowImg(\''+n.id + '\')" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-eye-open"></i></button>';
                         content+='	  <button type="button" onclick="deleteProcessDefinition(\''+n.id + '\',\''+ n.name+'\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
                         content+='  </td>';
                         content+='</tr>';
@@ -233,6 +233,9 @@
 
     })
 
+    function toShowImg(id) {
+        window.location.href = '[[@{|/setting/process/toShowImg/|}]]'+id;
+    }
 
     function deleteProcessDefinition(id,name) {
         layer.confirm("确定要删除【"+name+"】流程定义吗？",  {icon: 3, title:'提示'}, function(cindex){

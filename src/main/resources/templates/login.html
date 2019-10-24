@@ -56,7 +56,7 @@
 								</div>
 								<div class="form-group clearfix">
 									<label class="fancy-checkbox element-left">
-										<input type="checkbox" name="remember_me">
+										<input type="checkbox" name="remember_me" id="fremember_me">
 										<span>7天免登录</span>
 									</label>
 								</div>
@@ -94,6 +94,7 @@
 
         var floginacct = $("#floginacct");
         var fpassword = $("#fpassword");
+        var fremember_me = $("#fremember_me")[0].checked;
 
         var loadingIndex = -1;
 
@@ -105,7 +106,8 @@
             url: [[@{|/preLogin|}]],
             data:{
                 loginacct:floginacct.val(),
-				password:fpassword.val()
+				password:fpassword.val(),
+				remember_me: fremember_me?"1":"0"
             },
             //该函数用于在发生ajax请求前的处理，一般用于表单校验、加载进度条等
             beforeSend:function (XMLHttpRequest) {
