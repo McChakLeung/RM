@@ -65,10 +65,10 @@
                                         <label for="ftitle">标题</label>
                                         <input type="text" class="form-control" name="title" id="ftitle">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="fapprovalLinkId">审批链</label>
-                                        <input type="text" class="form-control" name="approvalLinkId" id="fapprovalLinkId" >
-                                    </div>
+                                    <!--<div class="form-group">-->
+                                        <!--<label for="fapprovalLinkId">审批链</label>-->
+                                        <!--<input type="text" class="form-control" name="approvalLinkId" id="fapprovalLinkId" >-->
+                                    <!--</div>-->
                                     <div class="form-group">
                                         <label for="fapplyDepartment">申请部门</label>
                                         <select class="form-control" name="applyDepartment" id="fapplyDepartment">
@@ -369,40 +369,7 @@
             data:JSON.stringify(order_detail_obj),
             contentType : "application/json;charset=utf-8",
             beforeSend:function () {
-                // if($.trim(floginacct.val()) == ""){
-                //     layer.msg("登录账号不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
-                //         floginacct.val("");
-                //         floginacct.focus();
-                //     })
-                //     return false
-                // }
-                //
-                // //验证用户名
-                // if($.trim(fusername.val()) == ""){
-                //     layer.msg("用户名不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
-                //         fusername.val("");
-                //         fusername.focus();
-                //     })
-                //     return false
-                // }
-                //
-                // // //验证密码是否为空
-                // // if($.trim(fpassword.val()) == ""){
-                // //     layer.msg("密码不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
-                // //         fpassword.val("");
-                // //         fpassword.focus();
-                // //     })
-                // //     return false
-                // // }
-                // //
-                // // if(checkPassword(fpassword.val())==false){
-                // //     layer.msg("密码必须由数字和字母组成，且长度不小于8，请重新输入", {time: 2000, icon: 5, shift: 5}, function () {
-                // //         fpassword.focus();
-                // //     })
-                // //     return false;
-                // // }
-                //
-                // loadingIndex = layer.load(3, {time: 10*1000});
+                loadingIndex = layer.load(3, {time: 10*1000});
             },
 
             success:function (result) {

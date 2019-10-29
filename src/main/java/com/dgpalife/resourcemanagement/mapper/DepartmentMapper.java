@@ -1,6 +1,10 @@
 package com.dgpalife.resourcemanagement.mapper;
 
 import com.dgpalife.resourcemanagement.model.Department;
+import com.dgpalife.resourcemanagement.model.User;
+
+import java.util.List;
+import java.util.Map;
 
 public interface DepartmentMapper {
     int deleteByPrimaryKey(Long id);
@@ -14,4 +18,8 @@ public interface DepartmentMapper {
     int updateByPrimaryKeySelective(Department record);
 
     int updateByPrimaryKey(Department record);
+
+    List<Department> selectDepartmentList(Map<String, Object> params);
+
+    Integer selectCount(Map<String, Object> params);
 }

@@ -90,4 +90,19 @@
       create_time = #{createTime,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="selectDepartmentList"  resultMap="BaseResultMap">
+    SELECT t_department.department_name, (SELECT department_name FROM t_department WHERE pid = 1)
+    FROM t_department
+    ORDER BY create_time DESC
+    LIMIT #{startline}, #{pagesize}
+  </select>
+
+  <select id="selectCount" resultType="java.lang.Integer">
+    select count(id) from t_user
+    <where>
+      <if test="queryText!=null">
+        username like concat("%",#{queryText},"%")
+      </if>
+    </where>
+  </select>
 </mapper>

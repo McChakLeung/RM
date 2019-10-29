@@ -8,6 +8,7 @@ import com.dgpalife.resourcemanagement.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -24,8 +25,8 @@ public class OrderServiceImpl implements OrderService {
         try{
             Long orderId = orderMapper.insertSelective(order);
             List<ConstructDetail> constructDetailList = order.getConstructDetailList();
-            for (ConstructDetail onstructDetail: constructDetailList) {
-                onstructDetail.setOrderId(orderId);
+            for (ConstructDetail constructDetail: constructDetailList) {
+                constructDetail.setOrderId(orderId);
             }
             constructDetailMapper.insertByBatch(constructDetailList);
         }catch (Exception e){
