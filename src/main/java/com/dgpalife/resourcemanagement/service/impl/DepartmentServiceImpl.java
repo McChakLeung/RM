@@ -17,19 +17,29 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
     private DepartmentMapper departmentMapper;
 
+
     @Override
-    public Page<User> selectDepartmemtList(Map<String, Object> params) {
-        Page<User> page = new Page<>((Integer) params.get("pageno"),(Integer)params.get("pagesize"));
-        //查询用户列表数据
-        params.put("startline",page.getStartline());
-        List<Department> datas = departmentMapper.selectDepartmentList(params);
+    public List<Department> selectAllDepartment() {
+        return departmentMapper.selectDepartmentList();
+    }
 
-        page.setDatalist(datas);
+    @Override
+    public Long deleteDepartmentById(Long id) {
+        return departmentMapper.deleteByPrimaryKey(id);
+    }
 
-        //查询用户总数
-        Integer totalsize = departmentMapper.selectCount(params);
-        //将查询结果存放到公共的Page类中
-        page.setTotalsize(totalsize);
-        return page;
+    @Override
+    public Department selectDepartmentById(Long id) {
+        return departmentMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public int saveDepartment(Department department) {
+        return departmentMapper.insertSelective(department);
+    }
+
+    @Override
+    public int updateDepartment(Department department) {
+        return departmentMapper.updateByPrimaryKeySelective(department);
     }
 }

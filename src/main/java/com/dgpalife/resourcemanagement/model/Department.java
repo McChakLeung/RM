@@ -1,5 +1,8 @@
 package com.dgpalife.resourcemanagement.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Department {
     private Long id;
 
@@ -7,9 +10,29 @@ public class Department {
 
     private String departmentName;
 
+    private boolean open = true;
+
+    public boolean isOpen() {
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
+    }
+
     private Long creatorId;
 
     private String createTime;
+
+    private List<Department> children = new ArrayList<Department>();
+
+    public List<Department> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Department> children) {
+        this.children = children;
+    }
 
     public Long getId() {
         return id;

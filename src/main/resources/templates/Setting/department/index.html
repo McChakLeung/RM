@@ -14,6 +14,8 @@
     <link rel="stylesheet" th:href="@{|/static/css/main.css|}">
     <!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
     <link rel="stylesheet" th:href="@{|/static/css/demo.css|}">
+    <!--ztree-->
+    <link rel="stylesheet" th:href="@{|/static/ztree/zTreeStyle.css|}">
     <!-- GOOGLE FONTS -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
     <!-- ICONS -->
@@ -25,6 +27,7 @@
     <script th:src="@{|/static/js/vendor/jquery-slimscroll/jquery.slimscroll.min.js|}"></script>
     <script th:src="@{|/static/js/layer/layer.js|}"></script>
     <script th:src="@{|/static/js/common.js|}"></script>
+    <script th:src="@{|/static/ztree/jquery.ztree.all-3.5.min.js|}"></script>
 </head>
 
 <body>
@@ -54,37 +57,7 @@
                             <!--<h3 class="panel-title">Basic Table</h3>-->
                             <!--</div>-->
                             <div class="panel-body">
-                                <!--<button type="button" id="deleteBatch" class="btn btn-danger" style="float:right;margin-left:10px;"><i class=" glyphicon glyphicon-remove"></i> 删除</button>-->
-                                <button type="button" class="btn btn-primary" style="float:right;" th:onclick="'window.location.href = \''+ @{|/setting/department/toAdd|}+ '\''"><i class="glyphicon glyphicon-plus"></i> 新增</button>
-                                <br>
-                                <hr style="clear:both;">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-hover">
-                                        <thead>
-                                        <tr class="success">
-                                            <th>序号</th>
-                                            <!--<th width="30"><input id="AllCheckbox" type="checkbox"></th>-->
-                                            <th>部门名称</th>
-                                            <th>上级部门</th>
-                                            <!--<th>状态</th>-->
-                                            <th width="230">操作</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                        <tfoot>
-                                        <tr >
-                                            <td colspan="6" align="center">
-                                                <ul class="pagination">
-
-                                                </ul>
-                                            </td>
-                                        </tr>
-
-                                        </tfoot>
-                                    </table>
-                                </div>
+                                <ul id="treeDemo" class="ztree"></ul>
                             </div>
                         </div>
                         <!-- END BASIC TABLE -->
@@ -103,118 +76,99 @@
 <script type="text/javascript">
 
     $(function () {
-        queryPage(1);
+        loadData();
     });
 
+    function toAdd(pid) {
+        window.location.href= '[[@{|/setting/department/toAdd/|}]]'+ pid;
+    }
 
-    // function pageChange(pageno){
-    //     //window.location.href="${APP_PATH}/user/index.do?pageno="+pageno ;
-    //     queryPageUser(pageno);
-    // }
+    function toUpdate(id) {
+        window.location.href= '[[@{|/setting/department/toUpdate/|}]]'+ id;
+    }
 
-    var loadingIndex = -1;
+    function loadData() {
+        var setting = {
 
-    var jsonObj = {
-        "pageno":1,
-        "pagesize":10
-    };
+            //如果后台传入的数据的字段与ztree的节点名不一致，必须要在setting中data的key中指定后台对应的名称
+            //比如这里的departmentName，否则会显示undefined
+            data:{
+                key:{
+                    name:"departmentName"
+                }
+            },
 
-    //异步查询数据页
-    function queryPage(pageno) {
-        jsonObj.pageno = pageno;
+            view: {
+                // addDiyDom: function (treeId, treeNode) {
+                //     var icoObj = $("#" + treeNode.tId + "_ico"); // tId = permissionTree_1, $("#permissionTree_1_ico")
+                //     if (treeNode.departmentName) {
+                //         icoObj.removeClass("button ico_docu ico_open").addClass(treeNode.departmentName).css("background", "");
+                //
+                //     }
+                // },
+                addHoverDom: function(treeId, treeNode){
+                    var aObj = $("#" + treeNode.tId + "_a"); // tId = permissionTree_1, ==> $("#permissionTree_1_a")
+                    aObj.attr("href", "javascript:;");
+                    if (treeNode.editNameFlag || $("#btnGroup"+treeNode.tId).length>0) return;
+                    var s = '<span id="btnGroup'+treeNode.tId+'">';
+
+                    //判断是否为根节点
+                    if(treeNode.level == 0){
+                        s += '<a class="btn btn-info dropdown-toggle btn-xs" style="margin-left:10px;padding-top:0px;" href="#" onclick="toAdd('+treeNode.id+')" title="添加部门信息">&nbsp;&nbsp;<i class="fa fa-fw fa-plus rbg "></i></a>';
+                        //判断是否为子节点，该节点可以添加，修改和删除
+                    }else if(treeNode.children.length == 0){
+                        s += '<a class="btn btn-info dropdown-toggle btn-xs" style="margin-left:10px;padding-top:0px;"  href="#" onclick="toUpdate('+treeNode.id+')" title="修改部门信息">&nbsp;&nbsp;<i class="fa fa-fw fa-edit rbg "></i></a>';
+                        s += '<a class="btn btn-info dropdown-toggle btn-xs" style="margin-left:10px;padding-top:0px;"  href="#" onclick="doDelete('+treeNode.id+',\''+treeNode.departmentName+'\')" title="删除部门信息">&nbsp;&nbsp;<i class="fa fa-fw fa-times rbg "></i></a>';
+                        s += '<a class="btn btn-info dropdown-toggle btn-xs" style="margin-left:10px;padding-top:0px;" href="#" onclick="toAdd('+treeNode.id+')" title="添加部门信息" >&nbsp;&nbsp;<i class="fa fa-fw fa-plus rbg "></i></a>';
+                        //判断其他节点，该节点只有修改和添加权限，不能删除
+                    }else{
+                        s += '<a class="btn btn-info dropdown-toggle btn-xs" style="margin-left:10px;padding-top:0px;"  href="#" onclick="toUpdate('+treeNode.id+')" title="修改部门信息">&nbsp;&nbsp;<i class="fa fa-fw fa-edit rbg "></i></a>';
+                        s += '<a class="btn btn-info dropdown-toggle btn-xs" style="margin-left:10px;padding-top:0px;" href="#" onclick="toAdd('+treeNode.id+')" title="添加部门信息">&nbsp;&nbsp;<i class="fa fa-fw fa-plus rbg "></i></a>';
+                    }
+
+                    s += '</span>';
+                    aObj.after(s);
+                },
+                removeHoverDom: function(treeId, treeNode){
+                    $("#btnGroup"+treeNode.tId).remove();
+                }
+            }
+        }
+
         $.ajax({
             type:"post",
-            url:"[[@{|/setting/department/index|}]]",
-            data:jsonObj,
-            dataType: "json",
-            beforeSend:function () {
-                loadingIndex = layer.load(3, {time: 10*1000});
-                return true;
-            },
-            success:function(result){
-                layer.close(loadingIndex);
+            url:"[[@{|/setting/department/loadData|}]]",
+            success: function (result) {
                 if(result.success){
-                    var page = result.page ;
-                    var data = page.datalist ;
-                    //数据行
-                    var content = '';
-                    $.each(data,function(i,n){
-
-                        content+='<tr>';
-                        content+='  <td>'+(i+1)+'</td>';
-                        content+='  <td>'+n.department_name+'</td>';
-                        content+='  <td>'+n.parent_department_name+'</td>';
-                        //content+='  <td>'+n.status+'</td>';
-                        content+='  <td>';
-                        // content+='	  <button type="button" class="btn btn-success btn-xs" onclick="toAssignRole('+n.id+')"><i class=" glyphicon glyphicon-check"></i></button>';
-                        content+='	  <button type="button" class="btn btn-primary btn-xs" onclick="toUpdate('+n.id+')"><i class=" glyphicon glyphicon-pencil"></i></button>';
-                        // content+='	  <button type="button" class="btn btn-warning btn-xs" onclick="startup('+n.id+')"><i class=" glyphicon glyphicon-remove"></i></button>';
-                        content+='	  <button type="button" class="btn btn-danger btn-xs" onclick="doDelete('+n.id+',\''+n.username+'\')"><i class=" glyphicon glyphicon-trash"></i></button>';
-                        content+='  </td>';
-                        content+='</tr>';
-                    });
-                    $("tbody").html(content);
-
-                    //分页
-                    var contentbar = '';
-                    if(page.pageno==1){
-                        contentbar += '<li class="disabled"><a href="#">上一页</a></li>';
-                    }else{
-                        contentbar += '<li><a href="#" onclick="queryPage('+(page.pageno-1)+')">上一页</a></li>';
-                    }
-
-                    for(var i =1; i <= page.totalno;i++) {
-                        contentbar += '<li ';
-                        if(page.pageno == i) {
-                            contentbar += 'class= "active"';
-                        }
-                        contentbar += '><a href="#" onclick="queryPage(' + i + ')">' + i + '</a></li>';
-                    }
-                    if(page.pageno==page.totalno) {
-                        contentbar += '<li class="disabled"><a href="#">下一页</a></li>';
-                    }else{
-                        contentbar += '<li><a href="#" onclick="queryPage('+(page.pageno+1)+')">下一页</a></li>';
-                    }
-                    $(".pagination").html(contentbar);
-
+                    var zNodes = result.datas;
+                    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
                 }else{
-                    layer.msg(result.message,{time:2000, icon:5, shift:5})
+                    layer.msg(result.message, {time:1000, icon:5, shift:6});
                 }
             }
         })
     }
 
-    //模糊查询函数调用
-    $("#queryBtn").click(function () {
-        var queryText = $("#fqueryText").val();
-        jsonObj.queryText = queryText;
-        queryPage(1);
-    });
-
-    function toUpdate(id) {
-        window.location.href = '[[@{|/setting/department/toUpdate/|}]]'+id;
-    }
-
-
-    function doDelete(id,username) {
-        layer.confirm("确定要删除【"+username+"】用户吗？",  {icon: 3, title:'提示'}, function(cindex){
+    function doDelete(id,name) {
+        layer.confirm("确认要删除["+name+"]这条数据吗？",  {icon: 3, title:'提示'}, function(cindex){
             layer.close(cindex);
             $.ajax({
                 type:"post",
-                url:"[[@{|/auth/user/doDelete|}]]",
+                url:"[[@{|/setting/department/doDelete|}]]",
                 data:{
-                    "id":id
+                    id:id
+                },
+                beforeSend: function () {
+                    return true;
                 },
                 success:function (result) {
                     if(result.success){
-                        window.location.href='[[@{|/setting/process/toIndex|}]]';
+                        loadData();
                     }else{
-                        layer.msg(result.message,{time:2000, icon:5, shift:5});
+                        layer.msg(result.message, {time:1000, icon:5, shift:6});
                     }
                 }
-
-            });
-
+            })
         }, function(cindex){
             layer.close(cindex);
         });

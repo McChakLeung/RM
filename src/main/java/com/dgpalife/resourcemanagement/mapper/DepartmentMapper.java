@@ -2,12 +2,14 @@ package com.dgpalife.resourcemanagement.mapper;
 
 import com.dgpalife.resourcemanagement.model.Department;
 import com.dgpalife.resourcemanagement.model.User;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 import java.util.Map;
 
+@Mapper
 public interface DepartmentMapper {
-    int deleteByPrimaryKey(Long id);
+    Long deleteByPrimaryKey(Long id);
 
     int insert(Department record);
 
@@ -19,7 +21,7 @@ public interface DepartmentMapper {
 
     int updateByPrimaryKey(Department record);
 
-    List<Department> selectDepartmentList(Map<String, Object> params);
+    List<Department> selectDepartmentList();
 
-    Integer selectCount(Map<String, Object> params);
+
 }
