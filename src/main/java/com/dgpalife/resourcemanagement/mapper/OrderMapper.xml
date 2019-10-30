@@ -9,13 +9,14 @@
     <result column="approval_link_id" jdbcType="BIGINT" property="approvalLinkId" />
     <result column="apply_department_id" jdbcType="BIGINT" property="applyDepartmentId" />
     <result column="proposer_id" jdbcType="BIGINT" property="proposerId" />
+    <result column="project_id" jdbcType="BIGINT" property="projectId" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.dgpalife.resourcemanagement.model.Order">
     <result column="reason" jdbcType="LONGVARCHAR" property="reason" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, type, status, title, approval_link_id, apply_department_id, proposer_id, create_time
+    id, type, status, title, approval_link_id, apply_department_id, proposer_id, project_id,create_time
   </sql>
   <sql id="Blob_Column_List">
     reason
@@ -35,11 +36,11 @@
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Order">
     insert into t_order (id, type, status, 
       title, approval_link_id, apply_department_id, 
-      proposer_id, create_time, reason
+      proposer_id, project_id,create_time, reason
       )
     values (#{id,jdbcType=BIGINT}, #{type,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
       #{title,jdbcType=VARCHAR}, #{approvalLinkId,jdbcType=BIGINT}, #{applyDepartmentId,jdbcType=BIGINT}, 
-      #{proposerId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}, #{reason,jdbcType=LONGVARCHAR}
+      #{proposerId,jdbcType=BIGINT},#{projectId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}, #{reason,jdbcType=LONGVARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Order" useGeneratedKeys="true" keyProperty="id">

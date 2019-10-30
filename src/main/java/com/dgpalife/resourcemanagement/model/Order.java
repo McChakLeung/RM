@@ -25,6 +25,10 @@ public class Order {
 
     private String reason;
 
+    private Long projectId;
+
+    private Project project;
+
     private List<ConstructDetail> constructDetailList;
 
     private List<ResourceMigration> resourceMigrationList;
@@ -32,6 +36,38 @@ public class Order {
     private List<ResourceRemovement> resourceRemovementList;
 
     private List<ChangeItemRecord> changeItemRecordList;
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public Department getApplyDepartment() {
+        return applyDepartment;
+    }
+
+    public void setApplyDepartment(Department applyDepartment) {
+        this.applyDepartment = applyDepartment;
+    }
+
+    public User getProposer() {
+        return proposer;
+    }
+
+    public void setProposer(User proposer) {
+        this.proposer = proposer;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
 
     public List<ConstructDetail> getConstructDetailList() {
         return constructDetailList;

@@ -5,11 +5,12 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="project_name" jdbcType="VARCHAR" property="projectName" />
     <result column="project_type" jdbcType="VARCHAR" property="projectType" />
+    <result column="start_time" jdbcType="VARCHAR" property="startTime" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, project_name, project_type, create_time, creator_id
+    id, project_name, start_time ,project_type, create_time, creator_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -22,10 +23,10 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Project">
-    insert into t_project (id, project_name, project_type, 
+    insert into t_project (id, project_name, project_type, start_time,
       create_time, creator_id)
     values (#{id,jdbcType=BIGINT}, #{projectName,jdbcType=VARCHAR}, #{projectType,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=VARCHAR}, #{creatorId,jdbcType=BIGINT})
+      #{startTime,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR}, #{creatorId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Project">
     insert into t_project
@@ -38,6 +39,9 @@
       </if>
       <if test="projectType != null">
         project_type,
+      </if>
+      <if test="startTime != null">
+        start_time,
       </if>
       <if test="createTime != null">
         create_time,
@@ -56,6 +60,9 @@
       <if test="projectType != null">
         #{projectType,jdbcType=VARCHAR},
       </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=VARCHAR},
       </if>
@@ -73,6 +80,9 @@
       <if test="projectType != null">
         project_type = #{projectType,jdbcType=VARCHAR},
       </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=VARCHAR},
       </if>
@@ -86,8 +96,21 @@
     update t_project
     set project_name = #{projectName,jdbcType=VARCHAR},
       project_type = #{projectType,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=VARCHAR},
       creator_id = #{creatorId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectProjectList" resultType="map">
+    SELECT t1.id id,t1.project_name project_name, t1.project_type project_type,t2.username creator_name, t1.start_time start_time
+    FROM t_project t1, t_user t2
+    WHERE  t1.creator_id = t2.id
+    ORDER BY t1.start_time DESC
+    limit #{startline}, #{pagesize}
+  </select>
+
+  <select id="selectCount" resultType="java.lang.Integer">
+    select count(id) from t_project
+  </select>
 </mapper>
