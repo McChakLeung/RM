@@ -13,6 +13,16 @@ public class NetworkRoom {
 
     private Long creatorId;
 
+    private Workplace workplace;
+
+    public Workplace getWorkplace() {
+        return workplace;
+    }
+
+    public void setWorkplace(Workplace workplace) {
+        this.workplace = workplace;
+    }
+
     public Long getId() {
         return id;
     }

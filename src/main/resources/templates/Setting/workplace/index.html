@@ -82,7 +82,7 @@
 
 										</tfoot>
 									</table>
-									<button type="button" class="btn btn-success" style="float:right;" th:onclick="'window.location.href = \''+ @{|/setting/workplace/toAdd|}+ '\''"><i class="glyphicon glyphicon-plus"></i>添加职场</button>
+									<button type="button" class="btn btn-success" style="float:right;" th:onclick="'window.location.href = \''+ @{|/setting/workplace/toAddWorkplace|}+ '\''"><i class="glyphicon glyphicon-plus"></i>添加职场</button>
 								</div>
 								<!--<div class="panel-footer">-->
 									<!--<div class="row">-->
@@ -120,7 +120,7 @@
 
 										</tbody>
 									</table>
-									<button type="button" class="btn btn-primary" style="float:right;" th:onclick="'window.location.href = \''+ @{|/project/toAdd|}+ '\''"><i class="glyphicon glyphicon-plus"></i>添加网络机房</button>
+									<button type="button" class="btn btn-primary" style="float:right;" th:onclick="'window.location.href = \''+ @{|/setting/workplace/toAddNetworkRoom|}+ '\''"><i class="glyphicon glyphicon-plus"></i>添加网络机房</button>
 								</div>
 								<!--<div class="panel-footer">-->
 									<!--<div class="row">-->
@@ -195,8 +195,8 @@
                         content+='  <td>'+n.address+'</td>';
                         content+='  <td>'+n.district+'</td>';
                         content+='  <td>';
-                        content+='	  <button type="button" class="btn btn-primary btn-xs" onclick="toUpdate('+n.id+')"><i class=" glyphicon glyphicon-pencil"></i></button>';
-                        content+='	  <button type="button" class="btn btn-danger btn-xs" onclick="deleteWorkplace('+n.id+',\''+n.workplaceName+'\')"><i class=" glyphicon glyphicon-trash"></i></button>';
+                        content+='	  <button type="button" class="btn btn-primary btn-xs" onclick="toUpdateWorkplace('+n.id+')"><i class=" glyphicon glyphicon-pencil"></i></button>';
+                        content+='	  <button type="button" class="btn btn-danger btn-xs" onclick="deleteWorkplaceAndNetworkRoom('+n.id+',\''+n.workplaceName+'\')"><i class=" glyphicon glyphicon-trash"></i></button>';
                         content+='  </td>';
                         content+='</tr>';
                     });
@@ -230,6 +230,36 @@
             }
         })
     }
+
+    function toUpdateWorkplace(id) {
+        window.location.href = '[[@{|/setting/workplace/toUpdateWorkplace/|}]]'+id;
+    }
+
+    //级联删除职场及机房数据
+    function deleteWorkplaceAndNetworkRoom(id,workplaceName) {
+        layer.confirm("该职场下面的机房信息也将一并删除，确定要删除【"+workplaceName+"】吗？",  {icon: 3, title:'提示'}, function(cindex){
+            layer.close(cindex);
+            $.ajax({
+                type:"post",
+                url:"[[@{|/setting/workplace/doDeleteWorkplaceAndNetworkRoom|}]]",
+                data:{
+                    "id":id
+                },
+                success:function (result) {
+                    if(result.success){
+                        window.location.href='[[@{|/setting/workplace/toIndex|}]]';
+                    }else{
+                        layer.msg(result.message,{time:2000, icon:5, shift:5});
+                    }
+                }
+
+            });
+
+        }, function(cindex){
+            layer.close(cindex);
+        });
+    }
+
 
     //单击职场表格时自动刷新机房表格（异步查询）
 	$("#ftb1 tbody").on("click","tr",function () {
@@ -274,15 +304,7 @@
 
     })
 
-    // function toDetail(id) {
-    //     window.location.href = '[[@{|/project/toDetail/|}]]'+id;
-    // }
-    //
-    // function toUpdate(id) {
-    //     window.location.href = '[[@{|/project/toUpdate/|}]]'+id;
-    // }
-    //
-    //
+
     // function deleteNetworkRoom(id,project_name) {
     //     layer.confirm("确定要删除【"+project_name+"】用户吗？",  {icon: 3, title:'提示'}, function(cindex){
     //         layer.close(cindex);

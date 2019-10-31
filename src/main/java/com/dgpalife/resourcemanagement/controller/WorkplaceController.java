@@ -10,6 +10,8 @@ import com.dgpalife.resourcemanagement.service.NetworkRoomService;
 import com.dgpalife.resourcemanagement.service.WorkplaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -87,14 +89,19 @@ public class WorkplaceController {
         return result;
     }
 
-    @RequestMapping("/toAdd")
-    public String toAdd(){
-        return "/setting/workplace/add";
+    @RequestMapping("/toAddWorkplace")
+    public String toAddWorkplace(){
+        return "/setting/workplace/addWorkplace";
     }
 
+    /**
+     * 异步添加
+     * @param workplace
+     * @return
+     */
     @ResponseBody
-    @RequestMapping("/doAdd")
-    public Object doAdd(Workplace workplace, HttpSession session){
+    @RequestMapping("/doAddWorkplace")
+    public Object doAddWorkplace(Workplace workplace, HttpSession session){
 
         AjaxResult result = new AjaxResult();
 
@@ -112,5 +119,57 @@ public class WorkplaceController {
             e.printStackTrace();
         }
         return result;
+    }
+
+    @RequestMapping("/toUpdateWorkplace/{id}")
+    public String toUpdateWorkplace(@PathVariable Long id,Model model){
+        Workplace workplace = workplaceService.selectWorkplaceById(id);
+        model.addAttribute("workplace",workplace);
+        return "/setting/workplace/updateWorkplace";
+    }
+
+    /**
+     * 异步更新
+     * @param workplace
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/doUpdateWorkplace")
+    public Object doUpdateWorkplace(Workplace workplace){
+        AjaxResult result = new AjaxResult();
+        try{
+            int count = workplaceService.updateWorkplace(workplace);
+            result.setSuccess(count>0);
+        }catch (Exception e){
+            result.setSuccess(false);
+            result.setMessage("更新错误，请联系管理员处理");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * 异步删除职场数据，并级联删除关联的机房信息
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/doDeleteWorkplaceAndNetworkRoom")
+    public Object doDeleteWorkplaceAndNetworkRoom(Long id){
+        AjaxResult result = new AjaxResult();
+        try{
+            workplaceService.deleteWorkplaceAndNetworkRoomByWorkplaceId(id);
+            result.setSuccess(true);
+        }catch (Exception e){
+            result.setSuccess(false);
+            result.setMessage("更新错误，请联系管理员处理");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @RequestMapping("/toAddNetworkRoom")
+    public String toAddNetworkRoom(){
+        return "/setting/workplace/addNetworkRoom";
     }
 }

@@ -9,4 +9,10 @@ public interface WorkplaceService {
     Page<Workplace> selectWorkplaceList(Map<String, Object> params);
 
     int saveWorkplace(Workplace workplace);
+
+    Workplace selectWorkplaceById(Long id);
+
+    int updateWorkplace(Workplace workplace);
+
+    void deleteWorkplaceAndNetworkRoomByWorkplaceId(Long id);
 }

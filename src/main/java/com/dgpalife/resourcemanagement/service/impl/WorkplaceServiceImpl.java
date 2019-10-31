@@ -1,7 +1,9 @@
 package com.dgpalife.resourcemanagement.service.impl;
 
 import com.dgpalife.resourcemanagement.common.Page;
+import com.dgpalife.resourcemanagement.mapper.NetworkRoomMapper;
 import com.dgpalife.resourcemanagement.mapper.WorkplaceMapper;
+import com.dgpalife.resourcemanagement.model.NetworkRoom;
 import com.dgpalife.resourcemanagement.model.User;
 import com.dgpalife.resourcemanagement.model.Workplace;
 import com.dgpalife.resourcemanagement.service.WorkplaceService;
@@ -16,6 +18,9 @@ public class WorkplaceServiceImpl implements WorkplaceService {
 
     @Autowired
     private WorkplaceMapper workplaceMapper;
+
+    @Autowired
+    private NetworkRoomMapper networkRoomMapper;
 
     @Override
     public Page<Workplace> selectWorkplaceList(Map<String, Object> params) {
@@ -36,5 +41,34 @@ public class WorkplaceServiceImpl implements WorkplaceService {
     @Override
     public int saveWorkplace(Workplace workplace) {
         return workplaceMapper.insertSelective(workplace);
+    }
+
+    @Override
+    public Workplace selectWorkplaceById(Long id) {
+        return workplaceMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public int updateWorkplace(Workplace workplace) {
+        return workplaceMapper.updateByPrimaryKeySelective(workplace);
+    }
+
+    /**
+     * 级联删除职场及机房信息
+     * @param id
+     */
+    @Override
+    public void deleteWorkplaceAndNetworkRoomByWorkplaceId(Long id) {
+        //删除职场信息
+        workplaceMapper.deleteByPrimaryKey(id);
+
+        //查询该职场关联的机房信息
+        List<NetworkRoom> networkRoomList = networkRoomMapper.selectNetworkRoomListByWorkplaceId(id);
+
+        //删除机房信息
+        for(NetworkRoom networkRoom: networkRoomList){
+            networkRoomMapper.deleteByPrimaryKey(networkRoom.getId());
+        }
+
     }
 }
