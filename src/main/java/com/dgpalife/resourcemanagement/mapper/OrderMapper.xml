@@ -157,4 +157,15 @@
       create_time = #{createTime,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectOrderListByProjectId" resultType="map">
+    SELECT t1.id id,t1.type order_type,t1.status order_status,
+    t1.title order_title,t3.department_name department_name,
+    t2.username username, t1.create_time create_time
+    FROM t_order t1, t_user t2, t_department t3
+    WHERE t1.proposer_id = t2.id
+    AND t1.apply_department_id = t3.id
+    AND project_id = #{id}
+    ORDER BY create_time DESC
+  </select>
 </mapper>

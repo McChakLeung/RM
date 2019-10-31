@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -34,5 +35,15 @@ public class OrderServiceImpl implements OrderService {
             return 0;
         }
         return 1;
+    }
+
+    /**
+     * 根据projectID查询关联的工单清单
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Map<String,Object>> selectOrderListByProjectId(Long id) {
+        return orderMapper.selectOrderListByProjectId(id);
     }
 }

@@ -12,6 +12,20 @@ public class Department {
 
     private boolean open = true;
 
+    private Integer level;
+
+    private Long creatorId;
+
+    private String createTime;
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
     public boolean isOpen() {
         return open;
     }
@@ -19,10 +33,6 @@ public class Department {
     public void setOpen(boolean open) {
         this.open = open;
     }
-
-    private Long creatorId;
-
-    private String createTime;
 
     private List<Department> children = new ArrayList<Department>();
 

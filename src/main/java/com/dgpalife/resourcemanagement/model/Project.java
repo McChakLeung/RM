@@ -1,6 +1,7 @@
 package com.dgpalife.resourcemanagement.model;
 
 import java.util.List;
+import java.util.Map;
 
 public class Project {
     private Long id;
@@ -15,13 +16,13 @@ public class Project {
 
     private Long creatorId;
 
-    private List<Order> orderList;
+    private List<Map<String,Object>> orderList;
 
-    public List<Order> getOrderList() {
+    public List<Map<String, Object>> getOrderList() {
         return orderList;
     }
 
-    public void setOrderList(List<Order> orderList) {
+    public void setOrderList(List<Map<String, Object>> orderList) {
         this.orderList = orderList;
     }
 

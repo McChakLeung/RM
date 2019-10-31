@@ -6,6 +6,7 @@ import com.dgpalife.resourcemanagement.common.Page;
 import com.dgpalife.resourcemanagement.common.StringUtil;
 import com.dgpalife.resourcemanagement.model.Project;
 import com.dgpalife.resourcemanagement.model.User;
+import com.dgpalife.resourcemanagement.service.OrderService;
 import com.dgpalife.resourcemanagement.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -27,6 +29,9 @@ public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private OrderService orderService;
 
     @RequestMapping("/toIndex")
     public String toIndex(){
@@ -145,7 +150,18 @@ public class ProjectController {
      * @return
      */
     @RequestMapping("/toDetail/{id}")
-    public String toDetail(@PathVariable Long id){
+    public String toDetail(@PathVariable Long id, Model model){
+        //查询单个project对象
+        Project project = projectService.selectProjectById(id);
+
+        //根据project对象查询出关联的工单列表
+        List<Map<String,Object>> orderList = orderService.selectOrderListByProjectId(project.getId());
+
+        //将查询的工单列表存放在project对象中
+        project.setOrderList(orderList);
+
+        //将project对象通过model传回后台
+        model.addAttribute("project",project);
 
         return "/project/detail";
     }

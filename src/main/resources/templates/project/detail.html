@@ -53,53 +53,65 @@
                     <div class="col-md-12">
                         <!-- BASIC TABLE -->
                         <div class="panel">
+                            <div class="panel-header">项目明细</div>
                             <div class="panel-body">
                                 <form id="form">
                                     <div class="form-group">
                                         <label for="fproject_name">项目名称</label>
-                                        <input type="text" class="form-control" id="fproject_name"  disabled>
+                                        <input type="text" class="form-control" id="fproject_name"  th:value="${project.getProjectName()}" disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="fproject_type">项目类型</label>
-                                        <input type="text" class="form-control" id="fproject_type" disabled>
+                                        <input type="text" class="form-control" id="fproject_type" th:value="${project.getProjectType()}" disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="fstart_time">项目起始日期</label>
-                                        <input type="text" class="form-control" id="fstart_time" disabled>
+                                        <input type="text" class="form-control" id="fstart_time" th:value="${project.getStartTime()}" disabled>
                                     </div>
                                     <div class="form-group">
-                                        <input type="hidden" class="form-control" id="fid" >
+                                        <input type="hidden" class="form-control" id="fid"  th:value="${project.getId()}">
                                     </div>
                                 </form>
-
-
-                        </div>
-                        <!-- END BASIC TABLE -->
-                    </div>
-                        <hr>
-                        <div class="panel">
-                            <div class="panel-body">
+                                <h4>项目名下工单列表</h4>
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover">
                                         <thead>
                                         <tr class="success">
                                             <th>序号</th>
                                             <!--<th width="30"><input id="AllCheckbox" type="checkbox"></th>-->
-                                            <th>项目名称</th>
-                                            <th>项目类型</th>
-                                            <th>项目起始日期</th>
-                                            <th>创建人</th>
+                                            <th>工单类型</th>
+                                            <th>工单状态</th>
+                                            <th>工单标题</th>
+                                            <th>申请部门</th>
+                                            <th>申请人</th>
+                                            <th>创建时间</th>
                                             <!--<th>状态</th>-->
                                             <th width="230">操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-
+                                            <tr th:each="order:${project.orderList}">
+                                                <td th:text="${orderStat.count}"></td>
+                                                <td th:text="${order.order_type}"></td>
+                                                <td th:text="${order.order_status}"></td>
+                                                <td th:text="${order.order_title}"></td>
+                                                <td th:text="${order.department_name}"></td>
+                                                <td th:text="${order.username}"></td>
+                                                <td th:text="${order.create_time}"></td>
+                                                <td><a href="#">查看明细</a></td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
+                        <!--<div class="panel">-->
+                            <!--<div class="panel-header">项目名下工单列表</div>-->
+                            <!--<div class="panel-body">-->
+
+                            <!--</div>-->
+                        <!--</div>-->
+                </div>
                 </div>
             </div>
         </div>

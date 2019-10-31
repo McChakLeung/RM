@@ -1,7 +1,11 @@
 package com.dgpalife.resourcemanagement.model;
 
+import java.util.List;
+
 public class Workplace {
     private Long id;
+
+    private String workplaceName;
 
     private String address;
 
@@ -10,6 +14,24 @@ public class Workplace {
     private Long creatorId;
 
     private String createTime;
+
+    private List<NetworkRoom> networkRoomList;
+
+    public String getWorkplaceName() {
+        return workplaceName;
+    }
+
+    public void setWorkplaceName(String workplaceName) {
+        this.workplaceName = workplaceName;
+    }
+
+    public List<NetworkRoom> getNetworkRoomList() {
+        return networkRoomList;
+    }
+
+    public void setNetworkRoomList(List<NetworkRoom> networkRoomList) {
+        this.networkRoomList = networkRoomList;
+    }
 
     public Long getId() {
         return id;

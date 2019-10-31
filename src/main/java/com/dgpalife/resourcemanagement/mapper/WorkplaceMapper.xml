@@ -3,13 +3,14 @@
 <mapper namespace="com.dgpalife.resourcemanagement.mapper.WorkplaceMapper">
   <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.Workplace">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="workplace_name" jdbcType="VARCHAR" property="workplaceName" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="district" jdbcType="VARCHAR" property="district" />
     <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, address, district, creator_id, create_time
+    id,workplace_name, address, district, creator_id, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -22,9 +23,9 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Workplace">
-    insert into t_workplace (id, address, district, 
+    insert into t_workplace (id,workplace_name address, district,
       creator_id, create_time)
-    values (#{id,jdbcType=BIGINT}, #{address,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{workplaceName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR},
       #{creatorId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Workplace">
@@ -32,6 +33,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="workplaceName != null">
+        workplace_name,
       </if>
       <if test="address != null">
         address,
@@ -50,6 +54,9 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
+      <if test="workplaceName != null">
+        #{workplaceName,jdbcType=VARCHAR},
+      </if>
       <if test="address != null">
         #{address,jdbcType=VARCHAR},
       </if>
@@ -67,6 +74,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.Workplace">
     update t_workplace
     <set>
+      <if test="workplaceName != null">
+        workplace_name = #{name,jdbcType=VARCHAR},
+      </if>
       <if test="address != null">
         address = #{address,jdbcType=VARCHAR},
       </if>
@@ -84,10 +94,23 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.Workplace">
     update t_workplace
-    set address = #{address,jdbcType=VARCHAR},
+    set workplace_name = #{workplaceName,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
       creator_id = #{creatorId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectWorkplaceList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_workplace
+    ORDER BY create_time DESC
+    limit #{startline}, #{pagesize}
+  </select>
+
+  <select id="selectCount" resultType="java.lang.Integer">
+    select count(id) from t_workplace
+  </select>
 </mapper>

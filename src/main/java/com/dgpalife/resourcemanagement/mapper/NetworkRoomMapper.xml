@@ -3,14 +3,14 @@
 <mapper namespace="com.dgpalife.resourcemanagement.mapper.NetworkRoomMapper">
   <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.NetworkRoom">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="networkroom_name" jdbcType="VARCHAR" property="networkroom_name" />
     <result column="floor" jdbcType="VARCHAR" property="floor" />
     <result column="workplace_id" jdbcType="BIGINT" property="workplaceId" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, floor, workplace_id, create_time, creator_id
+    id, networkroom_name, floor, workplace_id, create_time, creator_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -23,10 +23,10 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.NetworkRoom">
-    insert into t_network_room (id, name, floor, 
+    insert into t_network_room (id, networkroom_name, floor,
       workplace_id, create_time, creator_id
       )
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{networkroom_name,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR},
       #{workplaceId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}, #{creatorId,jdbcType=BIGINT}
       )
   </insert>
@@ -36,8 +36,8 @@
       <if test="id != null">
         id,
       </if>
-      <if test="name != null">
-        name,
+      <if test="networkroom_name != null">
+        networkroom_name,
       </if>
       <if test="floor != null">
         floor,
@@ -56,8 +56,8 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
+      <if test="networkroom_name != null">
+        #{networkroom_name,jdbcType=VARCHAR},
       </if>
       <if test="floor != null">
         #{floor,jdbcType=VARCHAR},
@@ -76,8 +76,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.NetworkRoom">
     update t_network_room
     <set>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
+      <if test="networkroom_name != null">
+        networkroom_name = #{networkroom_name,jdbcType=VARCHAR},
       </if>
       <if test="floor != null">
         floor = #{floor,jdbcType=VARCHAR},
@@ -96,11 +96,19 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.NetworkRoom">
     update t_network_room
-    set name = #{name,jdbcType=VARCHAR},
+    set networkroom_name = #{networkroom_name,jdbcType=VARCHAR},
       floor = #{floor,jdbcType=VARCHAR},
       workplace_id = #{workplaceId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=VARCHAR},
       creator_id = #{creatorId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectNetworkRoomListByWorkplaceId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM t_network_room
+    WHERE workplace_id = #{workplaceId}
+    ORDER BY networkroom_name ASC
+  </select>
 </mapper>

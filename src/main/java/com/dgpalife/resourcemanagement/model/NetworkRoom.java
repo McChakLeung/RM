@@ -3,7 +3,7 @@ package com.dgpalife.resourcemanagement.model;
 public class NetworkRoom {
     private Long id;
 
-    private String name;
+    private String networkroom_name;
 
     private String floor;
 
@@ -21,12 +21,12 @@ public class NetworkRoom {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNetworkroom_name() {
+        return networkroom_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNetworkroom_name(String networkroom_name) {
+        this.networkroom_name = networkroom_name;
     }
 
     public String getFloor() {
