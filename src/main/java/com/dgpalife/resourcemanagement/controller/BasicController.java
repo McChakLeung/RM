@@ -172,4 +172,8 @@ public class  BasicController {
         return "/auth";
     }
 
+    @RequestMapping("/openQuery")
+    public String openQuery(){
+        return "/commons/container";
+    }
 }

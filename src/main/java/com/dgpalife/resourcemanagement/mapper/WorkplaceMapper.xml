@@ -113,4 +113,13 @@
   <select id="selectCount" resultType="java.lang.Integer">
     select count(id) from t_workplace
   </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_workplace
+  </select>
+
+  <select id="selectNum" resultType="Integer">
+    select count(*) from t_workplace
+  </select>
 </mapper>

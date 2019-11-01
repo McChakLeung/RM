@@ -3,6 +3,7 @@ package com.dgpalife.resourcemanagement.service;
 import com.dgpalife.resourcemanagement.common.Page;
 import com.dgpalife.resourcemanagement.model.Workplace;
 
+import java.util.List;
 import java.util.Map;
 
 public interface WorkplaceService {
@@ -15,4 +16,8 @@ public interface WorkplaceService {
     int updateWorkplace(Workplace workplace);
 
     void deleteWorkplaceAndNetworkRoomByWorkplaceId(Long id);
+
+    List<Object> selectWorkplace();
+
+    int selectCount();
 }

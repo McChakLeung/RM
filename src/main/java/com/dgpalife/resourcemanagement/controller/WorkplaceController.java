@@ -8,6 +8,7 @@ import com.dgpalife.resourcemanagement.model.User;
 import com.dgpalife.resourcemanagement.model.Workplace;
 import com.dgpalife.resourcemanagement.service.NetworkRoomService;
 import com.dgpalife.resourcemanagement.service.WorkplaceService;
+import com.dgpalife.resourcemanagement.vo.LayuiVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -171,5 +172,27 @@ public class WorkplaceController {
     @RequestMapping("/toAddNetworkRoom")
     public String toAddNetworkRoom(){
         return "/setting/workplace/addNetworkRoom";
+    }
+
+    @ResponseBody
+    @RequestMapping("/showTable")
+    public Object showTable(){
+
+        LayuiVO layuiVO = new LayuiVO();
+
+        try {
+            List<Object> workplaceList = workplaceService.selectWorkplace();
+            int count = workplaceService.selectCount();
+            layuiVO.setData(workplaceList);
+            layuiVO.setCount(count);
+            layuiVO.setCode(0);
+        }catch (Exception e){
+            e.printStackTrace();
+            layuiVO.setCode(1);
+            layuiVO.setMsg("查询异常，请联系管理员处理");
+        }
+
+        return layuiVO;
+
     }
 }

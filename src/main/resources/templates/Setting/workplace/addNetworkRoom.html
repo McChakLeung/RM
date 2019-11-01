@@ -25,7 +25,7 @@
     <script th:src="@{|/static/js/vendor/jquery/jquery.min.js|}"></script>
     <script th:src="@{|/static/js/vendor/bootstrap/js/bootstrap.min.js|}"></script>
     <script th:src="@{|/static/js/vendor/jquery-slimscroll/jquery.slimscroll.min.js|}"></script>
-    <script th:src="@{|/static/js/layer/layer.js|}"></script>
+    <!--<script th:src="@{|/static/js/layer/layer.js|}"></script>-->
     <script th:src="@{|/static/js/layui/layui.js|}"></script>
     <script th:src="@{|/static/js/common.js|}"></script>
 </head>
@@ -75,54 +75,54 @@
                         <!-- END BASIC TABLE -->
                     </div>
                 </div>
-                <!--隐藏层-->
-                <div class="layui-row" id="flayer" style="display: none">
-                    <form class="form-inline" role="form" style="float:left;" >
-                        <div class="form-group has-feedback">
-                            <div class="input-group">
-                                <div class="input-group-addon">查询条件</div>
-                                <input id="fqueryText" class="form-control has-success" type="text" placeholder="请输入查询条件">
-                            </div>
-                        </div>
-                        <button id="queryBtn" type="button" class="btn btn-warning" ><i class="glyphicon glyphicon-search"></i> 查询</button>
-                    </form>
-                    <br>
-                    <table class="layui-table"  id="ftb1">
-                        <thead>
-                        <tr class="warning">
-                            <th>序号</th>
-                            <th>职场名称</th>
-                            <th>职场地址</th>
-                            <th>所在区域</th>
-                        </tr>
-                        </thead>
-                        <tbody>
 
-                        </tbody>
-                    </table>
-                </div>
             </div>
         </div>
         <!-- END MAIN CONTENT -->
     </div>
+
+    <!--<div id="layer_context" th:include="/commons/container :: layerContext"></div>-->
     <!-- END MAIN -->
     <div class="clearfix"></div>
     <!--<div class="footer"></div>-->
     <div id="footer" th:include="/commons/footer :: footerContext"></div>
 </div>
 <!-- END WRAPPER -->
-<script type="text/javascript" >
-
-    layui.use(["layer","table"],function() {
-        var layer = layui.layer;
+<script type="text/javascript">
+    layui.use(['table','layer'], function() {
         var table = layui.table;
+        var layer = layui.layer;
 
         $("#fworkplace").click(function () {
 
             layer.open({
+                title:"请选择所在职场：",
+                area: ['900px', '650px'],
                 type:2,
-                content: $("#flayer").html()
+                content:"[[@{|/openQuery|}]]",
+                btn:['选择','取消'],
+                success:function (layero, index) {
+                    table.render({
+                        elem: layer.getChildFrame("#flayer", index)
+                        ,url:"[[@{|/setting/workplace/showTable|}]]"
+                        ,cols: [
+                            [
+                                {field: 'id', title: 'ID',width:80}
+                                ,{field: 'workplaceName', title: '职场名称',width:120}
+                                ,{field: 'address', title: '职场地址'}
+                                ,{field: 'district', title: '所在区域',width:120}
+                            ]
+                        ]
+                    })
+                },
+                yes:function () {
+
+                },
+                btn2:function () {
+                    layer.closeAll();
+                }
             })
+
 
 
         })
@@ -195,7 +195,8 @@
         $("#resetBtn").click(function () {
             $("#form")[0].reset();
         })
-    })
+    });
+
 
 
 

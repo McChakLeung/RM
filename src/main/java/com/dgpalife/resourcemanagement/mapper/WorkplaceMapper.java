@@ -23,4 +23,8 @@ public interface WorkplaceMapper {
     List<Workplace> selectWorkplaceList(Map<String, Object> params);
 
     Integer selectCount(Map<String, Object> params);
+
+    List<Object> selectAll();
+
+    int selectNum();
 }

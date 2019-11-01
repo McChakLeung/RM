@@ -71,4 +71,14 @@ public class WorkplaceServiceImpl implements WorkplaceService {
         }
 
     }
+
+    @Override
+    public List<Object> selectWorkplace() {
+        return workplaceMapper.selectAll();
+    }
+
+    @Override
+    public int selectCount() {
+        return workplaceMapper.selectNum();
+    }
 }
