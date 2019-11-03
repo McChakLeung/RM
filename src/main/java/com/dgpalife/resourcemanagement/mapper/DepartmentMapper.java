@@ -23,5 +23,7 @@ public interface DepartmentMapper {
 
     List<Department> selectDepartmentList();
 
+    List<Department> selectAllDepartmentExceptNullPID();
 
+    List<Department> selectDepartmentByPID(Long id);
 }

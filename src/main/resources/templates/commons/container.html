@@ -29,48 +29,24 @@
     <script th:src="@{|/static/js/common.js|}"></script>
 </head>
 <body>
-<!--<html xmlns:th="http://www.thymeleaf.org">-->
-<!--<span th:fragment="layerContext">-->
-    <!--<div class="row" id="flayer" style="display: none">-->
-    <!--<div class="row" id="flayer">-->
-
-        <!--<form type="post">-->
-            <!--<div class="form-group">-->
-                <!--<div class="input-group">-->
-                    <!--<div class="input-group-addon">查询条件</div>-->
-                    <!--<input type="text" value="" class="form-control" placeholder="请输入查询条件">-->
-                <!--</div>-->
-                <!--<button id="queryBtn" type="button" class="btn btn-warning" ><i class="glyphicon glyphicon-search"></i> 查询</button>-->
-            <!--</div>-->
-        <!--</form>-->
-        <!--<form>-->
-            <!--<div class="input-group">-->
-                <!--<input type="text" value="" class="form-control" placeholder="请输入查询内容">-->
-                <!--<span class="input-group-btn"><button type="button" class="btn btn-primary">查询</button></span>-->
-            <!--</div>-->
-        <!--</form>-->
         <form class="layui-form" action="" id="flayer">
             <div class="layui-form-item">
-                <!--<label class="layui-form-label">查询</label>-->
-                <div class="layui-input-inline">
-                    <input type="text" name="queryText" lay-verify="title" autocomplete="off" placeholder="请输入查询条件" class="layui-input">
-                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                <div class="layui-inline">
+                    <!--<div class="layui-input-inline">-->
+                        <!--<label class="layui-form-label">查询ddddddddddddddddddddddddddddddd</label>-->
+                    <!--</div>-->
+                    <div class="layui-input-inline">
+                        <input type="text" name="queryText" autocomplete="off" placeholder="请输入查询条件" class="layui-input">
+                    </div>
+                    <div class="layui-input-inline">
+                        <button type="button" class="layui-btn" lay-submit="" lay-filter="demo1">搜索</button>
+                    </div>
                 </div>
 
             </div>
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
-                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                </div>
-            </div>
-
         </form>
-
-
         <table class="layui-table"  id="ftable">
 
         </table>
-<!--</span>-->
 </body>
 </html>

@@ -73,12 +73,12 @@ public class WorkplaceServiceImpl implements WorkplaceService {
     }
 
     @Override
-    public List<Object> selectWorkplace() {
-        return workplaceMapper.selectAll();
+    public int selectCount(Map<String,Object> params) {
+        return workplaceMapper.selectNum(params);
     }
 
     @Override
-    public int selectCount() {
-        return workplaceMapper.selectNum();
+    public List<Object> selectWorkplaceByQueryText(Map<String,Object> params) {
+        return workplaceMapper.selectWorkplaceByQueryText(params);
     }
 }

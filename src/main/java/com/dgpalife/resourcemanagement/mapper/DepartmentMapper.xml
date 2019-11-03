@@ -5,11 +5,12 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="pid" jdbcType="BIGINT" property="pid" />
     <result column="department_name" jdbcType="VARCHAR" property="departmentName" />
+    <result column="level" jdbcType="INTEGER" property="level" />
     <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, pid, department_name, creator_id, create_time
+    id, pid, department_name,level,creator_id, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -22,10 +23,10 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Department">
-    insert into t_department (id, pid, department_name, 
+    insert into t_department (id, pid, department_name, level,
       creator_id, create_time)
     values (#{id,jdbcType=BIGINT}, #{pid,jdbcType=BIGINT}, #{departmentName,jdbcType=VARCHAR}, 
-      #{creatorId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR})
+       #{level,jdbcType=INTEGER},#{creatorId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Department">
     insert into t_department
@@ -38,6 +39,9 @@
       </if>
       <if test="departmentName != null">
         department_name,
+      </if>
+      <if test="level != null">
+        level,
       </if>
       <if test="creatorId != null">
         creator_id,
@@ -56,6 +60,9 @@
       <if test="departmentName != null">
         #{departmentName,jdbcType=VARCHAR},
       </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
       <if test="creatorId != null">
         #{creatorId,jdbcType=BIGINT},
       </if>
@@ -73,6 +80,9 @@
       <if test="departmentName != null">
         department_name = #{departmentName,jdbcType=VARCHAR},
       </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
       <if test="creatorId != null">
         creator_id = #{creatorId,jdbcType=BIGINT},
       </if>
@@ -86,6 +96,7 @@
     update t_department
     set pid = #{pid,jdbcType=BIGINT},
       department_name = #{departmentName,jdbcType=VARCHAR},
+      level = #{level,jdbcType=INTEGER},
       creator_id = #{creatorId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
@@ -96,5 +107,18 @@
     from t_department
   </select>
 
+  <select id="selectAllDepartmentExceptNullPID" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_department
+    where pid is not null
+  </select>
+
+  <select id="selectDepartmentByPID" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_department
+    where pid = #{pid}
+  </select>
 
 </mapper>

@@ -3,6 +3,7 @@ package com.dgpalife.resourcemanagement.controller;
 import com.dgpalife.resourcemanagement.common.AjaxResult;
 import com.dgpalife.resourcemanagement.common.Const;
 import com.dgpalife.resourcemanagement.common.Page;
+import com.dgpalife.resourcemanagement.common.StringUtil;
 import com.dgpalife.resourcemanagement.model.NetworkRoom;
 import com.dgpalife.resourcemanagement.model.User;
 import com.dgpalife.resourcemanagement.model.Workplace;
@@ -163,7 +164,7 @@ public class WorkplaceController {
             result.setSuccess(true);
         }catch (Exception e){
             result.setSuccess(false);
-            result.setMessage("更新错误，请联系管理员处理");
+            result.setMessage("删除错误，请联系管理员处理");
             e.printStackTrace();
         }
         return result;
@@ -176,13 +177,20 @@ public class WorkplaceController {
 
     @ResponseBody
     @RequestMapping("/showTable")
-    public Object showTable(){
+    public Object showTable(String queryText){
 
         LayuiVO layuiVO = new LayuiVO();
 
         try {
-            List<Object> workplaceList = workplaceService.selectWorkplace();
-            int count = workplaceService.selectCount();
+            Map<String,Object> params = new HashMap<>();
+            if(StringUtil.isNotEmpty(queryText)){
+                if(queryText.contains("%")){
+                    queryText = queryText.replaceAll("%", "\\\\%");
+                }
+                params.put("queryText", queryText); //   \%
+            }
+            List<Object> workplaceList = workplaceService.selectWorkplaceByQueryText(params);
+            int count = workplaceService.selectCount(params);
             layuiVO.setData(workplaceList);
             layuiVO.setCount(count);
             layuiVO.setCode(0);
@@ -194,5 +202,66 @@ public class WorkplaceController {
 
         return layuiVO;
 
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/doAddNetworkRoom")
+    public Object doAddNetworkRoom(NetworkRoom networkRoom,HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try{
+            User user = (User)session.getAttribute(Const.LOGIN_USER);
+            networkRoom.setCreatorId(user.getId());
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            networkRoom.setCreateTime(sdf.format(date));
+            int count = networkRoomService.saveNetworkRoom(networkRoom);
+            result.setSuccess(count>0);
+        }catch (Exception e){
+            result.setSuccess(false);
+            result.setMessage("新增错误，请联系管理员处理");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+    @RequestMapping("/toUpdateNetworkRoom/{id}")
+    public String toUpdateNetworkRoom(@PathVariable Long id,Model model){
+        NetworkRoom networkRoom = networkRoomService.selectNetworkRoomById(id);
+        model.addAttribute("networkRoom",networkRoom);
+        return "/setting/workplace/updateNetworkRoom";
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/doUpdateNetworkRoom")
+    public Object doUpdateNetworkRoom(NetworkRoom networkRoom){
+        AjaxResult result = new AjaxResult();
+        try{
+            int count = networkRoomService.updateNetworkRoom(networkRoom);
+            result.setSuccess(count>0);
+        }catch (Exception e){
+            result.setSuccess(false);
+            result.setMessage("更新错误，请联系管理员处理");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/doDeleteNetworkRoom")
+    public Object doDeleteNetworkRoom(Long id){
+        AjaxResult result = new AjaxResult();
+        try{
+            networkRoomService.deleteNetworkRoomById(id);
+            result.setSuccess(true);
+        }catch (Exception e){
+            result.setSuccess(false);
+            result.setMessage("删除错误，请联系管理员处理");
+            e.printStackTrace();
+        }
+        return result;
     }
 }

@@ -1,5 +1,6 @@
 package com.dgpalife.resourcemanagement.service.impl;
 
+import com.dgpalife.resourcemanagement.common.Page;
 import com.dgpalife.resourcemanagement.mapper.ConstructDetailMapper;
 import com.dgpalife.resourcemanagement.mapper.OrderMapper;
 import com.dgpalife.resourcemanagement.model.ConstructDetail;
@@ -45,5 +46,20 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Map<String,Object>> selectOrderListByProjectId(Long id) {
         return orderMapper.selectOrderListByProjectId(id);
+    }
+
+    @Override
+    public Page<Object> selectOrderListByUserId(Map<String, Object> params) {
+        Page<Object> page = new Page<>((Integer) params.get("pageno"),(Integer)params.get("pagesize"));
+        //查询项目列表数据
+        params.put("startline",page.getStartline());
+        List<Map<String,Object>> datas = orderMapper.selectOrderListByUserId(params);
+        page.setDatalist(datas);
+
+        //查询项目总数
+        Integer totalsize = orderMapper.selectCount(params);
+        //将查询结果存放到公共的Page类中
+        page.setTotalsize(totalsize);
+        return page;
     }
 }

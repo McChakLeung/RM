@@ -17,4 +17,8 @@ public interface DepartmentService {
     int saveDepartment(Department department);
 
     int updateDepartment(Department department);
+
+    List<Department> selectAllDepartmentExceptNullPID();
+
+    List<Department> selectDepartmentByPID(Long id);
 }

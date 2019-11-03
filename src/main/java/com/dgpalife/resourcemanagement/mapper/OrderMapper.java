@@ -23,4 +23,8 @@ public interface OrderMapper {
     int updateByPrimaryKey(Order record);
 
     List<Map<String,Object>> selectOrderListByProjectId(Long id);
+
+    List<Map<String,Object>> selectOrderListByUserId(Map<String, Object> params);
+
+    Integer selectCount(Map<String, Object> params);
 }

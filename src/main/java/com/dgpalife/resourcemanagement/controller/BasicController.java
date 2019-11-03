@@ -4,6 +4,7 @@ import com.dgpalife.resourcemanagement.common.AjaxResult;
 import com.dgpalife.resourcemanagement.common.Const;
 import com.dgpalife.resourcemanagement.common.MD5Util;
 import com.dgpalife.resourcemanagement.model.Permission;
+import com.dgpalife.resourcemanagement.model.Role;
 import com.dgpalife.resourcemanagement.model.User;
 import com.dgpalife.resourcemanagement.service.PermissionService;
 import com.dgpalife.resourcemanagement.service.RoleService;
@@ -115,10 +116,14 @@ public class  BasicController {
     }
 
     @RequestMapping("/doLogin/{roleId}")
-    public String doLogin(@PathVariable Integer roleId, HttpSession session){
+    public String doLogin(@PathVariable Long roleId, HttpSession session){
 
         //获取当前session中的User对象
         User user = (User)session.getAttribute(Const.LOGIN_USER);
+
+        //查询当前登陆的角色，并将登陆的角色存放在session中
+        Role role = roleService.queryRoleByRoleId(roleId);
+        session.setAttribute(Const.ROLE,role);
 
         //创建Map集合接收参数
         Map<String,Object> params = new HashMap<>();
@@ -158,6 +163,7 @@ public class  BasicController {
         }
         //将查询结果放到session中
         session.setAttribute("permissionRoot", permissionRoot);
+
         return "/index";
     }
 

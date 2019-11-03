@@ -8,6 +8,7 @@ import com.dgpalife.resourcemanagement.model.Project;
 import com.dgpalife.resourcemanagement.model.User;
 import com.dgpalife.resourcemanagement.service.OrderService;
 import com.dgpalife.resourcemanagement.service.ProjectService;
+import com.dgpalife.resourcemanagement.vo.LayuiVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -164,5 +165,35 @@ public class ProjectController {
         model.addAttribute("project",project);
 
         return "/project/detail";
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/showTable")
+    public Object showTable(String queryText){
+
+        LayuiVO layuiVO = new LayuiVO();
+
+        try {
+            Map<String,Object> params = new HashMap<>();
+            if(StringUtil.isNotEmpty(queryText)){
+                if(queryText.contains("%")){
+                    queryText = queryText.replaceAll("%", "\\\\%");
+                }
+                params.put("queryText", queryText); //   \%
+            }
+            List<Object> projectList = projectService.selectProjectByQueryText(params);
+            int count = projectService.selectCountByQueryText(params);
+            layuiVO.setData(projectList);
+            layuiVO.setCount(count);
+            layuiVO.setCode(0);
+        }catch (Exception e){
+            e.printStackTrace();
+            layuiVO.setCode(1);
+            layuiVO.setMsg("查询异常，请联系管理员处理");
+        }
+
+        return layuiVO;
+
     }
 }

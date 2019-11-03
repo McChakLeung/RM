@@ -113,7 +113,7 @@
 											<th>序号</th>
 											<th>机房名</th>
 											<th>楼层</th>
-											<th>操作</th>
+											<th width="200px">操作</th>
 										</tr>
 										</thead>
 										<tbody id="fnetwork_room">
@@ -290,7 +290,7 @@
                         content+='  <td>'+n.networkroom_name+'</td>';
                         content+='  <td>'+n.floor+'</td>';
                         content+='  <td>';
-                        content+='	  <button type="button" class="btn btn-primary btn-xs" onclick="toUpdate('+n.id+')"><i class=" glyphicon glyphicon-pencil"></i></button>';
+                        content+='	  <button type="button" class="btn btn-primary btn-xs" onclick="toUpdateNetworkRoom('+n.id+')"><i class=" glyphicon glyphicon-pencil"></i></button>';
                         content+='	  <button type="button" class="btn btn-danger btn-xs" onclick="deleteNetworkRoom('+n.id+',\''+n.networkroom_name+'\')"><i class=" glyphicon glyphicon-trash"></i></button>';
                         content+='  </td>';
                         content+='</tr>';
@@ -305,29 +305,33 @@
     })
 
 
-    // function deleteNetworkRoom(id,project_name) {
-    //     layer.confirm("确定要删除【"+project_name+"】用户吗？",  {icon: 3, title:'提示'}, function(cindex){
-    //         layer.close(cindex);
-    //         $.ajax({
-    //             type:"post",
-    //             url:"[[@{|/project/doDelete|}]]",
-    //             data:{
-    //                 "id":id
-    //             },
-    //             success:function (result) {
-    //                 if(result.success){
-    //                     window.location.href='[[@{|/project/toIndex|}]]';
-    //                 }else{
-    //                     layer.msg(result.message,{time:2000, icon:5, shift:5});
-    //                 }
-    //             }
-    //
-    //         });
-    //
-    //     }, function(cindex){
-    //         layer.close(cindex);
-    //     });
-    // }
+    function toUpdateNetworkRoom(id) {
+        window.location.href = '[[@{|/setting/workplace/toUpdateNetworkRoom/|}]]'+id;
+    }
+
+    function deleteNetworkRoom(id,networkroom_name) {
+        layer.confirm("确定要删除【"+networkroom_name+"】吗？",  {icon: 3, title:'提示'}, function(cindex){
+            layer.close(cindex);
+            $.ajax({
+                type:"post",
+                url:"[[@{|/setting/workplace/doDeleteNetworkRoom|}]]",
+                data:{
+                    "id":id
+                },
+                success:function (result) {
+                    if(result.success){
+                        window.location.href='[[@{|/setting/workplace/toIndex|}]]';
+                    }else{
+                        layer.msg(result.message,{time:2000, icon:5, shift:5});
+                    }
+                }
+
+            });
+
+        }, function(cindex){
+            layer.close(cindex);
+        });
+    }
 
 
 </script>

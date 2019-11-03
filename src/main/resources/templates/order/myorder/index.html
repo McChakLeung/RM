@@ -14,6 +14,10 @@
 	<link rel="stylesheet" th:href="@{|/static/css/main.css|}">
 	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
 	<link rel="stylesheet" th:href="@{|/static/css/demo.css|}">
+	<!--LAYUI CSS-->
+	<link rel="stylesheet" th:href="@{|/static/js/layui/css/layui.css|}">
+	<!--ZTREE CSS-->
+	<link rel="stylesheet" th:href="@{|/static/ztree/zTreeStyle.css|}">
 	<!-- GOOGLE FONTS -->
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
 	<!-- ICONS -->
@@ -25,7 +29,9 @@
 	<script th:src="@{|/static/js/vendor/jquery-slimscroll/jquery.slimscroll.min.js|}"></script>
 	<script th:src="@{|/static/js/scripts/klorofil-common.js|}"></script>
 	<script th:src="@{|/static/js/layer/layer.js|}"></script>
+	<script th:src="@{|/static/js/layui/layui.js|}"></script>
 	<script th:src="@{|/static/js/common.js|}"></script>
+	<script th:src="@{|/static/ztree/jquery.ztree.all-3.5.min.js|}"></script>
 
 </head>
 
@@ -62,7 +68,7 @@
 
                                     <!--</div>-->
 
-									<form class="form-horizontal" id="selectOptionForm"  method="post">
+									<form class="form-horizontal" id="form"  method="post">
 										<!--<h4 class="page-title">筛选条件:</h4>-->
 										<div class="form-group">
 											<label class="col-md-3">筛选条件：</label>
@@ -89,79 +95,75 @@
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-md-2 control-label">职能部门:</label>
+											<label for="fapply_department" class="col-md-2 control-label">职能部门|营业区</label>
 											<div class="col-md-3">
-												<select class="form-control" id="parentDept" name="parentDept" onchange="selectSubDept()">
-													<option value="">请选择</option>
-													<!--<option th:each="parentDept:${resultMap.departmentList}" th:value="${parentDept.DeptNo}" th:text="${parentDept.DeptName}">请选择</option>-->
-												</select>
+												<input type="text" class="form-control" id="fapply_department" placeholder="请选择职能部门或营业区" apply_department_id="" onclick="doLoadApplyDepartment()">
 											</div>
-											<label for="deptNo" class="col-md-2 control-label">科室|外勤部门：</label>
+											<label for="fapply_usedepartment" class="col-md-2 control-label">科室|外勤部门</label>
 											<div class="col-md-3">
-												<select class="form-control" id="deptNo" name="deptNo">
-													<option value="">请选择</option>
-												</select>
+												<input type="text" class="form-control" id="fapply_usedepartment" placeholder="请选择科室|外勤部门" apply_usedepartment_id="" onclick="doloadApplyUseDepartment()">
 											</div>
+
+											<!--<div class="col-md-3">-->
+												<!--&lt;!&ndash;<select class="form-control" id="parentDept" name="parentDept">&ndash;&gt;-->
+													<!--&lt;!&ndash;<option value="">请选择</option>&ndash;&gt;-->
+													<!--&lt;!&ndash;&lt;!&ndash;<option th:each="parentDept:${resultMap.departmentList}" th:value="${parentDept.DeptNo}" th:text="${parentDept.DeptName}">请选择</option>&ndash;&gt;&ndash;&gt;-->
+												<!--&lt;!&ndash;</select>&ndash;&gt;-->
+											<!--</div>-->
+											<!--<label for="deptNo" class="col-md-2 control-label">科室|外勤部门：</label>-->
+											<!--<div class="col-md-3">-->
+												<!--<select class="form-control" id="deptNo" name="deptNo">-->
+													<!--<option value="">请选择</option>-->
+												<!--</select>-->
+											<!--</div>-->
 										</div>
 										<div class="form-group">
-											<label for="operator" class="col-md-2 control-label">运营商：</label>
+											<label for="fproject" class="col-md-2 control-label">所属项目：</label>
 											<div class="col-md-3">
-												<select class="form-control" id="operator" name="operator">
-													<option value="">请选择</option>
-													<option value="电信">电信</option>
-													<option value="联通">联通</option>
-												</select>
-											</div>
-											<label for="operator" class="col-md-2 control-label">资源类型：</label>
-											<div class="col-md-3">
-												<select class="form-control" id="ResourceType" name="ResourceType">
-													<option value="">请选择</option>
-													<option value="固定电话">固定电话</option>
-													<option value="网络线路">网络线路</option>
-													<option value="手机号码">手机号码</option>
-												</select>
+												<input type="text" class="form-control" id="fproject" placeholder="请选择所属项目" project_id="">
 											</div>
 										</div>
 
 										<div class="form-group">
 											<div class="col-sm-offset-2 col-sm-10">
-												<button type="submit" class="btn btn-primary" >筛选</button>
-												<button type="reset" class="btn btn-danger">清除</button>
+												<button type="button" id="selectOption" class="btn btn-primary" >筛选</button>
+												<button type="button" id="resetBtn" class="btn btn-danger">清除</button>
 											</div>
 										</div>
+
+
+
 									</form>
                                     <hr>
 									<table class="table table-bordered table-hover">
 										<thead>
 											<tr class="success">
-												<!--<td>序号</td>-->
-												<td>工单状态</td>
-												<td>工单编号</td>
+												<td>序号</td>
 												<td>工单类型</td>
-												<td>资源编号</td>
-												<td>资源类型</td>
-												<td>运营商</td>
-												<td>挂账部门</td>
-												<td>使用部门</td>
-												<td>创建日期</td>
+												<td>工单状态</td>
+												<td>工单标题</td>
+												<td>职能部门|营业区</td>
+												<td>科室|外勤部门</td>
+												<td>申请人</td>
+												<td>所属项目</td>
+												<td>创建时间</td>
 												<td>操作</td>
 
 											</tr>
 										</thead>
 										<tbody>
+										<tfoot>
+										<tr >
+											<td colspan="9" align="center">
+												<ul class="pagination" id="fpagination">
 
+												</ul>
+											</td>
+										</tr>
+
+										</tfoot>
 										</tbody>
 									</table>
-									<!--分页-->
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <nav aria-label="Page navigation">
-                                                <ul class="pagination">
-
-                                                </ul>
-                                            </nav>
-                                        </div>
-                                    </div>
 								</div>
 							</div>
 							<!-- END BASIC TABLE -->
@@ -172,6 +174,17 @@
 				</div>
 			</div>
 			<!-- END MAIN CONTENT -->
+			<div id="department_layer" style="display: none;">
+				<div id="departmentTree" class="ztree"></div>
+			</div>
+			<div style="padding: 1% 1%;display: none" id="project_layer">
+				搜索项目：
+				<div class="layui-inline">
+					<input class="layui-input" name="projectName" id="demoReload" placeholder="请输入项目名称" autocomplete="off">
+				</div>
+				<button class="layui-btn" data-type="reload" id="search">搜索</button>
+				<table class="layui-table"  id="ftable" lay-filter="project"></table>
+			</div>
 		</div>
 		<!-- END MAIN -->
 		<div class="clearfix"></div>
@@ -221,15 +234,15 @@
                     $.each(data,function(i,n){
 
                         content+='<tr>';
-                        content+='  <td>'+n.status+'</td>';
-                        content+='  <td>'+n.ordersno+'</td>';
-                        content+='  <td>'+n.orderstype+'</td>';
-                        content+='  <td>'+n.resource.resourceno+'</td>';
-                        content+='  <td>'+n.resource.resourcetype+'</td>';
-                        content+='  <td>'+n.operator+'</td>';
-                        content+='  <td>'+n.accountdept.deptname+'</td>';
-                        content+='  <td>'+n.usedept.deptname+'</td>';
-                        content+='  <td>'+n.createtime+'</td>';
+                        content+='  <td>'+(i+1)+'</td>';
+                        content+='  <td>'+n.order_type+'</td>';
+                        content+='  <td>'+n.order_status+'</td>';
+                        content+='  <td>'+n.title+'</td>';
+                        content+='  <td>'+n.apply_department_name+'</td>';
+                        content+='  <td>'+n.apply_usedepartment_name+'</td>';
+                        content+='  <td>'+n.proposer_name+'</td>';
+                        content+='  <td>'+n.project_name+'</td>';
+                        content+='  <td>'+n.create_time+'</td>';
                         content+='  <td>';
                         content+='	  <button type="button" class="btn btn-primary btn-xs" onclick="toUpdate('+n.id+')"><i class=" glyphicon glyphicon-pencil"></i></button>';
                         content+='	  <button type="button" class="btn btn-danger btn-xs" onclick="deleteUser('+n.id+',\''+n.username+'\')"><i class=" glyphicon glyphicon-trash"></i></button>';
@@ -267,35 +280,205 @@
         })
     }
 
+    var zTree;
 
-    function selectSubDept(){
-        var parentDeptNo = $("#parentDept").val();
-        //var parentDeptNo = dataOption;
-        // console.log(parentDeptNo);
-        // alert(parentDeptNo);
-        //2.将职能部门下拉列表中原有的option进行删除
-        $("#deptNo>option:gt(0)").remove();
-        //3.定位隶属于当前职能部门下的所有的子部门信息
-        $.ajax({
-            url:"/resource/selectSubDept/" + parentDeptNo,
-            type:"get",
-            dataType: "json",
-            success:function (result) {
-                //var dataOption = "";
-                $.each(result,function (index,value) {
-                    var $dataOption = $("<option></option>");
-                    // dataOption +=
-                    //     "<option value=" + value.deptNo + ">" + value.deptName + "</option>";
-                    $dataOption.text(value.deptname);
-                    $dataOption.val(value.deptno);
-                    $dataOption.appendTo($("#deptNo"));
-                })
+    var setting = {
+
+        //如果后台传入的数据的字段与ztree的节点名不一致，必须要在setting中data的key中指定后台对应的名称
+        //比如这里的departmentName，否则会显示undefined
+        data:{
+            key:{
+                name:"departmentName"
             }
-        });
+        },
+        view: {
+            // selectedMulti: false,
+            addDiyDom: function(treeId, treeNode){
+                var aObj = $("#" + treeNode.tId + "_a"); // tId = permissionTree_1, ==> $("#permissionTree_1_a")
+                aObj.attr("href", "javascript:;");
+                var icoObj = $("#" + treeNode.tId + "_ico"); // tId = permissionTree_1, $("#permissionTree_1_ico")
+                if ( treeNode.icon ) {
+                    icoObj.removeClass("button ico_docu ico_open").addClass(treeNode.icon).css("background","");
+                }
+            },
+        },
     }
 
 
+	//异步加载所有部门节点
+    function doLoadApplyDepartment() {
+        var url = "[[@{|/setting/department/loadData|}]]";
+        $.getJSON(url,function(result){
+            if(result.success){
+                zTree = $.fn.zTree.init($("#departmentTree"), setting, result.datas);
+                zTree.expandAll(false)
+            }else{
+                layer.msg(result.message, {time:1000, icon:5, shift:6});
+            }
+        });
 
+        layer.open({
+            title: "职能部门查询",
+            area: ['600px', '400px'],
+            type: 1,
+            content: $('#department_layer'),
+            btn: ['选择', '取消'],
+
+			yes: function (layero, index) {
+                doSetSelectedNode("fapply_department","apply_department_id")
+                layer.close(layero)
+			},
+
+			btn2: function (layero, index) {
+				layer.close(layero)
+			}
+
+        })
+    }
+
+
+    function doSetSelectedNode(department,tid){
+
+        // 1.获得选中的的节点对象
+        // getSelectedNodes是zTree中的一个函数,返回值是一个数组        
+        var selectedNodes = zTree.getSelectedNodes();
+        // 2.获得具体的节点(node)对象
+        var node=selectedNodes[0];
+        // 3.通过node节点数据更新页面内容
+        $("#"+department).attr(tid, node.id);
+		$("#"+department).val(node.departmentName);
+		// 4.关闭弹框
+		//layer.close(index)
+    }
+
+    //异步加载职能部门下的部门节点
+    function doloadApplyUseDepartment(){
+        $("#departmentTree").empty();
+        var apply_department_id = $("#fapply_department").attr("apply_department_id")
+        var url = "[[@{|/setting/department/doloadApplyUseDepartment/|}]]" + apply_department_id;
+        $.getJSON(url,function(result){
+            if(result.success){
+                zTree = $.fn.zTree.init($("#departmentTree"), setting, result.datas);
+                zTree.expandAll(false)
+            }else{
+                layer.msg(result.message, {time:1000, icon:5, shift:6});
+            }
+        });
+
+        layer.open({
+            title: "科室|外勤部门查询",
+            area: ['600px', '400px'],
+            type: 1,
+            content: $('#department_layer'),
+            btn: ['选择', '取消'],
+
+            yes: function (layero, index) {
+                doSetSelectedNode("fapply_usedepartment","apply_usedepartment_id")
+                layer.close(layero)
+            },
+
+            btn2: function (layero, index) {
+                layer.close(layero)
+            }
+
+        })
+	}
+
+    //职场单击选择事件
+	//注意！！！！！！ 动态表格不能放置在form表单中，否则使用里面的单击事件会有问题
+    $("#fproject").click(function () {
+
+        var project_id, project_name = null;
+
+        //单击触发layer弹出层
+        layer.open({
+            title:"所属项目",
+            area: ['800px', '600px'],
+            type:1,
+            // content:"[[@{|/openQuery|}]]",
+            content:$('#project_layer'),
+            btn:['选择','取消'],
+            success:function (layero, index) {
+                layui.use('table',function () {
+                    var table = layui.table;
+
+                    //自动渲染数据表格
+                    table.render({
+                        // elem: layer.getChildFrame("#ftable", index)
+                        elem: '#ftable'
+                        ,url:"[[@{|/project/showTable|}]]"  //该url必须要返回符合layui要求的前端格式的json数据
+                        ,cols: [
+                            [
+                                {type:'radio'}
+                                ,{field: 'id', title: 'ID',width:80}
+                                ,{field: 'projectName', title: '项目名称',width:120}
+                                ,{field: 'projectType', title: '项目类型'}
+                                ,{field: 'startTime', title: '项目开始日期',width:120}
+                            ]
+                        ]
+                        ,page:true
+                        ,id: 'project'
+                    });
+
+                    //搜索功能实现
+                    $('#search').on('click',function () {
+                        // var type = $(this).data('type');
+                        // active[type] ? active[type].call(this) : '';
+                        var demoReload = $('#demoReload');
+                        table.reload('project',{
+                            url:"[[@{|/project/showTable|}]]"
+                            ,page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                            ,where: {
+                                queryText: demoReload.val()
+                            }
+                        })
+                    });
+
+                    //获取选中的层
+                    table.on('row(project)',function (obj) {
+                        project_id = obj.data.id;
+                        project_name = obj.data.projectName;
+                    })
+                })
+
+            },
+            yes:function (layero, index) {
+                $("#fproject").attr("project_id",project_id);
+                $("#fproject").val(project_name);
+                layer.close(layero)
+            },
+            btn2:function (layero, index) {
+                layer.close(layero)
+            }
+        })
+
+    })
+
+    $("#resetBtn").click(function () {
+        $("#form")[0].reset();
+        $("#fapply_department").attr("apply_department_id","");
+        $("#fapply_usedepartment").attr("apply_usedepartment_id","");
+        $("#fproject").attr("project_id","");
+        jsonObj.order_type = $("#OrderType").val();
+        jsonObj.order_staus = $("#Status").val();
+        jsonObj.apply_department_id = $("#fapply_department").attr("apply_department_id");
+        jsonObj.apply_usedepartment_id = $("#fapply_usedepartment").attr("apply_usedepartment_id");
+        jsonObj.project_id = $("#fproject").attr("project_id");
+        queryOrderByUser(1);
+    })
+
+	$("#selectOption").click(function () {
+		jsonObj.order_type = $("#OrderType").val();
+        jsonObj.order_staus = $("#Status").val();
+		jsonObj.apply_department_id = $("#fapply_department").attr("apply_department_id");
+		jsonObj.apply_usedepartment_id = $("#fapply_usedepartment").attr("apply_usedepartment_id");
+		jsonObj.project_id = $("#fproject").attr("project_id");
+        queryOrderByUser(1)
+
+    })
+	
 </script>
 </body>
 

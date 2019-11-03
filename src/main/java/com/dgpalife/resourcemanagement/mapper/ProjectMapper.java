@@ -23,4 +23,8 @@ public interface ProjectMapper {
     List<Map<String,Object>> selectProjectList(Map<String, Object> params);
 
     Integer selectCount(Map<String, Object> params);
+
+    List<Object> selectProjectByQueryText(Map<String, Object> params);
+
+    int selectCountByQueryText(Map<String, Object> params);
 }

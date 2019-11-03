@@ -17,7 +17,7 @@ public interface WorkplaceService {
 
     void deleteWorkplaceAndNetworkRoomByWorkplaceId(Long id);
 
-    List<Object> selectWorkplace();
+    int selectCount(Map<String,Object> params);
 
-    int selectCount();
+    List<Object> selectWorkplaceByQueryText(Map<String,Object> params);
 }

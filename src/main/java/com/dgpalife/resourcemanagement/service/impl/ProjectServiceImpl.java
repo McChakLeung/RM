@@ -52,4 +52,14 @@ public class ProjectServiceImpl implements ProjectService {
     public int deleteProjectById(Long id) {
         return projectMapper.deleteByPrimaryKey(id);
     }
+
+    @Override
+    public List<Object> selectProjectByQueryText(Map<String, Object> params) {
+        return projectMapper.selectProjectByQueryText(params);
+    }
+
+    @Override
+    public int selectCountByQueryText(Map<String, Object> params) {
+        return projectMapper.selectCountByQueryText(params);
+    }
 }

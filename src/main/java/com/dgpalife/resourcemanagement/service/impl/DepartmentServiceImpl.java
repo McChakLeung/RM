@@ -42,4 +42,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     public int updateDepartment(Department department) {
         return departmentMapper.updateByPrimaryKeySelective(department);
     }
+
+    @Override
+    public List<Department> selectAllDepartmentExceptNullPID() {
+        return departmentMapper.selectAllDepartmentExceptNullPID();
+    }
+
+    @Override
+    public List<Department> selectDepartmentByPID(Long id) {
+        return departmentMapper.selectDepartmentByPID(id);
+    }
 }

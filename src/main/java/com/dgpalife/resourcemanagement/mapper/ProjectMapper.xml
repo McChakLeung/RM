@@ -113,4 +113,24 @@
   <select id="selectCount" resultType="java.lang.Integer">
     select count(id) from t_project
   </select>
+
+  <select id="selectProjectByQueryText" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_project
+    <where>
+      <if test="queryText!=null">
+        project_name like concat("%",#{queryText},"%")
+      </if>
+    </where>
+  </select>
+
+  <select id="selectCountByQueryText" resultType="Integer">
+    select count(*) from t_project
+    <where>
+      <if test="queryText!=null">
+        project_name like concat("%",#{queryText},"%")
+      </if>
+    </where>
+  </select>
 </mapper>

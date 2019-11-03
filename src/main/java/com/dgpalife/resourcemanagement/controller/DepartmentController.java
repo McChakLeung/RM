@@ -81,6 +81,53 @@ public class DepartmentController {
     }
 
     /**
+     * 通过传入进来的职能部门id，查询出该部门下的所有部门，通过递归进行查询
+     * @param apply_department_id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/doloadApplyUseDepartment/{apply_department_id}")
+    public Object doloadApplyUseDepartment(@PathVariable Long apply_department_id){
+
+        AjaxResult result = new AjaxResult();
+
+        try{
+
+            //设置父节点list
+            List<Department> root = new ArrayList();
+
+            ////查询数据库父节点,并将父节点放置在父节点list中
+            Department parent = departmentService.selectDepartmentById(apply_department_id);
+            root.add(parent);
+
+            //设置一个childrenList集合，用于接收从数据库中查询的子节点
+            queryChildrenDepartment(parent);
+
+
+            result.setDatas(root);
+            result.setSuccess(true);
+        }catch (Exception e){
+            result.setSuccess(false);
+            result.setMessage("查询异常，请联系管理员处理");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private void queryChildrenDepartment(Department department) {
+
+        List<Department> childrenList = departmentService.selectDepartmentByPID(department.getId());
+        department.setChildren(childrenList);
+
+        //遍历子节点(foreach循环）
+        for (Department children: childrenList) {
+            queryChildrenDepartment(children);
+        }
+
+    }
+
+
+    /**
      * 异步删除部门
      * @return
      */
@@ -128,9 +175,10 @@ public class DepartmentController {
      * @param model
      * @return
      */
-    @RequestMapping("/toAdd/{pid}")
-    public String toAdd(@PathVariable Long pid, Model model){
+    @RequestMapping("/toAdd/{pid}/{level}")
+    public String toAdd(@PathVariable Long pid,@PathVariable Integer level, Model model){
         model.addAttribute("pid",pid);
+        model.addAttribute("level",level);
         return "/setting/department/add";
     }
 
@@ -141,12 +189,12 @@ public class DepartmentController {
      */
     @ResponseBody
     @RequestMapping("/doAdd")
-    public Object doAdd(Long pid, Department department, HttpSession session){
+    public Object doAdd(Department department, HttpSession session){
         AjaxResult result = new AjaxResult();
         try{
             //将当前登录的用户id和创建时间传入到department中
             User user = (User)session.getAttribute(Const.LOGIN_USER);
-            department.setPid(pid);
+//            department.setPid(pid);
             department.setCreatorId(user.getId());
             Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

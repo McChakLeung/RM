@@ -57,17 +57,18 @@
                                 <form id="form">
                                     <div class="form-group">
                                         <label for="fnetworkroom_name">机房名称</label>
-                                        <input type="text" class="form-control" id="fnetworkroom_name" placeholder="请输入机房名称">
+                                        <input type="text" class="form-control" id="fnetworkroom_name" th:value="${networkRoom.networkroom_name}" placeholder="请输入机房名称">
                                     </div>
                                     <div class="form-group">
                                         <label for="ffloor">楼层</label>
-                                        <input type="text" class="form-control" id="ffloor" placeholder="请输入楼层">
+                                        <input type="text" class="form-control" id="ffloor" th:value="${networkRoom.floor}" placeholder="请输入楼层">
                                     </div>
                                     <div class="form-group">
                                         <label for="fworkplace">所在职场</label>
-                                        <input type="text" class="form-control" id="fworkplace" placeholder="请选择所在职场" workplace_id="">
+                                        <input type="text" class="form-control" id="fworkplace" placeholder="请选择所在职场" th:workplace_id="${networkRoom.workplaceId}" th:value="${networkRoom.workplace.workplaceName}">
                                     </div>
-                                    <button type="button" id="addbtn" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> 新增</button>
+                                    <input type="hidden" id="fid" th:value="${networkRoom.id}">
+                                    <button type="button" id="editBtn" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> 修改</button>
                                     <button type="button" class="btn btn-danger" id="resetBtn"><i class="glyphicon glyphicon-refresh"></i> 重置</button>
                                 </form>
                             </div>
@@ -171,22 +172,24 @@
 
 
     //新增按钮功能
-    $("#addbtn").click(function () {
+    $("#editBtn").click(function () {
 
         //获取表单提交的数据
         var fnetworkroom_name = $("#fnetworkroom_name");
         var ffloor = $("#ffloor");
         var fworkplace = $("#fworkplace");
+        var fid = $("#fid");
         var loadingIndex = -1;
 
         //异步请求
         $.ajax({
             type:"post",
-            url:"[[@{|/setting/workplace/doAddNetworkRoom|}]]",
+            url:"[[@{|/setting/workplace/doUpdateNetworkRoom|}]]",
             data:{
                 networkroom_name:fnetworkroom_name.val(),
                 floor:ffloor.val(),
-                workplaceId:fworkplace.attr("workplace_id")
+                workplaceId:fworkplace.attr("workplace_id"),
+                id:fid.val()
             },
             //该函数用于在发生ajax请求前的处理，一般用于表单校验、加载进度条等
             beforeSend:function (XMLHttpRequest) {
