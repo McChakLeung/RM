@@ -103,7 +103,7 @@
 											</a>
 										</div>
 									</div>
-									<button type="button" class="btn btn-danger btn-lg btn-block" onclick="window.location.href='apply.html'">创建工单</button>
+									<button type="button" class="btn btn-danger btn-lg btn-block" id="addBtn">创建工单</button>
 
 							</div>
 						</div>
@@ -123,6 +123,8 @@
 </div>
 	<!-- END WRAPPER -->
 <script type="text/javascript">
+	var order_type;
+
 	$(function () {
         $.each($(".thumbnail img"), function(i, n){
             $(this).attr("src", "[[@{|/static/|}]]" + $(this).attr("src"));
@@ -134,7 +136,20 @@
     $(".thumbnail").click(function(){
         $('.seltype').remove();
         $(this).prepend('<div class="glyphicon glyphicon-ok seltype"></div>');
+        order_type = $(this).attr("order_type");
     });
+
+    $("#addBtn").click(function(){
+        // 判断工单类型是否被选中
+        var len = $('.seltype').length;
+        if ( len == 0 ) {
+            layer.msg("请先选择创建的工单类型", {time:1000, icon:5, shift:6});
+        } else {
+            //跳转至类型判断控制器
+			window.location.href="[[@{|/order/myorder/dispatchCreateOrderPage/|}]]" + order_type;
+        }
+    });
+
 </script>
 </body>
 

@@ -3,11 +3,13 @@ package com.dgpalife.resourcemanagement.controller;
 import com.dgpalife.resourcemanagement.common.AjaxResult;
 import com.dgpalife.resourcemanagement.common.Const;
 import com.dgpalife.resourcemanagement.common.Page;
+import com.dgpalife.resourcemanagement.common.StringUtil;
 import com.dgpalife.resourcemanagement.model.*;
 import com.dgpalife.resourcemanagement.service.DepartmentService;
 import com.dgpalife.resourcemanagement.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -79,10 +81,25 @@ public class OrderController {
         return "/order/myorder/orderType";
     }
 
-//    @RequestMapping("/construction/toConstructionAdd")
-//    public String toConstructionAdd(){
-//        return "/order/construction/add";
-//    }
+    @RequestMapping("/dispatchCreateOrderPage/{order_type}")
+    public String dispatchCreateOrderPage(@PathVariable String order_type){
+        if(StringUtil.isEmpty(order_type)){
+            return "redirect:/order/myorder/toSelectOrderType";
+        }
+        switch (order_type){
+            case "construction_order":
+                return "redirect:/order/myorder/construction/toConstructionAdd";
+            case "migration_order":
+                return "/order/myorder/maintaining";
+
+        }
+        return "redirect:/order/myorder/toSelectOrderType";
+    }
+
+    @RequestMapping("/construction/toConstructionAdd")
+    public String toConstructionAdd(){
+        return "/order/myorder/construction/add";
+    }
 //
 //    @ResponseBody
 //    @RequestMapping("/construction/doConstructionAdd")
