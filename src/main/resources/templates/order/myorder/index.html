@@ -131,10 +131,8 @@
 											</div>
 										</div>
 
-
-
 									</form>
-                                    <hr>
+									<button type="button" id="addBtn" class="btn btn-primary" style="float:right;" ><i class="glyphicon glyphicon-plus"></i>新增工单</button>
 									<table class="table table-bordered table-hover">
 										<thead>
 											<tr class="success">
@@ -154,7 +152,7 @@
 										<tbody>
 										<tfoot>
 										<tr >
-											<td colspan="9" align="center">
+											<td colspan="10" align="center">
 												<ul class="pagination" id="fpagination">
 
 												</ul>
@@ -164,6 +162,7 @@
 										</tfoot>
 										</tbody>
 									</table>
+
 								</div>
 							</div>
 							<!-- END BASIC TABLE -->
@@ -195,6 +194,9 @@
 <script type="text/javascript">
 
 	//var user_id = [[${session.user.id}]];
+	$("#addBtn").click(function () {
+        window.location.href = '[[@{|/order/myorder/toSelectOrderType/|}]]'
+    })
 
 	$(function () {
         queryOrderByUser(1);
@@ -245,7 +247,7 @@
                         content+='  <td>'+n.create_time+'</td>';
                         content+='  <td>';
                         content+='	  <button type="button" class="btn btn-primary btn-xs" onclick="toUpdate('+n.id+')"><i class=" glyphicon glyphicon-pencil"></i></button>';
-                        content+='	  <button type="button" class="btn btn-danger btn-xs" onclick="deleteUser('+n.id+',\''+n.username+'\')"><i class=" glyphicon glyphicon-trash"></i></button>';
+                        content+='	  <button type="button" class="btn btn-danger btn-xs" onclick="doDelete('+n.id+')"><i class=" glyphicon glyphicon-trash"></i></button>';
                         content+='  </td>';
                         content+='</tr>';
                     });
@@ -280,6 +282,33 @@
         })
     }
 
+    //级联删除职场及机房数据
+    function doDelete(id) {
+        layer.confirm("该工单下的装机信息也将一并删除，确定要删除该工单吗？",  {icon: 3, title:'提示'}, function(cindex){
+            layer.close(cindex);
+            $.ajax({
+                type:"post",
+                url:"[[@{|/order/myorder/doDelete|}]]",
+                data:{
+                    "id":id
+                },
+                success:function (result) {
+                    if(result.success){
+                        window.location.href='[[@{|/order/myorder/toIndex|}]]';
+                    }else{
+                        layer.msg(result.message,{time:2000, icon:5, shift:5});
+                    }
+                }
+
+            });
+
+        }, function(cindex){
+            layer.close(cindex);
+        });
+    }
+
+
+    //ztree配置数据
     var zTree;
 
     var setting = {

@@ -6,22 +6,18 @@ import com.dgpalife.resourcemanagement.common.Page;
 import com.dgpalife.resourcemanagement.model.*;
 import com.dgpalife.resourcemanagement.service.DepartmentService;
 import com.dgpalife.resourcemanagement.service.OrderService;
-import com.dgpalife.resourcemanagement.vo.DepartmentTreeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/order")
+@RequestMapping("/order/myorder")
 public class OrderController {
 
     @Autowired
@@ -30,14 +26,14 @@ public class OrderController {
     @Autowired
     private DepartmentService departmentService;
 
-    @RequestMapping("/myorder/toIndex")
+    @RequestMapping("/toIndex")
     public String toIndex(){
         return "/order/myorder/index";
     }
 
 
     @ResponseBody
-    @RequestMapping("/myorder/index")
+    @RequestMapping("/index")
     public Object index(@RequestParam(value = "pageno",required = false,defaultValue = "1") Integer pageno,
                         @RequestParam(value = "pagesize",required = false,defaultValue = "10") Integer pagesize,
                         @RequestParam(value = "order_type",required = false) String order_type,
@@ -78,7 +74,10 @@ public class OrderController {
         return result;
     }
 
-
+    @RequestMapping("/toSelectOrderType")
+    public String toSelectOrderType(){
+        return "/order/myorder/orderType";
+    }
 
 //    @RequestMapping("/construction/toConstructionAdd")
 //    public String toConstructionAdd(){
