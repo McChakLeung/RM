@@ -15,6 +15,16 @@ public class User {
 
     private Boolean status;
 
+    private String contact;
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
     public Long getId() {
         return id;
     }

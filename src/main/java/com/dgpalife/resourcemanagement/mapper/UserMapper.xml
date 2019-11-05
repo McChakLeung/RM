@@ -9,9 +9,10 @@
     <result column="CreateTime" jdbcType="VARCHAR" property="createtime" />
     <result column="LastLogin" jdbcType="VARCHAR" property="lastlogin" />
     <result column="Status" jdbcType="VARCHAR" property="status" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, LoginAcct, username, password, CreateTime, LastLogin, Status
+    id, LoginAcct, username, password, CreateTime, LastLogin, Status,contact
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -26,10 +27,10 @@
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.User">
     insert into t_user (id, username, password,
-      CreateTime, LastLogin, Status
+      CreateTime, LastLogin, Status,contact
       )
     values (#{id,jdbcType=BIGINT},#{loginacct,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
-      #{createtime,jdbcType=VARCHAR}, #{lastlogin,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}
+      #{createtime,jdbcType=VARCHAR}, #{lastlogin,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},#{contact,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.User">
@@ -56,6 +57,9 @@
       <if test="status != null">
         Status,
       </if>
+      <if test="contact != null">
+        contact
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -78,6 +82,9 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR}
       </if>
     </trim>
   </insert>
@@ -102,6 +109,9 @@
       <if test="status != null">
         Status = #{status,jdbcType=VARCHAR},
       </if>
+      <if test="contact != null">
+        contact = #{contact,jdbcType=VARCHAR}
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -112,7 +122,8 @@
       password = #{password,jdbcType=VARCHAR},
       CreateTime = #{createtime,jdbcType=VARCHAR},
       LastLogin = #{lastlogin,jdbcType=VARCHAR},
-      Status = #{status,jdbcType=VARCHAR}
+      Status = #{status,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 

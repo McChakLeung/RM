@@ -17,6 +17,10 @@ public class Order {
 
     private Department applyDepartment;
 
+    private Long applyUseDepartmentId;
+
+    private Department applyUseDepartment;
+
     private Long proposerId;
 
     private User proposer;
@@ -28,6 +32,22 @@ public class Order {
     private Long projectId;
 
     private Project project;
+
+    public Long getApplyUseDepartmentId() {
+        return applyUseDepartmentId;
+    }
+
+    public void setApplyUseDepartmentId(Long applyUseDepartmentId) {
+        this.applyUseDepartmentId = applyUseDepartmentId;
+    }
+
+    public Department getApplyUseDepartment() {
+        return applyUseDepartment;
+    }
+
+    public void setApplyUseDepartment(Department applyUseDepartment) {
+        this.applyUseDepartment = applyUseDepartment;
+    }
 
     private List<ConstructDetail> constructDetailList;
 

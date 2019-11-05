@@ -9,6 +9,7 @@ import com.dgpalife.resourcemanagement.service.DepartmentService;
 import com.dgpalife.resourcemanagement.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -78,17 +79,18 @@ public class OrderController {
 
     @RequestMapping("/toSelectOrderType")
     public String toSelectOrderType(){
+
         return "/order/myorder/orderType";
     }
 
     @RequestMapping("/dispatchCreateOrderPage/{order_type}")
     public String dispatchCreateOrderPage(@PathVariable String order_type){
-        if(StringUtil.isEmpty(order_type)){
-            return "redirect:/order/myorder/toSelectOrderType";
-        }
+//        if(StringUtil.isEmpty(order_type)){
+//            return "redirect:/order/myorder/toSelectOrderType";
+//        }
         switch (order_type){
             case "construction_order":
-                return "redirect:/order/myorder/construction/toConstructionAdd";
+                return "redirect:/order/myorder/construction/toOrderInfo";
             case "migration_order":
                 return "/order/myorder/maintaining";
 
@@ -96,10 +98,35 @@ public class OrderController {
         return "redirect:/order/myorder/toSelectOrderType";
     }
 
-    @RequestMapping("/construction/toConstructionAdd")
-    public String toConstructionAdd(){
-        return "/order/myorder/construction/add";
+    /**
+     * 跳转至建设工单基本信息页面
+     * @return
+     */
+    @RequestMapping("/construction/toOrderInfo")
+    public String toOrderInfo(){
+        return "/order/myorder/construction/orderInfo";
     }
+
+    @ResponseBody
+    @RequestMapping("/construction/saveTemporaryConstructionOrder")
+    public Object saveTemporaryConstructionOrder(Order order, HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try {
+            System.out.println(order.toString());
+            session.setAttribute("order",order);
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("跳转异常，请联系管理员解决");
+        }
+        return result;
+    }
+
+//    @RequestMapping("/construction/toConstructionAdd")
+//    public String toConstructionAdd(){
+//        return "/order/myorder/construction/add";
+//    }
 //
 //    @ResponseBody
 //    @RequestMapping("/construction/doConstructionAdd")
