@@ -11,15 +11,15 @@ public class Order {
 
     private String title;
 
-    private Long approvalLinkId;
+//    private Long approvalLinkId;
 
     private Long applyDepartmentId;
 
     private Department applyDepartment;
 
-    private Long applyUseDepartmentId;
-
-    private Department applyUseDepartment;
+//    private Long applyUseDepartmentId;
+//
+//    private Department applyUseDepartment;
 
     private Long proposerId;
 
@@ -33,21 +33,21 @@ public class Order {
 
     private Project project;
 
-    public Long getApplyUseDepartmentId() {
-        return applyUseDepartmentId;
-    }
-
-    public void setApplyUseDepartmentId(Long applyUseDepartmentId) {
-        this.applyUseDepartmentId = applyUseDepartmentId;
-    }
-
-    public Department getApplyUseDepartment() {
-        return applyUseDepartment;
-    }
-
-    public void setApplyUseDepartment(Department applyUseDepartment) {
-        this.applyUseDepartment = applyUseDepartment;
-    }
+//    public Long getApplyUseDepartmentId() {
+//        return applyUseDepartmentId;
+//    }
+//
+//    public void setApplyUseDepartmentId(Long applyUseDepartmentId) {
+//        this.applyUseDepartmentId = applyUseDepartmentId;
+//    }
+//
+//    public Department getApplyUseDepartment() {
+//        return applyUseDepartment;
+//    }
+//
+//    public void setApplyUseDepartment(Department applyUseDepartment) {
+//        this.applyUseDepartment = applyUseDepartment;
+//    }
 
     private List<ConstructDetail> constructDetailList;
 
@@ -153,13 +153,13 @@ public class Order {
         this.title = title;
     }
 
-    public Long getApprovalLinkId() {
-        return approvalLinkId;
-    }
-
-    public void setApprovalLinkId(Long approvalLinkId) {
-        this.approvalLinkId = approvalLinkId;
-    }
+//    public Long getApprovalLinkId() {
+//        return approvalLinkId;
+//    }
+//
+//    public void setApprovalLinkId(Long approvalLinkId) {
+//        this.approvalLinkId = approvalLinkId;
+//    }
 
     public Long getApplyDepartmentId() {
         return applyDepartmentId;

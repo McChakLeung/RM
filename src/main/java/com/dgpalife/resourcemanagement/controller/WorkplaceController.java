@@ -206,6 +206,33 @@ public class WorkplaceController {
 
 
     @ResponseBody
+    @RequestMapping("/showNetworkroomTable")
+    public Object showNetworkroomTable(String queryText){
+
+        LayuiVO layuiVO = new LayuiVO();
+
+        try {
+            Map<String,Object> params = new HashMap<>();
+            if(StringUtil.isNotEmpty(queryText)){
+                if(queryText.contains("%")){
+                    queryText = queryText.replaceAll("%", "\\\\%");
+                }
+                params.put("queryText", queryText); //   \%
+            }
+            List<Object> networkRoomList = networkRoomService.selectNetworkRoomListByParams(params);
+            int count = networkRoomService.selectNetworkroomCount(params);
+            layuiVO.setData(networkRoomList);
+            layuiVO.setCount(count);
+            layuiVO.setCode(0);
+        }catch (Exception e){
+            e.printStackTrace();
+            layuiVO.setCode(1);
+            layuiVO.setMsg("查询异常，请联系管理员处理");
+        }
+        return layuiVO;
+    }
+
+    @ResponseBody
     @RequestMapping("/doAddNetworkRoom")
     public Object doAddNetworkRoom(NetworkRoom networkRoom,HttpSession session){
         AjaxResult result = new AjaxResult();

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class NetworkRoomServiceImpl implements NetworkRoomService {
@@ -45,5 +46,15 @@ public class NetworkRoomServiceImpl implements NetworkRoomService {
     @Override
     public void deleteNetworkRoomById(Long id) {
         networkRoomMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public List<Object> selectNetworkRoomListByParams(Map<String,Object> params) {
+        return networkRoomMapper.selectNetworkRoomListByParams(params);
+    }
+
+    @Override
+    public int selectNetworkroomCount(Map<String,Object> params) {
+        return networkRoomMapper.selectNetworkroomCount(params);
     }
 }

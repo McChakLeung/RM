@@ -111,4 +111,27 @@
     WHERE workplace_id = #{workplaceId}
     ORDER BY networkroom_name ASC
   </select>
+
+  <select id="selectNetworkRoomListByWorkpID" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM t_network_room
+    <where>
+      <if test="queryText!=null">
+        workplace_id = #{queryText}
+      </if>
+    </where>
+    ORDER BY networkroom_name ASC
+  </select>
+
+  <select id="selectNetworkroomCount" resultType="Integer">
+    SELECT
+    count(id)
+    FROM t_network_room
+    <where>
+      <if test="queryText!=null">
+        workplace_id = #{queryText}
+      </if>
+    </where>
+  </select>
 </mapper>

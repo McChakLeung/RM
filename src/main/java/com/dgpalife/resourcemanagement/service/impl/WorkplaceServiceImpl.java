@@ -81,4 +81,9 @@ public class WorkplaceServiceImpl implements WorkplaceService {
     public List<Object> selectWorkplaceByQueryText(Map<String,Object> params) {
         return workplaceMapper.selectWorkplaceByQueryText(params);
     }
+
+    @Override
+    public int selectNetworkroomCount(Long workplace_id) {
+        return 0;
+    }
 }

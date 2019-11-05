@@ -20,4 +20,6 @@ public interface WorkplaceService {
     int selectCount(Map<String,Object> params);
 
     List<Object> selectWorkplaceByQueryText(Map<String,Object> params);
+
+    int selectNetworkroomCount(Long workplace_id);
 }

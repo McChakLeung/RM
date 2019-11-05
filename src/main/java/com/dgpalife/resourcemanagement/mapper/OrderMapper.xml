@@ -6,7 +6,7 @@
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="approval_link_id" jdbcType="BIGINT" property="approvalLinkId" />
+    <!--<result column="approval_link_id" jdbcType="BIGINT" property="approvalLinkId" />-->
     <result column="apply_department_id" jdbcType="BIGINT" property="applyDepartmentId" />
     <result column="proposer_id" jdbcType="BIGINT" property="proposerId" />
     <result column="project_id" jdbcType="BIGINT" property="projectId" />
@@ -16,7 +16,7 @@
     <result column="reason" jdbcType="LONGVARCHAR" property="reason" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, type, status, title, approval_link_id, apply_department_id, proposer_id, project_id,create_time
+    id, type, status, title, apply_department_id, proposer_id, project_id,create_time
   </sql>
   <sql id="Blob_Column_List">
     reason
@@ -35,11 +35,11 @@
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Order">
     insert into t_order (id, type, status, 
-      title, approval_link_id, apply_department_id, 
+      title, apply_department_id,
       proposer_id, project_id,create_time, reason
       )
     values (#{id,jdbcType=BIGINT}, #{type,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{title,jdbcType=VARCHAR}, #{approvalLinkId,jdbcType=BIGINT}, #{applyDepartmentId,jdbcType=BIGINT}, 
+      #{title,jdbcType=VARCHAR},#{applyDepartmentId,jdbcType=BIGINT},
       #{proposerId,jdbcType=BIGINT},#{projectId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}, #{reason,jdbcType=LONGVARCHAR}
       )
   </insert>
@@ -58,9 +58,9 @@
       <if test="title != null">
         title,
       </if>
-      <if test="approvalLinkId != null">
-        approval_link_id,
-      </if>
+      <!--<if test="approvalLinkId != null">-->
+        <!--approval_link_id,-->
+      <!--</if>-->
       <if test="applyDepartmentId != null">
         apply_department_id,
       </if>
@@ -87,9 +87,9 @@
       <if test="title != null">
         #{title,jdbcType=VARCHAR},
       </if>
-      <if test="approvalLinkId != null">
-        #{approvalLinkId,jdbcType=BIGINT},
-      </if>
+      <!--<if test="approvalLinkId != null">-->
+        <!--#{approvalLinkId,jdbcType=BIGINT},-->
+      <!--</if>-->
       <if test="applyDepartmentId != null">
         #{applyDepartmentId,jdbcType=BIGINT},
       </if>
@@ -116,9 +116,9 @@
       <if test="title != null">
         title = #{title,jdbcType=VARCHAR},
       </if>
-      <if test="approvalLinkId != null">
-        approval_link_id = #{approvalLinkId,jdbcType=BIGINT},
-      </if>
+      <!--<if test="approvalLinkId != null">-->
+        <!--approval_link_id = #{approvalLinkId,jdbcType=BIGINT},-->
+      <!--</if>-->
       <if test="applyDepartmentId != null">
         apply_department_id = #{applyDepartmentId,jdbcType=BIGINT},
       </if>
@@ -139,7 +139,7 @@
     set type = #{type,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
-      approval_link_id = #{approvalLinkId,jdbcType=BIGINT},
+--       approval_link_id = #{approvalLinkId,jdbcType=BIGINT},
       apply_department_id = #{applyDepartmentId,jdbcType=BIGINT},
       proposer_id = #{proposerId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=VARCHAR},
@@ -151,7 +151,7 @@
     set type = #{type,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
-      approval_link_id = #{approvalLinkId,jdbcType=BIGINT},
+--       approval_link_id = #{approvalLinkId,jdbcType=BIGINT},
       apply_department_id = #{applyDepartmentId,jdbcType=BIGINT},
       proposer_id = #{proposerId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=VARCHAR}
@@ -172,12 +172,12 @@
   <select id="selectOrderListByUserId" resultType="map">
     SELECT t1.id id, t1.type order_type,t1.status order_status,title,
     t2.department_name apply_department_name,
-    t3.department_name apply_usedepartment_name,
+--     t3.department_name apply_usedepartment_name,
     t4.username proposer_name, project_name,
     t1.create_time create_time
     FROM  t_order t1
     LEFT JOIN t_department t2 ON t1.apply_department_id = t2.id
-    LEFT JOIN t_department t3 ON t1.apply_usedepartment_id = t3.id
+--     LEFT JOIN t_department t3 ON t1.apply_usedepartment_id = t3.id
     LEFT JOIN t_user t4 ON t1.proposer_id = t4.id
     LEFT JOIN t_project t5 ON t1.project_id = t5.id
     <where>
@@ -193,9 +193,9 @@
       <if test="apply_department_id != null">
         AND t1.apply_department_id = #{apply_department_id}
       </if>
-      <if test="apply_usedepartment_id != null">
-        AND t1.apply_department_id = #{apply_usedepartment_id}
-      </if>
+      <!--<if test="apply_usedepartment_id != null">-->
+        <!--AND t1.apply_department_id = #{apply_usedepartment_id}-->
+      <!--</if>-->
       <if test="project_id != null">
         AND t1.project_id = #{project_id}
       </if>
@@ -219,9 +219,9 @@
       <if test="apply_department_id != null">
         AND apply_department_id = #{apply_department_id}
       </if>
-      <if test="apply_usedepartment_id != null">
-        AND apply_department_id = #{apply_usedepartment_id}
-      </if>
+      <!--<if test="apply_usedepartment_id != null">-->
+        <!--AND apply_department_id = #{apply_usedepartment_id}-->
+      <!--</if>-->
       <if test="project_id != null">
         AND project_id = #{project_id}
       </if>

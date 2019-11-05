@@ -10,7 +10,7 @@ public class LayuiVO {
 
     private Integer count;
 
-    private List<Object> data;
+    private List< Object> data;
 
     public Integer getCode() {
         return code;

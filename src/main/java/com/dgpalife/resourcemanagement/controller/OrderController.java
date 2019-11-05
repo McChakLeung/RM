@@ -42,7 +42,7 @@ public class OrderController {
                         @RequestParam(value = "order_type",required = false) String order_type,
                         @RequestParam(value = "order_staus",required = false) String order_staus,
                         @RequestParam(value = "apply_department_id",required = false) Integer apply_department_id,
-                        @RequestParam(value = "apply_usedepartment_id",required = false) Integer apply_usedepartment_id,
+//                        @RequestParam(value = "apply_usedepartment_id",required = false) Integer apply_usedepartment_id,
                         @RequestParam(value = "project_id",required = false) Integer project_id,
                         HttpSession session){
 
@@ -63,7 +63,7 @@ public class OrderController {
             params.put("order_type",order_type);
             params.put("order_staus",order_staus);
             params.put("apply_department_id",apply_department_id);
-            params.put("apply_usedepartment_id",apply_usedepartment_id);
+//            params.put("apply_usedepartment_id",apply_usedepartment_id);
             params.put("project_id",project_id);
 
             Page<Object> page = orderService.selectOrderListByUserId(params);
@@ -112,7 +112,6 @@ public class OrderController {
     public Object saveTemporaryConstructionOrder(Order order, HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
-            System.out.println(order.toString());
             session.setAttribute("order",order);
             result.setSuccess(true);
         }catch (Exception e){
@@ -123,6 +122,10 @@ public class OrderController {
         return result;
     }
 
+    @RequestMapping("/construction/toConstructionDetail")
+    public String toConstructionDetail(){
+        return "/order/myorder/construction/orderDetail";
+    }
 //    @RequestMapping("/construction/toConstructionAdd")
 //    public String toConstructionAdd(){
 //        return "/order/myorder/construction/add";

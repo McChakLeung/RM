@@ -86,8 +86,8 @@ public class DepartmentController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/doloadApplyUseDepartment/{apply_department_id}")
-    public Object doloadApplyUseDepartment(@PathVariable Long apply_department_id){
+    @RequestMapping("/doloadUseDepartment/{apply_department_id}")
+    public Object doloadUseDepartment(@PathVariable Long apply_department_id){
 
         AjaxResult result = new AjaxResult();
 

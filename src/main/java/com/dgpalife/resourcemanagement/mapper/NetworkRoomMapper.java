@@ -4,6 +4,7 @@ import com.dgpalife.resourcemanagement.model.NetworkRoom;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface NetworkRoomMapper {
@@ -20,4 +21,8 @@ public interface NetworkRoomMapper {
     int updateByPrimaryKey(NetworkRoom record);
 
     List<NetworkRoom> selectNetworkRoomListByWorkplaceId(Long workplaceId);
+
+    List<Object> selectNetworkRoomListByParams(Map<String,Object> params);
+
+    int selectNetworkroomCount(Map<String,Object> params);
 }

@@ -99,10 +99,14 @@
 											<div class="col-md-3">
 												<input type="text" class="form-control" id="fapply_department" placeholder="请选择职能部门或营业区" apply_department_id="" onclick="doLoadApplyDepartment()">
 											</div>
-											<label for="fapply_usedepartment" class="col-md-2 control-label">科室|外勤部门</label>
+											<label for="fproject" class="col-md-2 control-label">所属项目：</label>
 											<div class="col-md-3">
-												<input type="text" class="form-control" id="fapply_usedepartment" placeholder="请选择科室|外勤部门" apply_usedepartment_id="" onclick="doloadApplyUseDepartment()">
+												<input type="text" class="form-control" id="fproject" placeholder="请选择所属项目" project_id="">
 											</div>
+											<!--<label for="fapply_usedepartment" class="col-md-2 control-label">科室|外勤部门</label>-->
+											<!--<div class="col-md-3">-->
+												<!--<input type="text" class="form-control" id="fapply_usedepartment" placeholder="请选择科室|外勤部门" apply_usedepartment_id="" onclick="doloadApplyUseDepartment()">-->
+											<!--</div>-->
 
 											<!--<div class="col-md-3">-->
 												<!--&lt;!&ndash;<select class="form-control" id="parentDept" name="parentDept">&ndash;&gt;-->
@@ -116,12 +120,6 @@
 													<!--<option value="">请选择</option>-->
 												<!--</select>-->
 											<!--</div>-->
-										</div>
-										<div class="form-group">
-											<label for="fproject" class="col-md-2 control-label">所属项目：</label>
-											<div class="col-md-3">
-												<input type="text" class="form-control" id="fproject" placeholder="请选择所属项目" project_id="">
-											</div>
 										</div>
 
 										<div class="form-group">
@@ -144,7 +142,6 @@
 												<td>工单状态</td>
 												<td>工单标题</td>
 												<td>职能部门|营业区</td>
-												<td>科室|外勤部门</td>
 												<td>申请人</td>
 												<td>所属项目</td>
 												<td>创建时间</td>
@@ -155,7 +152,7 @@
 										<tbody>
 										<tfoot>
 										<tr >
-											<td colspan="10" align="center">
+											<td colspan="9" align="center">
 												<ul class="pagination" id="fpagination">
 
 												</ul>
@@ -244,7 +241,6 @@
                         content+='  <td>'+n.order_status+'</td>';
                         content+='  <td>'+n.title+'</td>';
                         content+='  <td>'+n.apply_department_name+'</td>';
-                        content+='  <td>'+n.apply_usedepartment_name+'</td>';
                         content+='  <td>'+n.proposer_name+'</td>';
                         content+='  <td>'+n.project_name+'</td>';
                         content+='  <td>'+n.create_time+'</td>';
@@ -343,7 +339,7 @@
         $.getJSON(url,function(result){
             if(result.success){
                 zTree = $.fn.zTree.init($("#departmentTree"), setting, result.datas);
-                zTree.expandAll(false)
+                zTree.expandAll(true)
             }else{
                 layer.msg(result.message, {time:1000, icon:5, shift:6});
             }
@@ -384,37 +380,37 @@
     }
 
     //异步加载职能部门下的部门节点
-    function doloadApplyUseDepartment(){
-        $("#departmentTree").empty();
-        var apply_department_id = $("#fapply_department").attr("apply_department_id")
-        var url = "[[@{|/setting/department/doloadApplyUseDepartment/|}]]" + apply_department_id;
-        $.getJSON(url,function(result){
-            if(result.success){
-                zTree = $.fn.zTree.init($("#departmentTree"), setting, result.datas);
-                zTree.expandAll(false)
-            }else{
-                layer.msg(result.message, {time:1000, icon:5, shift:6});
-            }
-        });
-
-        layer.open({
-            title: "科室|外勤部门查询",
-            area: ['600px', '400px'],
-            type: 1,
-            content: $('#department_layer'),
-            btn: ['选择', '取消'],
-
-            yes: function (layero, index) {
-                doSetSelectedNode("fapply_usedepartment","apply_usedepartment_id")
-                layer.close(layero)
-            },
-
-            btn2: function (layero, index) {
-                layer.close(layero)
-            }
-
-        })
-	}
+    // function doloadApplyUseDepartment(){
+    //     $("#departmentTree").empty();
+    //     var apply_department_id = $("#fapply_department").attr("apply_department_id")
+    //     var url = "[[@{|/setting/department/doloadApplyUseDepartment/|}]]" + apply_department_id;
+    //     $.getJSON(url,function(result){
+    //         if(result.success){
+    //             zTree = $.fn.zTree.init($("#departmentTree"), setting, result.datas);
+    //             zTree.expandAll(false)
+    //         }else{
+    //             layer.msg(result.message, {time:1000, icon:5, shift:6});
+    //         }
+    //     });
+    //
+    //     layer.open({
+    //         title: "科室|外勤部门查询",
+    //         area: ['600px', '400px'],
+    //         type: 1,
+    //         content: $('#department_layer'),
+    //         btn: ['选择', '取消'],
+    //
+    //         yes: function (layero, index) {
+    //             doSetSelectedNode("fapply_usedepartment","apply_usedepartment_id")
+    //             layer.close(layero)
+    //         },
+    //
+    //         btn2: function (layero, index) {
+    //             layer.close(layero)
+    //         }
+    //
+    //     })
+    // }
 
     //职场单击选择事件
 	//注意！！！！！！ 动态表格不能放置在form表单中，否则使用里面的单击事件会有问题
@@ -496,7 +492,7 @@
         jsonObj.order_type = $("#OrderType").val();
         jsonObj.order_staus = $("#Status").val();
         jsonObj.apply_department_id = $("#fapply_department").attr("apply_department_id");
-        jsonObj.apply_usedepartment_id = $("#fapply_usedepartment").attr("apply_usedepartment_id");
+        // jsonObj.apply_usedepartment_id = $("#fapply_usedepartment").attr("apply_usedepartment_id");
         jsonObj.project_id = $("#fproject").attr("project_id");
         queryOrderByUser(1);
     })
@@ -505,7 +501,7 @@
 		jsonObj.order_type = $("#OrderType").val();
         jsonObj.order_staus = $("#Status").val();
 		jsonObj.apply_department_id = $("#fapply_department").attr("apply_department_id");
-		jsonObj.apply_usedepartment_id = $("#fapply_usedepartment").attr("apply_usedepartment_id");
+		// jsonObj.apply_usedepartment_id = $("#fapply_usedepartment").attr("apply_usedepartment_id");
 		jsonObj.project_id = $("#fproject").attr("project_id");
         queryOrderByUser(1)
 

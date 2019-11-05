@@ -85,10 +85,10 @@
 										<label for="fapply_department">申请职能部门<span style="color:red">* </span></label>
 										<input type="text" class="form-control" id="fapply_department" placeholder="请选择职能部门或营业区" apply_department_id="" onclick="doLoadApplyDepartment()">
 									</div>
-									<div class="form-group">
-										<label for="fapply_usedepartment">申请科室|外勤部门<span style="color:red">* </span></label>
-										<input type="text" class="form-control" id="fapply_usedepartment" placeholder="请选择科室|外勤部门" apply_usedepartment_id="" onclick="doloadApplyUseDepartment()">
-									</div>
+									<!--<div class="form-group">-->
+										<!--<label for="fapply_usedepartment">申请科室|外勤部门<span style="color:red">* </span></label>-->
+										<!--<input type="text" class="form-control" id="fapply_usedepartment" placeholder="请选择科室|外勤部门" apply_usedepartment_id="" onclick="doloadApplyUseDepartment()">-->
+									<!--</div>-->
 									<div class="form-group">
 										<label for="fproject">所属项目</label>
 										<input type="text" class="form-control" id="fproject" placeholder="请选择所属项目" project_id="">
@@ -107,10 +107,9 @@
 										<!--<input type="textarea"  rows="5" cols="30" class="form-control" name="reason" id="freason">-->
 										<textarea  rows="3"  class="form-control" name="reason" id="freason"></textarea>
 									</div>
-									<button type="button" class="btn btn-default" id="backStep">上一步</button>
-									<button type="button" class="btn btn-success" id="nextStep">下一步</button>
 								</form>
-
+								<button type="button" class="btn btn-default" id="backStep">上一步</button>
+								<button type="button" class="btn btn-success" id="nextStep">下一步</button>
 							</div>
 						</div>
 						<!-- END BASIC TABLE -->
@@ -148,7 +147,7 @@
 		var ftype = $("#ftype").val();
 		var ftitle = $("#ftitle").val();
 		var fapply_department_id = $("#fapply_department").attr("apply_department_id");
-		var fapply_usedepartment_id = $("#fapply_usedepartment").attr("apply_usedepartment_id");
+		// var fapply_usedepartment_id = $("#fapply_usedepartment").attr("apply_usedepartment_id");
 		var fproject = $("#fproject").attr("project_id");
 		var fproposer = $("#fproposer").attr("proposer_id");
 		var freason = $("#freason").val();
@@ -160,7 +159,7 @@
 				type:ftype,
 				title:ftitle,
                 applyDepartmentId:fapply_department_id,
-                applyUseDepartmentId:fapply_usedepartment_id,
+                // applyUseDepartmentId:fapply_usedepartment_id,
                 proposerId:fproposer,
                 projectId:fproject,
                 reason:freason
@@ -184,15 +183,15 @@
                     })
                     return false
                 }
-                if($.trim($("#fapply_usedepartment").val()) == ""){
-                    // $("#fmessage").text("用户名不能为空，请重新输入");
-                    layer.msg("申请科室|外勤部门不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
-                        $("#fapply_usedepartment").val("");
-                        $("#fapply_usedepartment").attr("apply_usedepartment_id","");
-                        $("#fapply_usedepartment").focus();
-                    })
-                    return false
-                }
+                // if($.trim($("#fapply_usedepartment").val()) == ""){
+                //     // $("#fmessage").text("用户名不能为空，请重新输入");
+                //     layer.msg("申请科室|外勤部门不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                //         $("#fapply_usedepartment").val("");
+                //         $("#fapply_usedepartment").attr("apply_usedepartment_id","");
+                //         $("#fapply_usedepartment").focus();
+                //     })
+                //     return false
+                // }
                 if($.trim($("#freason").val()) == ""){
                     // $("#fmessage").text("用户名不能为空，请重新输入");
                     layer.msg("申请原因不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
@@ -248,7 +247,7 @@
         $.getJSON(url,function(result){
             if(result.success){
                 zTree = $.fn.zTree.init($("#departmentTree"), setting, result.datas);
-                zTree.expandAll(false)
+                zTree.expandAll(true)
             }else{
                 layer.msg(result.message, {time:1000, icon:5, shift:6});
             }
@@ -289,37 +288,37 @@
     }
 
     //异步加载职能部门下的部门节点
-    function doloadApplyUseDepartment(){
-        $("#departmentTree").empty();
-        var apply_department_id = $("#fapply_department").attr("apply_department_id")
-        var url = "[[@{|/setting/department/doloadApplyUseDepartment/|}]]" + apply_department_id;
-        $.getJSON(url,function(result){
-            if(result.success){
-                zTree = $.fn.zTree.init($("#departmentTree"), setting, result.datas);
-                zTree.expandAll(false)
-            }else{
-                layer.msg(result.message, {time:1000, icon:5, shift:6});
-            }
-        });
-
-        layer.open({
-            title: "科室|外勤部门查询",
-            area: ['600px', '400px'],
-            type: 1,
-            content: $('#department_layer'),
-            btn: ['选择', '取消'],
-
-            yes: function (layero, index) {
-                doSetSelectedNode("fapply_usedepartment","apply_usedepartment_id")
-                layer.close(layero)
-            },
-
-            btn2: function (layero, index) {
-                layer.close(layero)
-            }
-
-        })
-	}
+    // function doloadApplyUseDepartment(){
+    //     $("#departmentTree").empty();
+    //     var apply_department_id = $("#fapply_department").attr("apply_department_id")
+    //     var url = "[[@{|/setting/department/doloadApplyUseDepartment/|}]]" + apply_department_id;
+    //     $.getJSON(url,function(result){
+    //         if(result.success){
+    //             zTree = $.fn.zTree.init($("#departmentTree"), setting, result.datas);
+    //             zTree.expandAll(false)
+    //         }else{
+    //             layer.msg(result.message, {time:1000, icon:5, shift:6});
+    //         }
+    //     });
+    //
+    //     layer.open({
+    //         title: "科室|外勤部门查询",
+    //         area: ['600px', '400px'],
+    //         type: 1,
+    //         content: $('#department_layer'),
+    //         btn: ['选择', '取消'],
+    //
+    //         yes: function (layero, index) {
+    //             doSetSelectedNode("fapply_usedepartment","apply_usedepartment_id")
+    //             layer.close(layero)
+    //         },
+    //
+    //         btn2: function (layero, index) {
+    //             layer.close(layero)
+    //         }
+    //
+    //     })
+    // }
 
     //职场单击选择事件
 	//注意！！！！！！ 动态表格不能放置在form表单中，否则使用里面的单击事件会有问题
