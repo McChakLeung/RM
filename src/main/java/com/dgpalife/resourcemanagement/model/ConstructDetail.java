@@ -3,6 +3,12 @@ package com.dgpalife.resourcemanagement.model;
 public class ConstructDetail {
     private Long id;
 
+    private Long usedepartment_id;
+
+    private Department usedepartment;
+
+    private String usedepartment_type;
+
     private String operator;
 
     private String resourceType;
@@ -21,10 +27,6 @@ public class ConstructDetail {
 
     private NetworkRoom networkRoom;
 
-    private Long projectId;
-
-    private Project project;
-
     private Long orderId;
 
     private Order order;
@@ -38,6 +40,30 @@ public class ConstructDetail {
     private Long creatorId;
 
     private User user;
+
+    public Long getUsedepartment_id() {
+        return usedepartment_id;
+    }
+
+    public void setUsedepartment_id(Long usedepartment_id) {
+        this.usedepartment_id = usedepartment_id;
+    }
+
+    public Department getUsedepartment() {
+        return usedepartment;
+    }
+
+    public void setUsedepartment(Department usedepartment) {
+        this.usedepartment = usedepartment;
+    }
+
+    public String getUsedepartment_type() {
+        return usedepartment_type;
+    }
+
+    public void setUsedepartment_type(String usedepartment_type) {
+        this.usedepartment_type = usedepartment_type;
+    }
 
     public Expense getExpense() {
         return expense;
@@ -61,14 +87,6 @@ public class ConstructDetail {
 
     public void setNetworkRoom(NetworkRoom networkRoom) {
         this.networkRoom = networkRoom;
-    }
-
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
     }
 
     public Order getOrder() {
@@ -141,14 +159,6 @@ public class ConstructDetail {
 
     public void setNetworkRoomId(Long networkRoomId) {
         this.networkRoomId = networkRoomId;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
     }
 
     public Long getOrderId() {

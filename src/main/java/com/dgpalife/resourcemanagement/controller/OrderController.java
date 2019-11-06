@@ -10,13 +10,11 @@ import com.dgpalife.resourcemanagement.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -107,9 +105,15 @@ public class OrderController {
         return "/order/myorder/construction/orderInfo";
     }
 
+    /**
+     * 将建设工单临时放置在session中存放
+     * @param order
+     * @param session
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/construction/saveTemporaryConstructionOrder")
-    public Object saveTemporaryConstructionOrder(Order order, HttpSession session){
+    public Object saveTemporaryConstructionOrder(@RequestBody Order order, HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
             session.setAttribute("order",order);
@@ -126,6 +130,32 @@ public class OrderController {
     public String toConstructionDetail(){
         return "/order/myorder/construction/orderDetail";
     }
+
+    /**
+     * 将建设工单明细的List集合临时放置在session中存放
+     * @param constructDetailList
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/construction/saveTemporaryConstructionDetailList")
+    public Object saveTemporaryConstructionDetailList(@RequestBody List<ConstructDetail> constructDetailList, HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try {
+            session.setAttribute("constructDetailList",constructDetailList);
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("跳转异常，请联系管理员解决");
+        }
+        return result;
+    }
+
+    @RequestMapping("/construction/toPreviewOrder")
+    public String toPreviewOrder(){
+        return "/order/myorder/construction/previewOrder";
+    }
+
 //    @RequestMapping("/construction/toConstructionAdd")
 //    public String toConstructionAdd(){
 //        return "/order/myorder/construction/add";

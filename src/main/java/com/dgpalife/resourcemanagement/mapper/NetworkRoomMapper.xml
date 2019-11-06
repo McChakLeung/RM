@@ -104,7 +104,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <select id="selectNetworkRoomListByWorkplaceId" resultMap="BaseResultMap">
+  <select id="selectNetworkRoomListByWorkpID" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List" />
     FROM t_network_room
@@ -112,13 +112,13 @@
     ORDER BY networkroom_name ASC
   </select>
 
-  <select id="selectNetworkRoomListByWorkpID" resultMap="BaseResultMap">
+  <select id="selectNetworkRoomListByParams" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List" />
     FROM t_network_room
     <where>
-      <if test="queryText!=null">
-        workplace_id = #{queryText}
+      <if test="workplace_id!=null or workplace_id!=''">
+        workplace_id = #{workplace_id}
       </if>
     </where>
     ORDER BY networkroom_name ASC
@@ -129,8 +129,8 @@
     count(id)
     FROM t_network_room
     <where>
-      <if test="queryText!=null">
-        workplace_id = #{queryText}
+      <if test="workplace_id!=null or workplace_id!=''">
+        workplace_id = #{workplace_id}
       </if>
     </where>
   </select>

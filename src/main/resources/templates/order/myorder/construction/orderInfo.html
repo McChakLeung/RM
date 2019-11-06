@@ -143,28 +143,52 @@
     var loadingIndex = -1;
 
 	$("#nextStep").click(function () {
-	    //获取页面相关变量
-		var ftype = $("#ftype").val();
-		var ftitle = $("#ftitle").val();
-		var fapply_department_id = $("#fapply_department").attr("apply_department_id");
-		// var fapply_usedepartment_id = $("#fapply_usedepartment").attr("apply_usedepartment_id");
-		var fproject = $("#fproject").attr("project_id");
-		var fproposer = $("#fproposer").attr("proposer_id");
-		var freason = $("#freason").val();
+
+	    //组装order对象
+	    var order = {
+	        "type":$("#ftype").val(),
+			"title":$("#ftitle").val(),
+			"applyDepartment":{
+	            "id":$("#fapply_department").attr("apply_department_id"),
+				"departmentName":$("#fapply_department").val()
+			},
+			"project":{
+	            "id":$("#fproject").attr("project_id"),
+				"projectName":$("#fproject").val(),
+			},
+			// "proposer":{
+	         //    "id":$("#fproposer").attr("proposer_id"),
+			// 	"username":$("#fproposer").val(),
+			// 	"contact":
+			// },
+			"reason":$("#freason").val()
+		}
+
+		console.log(order)
+        // //获取页面相关变量
+		// var ftype = $("#ftype").val();
+		// var ftitle = $("#ftitle").val();
+		// var fapply_department_id = $("#fapply_department").attr("apply_department_id");
+		// // var fapply_usedepartment_id = $("#fapply_usedepartment").attr("apply_usedepartment_id");
+		// var fproject = $("#fproject").attr("project_id");
+		// var fproposer = $("#fproposer").attr("proposer_id");
+		// var freason = $("#freason").val();
 
 		$.ajax({
 			type:"post",
 			url:"[[@{|/order/myorder/construction/saveTemporaryConstructionOrder|}]]",
-			data:{
-				type:ftype,
-				title:ftitle,
-                applyDepartmentId:fapply_department_id,
-                // applyUseDepartmentId:fapply_usedepartment_id,
-                proposerId:fproposer,
-                projectId:fproject,
-                reason:freason
-			},
+			// data:{
+			// 	type:ftype,
+			// 	title:ftitle,
+             //    applyDepartmentId:fapply_department_id,
+             //    // applyUseDepartmentId:fapply_usedepartment_id,
+             //    proposerId:fproposer,
+             //    projectId:fproject,
+             //    reason:freason
+			// },
+			data:JSON.stringify(order),
 			dataType:"json",
+            contentType: 'application/json;charset=utf-8',
 			beforeSend:function () {
                 if($.trim($("#ftitle").val()) == ""){
                     // $("#fmessage").text("用户名不能为空，请重新输入");

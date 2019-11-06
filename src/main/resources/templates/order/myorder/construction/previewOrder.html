@@ -68,91 +68,51 @@
 								<br>
 								<ul class="nav nav-tabs" role="tablist">
 									<li role="presentation"><a><span class="badge">1</span> 工单基本信息填写</a></li>
-									<li role="presentation" class="active"><a><span class="badge">2</span> 装机明细</a></li>
-									<li role="presentation"><a><span class="badge">3</span> 工单预览及确认</a></li>
+									<li role="presentation"><a><span class="badge">2</span> 装机明细</a></li>
+									<li role="presentation" class="active"><a><span class="badge">3</span> 工单预览及确认</a></li>
 								</ul>
 
-								<form class="form-horizontal" style="margin-top:20px;margin-bottom: 20px" id="form">
+								<form role="form" style="margin-top:20px;">
 									<div class="form-group">
-										<label for="fusedepartment" class="col-md-2 control-label">使用科室|外勤部门<span style="color:red">* </span></label>
-										<div class="col-md-4">
-											<input type="text" class="form-control" id="fusedepartment" name="usedepartment.departmentName" placeholder="请选择科室|外勤部门" usedepartment_id="" onclick="doloadUseDepartment()">
-										</div>
-										<label for="fusedepartment_type" class="col-md-2 control-label">部门类型</label>
-										<div class="col-md-4">
-											<select class="form-control" id="fusedepartment_type" name="usedepartment_type">
-												<option>内勤</option>
-												<option>外勤</option>
-											</select>
-										</div>
+										<label for="ftype">工单类型：</label>
+										<span id="ftype" class="form-control" th:text="${session.order.type}"></span>
+										<!--<input type="text" class="form-control" name="type" id="ftype" value="建设工单" disabled>-->
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">运营商</label>
-										<div class="col-md-4">
-											<select class="form-control" id="foperator" name="operator">
-												<option>电信</option>
-												<option>联通</option>
-											</select>
-										</div>
-										<label class="col-md-2 control-label">资源类型</label>
-										<div class="col-md-4">
-											<select class="form-control" id="fresourceType" name="resourceType">
-												<option>电话</option>
-												<option>宽带</option>
-												<option>专线</option>
-											</select>
-										</div>
+										<label for="ftitle">标题</label>
+										<span id="ftitle" class="form-control" th:text="${session.order.title}"></span>
+										<!--<input type="text" class="form-control" name="title" id="ftitle">-->
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">装机数量<span style="color:red">* </span></label>
-										<div class="col-md-4">
-											<input type="number" class="form-control" id="fnumber" name="number">
-										</div>
-										<label class="col-md-2 control-label">资费</label>
-										<div class="col-md-4">
-											<input type="number" class="form-control" id="fprice" name="price">
-										</div>
+										<label for="fapply_department">申请职能部门</label>
+										<span id="fapply_department" class="form-control" th:text="${session.order.applyDepartment.departmentName}"></span>
+										<!--<input type="text" class="form-control" id="fapply_department" placeholder="请选择职能部门或营业区" apply_department_id="" onclick="doLoadApplyDepartment()">-->
 									</div>
-									<div class="form-group">
-										<label class="col-md-2 control-label">所在职场<span style="color:red">* </span></label>
-										<div class="col-md-4">
-											<input type="text" class="form-control" id="fworkplace" name="workplace.workplaceName" placeholder="请选择所在职场" workplace_id="">
-										</div>
-										<label class="col-md-2 control-label">机房<span style="color:red">* </span></label>
-										<div class="col-md-4">
-											<input type="text" class="form-control" id="fnetworkRoom" name="networkRoom.networkroom_name" placeholder="请选择所在职场" networkroom_id="">
-										</div>
-									</div>
-
 									<!--<div class="form-group">-->
-										<!--<label class="col-sm-2 control-label">pdf模板</label>-->
-										<!--<div class="col-sm-10">-->
-											<!--<select class="form-control" style="width:100px;display:inline" id="ftemplateType" name="template.templateType">-->
-												<!--<option>电话</option>-->
-												<!--<option>宽带</option>-->
-												<!--<option>专线</option>-->
-											<!--</select>-->
-											<!--<select class="form-control" style="width:260px;display:inline" id="ftemplateUseage" name="template.templateUseage">-->
-												<!--<option>新装</option>-->
-												<!--<option>迁移</option>-->
-												<!--<option>拆机</option>-->
-											<!--</select>-->
-											<!--<select class="form-control" style="width:260px;display:inline" id="ftemplateName" name="template.templateName">-->
-												<!--<option>模板1</option>-->
-												<!--<option>模板2</option>-->
-												<!--<option>模板3</option>-->
-											<!--</select>-->
-										<!--</div>-->
-									<!--</div>-->
-									<!--<div class="form-group">-->
-										<!--<input type="hidden" name="user.username" th:value="${session.user.username}">-->
+									<!--<label for="fapply_usedepartment">申请科室|外勤部门<span style="color:red">* </span></label>-->
+									<!--<input type="text" class="form-control" id="fapply_usedepartment" placeholder="请选择科室|外勤部门" apply_usedepartment_id="" onclick="doloadApplyUseDepartment()">-->
 									<!--</div>-->
 									<div class="form-group">
-										<label class="col-sm-2 control-label"></label>
-										<div class="col-sm-10">
-											<button id="addBtn" type="button" class="btn btn-primary">添加</button>
-											<button id="resetBtn" class="btn btn-default">重置</button>
-										</div>
+										<label for="fproject">所属项目</label>
+										<span id="fproject" class="form-control" th:text="${session.order.project.projectName}"></span>
+										<!--<input type="text" class="form-control" id="fproject" placeholder="请选择所属项目" project_id="">-->
+									</div>
+									<div class="form-group">
+										<label for="fproposer">申请人</label>
+										<span id="fproposer" class="form-control" th:text="${session.user.username}"></span>
+										<!--<input type="text" class="form-control" name="proposer" id="fproposer" th:value="${session.user.username}" th:attr="proposer_id = ${session.user.id}" disabled>-->
+									</div>
+									<div class="form-group">
+										<label for="fcontact">联系方式</label>
+										<span id="fcontact" class="form-control" th:text="${session.user.contact}"></span>
+										<!--<input type="text" class="form-control" name="contact" id="fcontact" th:value="${session.user.contact!=null}?${session.user.contact}:''" disabled>-->
+										<!--<input type="text" class="form-control" name="contact" id="fcontact" th:value="${session.user.contact}" disabled>-->
+									</div>
+									<div class="form-group">
+										<label for="freason">申请原因</label>
+										<span id="freason" class="form-control" th:text="${session.order.reason}"></span>
+										<!--<input type="textarea"  rows="5" cols="30" class="form-control" name="reason" id="freason">-->
+										<!--<textarea  rows="3"  class="form-control" name="reason" id="freason"></textarea>-->
 									</div>
 								</form>
 								<div>
@@ -168,17 +128,26 @@
 											<td>资费</td>
 											<td>所在职场</td>
 											<td>机房</td>
-											<td>操作</td>
 										</tr>
 										</thead>
-										<tbody>
-
+										<tbody >
+											<tr th:each="constructDetail:${session.constructDetailList}">
+												<td th:text="${constructDetailStat.count}">序号</td>
+												<td th:text="${constructDetail.usedepartment.departmentName}">使用科室|外勤部门</td>
+												<td th:text="${constructDetail.usedepartment_type}">部门类型</td>
+												<td th:text="${constructDetail.operator}">运营商</td>
+												<td th:text="${constructDetail.resourceType}">资源类型</td>
+												<td th:text="${constructDetail.number}">装机数量</td>
+												<td th:text="${constructDetail.expense}">资费</td>
+												<td th:text="${constructDetail.workplace.workplaceName}">所在职场</td>
+												<td th:text="${constructDetail.networkRoom.networkroom_name}">机房</td>
+											</tr>
 										</tbody>
 									</table>
 								</div>
 								<br>
 								<button type="button" class="btn btn-default" id="backStep">上一步</button>
-								<button type="button" class="btn btn-success" id="nextStep">下一步</button>
+								<button type="button" class="btn btn-success" id="submitBtn">创建工单</button>
 							</div>
 						</div>
 						<!-- END BASIC TABLE -->
@@ -189,20 +158,6 @@
 			</div>
 		</div>
 		<!-- END MAIN CONTENT -->
-		<div id="department_layer" style="display: none;">
-			<div id="departmentTree" class="ztree"></div>
-		</div>
-		<div style="padding: 1% 1%;display: none" id="workplace_layer">
-			搜索职场：
-			<div class="layui-inline">
-				<input class="layui-input" name="workplaceName" id="demoReload" placeholder="请输入职场名称" autocomplete="off">
-			</div>
-			<button class="layui-btn" data-type="reload" id="search">搜索</button>
-			<table class="layui-table"  id="fworkplace_table" lay-filter="workplace"></table>
-		</div>
-		<div style="padding: 1% 1%;display: none" id="networkroom_layer">
-			<table class="layui-table"  id="fnetworkroom_table" lay-filter="networkroom"></table>
-		</div>
 	</div>
 		<!-- END MAIN -->
 	<div class="clearfix"></div>
@@ -437,7 +392,7 @@
     //异步加载职能部门下的部门节点
     function doloadUseDepartment(){
         $("#departmentTree").empty();
-        var apply_department_id = [[${session.order.applyDepartment.id}]]
+        var apply_department_id = [[${session.order.applyDepartmentId}]]
 		console.log(apply_department_id)
         var url = [[@{|/setting/department/doloadUseDepartment/|}]] + apply_department_id;
         $.getJSON(url,function(result){

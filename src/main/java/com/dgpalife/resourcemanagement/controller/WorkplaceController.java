@@ -207,18 +207,19 @@ public class WorkplaceController {
 
     @ResponseBody
     @RequestMapping("/showNetworkroomTable")
-    public Object showNetworkroomTable(String queryText){
+    public Object showNetworkroomTable(Long workplace_id){
 
         LayuiVO layuiVO = new LayuiVO();
 
         try {
             Map<String,Object> params = new HashMap<>();
-            if(StringUtil.isNotEmpty(queryText)){
-                if(queryText.contains("%")){
-                    queryText = queryText.replaceAll("%", "\\\\%");
-                }
-                params.put("queryText", queryText); //   \%
-            }
+//            if(StringUtil.isNotEmpty(queryText)){
+//                if(queryText.contains("%")){
+//                    queryText = queryText.replaceAll("%", "\\\\%");
+//                }
+//
+//            }
+            params.put("workplace_id", workplace_id); //   \%
             List<Object> networkRoomList = networkRoomService.selectNetworkRoomListByParams(params);
             int count = networkRoomService.selectNetworkroomCount(params);
             layuiVO.setData(networkRoomList);
