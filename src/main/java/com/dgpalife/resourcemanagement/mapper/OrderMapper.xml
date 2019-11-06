@@ -67,6 +67,9 @@
       <if test="proposerId != null">
         proposer_id,
       </if>
+      <if test="projectId != null">
+        project_id,
+      </if>
       <if test="createTime != null">
         create_time,
       </if>
@@ -95,6 +98,9 @@
       </if>
       <if test="proposerId != null">
         #{proposerId,jdbcType=BIGINT},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=BIGINT},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=VARCHAR},

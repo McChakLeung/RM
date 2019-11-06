@@ -41,6 +41,26 @@ public class ConstructDetail {
 
     private User user;
 
+    private Long projectId;
+
+    private Project project;
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
     public Long getUsedepartment_id() {
         return usedepartment_id;
     }

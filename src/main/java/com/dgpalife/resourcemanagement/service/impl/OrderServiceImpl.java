@@ -62,4 +62,9 @@ public class OrderServiceImpl implements OrderService {
         page.setTotalsize(totalsize);
         return page;
     }
+
+    @Override
+    public Long saveOrder(Order order) {
+        return orderMapper.insertSelective(order);
+    }
 }

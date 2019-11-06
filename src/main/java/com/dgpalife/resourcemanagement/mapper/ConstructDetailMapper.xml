@@ -45,6 +45,12 @@
       <if test="id != null">
         id,
       </if>
+      <if test="usedepartment_id != null">
+        usedepartment_id,
+      </if>
+      <if test="usedepartment_type != null">
+        usedepartment_type,
+      </if>
       <if test="operator != null">
         operator,
       </if>
@@ -82,6 +88,12 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
+      </if>
+      <if test="usedepartment_id != null">
+        #{usedepartment_id,jdbcType=BIGINT},
+      </if>
+      <if test="usedepartment_type != null">
+        #{usedepartment_type,jdbcType=VARCHAR},
       </if>
       <if test="operator != null">
         #{operator,jdbcType=VARCHAR},
@@ -173,9 +185,9 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="insertByBatch" >
-      insert into t_construct_detail (operator, resource_type,
+      insert into t_construct_detail (usedepartment_id,usedepartment_type,operator, resource_type,
       number, expense_id, workplace_id,network_room_id,
-      project_id, order_id, template_id,
+      project_id, order_id,
       create_time, creator_id) values
       <foreach collection="constructDetailList" item="constructDetail" separator=",">
         (#{constructDetail.operator,jdbcType=VARCHAR}, #{constructDetail.resourceType,jdbcType=VARCHAR},

@@ -148,10 +148,12 @@
 	    var order = {
 	        "type":$("#ftype").val(),
 			"title":$("#ftitle").val(),
+			"applyDepartmentId":$("#fapply_department").attr("apply_department_id"),
 			"applyDepartment":{
 	            "id":$("#fapply_department").attr("apply_department_id"),
 				"departmentName":$("#fapply_department").val()
 			},
+			"projectId":$("#fproject").attr("project_id"),
 			"project":{
 	            "id":$("#fproject").attr("project_id"),
 				"projectName":$("#fproject").val(),

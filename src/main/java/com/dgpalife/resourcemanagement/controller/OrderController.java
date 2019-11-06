@@ -5,6 +5,7 @@ import com.dgpalife.resourcemanagement.common.Const;
 import com.dgpalife.resourcemanagement.common.Page;
 import com.dgpalife.resourcemanagement.common.StringUtil;
 import com.dgpalife.resourcemanagement.model.*;
+import com.dgpalife.resourcemanagement.service.ConstructDetailService;
 import com.dgpalife.resourcemanagement.service.DepartmentService;
 import com.dgpalife.resourcemanagement.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +26,9 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private ConstructDetailService constructDetailService;
 
     @Autowired
     private DepartmentService departmentService;
@@ -154,6 +160,52 @@ public class OrderController {
     @RequestMapping("/construction/toPreviewOrder")
     public String toPreviewOrder(){
         return "/order/myorder/construction/previewOrder";
+    }
+
+    @ResponseBody
+    @RequestMapping("/construction/doAddConstructionOrder")
+    public Object doAddConstructionOrder(HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try {
+            User user = (User)session.getAttribute("user");
+            Order order = (Order)session.getAttribute("order");
+            List<ConstructDetail> constructDetailList = (List<ConstructDetail>)session.getAttribute("constructDetailList");
+            if(order == null){
+                result.setSuccess(false);
+                result.setMessage("暂未填写工单基本信息，请重新填写");
+                return result;
+            }
+            if(constructDetailList==null){
+                result.setSuccess(false);
+                result.setMessage("暂未填写工单明细信息，请重新填写");
+                return result;
+            }
+
+            //设置order的其他信息
+            order.setStatus("待提交");
+            order.setProposerId(user.getId());
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            order.setCreateTime(sdf.format(date));
+
+            Long id = orderService.saveOrder(order);
+
+            for(ConstructDetail constructDetail: constructDetailList){
+                constructDetail.setCreateTime(sdf.format(date));
+                constructDetail.setCreatorId(user.getId());
+                constructDetail.setOrderId(id);
+            }
+
+            //发送给后台处理
+            constructDetailService.saveConstructDetailBatch(constructDetailList);
+
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("创建工单异常，请联系管理员解决");
+        }
+        return result;
     }
 
 //    @RequestMapping("/construction/toConstructionAdd")

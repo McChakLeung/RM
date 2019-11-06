@@ -21,4 +21,5 @@ public interface ConstructDetailMapper {
     int updateByPrimaryKey(ConstructDetail record);
 
     void insertByBatch(@Param("constructDetailList") List<ConstructDetail> constructDetailList);
+
 }

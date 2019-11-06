@@ -12,4 +12,6 @@ public interface OrderService {
     List<Map<String,Object>> selectOrderListByProjectId(Long id);
 
     Page<Object> selectOrderListByUserId(Map<String, Object> params);
+
+    Long saveOrder(Order order);
 }
