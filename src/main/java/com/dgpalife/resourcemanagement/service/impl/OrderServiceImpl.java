@@ -1,10 +1,8 @@
 package com.dgpalife.resourcemanagement.service.impl;
 
 import com.dgpalife.resourcemanagement.common.Page;
-import com.dgpalife.resourcemanagement.mapper.ConstructDetailMapper;
-import com.dgpalife.resourcemanagement.mapper.OrderMapper;
-import com.dgpalife.resourcemanagement.model.ConstructDetail;
-import com.dgpalife.resourcemanagement.model.Order;
+import com.dgpalife.resourcemanagement.mapper.*;
+import com.dgpalife.resourcemanagement.model.*;
 import com.dgpalife.resourcemanagement.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +19,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private ConstructDetailMapper constructDetailMapper;
+
+    @Autowired
+    private DepartmentMapper departmentMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private ProjectMapper projectMapper;
+
 
     @Override
     public Integer createOrder(Order order) {
@@ -66,5 +74,20 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Long saveOrder(Order order) {
         return orderMapper.insertSelective(order);
+    }
+
+    @Override
+    public Order selectOrderById(Long id) {
+        //组装order
+        Order order = orderMapper.selectByPrimaryKey(id);
+        Department applyDepartment = departmentMapper.selectByPrimaryKey(order.getApplyDepartmentId());
+        User user = userMapper.selectByPrimaryKey(order.getProposerId());
+        Project project = projectMapper.selectByPrimaryKey(order.getProjectId());
+        List<ConstructDetail> constructDetailList = constructDetailMapper.selectByOrderID(order.getId());
+        order.setApplyDepartment(applyDepartment);
+        order.setProposer(user);
+        order.setProject(project);
+        order.setConstructDetailList(constructDetailList);
+        return order;
     }
 }

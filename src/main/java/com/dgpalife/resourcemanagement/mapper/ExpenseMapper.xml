@@ -103,4 +103,23 @@
       creator_id = #{creatorId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectExpenseList" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" />
+    FROM t_expense
+    limit #{startline}, #{pagesize}
+  </select>
+
+  <select id="selectCount" resultType="java.lang.Integer">
+    select count(id) from t_expense
+  </select>
+
+  <select id="selectExpense" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" />
+    FROM t_expense
+  </select>
+
+  <select id="selectNum" resultType="java.lang.Integer">
+    select count(id) from t_expense
+  </select>
 </mapper>

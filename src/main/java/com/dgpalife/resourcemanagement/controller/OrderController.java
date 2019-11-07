@@ -199,6 +199,10 @@ public class OrderController {
             //发送给后台处理
             constructDetailService.saveConstructDetailBatch(constructDetailList);
 
+            //创建工单后销毁相关的session属性
+            session.removeAttribute("order");
+            session.removeAttribute("constructDetailList");
+
             result.setSuccess(true);
         }catch (Exception e){
             e.printStackTrace();
@@ -206,6 +210,13 @@ public class OrderController {
             result.setMessage("创建工单异常，请联系管理员解决");
         }
         return result;
+    }
+
+    @RequestMapping("/toDetail/{id}")
+    public String toDetail(@PathVariable Long id,Model model){
+        Order order = orderService.selectOrderById(id);
+        model.addAttribute("order",order);
+        return "/order/myorder/detail";
     }
 
 //    @RequestMapping("/construction/toConstructionAdd")

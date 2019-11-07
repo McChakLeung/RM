@@ -108,9 +108,9 @@
 										<div class="col-md-4">
 											<input type="number" class="form-control" id="fnumber" name="number">
 										</div>
-										<label class="col-md-2 control-label">资费</label>
+										<label class="col-md-2 control-label">资费<span style="color:red">* </span>	</label>
 										<div class="col-md-4">
-											<input type="number" class="form-control" id="fprice" name="price">
+											<input type="number" class="form-control" id="fprice" name="expense.price" expense_id="">
 										</div>
 									</div>
 									<div class="form-group">
@@ -177,7 +177,7 @@
 									</table>
 								</div>
 								<br>
-								<button type="button" class="btn btn-default" id="backStep">上一步</button>
+								<!--<button type="button" class="btn btn-default" id="backStep">上一步</button>-->
 								<button type="button" class="btn btn-success" id="nextStep">下一步</button>
 							</div>
 						</div>
@@ -202,6 +202,14 @@
 		</div>
 		<div style="padding: 1% 1%;display: none" id="networkroom_layer">
 			<table class="layui-table"  id="fnetworkroom_table" lay-filter="networkroom"></table>
+		</div>
+		<div style="padding: 1% 1%;display: none" id="expense_layer">
+			<!--搜索职场：-->
+			<!--<div class="layui-inline">-->
+				<!--<input class="layui-input" name="workplaceName" id="demoReload" placeholder="请输入职场名称" autocomplete="off">-->
+			<!--</div>-->
+			<!--<button class="layui-btn" data-type="reload" id="search">搜索</button>-->
+			<table class="layui-table"  id="fexpense_table" lay-filter="expense"></table>
 		</div>
 	</div>
 		<!-- END MAIN -->
@@ -232,6 +240,16 @@
             layer.msg("装机数量不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
                 $("#fnumber").val("");
                 $("#fnumber").focus();
+            })
+            return false
+        }
+
+        if($.trim($("#fprice").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("资费不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fprice").val("");
+                $("#fprice").attr("expense_id","");
+                $("#fprice").focus();
             })
             return false
         }
@@ -293,9 +311,14 @@
         });
 
         dataArray["usedepartment"]["id"] = $("#fusedepartment").attr("usedepartment_id");
+        dataArray["usedepartment_id"] = $("#fusedepartment").attr("usedepartment_id");
         dataArray["workplace"]["id"] = $("#fworkplace").attr("workplace_id");
+        dataArray["workplaceId"] = $("#fworkplace").attr("workplace_id");
         dataArray["networkRoom"]["id"] = $("#fnetworkRoom").attr("networkroom_id");
-
+        dataArray["networkRoomId"] = $("#fnetworkRoom").attr("networkroom_id");
+        dataArray["expense"]["id"] = $("#fprice").attr("expense_id");
+        dataArray["expenseId"] = $("#fprice").attr("expense_id");
+        console.log(dataArray)
         constructDetailList.push(dataArray);
         showDetail(constructDetailList);
     })
@@ -314,7 +337,7 @@
             content+='  <td>'+n.operator+'</td>';
             content+='  <td>'+n.resourceType+'</td>';
             content+='  <td>'+n.number+'</td>';
-            content+='  <td>'+n.price+'</td>';
+            content+='  <td>'+n.expense.price+'</td>';
             content+='  <td>'+n.workplace.workplaceName + '</td>';
             content+='  <td>'+n.networkRoom.networkroom_name+'</td>';
             content+='  <td>';
@@ -619,11 +642,69 @@
 
     })
 
+    //机房单击选择事件
+    //注意！！！！！！ 动态表格不能放置在form表单中，否则使用里面的单击事件会有问题
+    $("#fprice").click(function () {
+
+        var id, price = null;
+
+        //单击触发layer弹出层
+        layer.open({
+            title:"选择资费",
+            area: ['600px', '400px'],
+            type:1,
+            // content:"[[@{|/openQuery|}]]",
+            content:$('#expense_layer'),
+            btn:['选择','取消'],
+            success:function (layero, index) {
+                layui.use('table',function () {
+                    var table = layui.table;
+
+                    //自动渲染数据表格
+                    table.render({
+                        // elem: layer.getChildFrame("#ftable", index)
+                        elem: '#fexpense_table'
+                        ,url:[[@{|/setting/expense/showExpenseTable|}]]  //该url必须要返回符合layui要求的前端格式的json数据
+                ,cols: [
+                        [
+                             {type:'radio'}
+                            ,{field: 'id', title: 'ID',width:80}
+                            ,{field: 'expenseType', title: '资费类别',width:120}
+                            ,{field: 'price', title: '金额'}
+                            ,{field: 'chargeFrequency', title: '缴费频率'}
+                        ]
+                    ]
+                        ,page:false
+                        ,id: 'expense'
+                });
+
+                    //获取选中的层
+                    table.on('row(expense)',function (obj) {
+                        id = obj.data.id;
+                        price = obj.data.price;
+                    })
+                })
+
+
+            },
+            yes:function (layero, index) {
+                $("#fprice").attr("expense_id",id);
+                $("#fprice").val(price);
+                layer.close(layero)
+            },
+            btn2:function (layero, index) {
+                layer.close(layero)
+            }
+        })
+
+    })
+
     $("#resetBtn").click(function () {
         $("#form")[0].reset();
         $("#fusedepartment").attr("usedepartment_id","");
         $("#fworkplace").attr("workplace_id","");
         $("#fnetworkRoom").attr("networkroom_id","");
+        $("#fprice").attr("expense_id","");
 
     })
 </script>

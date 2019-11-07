@@ -22,4 +22,5 @@ public interface ConstructDetailMapper {
 
     void insertByBatch(@Param("constructDetailList") List<ConstructDetail> constructDetailList);
 
+    List<ConstructDetail> selectByOrderID(Long id);
 }
