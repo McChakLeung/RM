@@ -3,6 +3,8 @@
 <mapper namespace="com.dgpalife.resourcemanagement.mapper.ConstructDetailMapper">
   <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.ConstructDetail">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="usedepartment_id" jdbcType="BIGINT" property="usedepartment_id" />
+    <result column="usedepartment_type" jdbcType="VARCHAR" property="usedepartment_type" />
     <result column="operator" jdbcType="VARCHAR" property="operator" />
     <result column="resource_type" jdbcType="VARCHAR" property="resourceType" />
     <result column="number" jdbcType="INTEGER" property="number" />
@@ -16,7 +18,7 @@
     <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, operator, resource_type, number, expense_id,workplace_id, network_room_id, order_id,
+    id, usedepartment_id,usedepartment_type,operator, resource_type, number, expense_id,workplace_id, network_room_id, order_id,
     template_id, create_time, creator_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">

@@ -33,12 +33,12 @@
     delete from t_order
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Order">
-    insert into t_order (id, type, status, 
+  <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Order" useGeneratedKeys="true" keyProperty="id">
+    insert into t_order (type, status,
       title, apply_department_id,
       proposer_id, project_id,create_time, reason
       )
-    values (#{id,jdbcType=BIGINT}, #{type,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+    values (#{type,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
       #{title,jdbcType=VARCHAR},#{applyDepartmentId,jdbcType=BIGINT},
       #{proposerId,jdbcType=BIGINT},#{projectId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}, #{reason,jdbcType=LONGVARCHAR}
       )
@@ -46,9 +46,6 @@
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Order" useGeneratedKeys="true" keyProperty="id">
     insert into t_order
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="type != null">
         type,
       </if>
@@ -78,9 +75,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
       <if test="type != null">
         #{type,jdbcType=VARCHAR},
       </if>
@@ -233,4 +227,14 @@
       </if>
     </where>
   </select>
+  <insert id="insertOrder" useGeneratedKeys="true" keyProperty="id">
+    insert into t_order (type, status,
+      title, apply_department_id,
+      proposer_id, project_id,create_time, reason
+      )
+    values (#{type,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
+      #{title,jdbcType=VARCHAR},#{applyDepartmentId,jdbcType=BIGINT},
+      #{proposerId,jdbcType=BIGINT},#{projectId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}, #{reason,jdbcType=LONGVARCHAR}
+      )
+  </insert>
 </mapper>

@@ -188,12 +188,12 @@ public class OrderController {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             order.setCreateTime(sdf.format(date));
 
-            Long id = orderService.saveOrder(order);
+            orderService.saveOrder(order);
 
             for(ConstructDetail constructDetail: constructDetailList){
                 constructDetail.setCreateTime(sdf.format(date));
                 constructDetail.setCreatorId(user.getId());
-                constructDetail.setOrderId(id);
+                constructDetail.setOrderId(order.getId());
             }
 
             //发送给后台处理

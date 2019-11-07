@@ -29,22 +29,31 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ProjectMapper projectMapper;
 
+    @Autowired
+    private ExpenseMapper expenseMapper;
 
-    @Override
-    public Integer createOrder(Order order) {
-        try{
-            Long orderId = orderMapper.insertSelective(order);
-            List<ConstructDetail> constructDetailList = order.getConstructDetailList();
-            for (ConstructDetail constructDetail: constructDetailList) {
-                constructDetail.setOrderId(orderId);
-            }
-            constructDetailMapper.insertByBatch(constructDetailList);
-        }catch (Exception e){
-            e.printStackTrace();
-            return 0;
-        }
-        return 1;
-    }
+    @Autowired
+    private WorkplaceMapper workplaceMapper;
+
+    @Autowired
+    private NetworkRoomMapper networkRoomMapper;
+
+//    @Override
+//    public Integer createOrder(Order order) {
+//        try{
+//            orderMapper.insertOrder(order);
+//
+//            List<ConstructDetail> constructDetailList = order.getConstructDetailList();
+//            for (ConstructDetail constructDetail: constructDetailList) {
+//                constructDetail.setOrderId(order.getId());
+//            }
+//            constructDetailMapper.insertByBatch(constructDetailList);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            return 0;
+//        }
+//        return 1;
+//    }
 
     /**
      * 根据projectID查询关联的工单清单
@@ -73,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Long saveOrder(Order order) {
-        return orderMapper.insertSelective(order);
+        return orderMapper.insertOrder(order);
     }
 
     @Override
@@ -84,6 +93,12 @@ public class OrderServiceImpl implements OrderService {
         User user = userMapper.selectByPrimaryKey(order.getProposerId());
         Project project = projectMapper.selectByPrimaryKey(order.getProjectId());
         List<ConstructDetail> constructDetailList = constructDetailMapper.selectByOrderID(order.getId());
+        for(ConstructDetail constructDetail: constructDetailList){
+            constructDetail.setUsedepartment(departmentMapper.selectByPrimaryKey(constructDetail.getUsedepartment_id()));
+            constructDetail.setExpense(expenseMapper.selectByPrimaryKey(constructDetail.getExpenseId()));
+            constructDetail.setWorkplace(workplaceMapper.selectByPrimaryKey(constructDetail.getWorkplaceId()));
+            constructDetail.setNetworkRoom(networkRoomMapper.selectByPrimaryKey(constructDetail.getNetworkRoomId()));
+        }
         order.setApplyDepartment(applyDepartment);
         order.setProposer(user);
         order.setProject(project);
