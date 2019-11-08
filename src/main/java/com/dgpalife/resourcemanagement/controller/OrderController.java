@@ -8,6 +8,7 @@ import com.dgpalife.resourcemanagement.model.*;
 import com.dgpalife.resourcemanagement.service.ConstructDetailService;
 import com.dgpalife.resourcemanagement.service.DepartmentService;
 import com.dgpalife.resourcemanagement.service.OrderService;
+import org.activiti.engine.ProcessEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +33,9 @@ public class OrderController {
 
     @Autowired
     private DepartmentService departmentService;
+
+    @Autowired
+    private ProcessEngine processEngine;
 
     @RequestMapping("/toIndex")
     public String toIndex(){
@@ -217,6 +221,23 @@ public class OrderController {
         Order order = orderService.selectOrderById(id);
         model.addAttribute("order",order);
         return "/order/myorder/detail";
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/doAuditOrder/{id}")
+    public Object doAuditOrder(@PathVariable Long id){
+        AjaxResult result = new AjaxResult();
+        try {
+            Order order = orderService.selectOrderById(id);
+            order.setStatus("待审核");
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("提交审核异常，请联系管理员解决");
+        }
+        return result;
     }
 
 //    @RequestMapping("/construction/toConstructionAdd")
