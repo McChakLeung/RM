@@ -6,6 +6,7 @@ import com.dgpalife.resourcemanagement.listener.activiti.listener.YesListener;
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricProcessInstanceQuery;
+import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
@@ -504,5 +505,11 @@ public class SpringbootResourcemanagementApplicationTests {
 		}
 
 	}
+
+//	@Test
+//	public void test13(){
+//		User user = (User)new com.dgpalife.resourcemanagement.model.User();
+//		System.out.println(user);
+//	}
 
 }
