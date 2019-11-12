@@ -1,5 +1,7 @@
-package com.dgpalife.resourcemanagement.service.impl;
+package com.dgpalife.resourcemanagement.service.activiti;
 
+import com.dgpalife.resourcemanagement.service.RoleService;
+import com.dgpalife.resourcemanagement.service.UserService;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.Picture;
 import org.activiti.engine.identity.User;
@@ -8,6 +10,7 @@ import org.activiti.engine.impl.Page;
 import org.activiti.engine.impl.UserQueryImpl;
 import org.activiti.engine.impl.persistence.entity.UserEntity;
 import org.activiti.engine.impl.persistence.entity.UserEntityManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +18,15 @@ import java.util.Map;
 
 @Service("customUserManager")
 public class CustomUserManager implements UserEntityManager {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
+
     @Override
-    public User createNewUser(String s) {
+    public User createNewUser(String userId) {
         return null;
     }
 

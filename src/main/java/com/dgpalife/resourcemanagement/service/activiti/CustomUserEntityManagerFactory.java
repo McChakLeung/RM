@@ -1,4 +1,4 @@
-package com.dgpalife.resourcemanagement.service.impl;
+package com.dgpalife.resourcemanagement.service.activiti;
 
 import org.activiti.engine.impl.interceptor.CommandContext;
 import org.activiti.engine.impl.interceptor.Session;
@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 @Service
-public class CustomGroupEntityManagerFactory implements SessionFactory {
+public class CustomUserEntityManagerFactory implements SessionFactory {
 
     @Resource
-    private CustomGroupManager customGroupManager;
+    private CustomUserManager customUserManager;
 
     @Override
     public Class<?> getSessionType() {
