@@ -104,4 +104,25 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public void saveToActiviti(User user, Long orgId, List<Long> roleIds, boolean synToActiviti) throws Exception {
+
+    }
+
+    @Override
+    public void delete(Long userId, boolean synToActiviti) throws Exception {
+
+    }
+
+    @Override
+    public void synAllUserAndRoleToActiviti() throws Exception {
+
+    }
+
+    @Override
+    public void deleteAllActivitiIdentifyData() throws Exception {
+
+    }
+
+
 }
