@@ -106,7 +106,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveToActiviti(User user, Long orgId, List<Long> roleIds, boolean synToActiviti) throws Exception {
-
+        String userId = userMapper.selectByPrimaryKey(user.getId()).toString();
+        System.out.println(userId);
     }
 
     @Override
