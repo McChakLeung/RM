@@ -38,26 +38,26 @@ public interface UserService {
      * @param synToActiviti     是否同步到Activiti数据库，通过配置文件方式设置，使用属性：account.user.add.syntoactiviti
      * @throws  Exception                       其他未知异常
      */
-//    void saveToActiviti(User user, Long orgId, List<Long> roleIds, boolean synToActiviti)
-//            throws Exception;
-//
-//    /**
-//     * 删除用户
-//     * @param userId        用户ID
-//     * @param synToActiviti     是否同步到Activiti数据库，通过配置文件方式设置，使用属性：account.user.add.syntoactiviti
-//     * @throws Exception
-//     */
-//    void delete(Long userId, boolean synToActiviti) throws Exception;
-//
-//    /**
-//     * 同步用户、角色数据到工作流
-//     * @throws Exception
-//     */
-//    void synAllUserAndRoleToActiviti() throws Exception;
-//
-//    /**
-//     * 删除工作流引擎Activiti的用户、角色以及关系
-//     * @throws Exception
-//     */
-//    void deleteAllActivitiIdentifyData() throws Exception;
+    void saveToActiviti(User user, Long orgId, List<Long> roleIds, boolean synToActiviti)
+            throws Exception;
+
+    /**
+     * 删除用户
+     * @param userId        用户ID
+     * @param synToActiviti     是否同步到Activiti数据库，通过配置文件方式设置，使用属性：account.user.add.syntoactiviti
+     * @throws Exception
+     */
+    void delete(Long userId, boolean synToActiviti) throws Exception;
+
+    /**
+     * 同步用户、角色数据到工作流
+     * @throws Exception
+     */
+    void synAllUserAndRoleToActiviti() throws Exception;
+
+    /**
+     * 删除工作流引擎Activiti的用户、角色以及关系
+     * @throws Exception
+     */
+    void deleteAllActivitiIdentifyData() throws Exception;
 }
