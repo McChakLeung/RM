@@ -109,45 +109,45 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    @Override
-    public void saveToActiviti(User user, Long orgId, List<Long> roleIds, boolean synToActiviti) throws Exception {
-        //从变量user中查询数据出数据库中的userid，并转换成string类型，用于Activiti Identify同步
-        String userId = userMapper.selectByPrimaryKey(user.getId()).getId().toString();
-        System.out.println(userId);
-
-        //保存系统用户
-        userMapper.insert(user);
-
-        // 同步数据到Activiti Identify模块
-        if(synToActiviti) {
-            UserQuery userQuery = identityService.createUserQuery();
-            List<org.activiti.engine.identity.User> activitiUsers = userQuery.userId(userId).list();
-
-            if(activitiUsers.size() == 1) {
-                updateActivitiData(user, roleIds, activitiUsers.get(0));
-            }else if (activitiUsers.size() > 1) {
-                String errorMsg = "发现重复用户：id="+ userId;
-                throw new RuntimeException(errorMsg);
-            }else{
-                new ActivitiUser(user, roleIds);
-            }
-        }
-    }
-
-    @Override
-    public void delete(Long userId, boolean synToActiviti) throws Exception {
-
-    }
-
-    @Override
-    public void synAllUserAndRoleToActiviti() throws Exception {
-
-    }
-
-    @Override
-    public void deleteAllActivitiIdentifyData() throws Exception {
-
-    }
+//    @Override
+//    public void saveToActiviti(User user, Long orgId, List<Long> roleIds, boolean synToActiviti) throws Exception {
+//        //从变量user中查询数据出数据库中的userid，并转换成string类型，用于Activiti Identify同步
+//        String userId = userMapper.selectByPrimaryKey(user.getId()).getId().toString();
+//        System.out.println(userId);
+//
+//        //保存系统用户
+//        userMapper.insert(user);
+//
+//        // 同步数据到Activiti Identify模块
+//        if(synToActiviti) {
+//            UserQuery userQuery = identityService.createUserQuery();
+//            List<org.activiti.engine.identity.User> activitiUsers = userQuery.userId(userId).list();
+//
+//            if(activitiUsers.size() == 1) {
+//                updateActivitiData(user, roleIds, activitiUsers.get(0));
+//            }else if (activitiUsers.size() > 1) {
+//                String errorMsg = "发现重复用户：id="+ userId;
+//                throw new RuntimeException(errorMsg);
+//            }else{
+//                new ActivitiUser(user, roleIds);
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public void delete(Long userId, boolean synToActiviti) throws Exception {
+//
+//    }
+//
+//    @Override
+//    public void synAllUserAndRoleToActiviti() throws Exception {
+//
+//    }
+//
+//    @Override
+//    public void deleteAllActivitiIdentifyData() throws Exception {
+//
+//    }
 
 
 }
