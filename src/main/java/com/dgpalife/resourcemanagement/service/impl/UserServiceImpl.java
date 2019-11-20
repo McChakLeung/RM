@@ -11,6 +11,7 @@ import com.dgpalife.resourcemanagement.model.User;
 import com.dgpalife.resourcemanagement.model.UserRole;
 import com.dgpalife.resourcemanagement.service.UserService;
 import org.activiti.engine.IdentityService;
+import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.UserQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -143,7 +144,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long userId, boolean synToActiviti) throws Exception {
-        User user = accountManager.getEntity(userId);
+        User user = userMapper.selectByPrimaryKey(userId);
         if(user == null) {
             throw new ServiceException("删除用户时，找不到ID为"+ userId + "的用户");
         }
@@ -211,7 +212,7 @@ public class UserServiceImpl implements UserService {
      * @param roleIds   角色ID集合
      * @param userId    用户ID
      */
-    private void addMembershipToIdentify(List<long> roleIds, String userId) {
+    private void addMembershipToIdentify(List<Long> roleIds, String userId) {
         for(Long roleId : roleIds) {
             Role role = roleManager.getEntity(roleId);
             identityService.createMembership(userId, role.getEnName());
@@ -232,9 +233,9 @@ public class UserServiceImpl implements UserService {
         cloneAndSaveActivitiUser(user, activitiUser);
 
         // 删除用户的membership
-        List<group> activitiGroups = identityService.createGroupQuery().groupMember(userId).list();
+        List<Group> activitiGroups = identityService.createGroupQuery().groupMember(userId).list();
         for(Group group : activitiGroups) {
-            logger.debug("delete group from activit: {}", ToStringBuilder.reflectionToString(group));
+//            logger.debug("delete group from activit: {}", ToStringBuilder.reflectionToString(group));
             identityService.deleteMembership(userId, group.getId());
         }
 
