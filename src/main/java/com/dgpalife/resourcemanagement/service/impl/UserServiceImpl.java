@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService {
     public void delete(Long userId, boolean synToActiviti) throws Exception {
         User user = userMapper.selectByPrimaryKey(userId);
         if(user == null) {
-            throw new ServiceException("删除用户时，找不到ID为"+ userId + "的用户");
+            throw new Exception("删除用户时，找不到ID为"+ userId + "的用户");
         }
 
         /**
@@ -187,7 +187,7 @@ public class UserServiceImpl implements UserService {
      * @param user      用户对象{@link User}
      * @param roleIds   用户拥有的角色ID集合
      */
-    private void newActivitiUser(User user, List<long> roleIds) {
+    private void newActivitiUser(User user, List<Long> roleIds) {
         String userId = user.getId().toString();
 
         // 添加用户
