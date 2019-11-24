@@ -26,7 +26,7 @@ public class ActivitiConfig {
         configuration.setDatabaseSchema("ACT");
         configuration.setDatabaseSchemaUpdate("true");
         configuration.setDeploymentResources(resources);
-        configuration.setDbIdentityUsed(false);
+        //configuration.setDbIdentityUsed(false);
         configuration.setLabelFontName("宋体");
         configuration.setActivityFontName("宋体");
         return configuration.buildProcessEngine();
