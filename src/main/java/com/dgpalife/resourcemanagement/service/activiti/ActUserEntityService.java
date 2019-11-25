@@ -1,9 +1,11 @@
 package com.dgpalife.resourcemanagement.service.activiti;
 
-import com.dgpalife.resourcemanagement.mapper.UserMapper;
-import org.activiti.engine.IdentityService;
+import com.dgpalife.resourcemanagement.common.ActivitiUserUtils;
+import com.dgpalife.resourcemanagement.service.PermissionService;
+import com.dgpalife.resourcemanagement.service.UserService;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.Picture;
+
 import org.activiti.engine.identity.User;
 import org.activiti.engine.identity.UserQuery;
 import org.activiti.engine.impl.Page;
@@ -13,8 +15,12 @@ import org.activiti.engine.impl.persistence.entity.UserEntity;
 import org.activiti.engine.impl.persistence.entity.UserEntityImpl;
 import org.activiti.engine.impl.persistence.entity.UserEntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +28,22 @@ import java.util.Map;
 public class ActUserEntityService implements UserEntityManager,Session {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
+
+//    ServletContextEvent sce;
+//
+//    public UserService getUserService() {
+//        if (userService == null){
+//            //从Tomcat中获取SerletContext对象
+//            ServletContext application = sce.getServletContext();
+//
+//            //从Tomcat中获得spring的IOC容器
+//            ApplicationContext ioc =  WebApplicationContextUtils.getWebApplicationContext(application);
+//            //从IOC容器中获取PermissionService对象
+//            UserService userService = ioc.getBean(UserService.class);
+//        }
+//        return userService;
+//    }
 
     @Override
     public User createNewUser(String userId) {
@@ -97,9 +118,7 @@ public class ActUserEntityService implements UserEntityManager,Session {
 
     @Override
     public UserEntity findById(String userId) {
-        User userEntiy = new UserEntityImpl();
-        com.dgpalife.resourcemanagement.model.User user = userMapper.selectByPrimaryKey(Long.parseLong(userId));
-        return null;
+        return ActivitiUserUtils.toActivitiUser(userService.selectUserByID(Long.parseLong(userId)));
     }
 
     @Override

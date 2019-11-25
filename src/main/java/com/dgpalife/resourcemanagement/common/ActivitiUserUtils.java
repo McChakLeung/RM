@@ -19,7 +19,7 @@ public class ActivitiUserUtils {
     public static User toActivitiUser(com.dgpalife.resourcemanagement.model.User user){
         User userEntity = new UserEntityImpl();
         userEntity.setId(user.getId().toString());
-        userEntity.setFirstName(user.getLastlogin());
+        userEntity.setFirstName(user.getLoginacct());
         userEntity.setLastName(user.getUsername());
         userEntity.setPassword(user.getPassword());
         return userEntity;
