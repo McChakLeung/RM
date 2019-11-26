@@ -1,26 +1,19 @@
 package com.dgpalife.resourcemanagement.service.activiti;
 
 import com.dgpalife.resourcemanagement.common.ActivitiUserUtils;
-import com.dgpalife.resourcemanagement.service.PermissionService;
 import com.dgpalife.resourcemanagement.service.UserService;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.Picture;
-
 import org.activiti.engine.identity.User;
 import org.activiti.engine.identity.UserQuery;
 import org.activiti.engine.impl.Page;
 import org.activiti.engine.impl.UserQueryImpl;
 import org.activiti.engine.impl.interceptor.Session;
 import org.activiti.engine.impl.persistence.entity.UserEntity;
-import org.activiti.engine.impl.persistence.entity.UserEntityImpl;
 import org.activiti.engine.impl.persistence.entity.UserEntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
 import java.util.List;
 import java.util.Map;
 

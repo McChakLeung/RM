@@ -16,8 +16,8 @@ import java.util.List;
  */
 
 public class ActivitiUserUtils {
-    public static User toActivitiUser(com.dgpalife.resourcemanagement.model.User user){
-        User userEntity = new UserEntityImpl();
+    public static UserEntity toActivitiUser(com.dgpalife.resourcemanagement.model.User user){
+        UserEntity userEntity = new UserEntityImpl();
         userEntity.setId(user.getId().toString());
         userEntity.setFirstName(user.getLoginacct());
         userEntity.setLastName(user.getUsername());
