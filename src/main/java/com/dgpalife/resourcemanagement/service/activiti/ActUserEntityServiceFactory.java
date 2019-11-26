@@ -1,15 +1,11 @@
 package com.dgpalife.resourcemanagement.service.activiti;
 
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.impl.interceptor.CommandContext;
 import org.activiti.engine.impl.interceptor.Session;
 import org.activiti.engine.impl.interceptor.SessionFactory;
 import org.activiti.engine.impl.persistence.entity.UserEntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 
 @Service
 public class ActUserEntityServiceFactory implements SessionFactory{

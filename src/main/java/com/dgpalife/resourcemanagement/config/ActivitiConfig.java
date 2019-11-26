@@ -1,7 +1,9 @@
 package com.dgpalife.resourcemanagement.config;
 
 
+import com.dgpalife.resourcemanagement.service.activiti.ActUserEntityServiceFactory;
 import org.activiti.engine.*;
+import org.activiti.engine.impl.interceptor.SessionFactory;
 import org.activiti.spring.SpringProcessEngineConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +14,10 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Configuration
 public class ActivitiConfig {
@@ -29,6 +35,12 @@ public class ActivitiConfig {
         //configuration.setDbIdentityUsed(false);
         configuration.setLabelFontName("宋体");
         configuration.setActivityFontName("宋体");
+        SessionFactory userEntityServiceFactory = new ActUserEntityServiceFactory();
+        Map<Class<?>,SessionFactory> sessionFactoryMap = new HashMap<>();
+        sessionFactoryMap.put(ActUserEntityServiceFactory.class,userEntityServiceFactory);
+
+        configuration.setSessionFactories(sessionFactoryMap);
+
         return configuration.buildProcessEngine();
     }
 
