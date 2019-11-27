@@ -105,4 +105,9 @@ public class OrderServiceImpl implements OrderService {
         order.setConstructDetailList(constructDetailList);
         return order;
     }
+
+    @Override
+    public void updateOrder(Order order) {
+        orderMapper.updateByPrimaryKeySelective(order);
+    }
 }

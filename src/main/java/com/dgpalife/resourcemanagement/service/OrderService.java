@@ -16,4 +16,6 @@ public interface OrderService {
     Long saveOrder(Order order);
 
     Order selectOrderById(Long id);
+
+    void updateOrder(Order order);
 }

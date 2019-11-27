@@ -11,12 +11,14 @@
     <sequenceFlow id="_9" name="审核拒绝" sourceRef="_4" targetRef="_5">
       <extensionElements>
         <activiti:executionListener delegateExpression="${refuseListener}" event="end"/>
+        <activiti:executionListener delegateExpression="NoListener" event="end"/>
       </extensionElements>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${flag==false}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="_10" name="审核通过" sourceRef="_4" targetRef="_6">
       <extensionElements>
         <activiti:executionListener delegateExpression="${passListener}" event="end"/>
+        <activiti:executionListener delegateExpression="YesListener" event="end"/>
       </extensionElements>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${flag==true}]]></conditionExpression>
     </sequenceFlow>

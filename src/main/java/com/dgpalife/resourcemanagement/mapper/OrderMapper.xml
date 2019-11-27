@@ -6,6 +6,7 @@
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="piid" jdbcType="VARCHAR" property="piid" />
     <!--<result column="approval_link_id" jdbcType="BIGINT" property="approvalLinkId" />-->
     <result column="apply_department_id" jdbcType="BIGINT" property="applyDepartmentId" />
     <result column="proposer_id" jdbcType="BIGINT" property="proposerId" />
@@ -16,7 +17,7 @@
     <result column="reason" jdbcType="LONGVARCHAR" property="reason" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, type, status, title, apply_department_id, proposer_id, project_id,create_time
+    id, type, status, title, piid, apply_department_id, proposer_id, project_id,create_time
   </sql>
   <sql id="Blob_Column_List">
     reason
@@ -55,6 +56,9 @@
       <if test="title != null">
         title,
       </if>
+      <if test="piid != null">
+        piid,
+      </if>
       <!--<if test="approvalLinkId != null">-->
         <!--approval_link_id,-->
       <!--</if>-->
@@ -83,6 +87,9 @@
       </if>
       <if test="title != null">
         #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="piid != null">
+        #{piid,jdbcType=VARCHAR},
       </if>
       <!--<if test="approvalLinkId != null">-->
         <!--#{approvalLinkId,jdbcType=BIGINT},-->
@@ -116,6 +123,9 @@
       <if test="title != null">
         title = #{title,jdbcType=VARCHAR},
       </if>
+      <if test="piid != null">
+        piid = #{piid,jdbcType=VARCHAR},
+      </if>
       <!--<if test="approvalLinkId != null">-->
         <!--approval_link_id = #{approvalLinkId,jdbcType=BIGINT},-->
       <!--</if>-->
@@ -139,6 +149,7 @@
     set type = #{type,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
+      piid = #{piid,jdbcType=VARCHAR},
 --       approval_link_id = #{approvalLinkId,jdbcType=BIGINT},
       apply_department_id = #{applyDepartmentId,jdbcType=BIGINT},
       proposer_id = #{proposerId,jdbcType=BIGINT},
@@ -151,6 +162,7 @@
     set type = #{type,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
+      piid = #{piid,jdbcType=VARCHAR},
 --       approval_link_id = #{approvalLinkId,jdbcType=BIGINT},
       apply_department_id = #{applyDepartmentId,jdbcType=BIGINT},
       proposer_id = #{proposerId,jdbcType=BIGINT},

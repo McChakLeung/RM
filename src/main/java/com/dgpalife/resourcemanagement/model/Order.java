@@ -33,7 +33,16 @@ public class Order {
 
     private Project project;
 
-//    public Long getApplyUseDepartmentId() {
+    private String piid;
+
+    public String getPiid() {
+        return piid;
+    }
+
+    public void setPiid(String piid) {
+        this.piid = piid;
+    }
+    //    public Long getApplyUseDepartmentId() {
 //        return applyUseDepartmentId;
 //    }
 //

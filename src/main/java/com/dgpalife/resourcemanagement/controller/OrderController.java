@@ -4,6 +4,8 @@ import com.dgpalife.resourcemanagement.common.AjaxResult;
 import com.dgpalife.resourcemanagement.common.Const;
 import com.dgpalife.resourcemanagement.common.Page;
 import com.dgpalife.resourcemanagement.common.StringUtil;
+import com.dgpalife.resourcemanagement.listener.activiti.listener.NoListener;
+import com.dgpalife.resourcemanagement.listener.activiti.listener.YesListener;
 import com.dgpalife.resourcemanagement.model.*;
 import com.dgpalife.resourcemanagement.service.ConstructDetailService;
 import com.dgpalife.resourcemanagement.service.DepartmentService;
@@ -11,7 +13,11 @@ import com.dgpalife.resourcemanagement.service.OrderService;
 import com.dgpalife.resourcemanagement.service.activiti.ActUserEntityService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.interceptor.SessionFactory;
+import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -235,8 +241,29 @@ public class OrderController {
     public Object doAuditOrder(@PathVariable Long id){
         AjaxResult result = new AjaxResult();
         try {
+
+            //1.创建流程定义
+            Deployment deployment = processEngine.getRepositoryService().createDeployment().addClasspathResource("processes/order_auth.bpmn").deploy();
+
+            //2.查询流程定义
+            ProcessDefinition processDefinition = processEngine.getRepositoryService().createProcessDefinitionQuery().processDefinitionKey("order_auth").latestVersion().singleResult();
+
+            //3.创建流程实例
+            Map<String,Object> values = new HashMap<>();
+		    values.put("yesListener",new YesListener());
+		    values.put("noListener",new NoListener());
+            ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId(),values);
+
+//            //4.查询用户任务
+//            TaskService taskService = processEngine.getTaskService();
+
+            //将piid添加在order对象
             Order order = orderService.selectOrderById(id);
             order.setStatus("待审核");
+            order.setPiid(processInstance.getId());
+
+            orderService.updateOrder(order);
+
             result.setSuccess(true);
         }catch (Exception e){
             e.printStackTrace();
@@ -247,11 +274,11 @@ public class OrderController {
     }
 
 
-    @RequestMapping("/test")
-    public String test(User user){
-        actUserEntityService.findById(user.getId().toString());
-        return null;
-    }
+//    @RequestMapping("/test")
+//    public String test(User user){
+//        actUserEntityService.findById(user.getId().toString());
+//        return null;
+//    }
 
 //    @RequestMapping("/construction/toConstructionAdd")
 //    public String toConstructionAdd(){
