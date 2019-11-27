@@ -35,11 +35,11 @@ public class ActivitiConfig {
         //configuration.setDbIdentityUsed(false);
         configuration.setLabelFontName("宋体");
         configuration.setActivityFontName("宋体");
-        SessionFactory userEntityServiceFactory = new ActUserEntityServiceFactory();
-        Map<Class<?>,SessionFactory> sessionFactoryMap = new HashMap<>();
-        sessionFactoryMap.put(ActUserEntityServiceFactory.class,userEntityServiceFactory);
+        SessionFactory actUserEntityServiceFactory = new ActUserEntityServiceFactory();
+        List<SessionFactory> sessionFactoryList = new ArrayList<>();
+        sessionFactoryList.add(actUserEntityServiceFactory);
 
-        configuration.setSessionFactories(sessionFactoryMap);
+        configuration.setCustomSessionFactories(sessionFactoryList);
 
         return configuration.buildProcessEngine();
     }

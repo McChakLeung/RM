@@ -8,8 +8,10 @@ import com.dgpalife.resourcemanagement.model.*;
 import com.dgpalife.resourcemanagement.service.ConstructDetailService;
 import com.dgpalife.resourcemanagement.service.DepartmentService;
 import com.dgpalife.resourcemanagement.service.OrderService;
+import com.dgpalife.resourcemanagement.service.activiti.ActUserEntityService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.impl.interceptor.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,6 +39,9 @@ public class OrderController {
 
     @Autowired
     private ProcessEngine processEngine;
+
+    @Autowired
+    private ActUserEntityService actUserEntityService;
 
     @RequestMapping("/toIndex")
     public String toIndex(){
@@ -241,6 +246,12 @@ public class OrderController {
         return result;
     }
 
+
+    @RequestMapping("/test")
+    public String test(User user){
+        actUserEntityService.findById(user.getId().toString());
+        return null;
+    }
 
 //    @RequestMapping("/construction/toConstructionAdd")
 //    public String toConstructionAdd(){

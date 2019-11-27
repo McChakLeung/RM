@@ -12,12 +12,13 @@ import org.activiti.engine.impl.interceptor.Session;
 import org.activiti.engine.impl.persistence.entity.UserEntity;
 import org.activiti.engine.impl.persistence.entity.UserEntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Component
 public class ActUserEntityService implements UserEntityManager,Session {
 
     @Autowired
