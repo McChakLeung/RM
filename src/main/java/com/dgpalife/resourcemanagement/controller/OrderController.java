@@ -11,9 +11,11 @@ import com.dgpalife.resourcemanagement.service.ConstructDetailService;
 import com.dgpalife.resourcemanagement.service.DepartmentService;
 import com.dgpalife.resourcemanagement.service.OrderService;
 import com.dgpalife.resourcemanagement.service.activiti.ActUserEntityService;
+import com.dgpalife.resourcemanagement.service.activiti.ActUserEntityServiceFactory;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.impl.interceptor.Session;
 import org.activiti.engine.impl.interceptor.SessionFactory;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -255,7 +257,8 @@ public class OrderController {
 		    values.put("noListener",new NoListener());
             ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId(),values);
 
-
+//            ActUserEntityServiceFactory actUserEntityServiceFactory = new ActUserEntityServiceFactory();
+//            actUserEntityServiceFactory.openSession()
 
             //4.查询用户任务
             TaskService taskService = processEngine.getTaskService();
