@@ -18,6 +18,7 @@ import org.activiti.engine.impl.interceptor.SessionFactory;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -254,8 +255,12 @@ public class OrderController {
 		    values.put("noListener",new NoListener());
             ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId(),values);
 
-//            //4.查询用户任务
-//            TaskService taskService = processEngine.getTaskService();
+
+
+            //4.查询用户任务
+            TaskService taskService = processEngine.getTaskService();
+            Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).taskAssignee("").singleResult();
+            taskService.complete(task.getId());
 
             //将piid添加在order对象
             Order order = orderService.selectOrderById(id);

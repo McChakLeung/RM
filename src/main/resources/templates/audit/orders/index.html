@@ -58,135 +58,29 @@
 									<!--<h3 class="panel-title">Basic Table</h3>-->
 								<!--</div>-->
 								<div class="panel-body">
-                                    <!--<div class="row">-->
-                                        <!--&lt;!&ndash;<h4 class="page-title">筛选条件</h4>&ndash;&gt;-->
-
-                                    <!--</div>-->
-
-									<form class="form-horizontal" id="selectVerifyOrdersByOption" th:action="@{|/orders/selectVerifyOrdersByOption|}" method="post">
-										<!--<h4 class="page-title">筛选条件:</h4>-->
-										<div class="form-group">
-											<label for="OrderType" class="col-md-2 control-label">工单类型：</label>
-											<div class="col-md-3">
-												<select class="form-control" id="OrderType" name="OrderType">
-													<option value="">请选择</option>
-													<option value="建设工单">建设工单</option>
-													<option value="业务变更工单">业务变更工单</option>
-													<option value="维护工单">维护工单</option>
-												</select>
-											</div>
-											<label for="Status" class="col-md-2 control-label">工单状态：</label>
-											<div class="col-md-3">
-												<select class="form-control" id="Status" name="Status">
-													<option value="">请选择</option>
-													<option value="待审核">待审核</option>
-													<option value="审核通过">审核通过</option>
-												</select>
-											</div>
-										</div>
-										<div class="form-group">
-											<label for="parentDept" class="col-md-2 control-label">职能部门：</label>
-											<div class="col-md-3">
-												<select class="form-control" id="parentDept" name="parentDept"  onchange="selectSubDept()">
-													<option value="">请选择</option>
-													<option th:each="parentDept:${resultMap.departmentList}" th:value="${parentDept.DeptNo}" th:text="${parentDept.DeptName}">请选择</option>
-												</select>
-											</div>
-											<label for="deptNo" class="col-md-2 control-label">使用部门:</label>
-											<div class="col-md-3">
-												<select class="form-control"  id="deptNo" name="deptNo">
-													<option value="">请选择</option>
-												</select>
-											</div>
-										</div>
-										<div class="form-group">
-											<label for="operator" class="col-md-2 control-label">运营商：</label>
-											<div class="col-md-3">
-												<select class="form-control" id="operator" name="operator">
-													<option value="">请选择</option>
-													<option value="电信">电信</option>
-													<option value="联通">联通</option>
-												</select>
-											</div>
-											<label for="ResourceType" class="col-md-2 control-label">资源类型：</label>
-											<div class="col-md-3">
-												<select class="form-control"  id="ResourceType" name="ResourceType">
-													<option value="">请选择</option>
-													<option value="固定电话">固定电话</option>
-													<option value="网络线路">网络线路</option>
-													<option value="手机号码">手机号码</option>
-												</select>
-											</div>
-
-										</div>
-
-										<div class="form-group">
-											<div class="col-sm-offset-2 col-sm-10">
-												<button type="submit" class="btn btn-primary" >筛选</button>
-												<button type="reset" class="btn btn-danger">清除</button>
-											</div>
-										</div>
-									</form>
-                                    <hr>
-									<table class="table table-bordered table-hover">
+									<table class="table  table-bordered">
 										<thead>
-											<tr class="success">
-												<th>序号</th>
-												<th>状态</th>
-												<th>工单编号</th>
-												<th>工单类型</th>
-												<th>资源编号</th>
-												<th>资源类型</th>
-												<th>运营商</th>
-												<th>挂账部门</th>
-												<th>使用部门</th>
-												<th>创建日期</th>
-												<th>操作</th>
-											</tr>
+										<tr >
+											<th>序号</th>
+											<th>工单类型</th>
+											<th>工单标题</th>
+											<th>申请部门</th>
+											<th>申请人</th>
+											<th>申请时间</th>
+											<th>操作</th>
+										</tr>
 										</thead>
 										<tbody>
-											<tr th:each="orders:${resultMap.orderList}">
-												<td th:text="${ordersStat.count}"></td>
-												<td th:text="${orders.tStatus}"></td>
-												<td th:text="${orders.tNo}">xj123456</td>
-												<td th:text="${orders.tOType}">新装</td>
-												<td th:text="${orders.tRNo}">无</td>
-												<td th:text="${orders.tRType}">固话</td>
-												<td th:text="${orders.tOperator}">电信</td>
-												<td th:text="${orders.pdName}">行政部</td>
-												<td th:text="${orders.dName}">资产室</td>
-												<td th:text="${orders.tCreateTime}">2019年3月7日</td>
-												<td>
-													<a th:href="@{|/orders/verifyOrder/${orders.tid}|}">审核</a>
-													<a th:href="@{|/orders/generateResource/${orders.tid}|}">生成资源</a>
-												</td>
-											</tr>
+
 										</tbody>
+										<tfoot>
+										<tr>
+											<td id="pageTd" colspan="7" align="center">
+												<div id="Pagination" class="pagination"><!-- 这里显示分页 --></div>
+											</td>
+										</tr>
+										</tfoot>
 									</table>
-									<!--分页-->
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <nav aria-label="Page navigation">
-                                                <ul class="pagination">
-                                                    <li>
-                                                        <a href="#" aria-label="Previous">
-                                                            <span aria-hidden="true">&laquo;</span>
-                                                        </a>
-                                                    </li>
-                                                    <li><a href="#">1</a></li>
-                                                    <li><a href="#">2</a></li>
-                                                    <li><a href="#">3</a></li>
-                                                    <li><a href="#">4</a></li>
-                                                    <li><a href="#">5</a></li>
-                                                    <li>
-                                                        <a href="#" aria-label="Next">
-                                                            <span aria-hidden="true">&raquo;</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </nav>
-                                        </div>
-                                    </div>
 								</div>
 							</div>
 							<!-- END BASIC TABLE -->
@@ -205,38 +99,6 @@
 	</div>
 	<!-- END WRAPPER -->
 <script type="text/javascript">
-
-    //    $(function () {
-    //        $("#deptNo").bind("change",selectSubDept());
-    //    });
-
-
-    function selectSubDept(){
-        var parentDeptNo = $("#parentDept").val();
-        //var parentDeptNo = dataOption;
-        // console.log(parentDeptNo);
-        // alert(parentDeptNo);
-        //2.将职能部门下拉列表中原有的option进行删除
-        $("#deptNo>option:gt(0)").remove();
-        //3.定位隶属于当前职能部门下的所有的子部门信息
-        $.ajax({
-            url:"/resource/selectSubDept/" + parentDeptNo,
-            type:"get",
-            dataType: "json",
-            success:function (result) {
-                //var dataOption = "";
-                $.each(result,function (index,value) {
-                    var $dataOption = $("<option></option>");
-                    // dataOption +=
-                    //     "<option value=" + value.deptNo + ">" + value.deptName + "</option>";
-                    $dataOption.text(value.deptname);
-                    $dataOption.val(value.deptno);
-                    $dataOption.appendTo($("#deptNo"));
-                })
-            }
-        });
-    }
-
 
 
 </script>
