@@ -6,10 +6,9 @@ import com.dgpalife.resourcemanagement.common.Page;
 import com.dgpalife.resourcemanagement.common.StringUtil;
 import com.dgpalife.resourcemanagement.listener.activiti.listener.NoListener;
 import com.dgpalife.resourcemanagement.listener.activiti.listener.YesListener;
+import com.dgpalife.resourcemanagement.mapper.UserRoleMapper;
 import com.dgpalife.resourcemanagement.model.*;
-import com.dgpalife.resourcemanagement.service.ConstructDetailService;
-import com.dgpalife.resourcemanagement.service.DepartmentService;
-import com.dgpalife.resourcemanagement.service.OrderService;
+import com.dgpalife.resourcemanagement.service.*;
 import com.dgpalife.resourcemanagement.service.activiti.ActUserEntityService;
 import com.dgpalife.resourcemanagement.service.activiti.ActUserEntityServiceFactory;
 import org.activiti.engine.IdentityService;
@@ -51,6 +50,9 @@ public class OrderController {
 
     @Autowired
     private ActUserEntityService actUserEntityService;
+
+    @Autowired
+    private RoleService roleService;
 
     @RequestMapping("/toIndex")
     public String toIndex(){
@@ -260,9 +262,14 @@ public class OrderController {
 //            ActUserEntityServiceFactory actUserEntityServiceFactory = new ActUserEntityServiceFactory();
 //            actUserEntityServiceFactory.openSession()
 
+//            User user = (User) session.getAttribute(Const.LOGIN_USER);
+//            Role role = userRoleService.queryRoleByUserId(user.getId());
+
+
             //4.查询用户任务
             TaskService taskService = processEngine.getTaskService();
-            Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).taskAssignee("").singleResult();
+            Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).taskCandidateGroup("IT管理岗").singleResult();
+            //taskService.addCandidateGroup(task.getId(),"IT管理岗");
             taskService.complete(task.getId());
 
             //将piid添加在order对象
