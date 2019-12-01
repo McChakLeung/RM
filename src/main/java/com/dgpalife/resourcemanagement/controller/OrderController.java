@@ -14,8 +14,11 @@ import com.dgpalife.resourcemanagement.service.activiti.ActUserEntityServiceFact
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.impl.RepositoryServiceImpl;
+import org.activiti.engine.impl.interceptor.CommandContext;
 import org.activiti.engine.impl.interceptor.Session;
 import org.activiti.engine.impl.interceptor.SessionFactory;
+import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -243,7 +246,7 @@ public class OrderController {
 
     @ResponseBody
     @RequestMapping("/doAuditOrder/{id}")
-    public Object doAuditOrder(@PathVariable Long id){
+    public Object doAuditOrder(@PathVariable Long id, HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
 
@@ -251,7 +254,9 @@ public class OrderController {
             Deployment deployment = processEngine.getRepositoryService().createDeployment().addClasspathResource("processes/order_auth.bpmn").deploy();
 
             //2.查询流程定义
-            ProcessDefinition processDefinition = processEngine.getRepositoryService().createProcessDefinitionQuery().processDefinitionKey("order_auth").latestVersion().singleResult();
+            ProcessDefinition processDefinition = processEngine.getRepositoryService().createProcessDefinitionQuery().deploymentId(deployment.getId()).singleResult();
+
+
 
             //3.创建流程实例
             Map<String,Object> values = new HashMap<>();
@@ -259,18 +264,18 @@ public class OrderController {
 		    values.put("noListener",new NoListener());
             ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId(),values);
 
+//            CommandContext commandContext = new CommandContext();
 //            ActUserEntityServiceFactory actUserEntityServiceFactory = new ActUserEntityServiceFactory();
-//            actUserEntityServiceFactory.openSession()
+//            actUserEntityServiceFactory.openSession(commandContext);
 
-//            User user = (User) session.getAttribute(Const.LOGIN_USER);
+              User user = (User) session.getAttribute(Const.LOGIN_USER);
 //            Role role = userRoleService.queryRoleByUserId(user.getId());
 
 
             //4.查询用户任务
             TaskService taskService = processEngine.getTaskService();
-            Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).taskCandidateGroup("IT管理岗").singleResult();
-            //taskService.addCandidateGroup(task.getId(),"IT管理岗");
-            taskService.complete(task.getId());
+            Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).taskCandidateGroup("admin").singleResult();
+            taskService.claim(task.getId(),user.getUsername());
 
             //将piid添加在order对象
             Order order = orderService.selectOrderById(id);
