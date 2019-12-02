@@ -175,7 +175,7 @@ public class  BasicController {
 
     @RequestMapping("/auth")
     public String auth(){
-        return "/auth";
+        return "auth";
     }
 
     @RequestMapping("/openQuery")
