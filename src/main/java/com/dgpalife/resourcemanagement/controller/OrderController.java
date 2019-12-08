@@ -251,7 +251,7 @@ public class OrderController {
         try {
 
             //1.创建流程定义
-            //Deployment deployment = processEngine.getRepositoryService().createDeployment().addClasspathResource("processes/order_auth.bpmn").deploy();
+            Deployment deployment = processEngine.getRepositoryService().createDeployment().addClasspathResource("processes/order_auth.bpmn").deploy();
 
             //2.查询最新版本的流程定义
             ProcessDefinition processDefinition = processEngine.getRepositoryService().createProcessDefinitionQuery().processDefinitionKey("order_auth").latestVersion().singleResult();
