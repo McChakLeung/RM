@@ -267,14 +267,14 @@ public class OrderController {
 //            ActUserEntityServiceFactory actUserEntityServiceFactory = new ActUserEntityServiceFactory();
 //            actUserEntityServiceFactory.openSession(commandContext);
 
-              User user = (User) session.getAttribute(Const.LOGIN_USER);
+//              User user = (User) session.getAttribute(Const.LOGIN_USER);
 //            Role role = userRoleService.queryRoleByUserId(user.getId());
 
 
             //4.查询用户任务
-            TaskService taskService = processEngine.getTaskService();
-            Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).taskCandidateGroup("admin").singleResult();
-            taskService.claim(task.getId(),user.getUsername());
+//            TaskService taskService = processEngine.getTaskService();
+//            Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).taskCandidateGroup("admin").singleResult();
+//            taskService.claim(task.getId(),user.getUsername());
 
             //将piid添加在order对象
             Order order = orderService.selectOrderById(id);
