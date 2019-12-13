@@ -14,6 +14,8 @@
 	<link rel="stylesheet" th:href="@{|/static/css/main.css|}">
 	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
 	<link rel="stylesheet" th:href="@{|/static/css/demo.css|}">
+	<!--pagination-->
+	<link rel="stylesheet" th:href="@{|/static/pagination/pagination.css|}">
 	<!-- GOOGLE FONTS -->
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
 	<!-- ICONS -->
@@ -24,6 +26,8 @@
 	<script th:src="@{|/static/js/vendor/bootstrap/js/bootstrap.min.js|}"></script>
 	<script th:src="@{|/static/js/vendor/jquery-slimscroll/jquery.slimscroll.min.js|}"></script>
 	<script th:src="@{|/static/js/scripts/klorofil-common.js|}"></script>
+	<script th:src="@{|/static/pagination/jquery.pagination.js|}"></script>
+	<script th:src="@{|/static/js/layer/layer.js|}"></script>
 	<!--加载公共部分-->
 	<script>
 
@@ -99,7 +103,64 @@
 	</div>
 	<!-- END WRAPPER -->
 <script type="text/javascript">
+    $(function () {
+        pageQuery(0);
+    });
 
+    function pageQuery(pageno) {
+        var loadingIndex = -1;
+        var obj = {
+            "pageno" : pageno+1,
+            "pagesize" : 10
+        };
+
+        $.ajax({
+            url : "[[@{|/audit/orders/pageQuery|}]]",
+            type : "POST",
+            data : obj,
+            beforeSend : function() {
+                loadingIndex = layer.msg('数据查询中', {icon: 16});
+                return true;
+            },
+
+            success : function( result ) {
+                layer.close(loadingIndex);
+                if ( result.success ) {
+                    // 将查询结果循环遍历，将数据展现出来
+                    var page = result.page;
+                    var taskList = page.data;
+					var content = "";
+					$.each(taskList, function(i, task){
+                        content += '<tr>';
+                        content += '  <td>'+(i+1)+'</td>';
+                        content += '  <td>'+task.procDefName+'</td>';
+                        content += '  <td>'+task.procDefVersion+'</td>';
+                        content += '  <td>'+task.name+'</td>';
+                        content += '  <td>'+task.memberName+'</td>';
+                        content += '  <td>';
+                        content += '      <button type="button" onclick="window.location.href=\'${APP_PATH}/auth_cert/show.htm?taskid='+task.id+'&memberid='+task.memberid+'\'" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
+                        content += '  </td>';
+                        content += '</tr>';
+                    });
+                    $("tbody").html(content);
+
+                    // 创建分页
+                    var num_entries = page.totalsize ;
+                    $("#Pagination").pagination(num_entries, {
+                        num_edge_entries: 2, //边缘页数
+						num_display_entries: 4, //主体页数
+                        callback: queryPage, //查询当前页的数据.
+                        items_per_page:page.pagesize, //每页显示1项
+                        current_page:(page.pageno-1), //当前页,索引从0开始
+                        prev_text:"上一页",
+						next_text:"下一页"
+                    });
+                } else {
+                    layer.msg("审核任务分页查询失败", {time:1000, icon:5, shift:6});
+                }
+            }
+        });
+    }
 
 </script>
 </body>

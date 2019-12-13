@@ -251,30 +251,35 @@ public class OrderController {
         try {
 
             //1.创建流程定义
-            Deployment deployment = processEngine.getRepositoryService().createDeployment().addClasspathResource("processes/order_auth.bpmn").deploy();
+            //Deployment deployment = processEngine.getRepositoryService().createDeployment().addClasspathResource("processes/order_auth.bpmn").deploy();
 
             //2.查询最新版本的流程定义
             ProcessDefinition processDefinition = processEngine.getRepositoryService().createProcessDefinitionQuery().processDefinitionKey("order_auth").latestVersion().singleResult();
 
 
+            User user = (User) session.getAttribute(Const.LOGIN_USER);
+//            Role role = userRoleService.queryRoleByUserId(user.getId());
+
             //3.创建流程实例
             Map<String,Object> values = new HashMap<>();
 		    values.put("yesListener",new YesListener());
 		    values.put("noListener",new NoListener());
+            values.put("loginacct", user.getLoginacct());
             ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId(),values);
 
 //            CommandContext commandContext = new CommandContext();
 //            ActUserEntityServiceFactory actUserEntityServiceFactory = new ActUserEntityServiceFactory();
 //            actUserEntityServiceFactory.openSession(commandContext);
 
-//              User user = (User) session.getAttribute(Const.LOGIN_USER);
-//            Role role = userRoleService.queryRoleByUserId(user.getId());
+
 
 
             //4.查询用户任务
-//            TaskService taskService = processEngine.getTaskService();
-//            Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).taskCandidateGroup("admin").singleResult();
-//            taskService.claim(task.getId(),user.getUsername());
+//            Map<String,Object> variables = new HashMap<>();
+//            variables.put("loginacct",user.getLoginacct());
+            TaskService taskService = processEngine.getTaskService();
+            Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).taskAssignee(user.getLoginacct()).singleResult();
+            taskService.complete(task.getId());
 
             //将piid添加在order对象
             Order order = orderService.selectOrderById(id);
