@@ -37,7 +37,7 @@ public class AuditController {
 
         try{
             TaskQuery query = processEngine.getTaskService().createTaskQuery();
-            List<Task> taskList = query.processDefinitionKey("order_auth").taskCandidateGroup("backuser").listPage((pageno-1)*pagesize, pagesize);
+            List<Task> taskList = query.processDefinitionKey("order_auth").taskCandidateGroup("admin").listPage((pageno-1)*pagesize, pagesize);
 
             List<Map<String, Object>> taskMapList = new ArrayList<Map<String, Object>>();//避免JSON数据转换出错
 
