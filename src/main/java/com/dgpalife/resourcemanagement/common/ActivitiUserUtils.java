@@ -4,9 +4,8 @@ import com.dgpalife.resourcemanagement.model.Role;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.impl.persistence.entity.GroupEntity;
-import org.activiti.engine.impl.persistence.entity.GroupEntityImpl;
 import org.activiti.engine.impl.persistence.entity.UserEntity;
-import org.activiti.engine.impl.persistence.entity.UserEntityImpl;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +15,8 @@ import java.util.List;
  */
 
 public class ActivitiUserUtils {
-    public static UserEntity toActivitiUser(com.dgpalife.resourcemanagement.model.User user){
-        UserEntity userEntity = new UserEntityImpl();
+    public static User toActivitiUser(com.dgpalife.resourcemanagement.model.User user){
+        User userEntity = new UserEntity();
         userEntity.setId(user.getId().toString());
         userEntity.setFirstName(user.getLoginacct());
         userEntity.setLastName(user.getUsername());
@@ -25,7 +24,7 @@ public class ActivitiUserUtils {
         return userEntity;
     }
     public static GroupEntity toActivitiGroup(Role role){
-        GroupEntity groupEntity=new GroupEntityImpl();
+        GroupEntity groupEntity=new GroupEntity();
         groupEntity.setRevision(1);
         groupEntity.setType("assignment");
         groupEntity.setId(role.getId().toString());
@@ -34,8 +33,7 @@ public class ActivitiUserUtils {
     }
     public static List<Group> toActivitiGroups(List<Role> sysRoles){
         List<Group> groups=new ArrayList<Group>();
-        for (Role role:sysRoles
-                ) {
+        for (Role role:sysRoles) {
             GroupEntity groupEntity=toActivitiGroup(role);
             groups.add(groupEntity);
         }

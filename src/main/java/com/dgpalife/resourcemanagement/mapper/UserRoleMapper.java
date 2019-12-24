@@ -21,6 +21,8 @@ public interface UserRoleMapper {
 
     List<Integer> queryRoleByUserId(Long id);
 
+    List<UserRole> queryRoleListByUserId(Long id);
+
     void deleteByRoleId(Long roleId);
 
     void deleteByUserId(Long id);

@@ -1,7 +1,8 @@
 package com.dgpalife.resourcemanagement.config;
 
 
-import com.dgpalife.resourcemanagement.service.activiti.ActUserEntityServiceFactory;
+import com.dgpalife.resourcemanagement.service.activiti.CustomGroupEntityManagerFactory;
+import com.dgpalife.resourcemanagement.service.activiti.CustomUserEntityManagerFactory;
 import org.activiti.engine.*;
 import org.activiti.engine.impl.interceptor.SessionFactory;
 import org.activiti.spring.SpringProcessEngineConfiguration;
@@ -15,9 +16,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Configuration
 public class ActivitiConfig {
@@ -35,14 +34,16 @@ public class ActivitiConfig {
         //configuration.setDbIdentityUsed(false);
         configuration.setLabelFontName("宋体");
         configuration.setActivityFontName("宋体");
-        SessionFactory actUserEntityServiceFactory = new ActUserEntityServiceFactory();
+        SessionFactory customUserEntityManager = new CustomUserEntityManagerFactory();
+        SessionFactory customGroupEntityManager = new CustomGroupEntityManagerFactory();
         List<SessionFactory> sessionFactoryList = new ArrayList<>();
-        sessionFactoryList.add(actUserEntityServiceFactory);
-
+        sessionFactoryList.add(customUserEntityManager);
+        sessionFactoryList.add(customGroupEntityManager);
         configuration.setCustomSessionFactories(sessionFactoryList);
-
         return configuration.buildProcessEngine();
     }
+
+
 
     @Bean
     public RepositoryService repositoryService(ProcessEngine processEngine) {
