@@ -117,6 +117,11 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public User queryUserByDistrictID(Long district_id) {
+        return userMapper.queryUserByDistrictID(district_id);
+    }
+
 //    @Override
 //    public void saveToActiviti(User user, Long orgId, List<Long> roleIds, boolean synToActiviti) throws Exception {
 //        //从变量user中查询数据出数据库中的userid，并转换成string类型，用于Activiti Identify同步

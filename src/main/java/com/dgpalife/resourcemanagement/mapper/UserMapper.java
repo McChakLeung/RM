@@ -33,4 +33,6 @@ public interface UserMapper {
     void saveUserRoleByBatch(List<UserRole> userRoleList);
 
     User selectUserByLoginAccAndUserPassword(Map<String, Object> params);
+
+    User queryUserByDistrictID(Long district_id);
 }

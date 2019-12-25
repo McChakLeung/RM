@@ -94,8 +94,7 @@ public class CustomUserEntityManager extends UserEntityManager {
         }
         List<Role> roleList=new ArrayList<Role>();
         List<UserRole> userRoleList = userRoleMapper.queryRoleListByUserId(Long.parseLong(userId));
-        for (UserRole userrole:userRoleList
-                ) {
+        for (UserRole userrole:userRoleList) {
             Long roleId = userrole.getRoleId();
             Role role = roleMapper.selectByPrimaryKey(roleId);
             roleList.add(role);

@@ -86,8 +86,7 @@ public class CustomGroupEntityManager extends GroupEntityManager {
         GroupEntity groupEntity;
         Long roleId;
         String activitiRole;
-        for (UserRole userRole:userRoleList
-                ) {
+        for (UserRole userRole:userRoleList) {
             groupEntity=new GroupEntity();
             groupEntity.setRevision(1);
             groupEntity.setType("assignment");

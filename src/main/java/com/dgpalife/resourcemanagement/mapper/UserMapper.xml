@@ -174,4 +174,12 @@
     password = #{password}
   </select>
 
+  <select id="queryUserByDistrictID" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_user
+    where
+    district_id = #{district_id}
+  </select>
+
 </mapper>

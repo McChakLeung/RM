@@ -2,6 +2,7 @@ package com.dgpalife.resourcemanagement.mapper;
 
 import com.dgpalife.resourcemanagement.model.UserRole;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,11 +22,13 @@ public interface UserRoleMapper {
 
     List<Integer> queryRoleByUserId(Long id);
 
-    List<UserRole> queryRoleListByUserId(Long id);
+    List<UserRole> queryRoleByUserIdAndRoleId(@Param("user_id") Long user_id, @Param("role_id") Long role_id);
 
     void deleteByRoleId(Long roleId);
 
     void deleteByUserId(Long id);
+
+    List<UserRole> queryRoleListByUserId(Long user_id);
 
     //void saveUserRoleByBatch(List<UserRole> userRoleList);
 }
