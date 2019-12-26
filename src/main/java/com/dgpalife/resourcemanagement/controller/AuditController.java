@@ -8,7 +8,11 @@ import com.dgpalife.resourcemanagement.model.UserRole;
 import com.dgpalife.resourcemanagement.service.RoleService;
 import com.dgpalife.resourcemanagement.service.UserRoleService;
 import com.dgpalife.resourcemanagement.service.UserService;
+import com.dgpalife.resourcemanagement.service.activiti.CustomGroupEntityManager;
+import org.activiti.engine.IdentityService;
 import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.impl.interceptor.Session;
+import org.activiti.engine.impl.persistence.entity.GroupIdentityManager;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
@@ -63,6 +67,9 @@ public class AuditController {
 //            UserRole userRole = (UserRole)userRoleService.queryRoleByUserIdAndRoleId(user.getId(),role_id);
 //
 //            Role role = roleService.queryRoleByRoleId(userRole.getRoleId());
+
+
+
 
             Role role = roleService.queryRoleByRoleId(role_id);
 
