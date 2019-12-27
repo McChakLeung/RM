@@ -60,7 +60,7 @@ public class AuditController {
 
         try{
 
-            Long role_id = 2L;
+//            Long role_id = 2L;
 
 //            User user = (User) session.getAttribute(Const.LOGIN_USER);
 //
@@ -71,10 +71,10 @@ public class AuditController {
 
 
 
-            Role role = roleService.queryRoleByRoleId(role_id);
+//            Role role = roleService.queryRoleByRoleId(role_id);
 
             TaskQuery query = processEngine.getTaskService().createTaskQuery();
-            List<Task> taskList = query.processDefinitionKey("order_auth").taskCandidateGroup(role.getName()).listPage((pageno-1)*pagesize, pagesize);
+            List<Task> taskList = query.processDefinitionKey("order_auth").taskCandidateGroup("admin").listPage((pageno-1)*pagesize, pagesize);
 
             List<Map<String, Object>> taskMapList = new ArrayList<Map<String, Object>>();//避免JSON数据转换出错
 
