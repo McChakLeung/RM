@@ -18,4 +18,6 @@ public interface OrderService {
     Order selectOrderById(Long id);
 
     void updateOrder(Order order);
+
+    Order queryOrderByPiid(String processInstanceId);
 }

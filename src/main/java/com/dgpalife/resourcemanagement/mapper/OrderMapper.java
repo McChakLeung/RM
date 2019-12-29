@@ -29,4 +29,6 @@ public interface OrderMapper {
     Integer selectCount(Map<String, Object> params);
 
     Long insertOrder(Order order);
+
+    Order queryOrderByPiid(String processInstanceId);
 }

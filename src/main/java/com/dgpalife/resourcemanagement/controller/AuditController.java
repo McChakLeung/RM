@@ -2,9 +2,12 @@ package com.dgpalife.resourcemanagement.controller;
 
 import com.dgpalife.resourcemanagement.common.AjaxResult;
 import com.dgpalife.resourcemanagement.common.Const;
+import com.dgpalife.resourcemanagement.common.Page;
+import com.dgpalife.resourcemanagement.model.Order;
 import com.dgpalife.resourcemanagement.model.Role;
 import com.dgpalife.resourcemanagement.model.User;
 import com.dgpalife.resourcemanagement.model.UserRole;
+import com.dgpalife.resourcemanagement.service.OrderService;
 import com.dgpalife.resourcemanagement.service.RoleService;
 import com.dgpalife.resourcemanagement.service.UserRoleService;
 import com.dgpalife.resourcemanagement.service.UserService;
@@ -43,6 +46,9 @@ public class AuditController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private OrderService orderService;
 
 
     @RequestMapping("/orders/toIndex")
@@ -90,14 +96,24 @@ public class AuditController {
                 taskMap.put("procDefVersion", pd.getVersion());
 
                 //通过流程查找待审批的工单
-
-
-
+                Order order = orderService.queryOrderByPiid(task.getProcessInstanceId());
+                User user = userService.selectUserByID(order.getProposerId());
+                taskMap.put("type",order.getType());
+                taskMap.put("status",order.getStatus());
+                taskMap.put("title",order.getTitle());
+                taskMap.put("create_id",order.getCreateTime());
+                taskMap.put("proposer",user.getUsername());
                 taskMapList.add(taskMap);
 
             }
+            // 获取数据的总条数
 
-
+            int count = (int)query.count(); //同一个query 对象,查询条件是一样的
+            Page<Map<String, Object>> page = new Page<Map<String, Object>>(pageno,pagesize);
+            page.setDatalist(taskMapList);
+            page.setTotalsize(count );
+            result.setPage(page);
+            result.setSuccess(true);
 
         }catch (Exception e){
             result.setSuccess(false);

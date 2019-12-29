@@ -17,16 +17,13 @@
     <result column="reason" jdbcType="LONGVARCHAR" property="reason" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, type, status, title, piid, apply_department_id, proposer_id, project_id,create_time
-  </sql>
-  <sql id="Blob_Column_List">
-    reason
+    id, type, status, title, piid, apply_department_id, proposer_id, project_id,create_time,reason
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
+    <!--,-->
+    <!--<include refid="Blob_Column_List" />-->
     from t_order
     where id = #{id,jdbcType=BIGINT}
   </select>
@@ -249,4 +246,10 @@
       #{proposerId,jdbcType=BIGINT},#{projectId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}, #{reason,jdbcType=LONGVARCHAR}
       )
   </insert>
+
+  <select id="queryOrderByPiid" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"></include>
+    FROM t_order
+    WHERE piid = #{processInstanceId}
+  </select>
 </mapper>
