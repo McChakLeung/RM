@@ -40,6 +40,9 @@ public class OrderController {
     @Autowired
     private ProcessEngine processEngine;
 
+    @Autowired
+    private TicketService ticketService;
+
 //    @Autowired
 //    private ActUserEntityService actUserEntityService;
 
@@ -236,6 +239,9 @@ public class OrderController {
     @ResponseBody
     @RequestMapping("/doAuditOrder/{id}")
     public Object doAuditOrder(@PathVariable Long id, HttpSession session){
+
+        Ticket ticket = new Ticket();
+
         AjaxResult result = new AjaxResult();
         try {
 
@@ -270,12 +276,17 @@ public class OrderController {
             Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).taskAssignee(user.getLoginacct()).singleResult();
             taskService.complete(task.getId());
 
-            //将piid添加在order对象
+            //更新order状态
             Order order = orderService.selectOrderById(id);
             order.setStatus("待审核");
-            order.setPiid(processInstance.getId());
-
+            //order.setPiid(processInstance.getId());
             orderService.updateOrder(order);
+
+            //创建ticket对象
+            ticket.setOrderId(order.getId());
+            ticket.setPiid(processInstance.getId());
+            ticket.setStatus("0");
+            ticketService.insertTicket(ticket);
 
             result.setSuccess(true);
         }catch (Exception e){

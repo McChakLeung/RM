@@ -3,14 +3,8 @@ package com.dgpalife.resourcemanagement.controller;
 import com.dgpalife.resourcemanagement.common.AjaxResult;
 import com.dgpalife.resourcemanagement.common.Const;
 import com.dgpalife.resourcemanagement.common.Page;
-import com.dgpalife.resourcemanagement.model.Order;
-import com.dgpalife.resourcemanagement.model.Role;
-import com.dgpalife.resourcemanagement.model.User;
-import com.dgpalife.resourcemanagement.model.UserRole;
-import com.dgpalife.resourcemanagement.service.OrderService;
-import com.dgpalife.resourcemanagement.service.RoleService;
-import com.dgpalife.resourcemanagement.service.UserRoleService;
-import com.dgpalife.resourcemanagement.service.UserService;
+import com.dgpalife.resourcemanagement.model.*;
+import com.dgpalife.resourcemanagement.service.*;
 import com.dgpalife.resourcemanagement.service.activiti.CustomGroupEntityManager;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.ProcessEngine;
@@ -49,6 +43,9 @@ public class AuditController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private TicketService ticketService;
 
 
     @RequestMapping("/orders/toIndex")
@@ -96,12 +93,13 @@ public class AuditController {
                 taskMap.put("procDefVersion", pd.getVersion());
 
                 //通过流程查找待审批的工单
-                Order order = orderService.queryOrderByPiid(task.getProcessInstanceId());
+                Ticket ticket = ticketService.queryTicketByPiid(task.getProcessInstanceId());
+                Order order = orderService.selectOrderById(ticket.getOrderId());
                 User user = userService.selectUserByID(order.getProposerId());
                 taskMap.put("type",order.getType());
                 taskMap.put("status",order.getStatus());
                 taskMap.put("title",order.getTitle());
-                taskMap.put("create_id",order.getCreateTime());
+                taskMap.put("create_time",order.getCreateTime());
                 taskMap.put("proposer",user.getUsername());
                 taskMapList.add(taskMap);
 
