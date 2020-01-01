@@ -232,7 +232,19 @@ public class OrderController {
     public String toDetail(@PathVariable Long id,Model model){
         Order order = orderService.selectOrderById(id);
         model.addAttribute("order",order);
-        return "/order/myorder/detail";
+
+        if(Const.CONSTRUCTION.equals(order.getType())){
+            return "/order/myorder/construction_detail";
+        }else if (Const.MIGRATION.equals(order.getType())){
+            return "/order/myorder/migration_detail";
+        }else if(Const.REMOVEMENT.equals(order.getType())){
+            return "/order/myorder/removement_detail";
+        }else if(Const.CHANGE_ITEM.equals(order.getType())){
+            return "/order/myorder/change_item_detail";
+        }
+
+        return "/error";
+
     }
 
 
