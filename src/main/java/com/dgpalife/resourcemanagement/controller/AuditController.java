@@ -15,6 +15,8 @@ import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -63,19 +65,6 @@ public class AuditController {
 
         try{
 
-//            Long role_id = 2L;
-
-//            User user = (User) session.getAttribute(Const.LOGIN_USER);
-//
-//            UserRole userRole = (UserRole)userRoleService.queryRoleByUserIdAndRoleId(user.getId(),role_id);
-//
-//            Role role = roleService.queryRoleByRoleId(userRole.getRoleId());
-
-
-
-
-//            Role role = roleService.queryRoleByRoleId(role_id);
-
             TaskQuery query = processEngine.getTaskService().createTaskQuery();
             List<Task> taskList = query.processDefinitionKey("order_auth").taskCandidateGroup("admin").listPage((pageno-1)*pagesize, pagesize);
 
@@ -84,18 +73,19 @@ public class AuditController {
             for(Task task:taskList){
                 Map<String, Object> taskMap = new HashMap<String, Object>();
                 taskMap.put("id", task.getId());
-                taskMap.put("name", task.getName());
+//                taskMap.put("name", task.getName());
 
                 //通过任务表的流程定义id查询流程定义
 
                 ProcessDefinition pd = processEngine.getRepositoryService().createProcessDefinitionQuery().processDefinitionId(task.getProcessDefinitionId()).singleResult();
                 taskMap.put("procDefName", pd.getName());
-                taskMap.put("procDefVersion", pd.getVersion());
+//                taskMap.put("procDefVersion", pd.getVersion());
 
                 //通过流程查找待审批的工单
                 Ticket ticket = ticketService.queryTicketByPiid(task.getProcessInstanceId());
                 Order order = orderService.selectOrderById(ticket.getOrderId());
                 User user = userService.selectUserByID(order.getProposerId());
+                taskMap.put("order_id",order.getId());
                 taskMap.put("type",order.getType());
                 taskMap.put("status",order.getStatus());
                 taskMap.put("title",order.getTitle());
@@ -121,4 +111,23 @@ public class AuditController {
 
         return result;
     }
+
+    @RequestMapping("/orders/toAudit/{id}")
+    public String toAudit(@PathVariable Long id, Model model){
+        Order order = orderService.selectOrderById(id);
+        model.addAttribute("order",order);
+
+        if(Const.CONSTRUCTION.equals(order.getType())){
+            return "/audit/orders/detail/construction_detail";
+        }else if (Const.MIGRATION.equals(order.getType())){
+            return "/audit/orders/detail/migration_detail";
+        }else if(Const.REMOVEMENT.equals(order.getType())){
+            return "/audit/orders/detail/removement_detail";
+        }else if(Const.CHANGE_ITEM.equals(order.getType())){
+            return "/audit/orders/detail/change_item_detail";
+        }
+
+        return "/error";
+    }
+
 }

@@ -67,9 +67,10 @@
 											<tr >
 												<th>序号</th>
 												<th>任务id</th>
-												<th>任务名称</th>
+												<!--<th>任务名称</th>-->
 												<th>流程定义名称</th>
-												<th>流程定义版本</th>
+												<!--<th>流程定义版本</th>-->
+												<th>工单id</th>
 												<th>工单类型</th>
 												<th>工单状态</th>
 												<th>工单标题</th>
@@ -83,7 +84,7 @@
 										</tbody>
 										<tfoot>
 										<tr>
-											<td id="pageTd" colspan="11" align="center">
+											<td id="pageTd" colspan="10" align="center">
 												<div id="Pagination" class="pagination"><!-- 这里显示分页 --></div>
 											</td>
 										</tr>
@@ -110,6 +111,11 @@
     $(function () {
         pageQuery(0);
     });
+
+    function toAudit(order_id){
+        window.location.href = '[[@{|/audit/orders/toAudit/|}]]' + order_id;
+    }
+
 
     function pageQuery(pageno) {
         var loadingIndex = -1;
@@ -138,16 +144,17 @@
                         content += '<tr>';
                         content += '  <td>'+(i+1)+'</td>';
                         content += '  <td>'+taskMap.id+'</td>';
-                        content += '  <td>'+taskMap.name+'</td>';
+                        // content += '  <td>'+taskMap.name+'</td>';
                         content += '  <td>'+taskMap.procDefName+'</td>';
-                        content += '  <td>'+taskMap.procDefVersion+'</td>';
+                        // content += '  <td>'+taskMap.procDefVersion+'</td>';
+                        content += '  <td>'+taskMap.order_id+'</td>';
                         content += '  <td>'+taskMap.type+'</td>';
                         content += '  <td>'+taskMap.status+'</td>';
                         content += '  <td>'+taskMap.title+'</td>';
                         content += '  <td>'+taskMap.proposer+'</td>';
                         content += '  <td>'+taskMap.create_time+'</td>';
                         content += '  <td>';
-                        content += '      <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
+                        content += '      <button type="button" onclick="toAudit('+taskMap.order_id+')" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
                         content += '  </td>';
                         content += '</tr>';
                     });
@@ -170,6 +177,9 @@
             }
         });
     }
+
+
+
 
 </script>
 </body>
