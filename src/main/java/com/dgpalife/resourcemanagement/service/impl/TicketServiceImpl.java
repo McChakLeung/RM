@@ -21,4 +21,9 @@ public class TicketServiceImpl implements TicketService {
     public Ticket queryTicketByPiid(String processInstanceId) {
         return ticketMapper.queryTicketByPiid(processInstanceId);
     }
+
+    @Override
+    public Ticket queryTicketByOrderID(Long id) {
+        return ticketMapper.queryTicketByOrderID(id);
+    }
 }

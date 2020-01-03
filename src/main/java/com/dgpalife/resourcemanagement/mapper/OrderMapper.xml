@@ -12,12 +12,13 @@
     <result column="proposer_id" jdbcType="BIGINT" property="proposerId" />
     <result column="project_id" jdbcType="BIGINT" property="projectId" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="approval_opinion" jdbcType="LONGVARCHAR" property="approval_opinion" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.dgpalife.resourcemanagement.model.Order">
     <result column="reason" jdbcType="LONGVARCHAR" property="reason" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, type, status, title, apply_department_id, proposer_id, project_id,create_time,reason
+    id, type, status, title, apply_department_id, proposer_id, project_id,create_time,reason,approval_opinion
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
     select 
@@ -34,11 +35,13 @@
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Order" useGeneratedKeys="true" keyProperty="id">
     insert into t_order (type, status,
       title, apply_department_id,
-      proposer_id, project_id,create_time, reason
+      proposer_id, project_id,create_time, reason,approval_opinion
       )
     values (#{type,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
       #{title,jdbcType=VARCHAR},#{applyDepartmentId,jdbcType=BIGINT},
-      #{proposerId,jdbcType=BIGINT},#{projectId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}, #{reason,jdbcType=LONGVARCHAR}
+      #{proposerId,jdbcType=BIGINT},#{projectId,jdbcType=BIGINT},
+      #{createTime,jdbcType=VARCHAR}, #{reason,jdbcType=LONGVARCHAR},
+      #{approval_opinion,jdbcType=LONGVARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Order" useGeneratedKeys="true" keyProperty="id">
@@ -74,6 +77,9 @@
       <if test="reason != null">
         reason,
       </if>
+      <if test="approval_opinion != null">
+        approval_opinion
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="type != null">
@@ -105,6 +111,9 @@
       </if>
       <if test="reason != null">
         #{reason,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="approval_opinion != null">
+        #{approval_opinion,jdbcType=LONGVARCHAR}
       </if>
     </trim>
   </insert>
@@ -138,6 +147,9 @@
       <if test="reason != null">
         reason = #{reason,jdbcType=LONGVARCHAR},
       </if>
+      <if test="approval_opinion != null">
+      approval_opinion = #{reason,jdbcType=LONGVARCHAR}
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -151,7 +163,8 @@
       apply_department_id = #{applyDepartmentId,jdbcType=BIGINT},
       proposer_id = #{proposerId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=VARCHAR},
-      reason = #{reason,jdbcType=LONGVARCHAR}
+      reason = #{reason,jdbcType=LONGVARCHAR},
+      approval_opinion = #{approval_opinion,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.Order">
@@ -163,7 +176,9 @@
 --       approval_link_id = #{approvalLinkId,jdbcType=BIGINT},
       apply_department_id = #{applyDepartmentId,jdbcType=BIGINT},
       proposer_id = #{proposerId,jdbcType=BIGINT},
-      create_time = #{createTime,jdbcType=VARCHAR}
+      create_time = #{createTime,jdbcType=VARCHAR},
+      reason = #{reason,jdbcType=LONGVARCHAR},
+      approval_opinion = #{approval_opinion,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 

@@ -6,4 +6,6 @@ public interface TicketService {
     void insertTicket(Ticket ticket);
 
     Ticket queryTicketByPiid(String processInstanceId);
+
+    Ticket queryTicketByOrderID(Long id);
 }

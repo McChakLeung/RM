@@ -35,6 +35,16 @@ public class Order {
 
     private String piid;
 
+    private String approval_opinion;
+
+    public String getApproval_opinion() {
+        return approval_opinion;
+    }
+
+    public void setApproval_opinion(String approval_opinion) {
+        this.approval_opinion = approval_opinion;
+    }
+
     public String getPiid() {
         return piid;
     }

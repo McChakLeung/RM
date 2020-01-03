@@ -8,6 +8,7 @@ import com.dgpalife.resourcemanagement.service.*;
 import com.dgpalife.resourcemanagement.service.activiti.CustomGroupEntityManager;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.interceptor.Session;
 import org.activiti.engine.impl.persistence.entity.GroupIdentityManager;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -114,7 +115,11 @@ public class AuditController {
 
     @RequestMapping("/orders/toAudit/{id}")
     public String toAudit(@PathVariable Long id, Model model){
+
         Order order = orderService.selectOrderById(id);
+        //Task task = processEngine.getTaskService().createTaskQuery().processInstanceId(order.getPiid()).singleResult();
+        Ticket ticket = ticketService.queryTicketByOrderID(order.getId());
+        model.addAttribute("ticket",ticket);
         model.addAttribute("order",order);
 
         if(Const.CONSTRUCTION.equals(order.getType())){
@@ -128,6 +133,50 @@ public class AuditController {
         }
 
         return "/error";
+    }
+
+    @ResponseBody
+    @RequestMapping("/orders/agree")
+    public Object agree(Long order_id, String piid){
+
+        AjaxResult result = new AjaxResult();
+
+        try{
+            Task task = processEngine.getTaskService().createTaskQuery().processInstanceId(piid).singleResult();
+            processEngine.getTaskService().setVariable(task.getId(), "flag", true);
+            processEngine.getTaskService().setVariable(task.getId(), "order_id", order_id);
+            processEngine.getTaskService().complete(task.getId());
+            result.setSuccess(true);
+
+        }catch (Exception e){
+            result.setSuccess(false);
+            result.setMessage("审核异常，请联系管理员");
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @ResponseBody
+    @RequestMapping("/orders/refuse")
+    public Object refuse(Long order_id, String piid){
+
+        AjaxResult result = new AjaxResult();
+
+        try{
+            Task task = processEngine.getTaskService().createTaskQuery().processInstanceId(piid).singleResult();
+            processEngine.getTaskService().setVariable(task.getId(), "flag", false);
+            processEngine.getTaskService().setVariable(task.getId(), "order_id", order_id);
+            processEngine.getTaskService().complete(task.getId());
+            result.setSuccess(true);
+
+        }catch (Exception e){
+            result.setSuccess(false);
+            result.setMessage("审核异常，请联系管理员");
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
 }

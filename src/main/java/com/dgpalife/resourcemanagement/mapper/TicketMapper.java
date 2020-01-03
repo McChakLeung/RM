@@ -18,4 +18,6 @@ public interface TicketMapper {
     int updateByPrimaryKey(Ticket record);
 
     Ticket queryTicketByPiid(String processInstanceId);
+
+    Ticket queryTicketByOrderID(Long id);
 }
