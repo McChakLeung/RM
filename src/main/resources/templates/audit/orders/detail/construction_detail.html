@@ -171,19 +171,19 @@
 
 	<!-- END WRAPPER -->
 </div>
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
 
     $("#agreeBtn").click(function(){
         $.ajax({
             type : "POST",
-            url  : "[[@{|/audit/orders/agree|}",
+            url  : [[@{|/audit/orders/agree|}]],
             data : {
-                order_id : "${order?.id}",
-                piid : "${ticket?.piid}",
+                order_id : [[${order?.id}]],
+                piid : [[${ticket?.piid}]],
 				comment:$("#fcomment").val()
             },
             success : function(result) {
-                window.location.href = "[[@{|/audit/orders/toIndex|}";
+                window.location.href = [[@{|/audit/orders/toIndex|}]];
             }
 
         });
@@ -194,14 +194,14 @@
     $("#refuseBtn").click(function(){
         $.ajax({
             type : "POST",
-            url  : "[[@{|/audit/orders/refuse|}",
+            url  : [[@{|/audit/orders/refuse|}]],
             data : {
-                order_id : "${order?.id}",
-                piid : "${ticket?.piid}",
+                order_id : [[${order?.id}]],
+                piid : [[${ticket?.piid}]],
                 comment:$("#fcomment").val()
             },
             success : function(result) {
-                window.location.href = "[[@{|/audit/orders/toIndex|}";
+                window.location.href = [[@{|/audit/orders/toIndex|}]];
             }
 
         });
