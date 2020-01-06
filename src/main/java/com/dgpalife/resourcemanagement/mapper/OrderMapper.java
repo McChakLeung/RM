@@ -31,4 +31,8 @@ public interface OrderMapper {
     Long insertOrder(Order order);
 
     Order queryOrderByPiid(String processInstanceId);
+
+    void passAuth(Long order_id,String comment);
+
+    void refuseAuth(Long order_id, String comment);
 }

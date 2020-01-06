@@ -179,7 +179,8 @@
             url  : "[[@{|/audit/orders/agree|}",
             data : {
                 order_id : "${order?.id}",
-                piid : "${ticket?.piid}"
+                piid : "${ticket?.piid}",
+				comment:$("#fcomment").val()
             },
             success : function(result) {
                 window.location.href = "[[@{|/audit/orders/toIndex|}";
@@ -196,7 +197,8 @@
             url  : "[[@{|/audit/orders/refuse|}",
             data : {
                 order_id : "${order?.id}",
-                piid : "${ticket?.piid}"
+                piid : "${ticket?.piid}",
+                comment:$("#fcomment").val()
             },
             success : function(result) {
                 window.location.href = "[[@{|/audit/orders/toIndex|}";

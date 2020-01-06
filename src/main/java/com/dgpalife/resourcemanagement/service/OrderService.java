@@ -20,4 +20,8 @@ public interface OrderService {
     void updateOrder(Order order);
 
     Order queryOrderByPiid(String processInstanceId);
+
+    void passAuth(Long order_id,String comment);
+
+    void refuseAuth(Long order_id, String comment);
 }

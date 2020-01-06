@@ -115,4 +115,14 @@ public class OrderServiceImpl implements OrderService {
     public Order queryOrderByPiid(String processInstanceId) {
         return orderMapper.queryOrderByPiid(processInstanceId);
     }
+
+    @Override
+    public void passAuth(Long order_id,String comment) {
+        orderMapper.passAuth(order_id,comment);
+    }
+
+    @Override
+    public void refuseAuth(Long order_id, String comment) {
+        orderMapper.refuseAuth(order_id,comment);
+    }
 }

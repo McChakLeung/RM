@@ -26,4 +26,9 @@ public class TicketServiceImpl implements TicketService {
     public Ticket queryTicketByOrderID(Long id) {
         return ticketMapper.queryTicketByOrderID(id);
     }
+
+    @Override
+    public void updateTicket(Ticket ticket) {
+        ticketMapper.updateByPrimaryKeySelective(ticket);
+    }
 }

@@ -3,14 +3,11 @@ package com.dgpalife.resourcemanagement.controller;
 import com.dgpalife.resourcemanagement.common.AjaxResult;
 import com.dgpalife.resourcemanagement.common.Const;
 import com.dgpalife.resourcemanagement.common.Page;
-import com.dgpalife.resourcemanagement.model.*;
+import com.dgpalife.resourcemanagement.model.Order;
+import com.dgpalife.resourcemanagement.model.Ticket;
+import com.dgpalife.resourcemanagement.model.User;
 import com.dgpalife.resourcemanagement.service.*;
-import com.dgpalife.resourcemanagement.service.activiti.CustomGroupEntityManager;
-import org.activiti.engine.IdentityService;
 import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.TaskService;
-import org.activiti.engine.impl.interceptor.Session;
-import org.activiti.engine.impl.persistence.entity.GroupIdentityManager;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
@@ -137,7 +134,7 @@ public class AuditController {
 
     @ResponseBody
     @RequestMapping("/orders/agree")
-    public Object agree(Long order_id, String piid){
+    public Object agree(Long order_id, String piid, String comment){
 
         AjaxResult result = new AjaxResult();
 
@@ -145,6 +142,7 @@ public class AuditController {
             Task task = processEngine.getTaskService().createTaskQuery().processInstanceId(piid).singleResult();
             processEngine.getTaskService().setVariable(task.getId(), "flag", true);
             processEngine.getTaskService().setVariable(task.getId(), "order_id", order_id);
+            processEngine.getTaskService().setVariable(task.getId(), "comment", comment);
             processEngine.getTaskService().complete(task.getId());
             result.setSuccess(true);
 
@@ -159,7 +157,7 @@ public class AuditController {
 
     @ResponseBody
     @RequestMapping("/orders/refuse")
-    public Object refuse(Long order_id, String piid){
+    public Object refuse(Long order_id, String piid, String comment){
 
         AjaxResult result = new AjaxResult();
 
@@ -167,6 +165,7 @@ public class AuditController {
             Task task = processEngine.getTaskService().createTaskQuery().processInstanceId(piid).singleResult();
             processEngine.getTaskService().setVariable(task.getId(), "flag", false);
             processEngine.getTaskService().setVariable(task.getId(), "order_id", order_id);
+            processEngine.getTaskService().setVariable(task.getId(), "comment", comment);
             processEngine.getTaskService().complete(task.getId());
             result.setSuccess(true);
 

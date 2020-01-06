@@ -148,7 +148,7 @@
         reason = #{reason,jdbcType=LONGVARCHAR},
       </if>
       <if test="approval_opinion != null">
-      approval_opinion = #{reason,jdbcType=LONGVARCHAR}
+      approval_opinion = #{approval_opinion,jdbcType=LONGVARCHAR}
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -267,4 +267,18 @@
     FROM t_order
     WHERE piid = #{processInstanceId}
   </select>
+
+  <update id="passAuth">
+    UPDATE t_order SET
+      status = '审批通过',
+      approval_opinion = #{comment,jdbcType=LONGVARCHAR}
+    WHERE id = #{order_id}
+  </update>
+
+  <update id="refuseAuth">
+    UPDATE t_order SET
+      status = '审批拒绝',
+      approval_opinion = #{comment,jdbcType=LONGVARCHAR}
+    WHERE id = #{order_id}
+  </update>
 </mapper>

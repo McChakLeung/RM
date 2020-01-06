@@ -3,8 +3,8 @@ package com.dgpalife.resourcemanagement.controller;
 import com.dgpalife.resourcemanagement.common.AjaxResult;
 import com.dgpalife.resourcemanagement.common.Const;
 import com.dgpalife.resourcemanagement.common.Page;
-import com.dgpalife.resourcemanagement.listener.activiti.listener.NoListener;
-import com.dgpalife.resourcemanagement.listener.activiti.listener.YesListener;
+import com.dgpalife.resourcemanagement.listener.activiti.listener.PassListener;
+import com.dgpalife.resourcemanagement.listener.activiti.listener.RefuseListener;
 import com.dgpalife.resourcemanagement.model.*;
 import com.dgpalife.resourcemanagement.service.*;
 import org.activiti.engine.ProcessEngine;
@@ -269,8 +269,8 @@ public class OrderController {
 
             //3.创建流程实例
             Map<String,Object> values = new HashMap<>();
-		    values.put("yesListener",new YesListener());
-		    values.put("noListener",new NoListener());
+		    values.put("yesListener",new RefuseListener());
+		    values.put("noListener",new PassListener());
             values.put("loginacct", user.getLoginacct());
             ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId(),values);
 

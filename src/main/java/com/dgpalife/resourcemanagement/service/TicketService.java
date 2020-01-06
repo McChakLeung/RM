@@ -8,4 +8,6 @@ public interface TicketService {
     Ticket queryTicketByPiid(String processInstanceId);
 
     Ticket queryTicketByOrderID(Long id);
+
+    void updateTicket(Ticket ticket);
 }

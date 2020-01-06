@@ -1,8 +1,8 @@
 //package com.dgpalife.springbootresourcemanagement;
 //
 //import com.dgpalife.resourcemanagement.SpringbootResourcemanagementApplication;
-//import com.dgpalife.resourcemanagement.listener.activiti.listener.NoListener;
-//import com.dgpalife.resourcemanagement.listener.activiti.listener.YesListener;
+//import com.dgpalife.resourcemanagement.listener.activiti.listener.PassListener;
+//import com.dgpalife.resourcemanagement.listener.activiti.listener.RefuseListener;
 //import org.activiti.engine.*;
 //import org.activiti.engine.history.HistoricProcessInstance;
 //import org.activiti.engine.history.HistoricProcessInstanceQuery;
@@ -488,8 +488,8 @@
 //
 //		//3.创建流程实例
 //		Map<String,Object> values = new HashMap<>();
-//		values.put("yesListener",new YesListener());
-//		values.put("noListener",new NoListener());
+//		values.put("yesListener",new RefuseListener());
+//		values.put("noListener",new PassListener());
 //
 //		ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId(),values);
 //		System.out.println(processInstance);
