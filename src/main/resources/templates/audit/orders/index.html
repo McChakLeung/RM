@@ -112,8 +112,8 @@
         pageQuery(0);
     });
 
-    function toAudit(order_id){
-        window.location.href = '[[@{|/audit/orders/toAudit/|}]]' + order_id;
+    function toAudit(order_id,piid){
+        window.location.href = '[[@{|/audit/orders/toAudit/|}]]' + order_id + '/' +piid;
     }
 
 
@@ -154,7 +154,7 @@
                         content += '  <td>'+taskMap.proposer+'</td>';
                         content += '  <td>'+taskMap.create_time+'</td>';
                         content += '  <td>';
-                        content += '      <button type="button" onclick="toAudit('+taskMap.order_id+')" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
+                        content += '      <button type="button" onclick="toAudit('+taskMap.order_id+','+taskMap.piid+')" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
                         content += '  </td>';
                         content += '</tr>';
                     });

@@ -17,6 +17,7 @@ public class PassListener implements ExecutionListener {
         // 获取监听器传入的参数
         Long order_id = (Long)delegateExecution.getVariable("order_id");
         String comment = (String)delegateExecution.getVariable("comment");
+        String piid = (String)delegateExecution.getVariable("piid");
 
         // 获取Spring容器
         ApplicationContext context = ApplicationContextUtils.applicationContext;
@@ -28,8 +29,10 @@ public class PassListener implements ExecutionListener {
         // 更新工单的审核状态
         orderService.passAuth(order_id,comment);
 
+        //Order order = orderService.selectOrderById(order_id);
+
         // 获取ticket
-        Ticket ticket = ticketService.queryTicketByOrderID(order_id);
+        Ticket ticket = ticketService.queryTicketByPiid(piid);
 
         // 改变流程审批单的状态
         ticket.setStatus("1");

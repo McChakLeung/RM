@@ -2,6 +2,7 @@ package com.dgpalife.resourcemanagement.mapper;
 
 import com.dgpalife.resourcemanagement.model.Order;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,9 @@ public interface OrderMapper {
 
     Order queryOrderByPiid(String processInstanceId);
 
-    void passAuth(Long order_id,String comment);
+    void passAuth(@Param("order_id") Long order_id, @Param("comment") String comment);
 
-    void refuseAuth(Long order_id, String comment);
+    void refuseAuth(@Param("order_id") Long order_id, @Param("comment") String comment);
+
+    //Order queryOrderByIdAndStatus(Long id, String Status);
 }

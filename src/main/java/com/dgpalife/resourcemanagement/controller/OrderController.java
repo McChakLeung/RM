@@ -269,8 +269,8 @@ public class OrderController {
 
             //3.创建流程实例
             Map<String,Object> values = new HashMap<>();
-		    values.put("yesListener",new RefuseListener());
-		    values.put("noListener",new PassListener());
+		    values.put("passListener",new PassListener());
+		    values.put("refuseListener",new RefuseListener());
             values.put("loginacct", user.getLoginacct());
             ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById(processDefinition.getId(),values);
 

@@ -24,4 +24,6 @@ public interface OrderService {
     void passAuth(Long order_id,String comment);
 
     void refuseAuth(Long order_id, String comment);
+
+    //Order selectOrderByIdAndStatus(Long id, String Status);
 }

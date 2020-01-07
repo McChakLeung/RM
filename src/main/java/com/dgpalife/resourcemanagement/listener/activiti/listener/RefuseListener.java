@@ -1,6 +1,7 @@
 package com.dgpalife.resourcemanagement.listener.activiti.listener;
 
 import com.dgpalife.resourcemanagement.common.ApplicationContextUtils;
+import com.dgpalife.resourcemanagement.model.Order;
 import com.dgpalife.resourcemanagement.model.Ticket;
 import com.dgpalife.resourcemanagement.service.OrderService;
 import com.dgpalife.resourcemanagement.service.TicketService;
@@ -16,6 +17,7 @@ public class RefuseListener implements ExecutionListener {
         // 获取监听器传入的参数
         Long order_id = (Long)delegateExecution.getVariable("order_id");
         String comment = (String)delegateExecution.getVariable("comment");
+        String piid = (String)delegateExecution.getVariable("piid");
 
         // 获取Spring容器
         ApplicationContext context = ApplicationContextUtils.applicationContext;
@@ -27,8 +29,10 @@ public class RefuseListener implements ExecutionListener {
         // 更新工单的审核状态
         orderService.refuseAuth(order_id,comment);
 
+        //Order order = orderService.selectOrderById(order_id);
+
         // 获取ticket
-        Ticket ticket = ticketService.queryTicketByOrderID(order_id);
+        Ticket ticket = ticketService.queryTicketByPiid(piid);
 
         // 改变流程审批单的状态
         ticket.setStatus("1");

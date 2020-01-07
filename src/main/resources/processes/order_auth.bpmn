@@ -12,6 +12,7 @@
         <activiti:executionListener delegateExpression="${refuseListener}" event="end"/>
         <activiti:executionListener delegateExpression="NoListener" event="end"/>
         <activiti:executionListener delegateExpression="NoListener" event="end"/>
+        <activiti:executionListener delegateExpression="refuseListener" event="end"/>
       </extensionElements>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${flag==false}]]></conditionExpression>
     </sequenceFlow>
@@ -20,6 +21,7 @@
         <activiti:executionListener delegateExpression="${passListener}" event="end"/>
         <activiti:executionListener delegateExpression="YesListener" event="end"/>
         <activiti:executionListener delegateExpression="NoListener" event="end"/>
+        <activiti:executionListener delegateExpression="passListener" event="end"/>
       </extensionElements>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${flag==true}]]></conditionExpression>
     </sequenceFlow>

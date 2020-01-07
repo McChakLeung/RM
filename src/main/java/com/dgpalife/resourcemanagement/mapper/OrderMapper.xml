@@ -271,14 +271,19 @@
   <update id="passAuth">
     UPDATE t_order SET
       status = '审批通过',
-      approval_opinion = #{comment,jdbcType=LONGVARCHAR}
+      approval_opinion = #{comment}
     WHERE id = #{order_id}
   </update>
 
   <update id="refuseAuth">
     UPDATE t_order SET
       status = '审批拒绝',
-      approval_opinion = #{comment,jdbcType=LONGVARCHAR}
+      approval_opinion = #{comment}
     WHERE id = #{order_id}
   </update>
+  <!--<select id="queryOrderByIdAndStatus" resultMap="BaseResultMap">-->
+    <!--SELECT <include refid="Base_Column_List"></include>-->
+    <!--FROM t_order-->
+    <!--WHERE id = #{id} AND status = #{Status}-->
+  <!--</select>-->
 </mapper>

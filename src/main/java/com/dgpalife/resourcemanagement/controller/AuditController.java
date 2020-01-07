@@ -84,6 +84,7 @@ public class AuditController {
                 Order order = orderService.selectOrderById(ticket.getOrderId());
                 User user = userService.selectUserByID(order.getProposerId());
                 taskMap.put("order_id",order.getId());
+                taskMap.put("piid",task.getProcessInstanceId());
                 taskMap.put("type",order.getType());
                 taskMap.put("status",order.getStatus());
                 taskMap.put("title",order.getTitle());
@@ -110,12 +111,12 @@ public class AuditController {
         return result;
     }
 
-    @RequestMapping("/orders/toAudit/{id}")
-    public String toAudit(@PathVariable Long id, Model model){
+    @RequestMapping("/orders/toAudit/{id}/{piid}")
+    public String toAudit(@PathVariable Long id, @PathVariable String piid, Model model){
 
         Order order = orderService.selectOrderById(id);
         //Task task = processEngine.getTaskService().createTaskQuery().processInstanceId(order.getPiid()).singleResult();
-        Ticket ticket = ticketService.queryTicketByOrderID(order.getId());
+        Ticket ticket = ticketService.queryTicketByPiid(piid);
         model.addAttribute("ticket",ticket);
         model.addAttribute("order",order);
 
@@ -143,6 +144,7 @@ public class AuditController {
             processEngine.getTaskService().setVariable(task.getId(), "flag", true);
             processEngine.getTaskService().setVariable(task.getId(), "order_id", order_id);
             processEngine.getTaskService().setVariable(task.getId(), "comment", comment);
+            processEngine.getTaskService().setVariable(task.getId(), "piid", piid);
             processEngine.getTaskService().complete(task.getId());
             result.setSuccess(true);
 
@@ -166,6 +168,7 @@ public class AuditController {
             processEngine.getTaskService().setVariable(task.getId(), "flag", false);
             processEngine.getTaskService().setVariable(task.getId(), "order_id", order_id);
             processEngine.getTaskService().setVariable(task.getId(), "comment", comment);
+            processEngine.getTaskService().setVariable(task.getId(), "piid", piid);
             processEngine.getTaskService().complete(task.getId());
             result.setSuccess(true);
 

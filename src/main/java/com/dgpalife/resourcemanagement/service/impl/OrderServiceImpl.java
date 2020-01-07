@@ -125,4 +125,24 @@ public class OrderServiceImpl implements OrderService {
     public void refuseAuth(Long order_id, String comment) {
         orderMapper.refuseAuth(order_id,comment);
     }
+
+//    @Override
+//    public Order selectOrderByIdAndStatus(Long id, String Status) {
+//        Order order = orderMapper.queryOrderByIdAndStatus(id,Status);
+//        Department applyDepartment = departmentMapper.selectByPrimaryKey(order.getApplyDepartmentId());
+//        User user = userMapper.selectByPrimaryKey(order.getProposerId());
+//        Project project = projectMapper.selectByPrimaryKey(order.getProjectId());
+//        List<ConstructDetail> constructDetailList = constructDetailMapper.selectByOrderID(order.getId());
+//        for(ConstructDetail constructDetail: constructDetailList){
+//            constructDetail.setUsedepartment(departmentMapper.selectByPrimaryKey(constructDetail.getUsedepartment_id()));
+//            constructDetail.setExpense(expenseMapper.selectByPrimaryKey(constructDetail.getExpenseId()));
+//            constructDetail.setWorkplace(workplaceMapper.selectByPrimaryKey(constructDetail.getWorkplaceId()));
+//            constructDetail.setNetworkRoom(networkRoomMapper.selectByPrimaryKey(constructDetail.getNetworkRoomId()));
+//        }
+//        order.setApplyDepartment(applyDepartment);
+//        order.setProposer(user);
+//        order.setProject(project);
+//        order.setConstructDetailList(constructDetailList);
+//        return order;
+//    }
 }
