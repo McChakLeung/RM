@@ -141,7 +141,12 @@
 								</div>
 								<br>
 								<!--<button type="button" class="btn btn-default" id="backStep">上一步</button>-->
-								<button type="button" class="btn btn-primary" id="auditBtn">提交审核</button>
+								<span th:if="${order?.status=='待提交'}">
+									<button type="button" class="btn btn-primary" id="auditBtn">提交审核</button>
+								</span>
+								<span th:if="${order?.status!='待提交'}">
+									<button type="button" class="btn btn-primary" id="auditBtn" disabled>提交审核</button>
+								</span>
 							</div>
 						</div>
 						<!-- END BASIC TABLE -->

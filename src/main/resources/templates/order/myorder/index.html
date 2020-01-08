@@ -248,11 +248,22 @@
                         content+='  <td>'+n.proposer_name+'</td>';
                         content+='  <td>'+n.project_name+'</td>';
                         content+='  <td>'+n.create_time+'</td>';
-                        content+='  <td>';
-                        content+='	  <button type="button" class="btn btn-success btn-xs" onclick="toDetail('+n.id+')">明细</button>';
-                        content+='	  <button type="button" class="btn btn-primary btn-xs" onclick="toUpdate('+n.id+')">更新</button>';
-                        content+='	  <button type="button" class="btn btn-danger btn-xs" onclick="doDelete('+n.id+')">删除</button>';
-                        content+='  </td>';
+
+                        if(n.order_status == '待提交'){
+
+                            content+='  <td>';
+                            content+='	  <button type="button" class="btn btn-success btn-xs" onclick="toDetail('+n.id+')">明细</button>';
+                            content+='	  <button type="button" class="btn btn-primary btn-xs" onclick="toUpdate('+n.id+')">更新</button>';
+                            content+='	  <button type="button" class="btn btn-danger btn-xs" onclick="doDelete('+n.id+')">删除</button>';
+                            content+='  </td>';
+                        }else{
+                            content+='  <td>';
+                            content+='	  <button type="button" class="btn btn-success btn-xs" onclick="toDetail('+n.id+')">明细</button>';
+                            content+='	  <button type="button" class="btn btn-primary btn-xs" onclick="toUpdate('+n.id+')" disabled>更新</button>';
+                            content+='	  <button type="button" class="btn btn-danger btn-xs" onclick="doDelete('+n.id+')" disabled>删除</button>';
+                            content+='  </td>';
+						}
+
                         content+='</tr>';
                     });
                     $("tbody").html(content);
