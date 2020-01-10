@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/order/myorder")
+@RequestMapping("/order")
 public class OrderController {
 
     @Autowired
@@ -49,14 +49,14 @@ public class OrderController {
     @Autowired
     private RoleService roleService;
 
-    @RequestMapping("/toIndex")
+    @RequestMapping("/myorder/toIndex")
     public String toIndex(){
         return "/order/myorder/index";
     }
 
 
     @ResponseBody
-    @RequestMapping("/index")
+    @RequestMapping("/myorder/index")
     public Object index(@RequestParam(value = "pageno",required = false,defaultValue = "1") Integer pageno,
                         @RequestParam(value = "pagesize",required = false,defaultValue = "10") Integer pagesize,
                         @RequestParam(value = "order_type",required = false) String order_type,
@@ -97,13 +97,13 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping("/toSelectOrderType")
+    @RequestMapping("/myorder/toSelectOrderType")
     public String toSelectOrderType(){
 
         return "/order/myorder/orderType";
     }
 
-    @RequestMapping("/dispatchCreateOrderPage/{order_type}")
+    @RequestMapping("/myorder/dispatchCreateOrderPage/{order_type}")
     public String dispatchCreateOrderPage(@PathVariable String order_type){
 //        if(StringUtil.isEmpty(order_type)){
 //            return "redirect:/order/myorder/toSelectOrderType";
@@ -122,7 +122,7 @@ public class OrderController {
      * 跳转至建设工单基本信息页面
      * @return
      */
-    @RequestMapping("/construction/toOrderInfo")
+    @RequestMapping("/myorder/construction/toOrderInfo")
     public String toOrderInfo(){
         return "/order/myorder/construction/orderInfo";
     }
@@ -134,7 +134,7 @@ public class OrderController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/construction/saveTemporaryConstructionOrder")
+    @RequestMapping("/myorder/construction/saveTemporaryConstructionOrder")
     public Object saveTemporaryConstructionOrder(@RequestBody Order order, HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
@@ -148,7 +148,7 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping("/construction/toConstructionDetail")
+    @RequestMapping("/myorder/construction/toConstructionDetail")
     public String toConstructionDetail(){
         return "/order/myorder/construction/orderDetail";
     }
@@ -159,7 +159,7 @@ public class OrderController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/construction/saveTemporaryConstructionDetailList")
+    @RequestMapping("/myorder/construction/saveTemporaryConstructionDetailList")
     public Object saveTemporaryConstructionDetailList(@RequestBody List<ConstructDetail> constructDetailList, HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
@@ -173,13 +173,13 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping("/construction/toPreviewOrder")
+    @RequestMapping("/myorder/construction/toPreviewOrder")
     public String toPreviewOrder(){
         return "/order/myorder/construction/previewOrder";
     }
 
     @ResponseBody
-    @RequestMapping("/construction/doAddConstructionOrder")
+    @RequestMapping("/myorder/construction/doAddConstructionOrder")
     public Object doAddConstructionOrder(HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
@@ -228,7 +228,7 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping("/toDetail/{id}")
+    @RequestMapping("/myorder/toDetail/{id}")
     public String toDetail(@PathVariable Long id,Model model){
         Order order = orderService.selectOrderById(id);
         model.addAttribute("order",order);
@@ -249,7 +249,7 @@ public class OrderController {
 
 
     @ResponseBody
-    @RequestMapping("/doAuditOrder/{id}")
+    @RequestMapping("/myorder/doAuditOrder/{id}")
     public Object doAuditOrder(@PathVariable Long id, HttpSession session){
 
         Ticket ticket = new Ticket();
@@ -309,6 +309,39 @@ public class OrderController {
         return result;
     }
 
+
+    @RequestMapping("/preHandleOrder/toPreHandleOrderIndex")
+    public String toPreHandleOrderIndex(){
+        return "/order/pre_handle_order/index";
+    }
+
+    @ResponseBody
+    @RequestMapping("/preHandleOrder/PreHandleOrderIndex")
+    public Object PreAuditOrderIndex(@RequestParam(value = "pageno",required = false,defaultValue = "1") Integer pageno,
+                        @RequestParam(value = "pagesize",required = false,defaultValue = "10") Integer pagesize,
+                        @RequestParam(value = "order_type",required = false) String order_type,
+                        @RequestParam(value = "apply_department_id",required = false) Integer apply_department_id){
+
+        AjaxResult result = new AjaxResult();
+
+        try{
+
+            Map<String,Object> params = new HashMap<>();
+            params.put("pageno",pageno);
+            params.put("pagesize",pagesize);
+            params.put("order_type",order_type);
+            params.put("apply_department_id",apply_department_id);
+
+            Page<Object> page = orderService.selectOrderListByUserId(params);
+            result.setPage(page);
+            result.setSuccess(true);
+        }catch (Exception e){
+            result.setSuccess(false);
+            result.setMessage("查询异常，请联系管理员处理");
+            e.printStackTrace();
+        }
+        return result;
+    }
 
 //    @RequestMapping("/test")
 //    public String test(User user){

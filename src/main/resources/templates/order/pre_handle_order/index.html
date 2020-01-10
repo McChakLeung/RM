@@ -74,7 +74,7 @@
 											<label class="col-md-3">筛选条件：</label>
 										</div>
 										<div class="form-group">
-											<label for="Status" class="col-md-2 control-label">工单类型：</label>
+											<label for="OrderType" class="col-md-2 control-label">工单类型：</label>
 											<div class="col-md-3">
 												<select class="form-control" id="OrderType" name="OrderType">
 													<option value="">请选择</option>
@@ -83,45 +83,11 @@
 													<option value="维护工单">维护工单</option>
 												</select>
 											</div>
-											<label for="Status" class="col-md-2 control-label">工单状态：</label>
-											<div class="col-md-3">
-												<select class="form-control" id="Status" name="Status">
-													<option value="">请选择</option>
-													<option value="待审核">待审核</option>
-													<option value="待提交">待提交</option>
-													<option value="审核通过">审核通过</option>
-													<option value="退回修改">审核拒绝</option>
-												</select>
-											</div>
-										</div>
-										<div class="form-group">
 											<label for="fapply_department" class="col-md-2 control-label">职能部门|营业区</label>
 											<div class="col-md-3">
 												<input type="text" class="form-control" id="fapply_department" placeholder="请选择职能部门或营业区" apply_department_id="" onclick="doLoadApplyDepartment()">
 											</div>
-											<label for="fproject" class="col-md-2 control-label">所属项目：</label>
-											<div class="col-md-3">
-												<input type="text" class="form-control" id="fproject" placeholder="请选择所属项目" project_id="">
-											</div>
-											<!--<label for="fapply_usedepartment" class="col-md-2 control-label">科室|外勤部门</label>-->
-											<!--<div class="col-md-3">-->
-												<!--<input type="text" class="form-control" id="fapply_usedepartment" placeholder="请选择科室|外勤部门" apply_usedepartment_id="" onclick="doloadApplyUseDepartment()">-->
-											<!--</div>-->
-
-											<!--<div class="col-md-3">-->
-												<!--&lt;!&ndash;<select class="form-control" id="parentDept" name="parentDept">&ndash;&gt;-->
-													<!--&lt;!&ndash;<option value="">请选择</option>&ndash;&gt;-->
-													<!--&lt;!&ndash;&lt;!&ndash;<option th:each="parentDept:${resultMap.departmentList}" th:value="${parentDept.DeptNo}" th:text="${parentDept.DeptName}">请选择</option>&ndash;&gt;&ndash;&gt;-->
-												<!--&lt;!&ndash;</select>&ndash;&gt;-->
-											<!--</div>-->
-											<!--<label for="deptNo" class="col-md-2 control-label">科室|外勤部门：</label>-->
-											<!--<div class="col-md-3">-->
-												<!--<select class="form-control" id="deptNo" name="deptNo">-->
-													<!--<option value="">请选择</option>-->
-												<!--</select>-->
-											<!--</div>-->
 										</div>
-
 										<div class="form-group">
 											<div class="col-sm-offset-2 col-sm-10">
 												<button type="button" id="selectOption" class="btn btn-primary" >筛选</button>
@@ -131,9 +97,7 @@
 
 									</form>
 									<hr>
-									<div style="float:right; padding-bottom: 10px" >
-										<button type="button" id="addBtn" class="btn btn-primary" ><i class="glyphicon glyphicon-plus"></i>新增工单</button>
-									</div>
+
 									<table class="table table-bordered table-hover">
 										<thead>
 											<tr class="success">
@@ -193,21 +157,12 @@
 	<!-- END WRAPPER -->
 <script type="text/javascript">
 
-	//var user_id = [[${session.user.id}]];
-	$("#addBtn").click(function () {
-        window.location.href = '[[@{|/order/myorder/toSelectOrderType/|}]]'
-    })
-
 	$(function () {
         queryOrderByUser(1);
     })
 
 	function toDetail(id) {
 		window.location.href = '[[@{|/order/myorder/toDetail/|}]]' + id;
-    }
-
-    function toUpdate(id) {
-		window.location.href = '[[@{|/order/myorder/toUpdate/|}]]' + id;
     }
 
 	//查询用户当前用户,并发送异步请求
@@ -223,7 +178,7 @@
         jsonObj.pageno = pageno;
         $.ajax({
             type:"post",
-            url:"[[@{|/order/myorder/index|}]]",
+            url:"[[@{|/order/preHandleOrder/PreHandleOrderIndex|}]]",
             data:jsonObj,
             dataType: "json",
             beforeSend:function () {
@@ -248,22 +203,9 @@
                         content+='  <td>'+n.proposer_name+'</td>';
                         content+='  <td>'+n.project_name+'</td>';
                         content+='  <td>'+n.create_time+'</td>';
-
-                        if(n.order_status == '待提交'){
-
-                            content+='  <td>';
-                            content+='	  <button type="button" class="btn btn-success btn-xs" onclick="toDetail('+n.id+')">明细</button>';
-                            content+='	  <button type="button" class="btn btn-primary btn-xs" onclick="toUpdate('+n.id+')">更新</button>';
-                            content+='	  <button type="button" class="btn btn-danger btn-xs" onclick="doDelete('+n.id+')">删除</button>';
-                            content+='  </td>';
-                        }else{
-                            content+='  <td>';
-                            content+='	  <button type="button" class="btn btn-success btn-xs" onclick="toDetail('+n.id+')">明细</button>';
-                            content+='	  <button type="button" class="btn btn-primary btn-xs" onclick="toUpdate('+n.id+')" disabled>更新</button>';
-                            content+='	  <button type="button" class="btn btn-danger btn-xs" onclick="doDelete('+n.id+')" disabled>删除</button>';
-                            content+='  </td>';
-						}
-
+						content+='  <td>';
+						content+='	  <button type="button" class="btn btn-success btn-xs" onclick="toDetail('+n.id+')">明细</button>';
+						content+='  </td>';
                         content+='</tr>';
                     });
                     $("tbody").html(content);
@@ -295,31 +237,6 @@
                 }
             }
         })
-    }
-
-    //级联删除职场及机房数据
-    function doDelete(id) {
-        layer.confirm("该工单下的装机信息也将一并删除，确定要删除该工单吗？",  {icon: 3, title:'提示'}, function(cindex){
-            layer.close(cindex);
-            $.ajax({
-                type:"post",
-                url:"[[@{|/order/myorder/doDelete|}]]",
-                data:{
-                    "id":id
-                },
-                success:function (result) {
-                    if(result.success){
-                        window.location.href='[[@{|/order/myorder/toIndex|}]]';
-                    }else{
-                        layer.msg(result.message,{time:2000, icon:5, shift:5});
-                    }
-                }
-
-            });
-
-        }, function(cindex){
-            layer.close(cindex);
-        });
     }
 
 
