@@ -13,12 +13,13 @@
     <result column="project_id" jdbcType="BIGINT" property="projectId" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="approval_opinion" jdbcType="LONGVARCHAR" property="approval_opinion" />
+    <result column="isFinish" jdbcType="BOOLEAN" property="isFinish" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.dgpalife.resourcemanagement.model.Order">
     <result column="reason" jdbcType="LONGVARCHAR" property="reason" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, type, status, title, apply_department_id, proposer_id, project_id,create_time,reason,approval_opinion
+    id, type, status, title, apply_department_id, proposer_id, project_id,create_time,reason,approval_opinion,isFinish
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
     select 
@@ -35,13 +36,15 @@
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Order" useGeneratedKeys="true" keyProperty="id">
     insert into t_order (type, status,
       title, apply_department_id,
-      proposer_id, project_id,create_time, reason,approval_opinion
+      proposer_id, project_id,create_time,
+      reason,approval_opinion,isFinish
       )
     values (#{type,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
       #{title,jdbcType=VARCHAR},#{applyDepartmentId,jdbcType=BIGINT},
       #{proposerId,jdbcType=BIGINT},#{projectId,jdbcType=BIGINT},
       #{createTime,jdbcType=VARCHAR}, #{reason,jdbcType=LONGVARCHAR},
-      #{approval_opinion,jdbcType=LONGVARCHAR}
+      #{approval_opinion,jdbcType=LONGVARCHAR},
+      #{isFinish,jdbcType=BOOLEAN}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Order" useGeneratedKeys="true" keyProperty="id">
@@ -78,7 +81,10 @@
         reason,
       </if>
       <if test="approval_opinion != null">
-        approval_opinion
+        approval_opinion,
+      </if>
+      <if test="isFinish != null">
+        isFinish
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -113,7 +119,10 @@
         #{reason,jdbcType=LONGVARCHAR},
       </if>
       <if test="approval_opinion != null">
-        #{approval_opinion,jdbcType=LONGVARCHAR}
+        #{approval_opinion,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="isFinish != null">
+        #{isFinish,jdbcType=BOOLEAN}
       </if>
     </trim>
   </insert>
@@ -148,7 +157,10 @@
         reason = #{reason,jdbcType=LONGVARCHAR},
       </if>
       <if test="approval_opinion != null">
-      approval_opinion = #{approval_opinion,jdbcType=LONGVARCHAR}
+        approval_opinion = #{approval_opinion,jdbcType=LONGVARCHAR}
+      </if>
+      <if test="isFinish != null">
+        isFinish = #{isFinish,jdbcType=BOOLEAN}
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -164,7 +176,8 @@
       proposer_id = #{proposerId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=VARCHAR},
       reason = #{reason,jdbcType=LONGVARCHAR},
-      approval_opinion = #{approval_opinion,jdbcType=LONGVARCHAR}
+      approval_opinion = #{approval_opinion,jdbcType=LONGVARCHAR},
+      isFinish = #{isFinish,jdbcType=BOOLEAN}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.Order">
@@ -178,7 +191,8 @@
       proposer_id = #{proposerId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=VARCHAR},
       reason = #{reason,jdbcType=LONGVARCHAR},
-      approval_opinion = #{approval_opinion,jdbcType=LONGVARCHAR}
+      approval_opinion = #{approval_opinion,jdbcType=LONGVARCHAR},
+      isFinish = #{isFinish,jdbcType=BOOLEAN}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -286,4 +300,31 @@
     <!--FROM t_order-->
     <!--WHERE id = #{id} AND status = #{Status}-->
   <!--</select>-->
+
+  <select id="selectPreHandleOrder" resultType="map">
+    SELECT t1.id id, t1.type order_type,t1.status order_status,title,
+    t2.department_name apply_department_name,
+    --     t3.department_name apply_usedepartment_name,
+    t4.username proposer_name, project_name,
+    t1.create_time create_time
+    FROM  t_order t1
+    LEFT JOIN t_department t2 ON t1.apply_department_id = t2.id
+    --     LEFT JOIN t_department t3 ON t1.apply_usedepartment_id = t3.id
+    LEFT JOIN t_user t4 ON t1.proposer_id = t4.id
+    LEFT JOIN t_project t5 ON t1.project_id = t5.id
+    <where>
+      t1.isFinish = 0
+      <if test="order_type != null">
+        AND t1.type = #{order_type}
+      </if>
+      <if test="status != null">
+        AND t1.status = #{status}
+      </if>
+      <if test="apply_department_id != null">
+        AND t1.apply_department_id = #{apply_department_id}
+      </if>
+    </where>
+    ORDER BY t1.create_time DESC
+    limit #{startline}, #{pagesize}
+  </select>
 </mapper>

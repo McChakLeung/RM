@@ -10,5 +10,6 @@ public class Const {
     public static final String MIGRATION = "迁移工单";
     public static final String REMOVEMENT = "拆机工单";
     public static final String CHANGE_ITEM = "资源维护工单";
-    //public static final String AUDIT_STATUS = "待审核";
+    public static final String AUDIT_SUCCESS = "审批通过";
+
 }

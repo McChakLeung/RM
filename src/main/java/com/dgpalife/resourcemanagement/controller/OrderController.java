@@ -332,7 +332,7 @@ public class OrderController {
             params.put("order_type",order_type);
             params.put("apply_department_id",apply_department_id);
 
-            Page<Object> page = orderService.selectOrderListByUserId(params);
+            Page<Object> page = orderService.selectPreHandleOrder(params);
             result.setPage(page);
             result.setSuccess(true);
         }catch (Exception e){

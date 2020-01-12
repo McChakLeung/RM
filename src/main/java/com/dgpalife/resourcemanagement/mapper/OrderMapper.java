@@ -37,5 +37,7 @@ public interface OrderMapper {
 
     void refuseAuth(@Param("order_id") Long order_id, @Param("comment") String comment);
 
+    List<Map<String,Object>> selectPreHandleOrder(Map<String, Object> params);
+
     //Order queryOrderByIdAndStatus(Long id, String Status);
 }

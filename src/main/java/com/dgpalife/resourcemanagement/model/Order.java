@@ -37,6 +37,16 @@ public class Order {
 
     private String approval_opinion;
 
+    private Boolean isFinish = false;
+
+    public Boolean getFinish() {
+        return isFinish;
+    }
+
+    public void setFinish(Boolean finish) {
+        isFinish = finish;
+    }
+
     public String getApproval_opinion() {
         return approval_opinion;
     }

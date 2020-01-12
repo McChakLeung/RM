@@ -25,5 +25,7 @@ public interface OrderService {
 
     void refuseAuth(Long order_id, String comment);
 
+    Page<Object> selectPreHandleOrder(Map<String, Object> params);
+
     //Order selectOrderByIdAndStatus(Long id, String Status);
 }

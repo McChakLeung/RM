@@ -1,5 +1,6 @@
 package com.dgpalife.resourcemanagement.service.impl;
 
+import com.dgpalife.resourcemanagement.common.Const;
 import com.dgpalife.resourcemanagement.common.Page;
 import com.dgpalife.resourcemanagement.mapper.*;
 import com.dgpalife.resourcemanagement.model.*;
@@ -124,6 +125,22 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void refuseAuth(Long order_id, String comment) {
         orderMapper.refuseAuth(order_id,comment);
+    }
+
+    @Override
+    public Page<Object> selectPreHandleOrder(Map<String, Object> params) {
+        Page<Object> page = new Page<>((Integer) params.get("pageno"),(Integer)params.get("pagesize"));
+        //查询项目列表数据
+        params.put("startline",page.getStartline());
+        params.put("status", Const.AUDIT_SUCCESS);
+        List<Map<String,Object>> datas = orderMapper.selectPreHandleOrder(params);
+        page.setDatalist(datas);
+
+        //查询项目总数
+        Integer totalsize = datas.size();
+        //将查询结果存放到公共的Page类中
+        page.setTotalsize(totalsize);
+        return page;
     }
 
 //    @Override
