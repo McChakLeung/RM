@@ -343,6 +343,25 @@ public class OrderController {
         return result;
     }
 
+    @RequestMapping("/preHandleOrder/toPreHandleOrderDetail/{id}")
+    public String toPreHandleOrderDetail(@PathVariable Long id,Model model){
+        Order order = orderService.selectOrderById(id);
+        model.addAttribute("order",order);
+
+        if(Const.CONSTRUCTION.equals(order.getType())){
+            return "/order/pre_handle_order/construction/construction_detail";
+        }else if (Const.MIGRATION.equals(order.getType())){
+            return "/order/pre_handle_order/construction/migration_detail";
+        }else if(Const.REMOVEMENT.equals(order.getType())){
+            return "/order/pre_handle_order/construction/removement_detail";
+        }else if(Const.CHANGE_ITEM.equals(order.getType())){
+            return "/order/pre_handle_order/construction/change_item_detail";
+        }
+
+        return "/error";
+
+    }
+
 //    @RequestMapping("/test")
 //    public String test(User user){
 //        actUserEntityService.findById(user.getId().toString());
