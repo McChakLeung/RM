@@ -64,7 +64,7 @@
 									<h2>建设工单转资源处理</h2>
 								</div>
 								<br>
-
+								<hr>
 								<form role="form" style="margin-top:20px;" class="form-horizontal">
 									<div class="form-group">
 										<label for="ftitle" class="col-sm-2 control-label">标题：</label>
@@ -148,32 +148,25 @@
 								<hr>
 								<br>
 								<ul class="nav nav-tabs" role="tablist">
-									<li role="presentation" class="active"><a><span class="badge">1</span> 资源基本信息填写</a></li>
+									<li role="presentation" class="active"><a><span class="badge">1</span> 资源信息填写</a></li>
 									<li role="presentation"><a><span class="badge">2</span> 资源预览及确认</a></li>
 								</ul>
 								<form class="form-horizontal" style="margin-top:20px;margin-bottom: 20px" id="form">
 									<div class="form-group">
-										<label for="fusedepartment" class="col-md-2 control-label">使用科室|外勤部门<span style="color:red">* </span></label>
+										<label for="fresource_no" class="col-md-2 control-label">资源号码<span style="color:red">* </span></label>
 										<div class="col-md-4">
-											<input type="text" class="form-control" id="fusedepartment" name="usedepartment.departmentName" placeholder="请选择科室|外勤部门" usedepartment_id="" onclick="doloadUseDepartment()">
+											<input type="text" class="form-control" id="fresource_no" name="" >
 										</div>
-										<label for="fusedepartment_type" class="col-md-2 control-label">部门类型</label>
-										<div class="col-md-4">
-											<select class="form-control" id="fusedepartment_type" name="usedepartment_type">
-												<option>内勤</option>
-												<option>外勤</option>
-											</select>
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="col-md-2 control-label">运营商</label>
+										<label class="col-md-2 control-label">运营商<span style="color:red">* </span></label>
 										<div class="col-md-4">
 											<select class="form-control" id="foperator" name="operator">
 												<option>电信</option>
 												<option>联通</option>
 											</select>
 										</div>
-										<label class="col-md-2 control-label">资源类型</label>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">资源类型<span style="color:red">* </span>	</label>
 										<div class="col-md-4">
 											<select class="form-control" id="fresourceType" name="resourceType">
 												<option>电话</option>
@@ -181,51 +174,45 @@
 												<option>专线</option>
 											</select>
 										</div>
-									</div>
-									<div class="form-group">
-										<label class="col-md-2 control-label">装机数量<span style="color:red">* </span></label>
-										<div class="col-md-4">
-											<input type="number" class="form-control" id="fnumber" name="number">
-										</div>
-										<label class="col-md-2 control-label">资费<span style="color:red">* </span>	</label>
+										<label class="col-md-2 control-label">资费<span style="color:red">* </span></label>
 										<div class="col-md-4">
 											<input type="number" class="form-control" id="fprice" name="expense.price" expense_id="">
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">所在职场<span style="color:red">* </span></label>
-										<div class="col-md-4">
+										<div class="col-md-10">
 											<input type="text" class="form-control" id="fworkplace" name="workplace.workplaceName" placeholder="请选择所在职场" workplace_id="">
 										</div>
+									</div>
+									<div class="form-group">
 										<label class="col-md-2 control-label">机房<span style="color:red">* </span></label>
 										<div class="col-md-4">
-											<input type="text" class="form-control" id="fnetworkRoom" name="networkRoom.networkroom_name" placeholder="请选择所在职场" networkroom_id="">
+											<input type="text" class="form-control" id="fnetworkRoom" name="networkRoom.networkroom_name" placeholder="请选择所在机房" networkroom_id="">
+										</div>
+										<label for="fequipment_port" class="col-md-2 control-label">设备端口<span style="color:red">* </span></label>
+										<div class="col-md-4">
+											<input type="text" class="form-control" id="fequipment_port" name="equipment_port" >
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="fdepartment" class="col-md-2 control-label">挂账部门<span style="color:red">* </span></label>
+										<div class="col-md-4">
+											<input type="text" class="form-control" id="fdepartment" name="department.departmentName" placeholder="请选择挂账部门" department_id="" onclick="doloadDepartment()">
+										</div>
+										<label for="fusedepartment" class="col-md-2 control-label">使用科室|外勤部门<span style="color:red">* </span></label>
+										<div class="col-md-4">
+											<input type="text" class="form-control" id="fusedepartment" name="usedepartment.departmentName" placeholder="请选择科室|外勤部门" usedepartment_id="" onclick="doloadUseDepartment()">
+										</div>
+
+									</div>
+									<div class="form-group">
+										<label for="fuser" class="col-md-2 control-label">使用人<span style="color:red">* </span></label>
+										<div class="col-md-4">
+											<input type="text" class="form-control" id="fuser" name="user" >
 										</div>
 									</div>
 
-									<!--<div class="form-group">-->
-									<!--<label class="col-sm-2 control-label">pdf模板</label>-->
-									<!--<div class="col-sm-10">-->
-									<!--<select class="form-control" style="width:100px;display:inline" id="ftemplateType" name="template.templateType">-->
-									<!--<option>电话</option>-->
-									<!--<option>宽带</option>-->
-									<!--<option>专线</option>-->
-									<!--</select>-->
-									<!--<select class="form-control" style="width:260px;display:inline" id="ftemplateUseage" name="template.templateUseage">-->
-									<!--<option>新装</option>-->
-									<!--<option>迁移</option>-->
-									<!--<option>拆机</option>-->
-									<!--</select>-->
-									<!--<select class="form-control" style="width:260px;display:inline" id="ftemplateName" name="template.templateName">-->
-									<!--<option>模板1</option>-->
-									<!--<option>模板2</option>-->
-									<!--<option>模板3</option>-->
-									<!--</select>-->
-									<!--</div>-->
-									<!--</div>-->
-									<!--<div class="form-group">-->
-									<!--<input type="hidden" name="user.username" th:value="${session.user.username}">-->
-									<!--</div>-->
 									<div class="form-group">
 										<label class="col-sm-2 control-label"></label>
 										<div class="col-sm-10">
@@ -239,14 +226,15 @@
 										<thead>
 										<tr class="success">
 											<td>序号</td>
-											<td>使用科室|外勤部门</td>
-											<td>部门类型</td>
+											<td>资源号码</td>
 											<td>运营商</td>
 											<td>资源类型</td>
-											<td>装机数量</td>
 											<td>资费</td>
 											<td>所在职场</td>
 											<td>机房</td>
+											<td>设备端口</td>
+											<td>使用科室|外勤部门</td>
+											<td>使用人</td>
 											<td>操作</td>
 										</tr>
 										</thead>
@@ -270,6 +258,28 @@
 		<!-- END MAIN CONTENT -->
 	</div>
 		<!-- END MAIN -->
+	<div id="department_layer" style="display: none;">
+		<div id="departmentTree" class="ztree"></div>
+	</div>
+	<div style="padding: 1% 1%;display: none" id="workplace_layer">
+		搜索职场：
+		<div class="layui-inline">
+			<input class="layui-input" name="workplaceName" id="demoReload" placeholder="请输入职场名称" autocomplete="off">
+		</div>
+		<button class="layui-btn" data-type="reload" id="search">搜索</button>
+		<table class="layui-table"  id="fworkplace_table" lay-filter="workplace"></table>
+	</div>
+	<div style="padding: 1% 1%;display: none" id="networkroom_layer">
+		<table class="layui-table"  id="fnetworkroom_table" lay-filter="networkroom"></table>
+	</div>
+	<div style="padding: 1% 1%;display: none" id="expense_layer">
+		<!--搜索职场：-->
+		<!--<div class="layui-inline">-->
+		<!--<input class="layui-input" name="workplaceName" id="demoReload" placeholder="请输入职场名称" autocomplete="off">-->
+		<!--</div>-->
+		<!--<button class="layui-btn" data-type="reload" id="search">搜索</button>-->
+		<table class="layui-table"  id="fexpense_table" lay-filter="expense"></table>
+	</div>
 	<div class="clearfix"></div>
 	<div id="footer" th:include="/commons/footer :: footerContext"></div>
 

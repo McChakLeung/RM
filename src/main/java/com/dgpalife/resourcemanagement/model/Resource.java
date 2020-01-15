@@ -13,6 +13,12 @@ public class Resource {
 
     private Long departmentId;
 
+    private Department department;
+
+    private Long usedepartmentId;
+
+    private Department usedepartment;
+
     private Long userId;
 
     private Long equipmentPortId;
@@ -22,6 +28,50 @@ public class Resource {
     private String createTime;
 
     private Long creatorId;
+
+    private Long workplaceId;
+
+    private Workplace workplace;
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public Long getUsedepartmentId() {
+        return usedepartmentId;
+    }
+
+    public void setUsedepartmentId(Long usedepartmentId) {
+        this.usedepartmentId = usedepartmentId;
+    }
+
+    public Department getUsedepartment() {
+        return usedepartment;
+    }
+
+    public void setUsedepartment(Department usedepartment) {
+        this.usedepartment = usedepartment;
+    }
+
+    public Long getWorkplaceId() {
+        return workplaceId;
+    }
+
+    public void setWorkplaceId(Long workplaceId) {
+        this.workplaceId = workplaceId;
+    }
+
+    public Workplace getWorkplace() {
+        return workplace;
+    }
+
+    public void setWorkplace(Workplace workplace) {
+        this.workplace = workplace;
+    }
 
     public Long getId() {
         return id;

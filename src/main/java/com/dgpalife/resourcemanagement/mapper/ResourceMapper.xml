@@ -8,15 +8,17 @@
     <result column="operator" jdbcType="VARCHAR" property="operator" />
     <result column="network_room_id" jdbcType="BIGINT" property="networkRoomId" />
     <result column="department_id" jdbcType="BIGINT" property="departmentId" />
+    <result column="usedepartment_id" jdbcType="BIGINT" property="usedepartmentId" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="equipment_port_id" jdbcType="BIGINT" property="equipmentPortId" />
     <result column="expense_id" jdbcType="BIGINT" property="expenseId" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
+    <result column="workplace_id" jdbcType="BIGINT" property="workplaceId" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, resource_no, resourc_type, operator, network_room_id, department_id, user_id, 
-    equipment_port_id, expense_id, create_time, creator_id
+    id, resource_no, resourc_type, operator, network_room_id, department_id, usedepartment_id, user_id,
+    equipment_port_id, expense_id, create_time, creator_id, workplace_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -30,13 +32,13 @@
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Resource">
     insert into t_resource (id, resource_no, resourc_type, 
-      operator, network_room_id, department_id, 
+      operator, network_room_id, department_id, usedepartment_id,
       user_id, equipment_port_id, expense_id, 
-      create_time, creator_id)
+      create_time, creator_id,workplace_id)
     values (#{id,jdbcType=BIGINT}, #{resourceNo,jdbcType=VARCHAR}, #{resourcType,jdbcType=VARCHAR}, 
-      #{operator,jdbcType=VARCHAR}, #{networkRoomId,jdbcType=BIGINT}, #{departmentId,jdbcType=BIGINT}, 
+      #{operator,jdbcType=VARCHAR}, #{networkRoomId,jdbcType=BIGINT}, #{departmentId,jdbcType=BIGINT}, #{usedepartmentId,jdbcType=BIGINT},
       #{userId,jdbcType=BIGINT}, #{equipmentPortId,jdbcType=BIGINT}, #{expenseId,jdbcType=BIGINT}, 
-      #{createTime,jdbcType=VARCHAR}, #{creatorId,jdbcType=BIGINT})
+      #{createTime,jdbcType=VARCHAR}, #{creatorId,jdbcType=BIGINT},#{workplaceId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Resource">
     insert into t_resource
@@ -59,6 +61,9 @@
       <if test="departmentId != null">
         department_id,
       </if>
+      <if test="usedepartmentId != null">
+        usedepartment_id,
+      </if>
       <if test="userId != null">
         user_id,
       </if>
@@ -73,6 +78,9 @@
       </if>
       <if test="creatorId != null">
         creator_id,
+      </if>
+      <if test="workplaceId != null">
+        workplace_id
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -94,6 +102,9 @@
       <if test="departmentId != null">
         #{departmentId,jdbcType=BIGINT},
       </if>
+      <if test="usedepartmentId != null">
+        #{usedepartmentId,jdbcType=BIGINT},
+      </if>
       <if test="userId != null">
         #{userId,jdbcType=BIGINT},
       </if>
@@ -108,6 +119,9 @@
       </if>
       <if test="creatorId != null">
         #{creatorId,jdbcType=BIGINT},
+      </if>
+      <if test="workplaceId != null">
+        #{workplaceId,jdbcType=BIGINT}
       </if>
     </trim>
   </insert>
@@ -129,6 +143,9 @@
       <if test="departmentId != null">
         department_id = #{departmentId,jdbcType=BIGINT},
       </if>
+      <if test="usedepartmentId != null">
+        usedepartment_id = #{usedepartmentId,jdbcType=BIGINT},
+      </if>
       <if test="userId != null">
         user_id = #{userId,jdbcType=BIGINT},
       </if>
@@ -144,6 +161,9 @@
       <if test="creatorId != null">
         creator_id = #{creatorId,jdbcType=BIGINT},
       </if>
+      <if test="workplaceId != null">
+        workplace_id = #{workplaceId,jdbcType=BIGINT}
+    </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -154,11 +174,13 @@
       operator = #{operator,jdbcType=VARCHAR},
       network_room_id = #{networkRoomId,jdbcType=BIGINT},
       department_id = #{departmentId,jdbcType=BIGINT},
+      usedepartment_id = #{usedepartmentId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT},
       equipment_port_id = #{equipmentPortId,jdbcType=BIGINT},
       expense_id = #{expenseId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=VARCHAR},
-      creator_id = #{creatorId,jdbcType=BIGINT}
+      creator_id = #{creatorId,jdbcType=BIGINT},
+      workplace_id = #{workplaceId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
