@@ -75,9 +75,9 @@
 									</div>
 
 									<div class="form-group">
-										<label for="fapply_department" class="col-sm-2 control-label">申请职能部门：</label>
+										<label for="apply_department" class="col-sm-2 control-label">申请职能部门：</label>
 										<div class="col-sm-10">
-											<span id="fapply_department" class="form-control" th:text="${order?.applyDepartment?.departmentName}" apply_department_id="" onclick="doLoadApplyDepartment()"></span>
+											<span id="apply_department" class="form-control" th:text="${order?.applyDepartment?.departmentName}" ></span>
 										</div>
 
 										<!--<input type="text" class="form-control" id="fapply_department" placeholder="请选择职能部门或营业区" apply_department_id="" onclick="doLoadApplyDepartment()">-->
@@ -196,9 +196,9 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="fdepartment" class="col-md-2 control-label">挂账部门<span style="color:red">* </span></label>
+										<label for="fapply_department" class="col-md-2 control-label">挂账部门<span style="color:red">* </span></label>
 										<div class="col-md-4">
-											<input type="text" class="form-control" id="fdepartment" name="department.departmentName" placeholder="请选择挂账部门" department_id="" onclick="doLoadApplyDepartment()">
+											<input type="text" class="form-control" id="fapply_department" name="applyDepartment.departmentName" placeholder="请选择挂账部门" apply_department_id="" onclick="doLoadApplyDepartment()">
 										</div>
 										<label for="fusedepartment" class="col-md-2 control-label">使用科室|外勤部门<span style="color:red">* </span></label>
 										<div class="col-md-4">
@@ -529,7 +529,7 @@
         $.getJSON(url,function(result){
             if(result.success){
                 zTree = $.fn.zTree.init($("#departmentTree"), setting, result.datas);
-                zTree.expandAll(false)
+                zTree.expandAll(true)
             }else{
                 layer.msg(result.message, {time:1000, icon:5, shift:6});
             }
@@ -572,7 +572,7 @@
     //异步加载职能部门下的部门节点
     function doloadUseDepartment(){
         $("#departmentTree").empty();
-        var apply_department_id = [[${session.order.applyDepartment.id}]]
+        var apply_department_id = [[${order?.applyDepartment?.id}]]
         console.log(apply_department_id)
         var url = [[@{|/setting/department/doloadUseDepartment/|}]] + apply_department_id;
         $.getJSON(url,function(result){
