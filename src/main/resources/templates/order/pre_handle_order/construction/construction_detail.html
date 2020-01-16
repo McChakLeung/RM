@@ -77,7 +77,7 @@
 									<div class="form-group">
 										<label for="fapply_department" class="col-sm-2 control-label">申请职能部门：</label>
 										<div class="col-sm-10">
-											<span id="fapply_department" class="form-control" th:text="${order?.applyDepartment?.departmentName}"></span>
+											<span id="fapply_department" class="form-control" th:text="${order?.applyDepartment?.departmentName}" apply_department_id="" onclick="doLoadApplyDepartment()"></span>
 										</div>
 
 										<!--<input type="text" class="form-control" id="fapply_department" placeholder="请选择职能部门或营业区" apply_department_id="" onclick="doLoadApplyDepartment()">-->
@@ -198,7 +198,7 @@
 									<div class="form-group">
 										<label for="fdepartment" class="col-md-2 control-label">挂账部门<span style="color:red">* </span></label>
 										<div class="col-md-4">
-											<input type="text" class="form-control" id="fdepartment" name="department.departmentName" placeholder="请选择挂账部门" department_id="" onclick="doloadDepartment()">
+											<input type="text" class="form-control" id="fdepartment" name="department.departmentName" placeholder="请选择挂账部门" department_id="" onclick="doLoadApplyDepartment()">
 										</div>
 										<label for="fusedepartment" class="col-md-2 control-label">使用科室|外勤部门<span style="color:red">* </span></label>
 										<div class="col-md-4">
@@ -285,26 +285,346 @@
 
 	<!-- END WRAPPER -->
 </div>
-<script type="text/javascript">
+<script type="text/javascript"  th:inline="javascript">
 
-    $("#auditBtn").click(function () {
-        var id = $("#fid").val()
-        layer.confirm("确定要提交审核此工单吗？",  {icon: 3, title:'提示'}, function(cindex){
-            var url = "[[@{|/order/myorder/doAuditOrder/|}]]" +id;
-            $.getJSON(url,function(result){
-                if(result.success){
-                    layer.msg("以提交审核", {time:1000, icon:0, shift:6});
-                    window.location.href="[[@{|/order/myorder/toIndex|}]]"
-                }else{
-                    layer.msg(result.message, {time:1000, icon:5, shift:6});
-                }
-            });
-            layer.close(cindex);
-        }, function(cindex){
-            layer.close(cindex);
-        });
+    //资费单击选择事件
+    //注意！！！！！！ 动态表格不能放置在form表单中，否则使用里面的单击事件会有问题
+    $("#fprice").click(function () {
+
+        var id, price = null;
+
+        //单击触发layer弹出层
+        layer.open({
+            title:"选择资费",
+            area: ['600px', '400px'],
+            type:1,
+            // content:"[[@{|/openQuery|}]]",
+            content:$('#expense_layer'),
+            btn:['选择','取消'],
+            success:function (layero, index) {
+                layui.use('table',function () {
+                    var table = layui.table;
+
+                    //自动渲染数据表格
+                    table.render({
+                        // elem: layer.getChildFrame("#ftable", index)
+                        elem: '#fexpense_table'
+                        ,url:[[@{|/setting/expense/showExpenseTable|}]]  //该url必须要返回符合layui要求的前端格式的json数据
+                ,cols: [
+                        [
+                            {type:'radio'}
+                            ,{field: 'id', title: 'ID',width:80}
+                            ,{field: 'expenseType', title: '资费类别',width:120}
+                            ,{field: 'price', title: '金额'}
+                            ,{field: 'chargeFrequency', title: '缴费频率'}
+                        ]
+                    ]
+                        ,page:false
+                        ,id: 'expense'
+                });
+
+                    //获取选中的层
+                    table.on('row(expense)',function (obj) {
+                        id = obj.data.id;
+                        price = obj.data.price;
+                    })
+                })
+
+
+            },
+            yes:function (layero, index) {
+                $("#fprice").attr("expense_id",id);
+                $("#fprice").val(price);
+                layer.close(layero)
+            },
+            btn2:function (layero, index) {
+                layer.close(layero)
+            }
+        })
 
     })
+
+    //职场单击选择事件
+    //注意！！！！！！ 动态表格不能放置在form表单中，否则使用里面的单击事件会有问题
+    //职场单击选择事件
+    $("#fworkplace").click(function () {
+
+        var id, workplaceName = null;
+
+        //单击触发layer弹出层
+        layer.open({
+            title:"所在职场",
+            area: ['800px', '600px'],
+            type:1,
+            // content:"[[@{|/openQuery|}]]",
+            content:$('#workplace_layer'),
+            btn:['选择','取消'],
+            success:function (layero, index) {
+                layui.use('table',function () {
+                    var table = layui.table;
+
+                    //自动渲染数据表格
+                    table.render({
+                        // elem: layer.getChildFrame("#ftable", index)
+                        elem: '#fworkplace_table'
+                        ,url:[[@{|/setting/workplace/showTable|}]]  //该url必须要返回符合layui要求的前端格式的json数据
+                ,cols: [
+                        [
+                            {type:'radio'}
+                            ,{field: 'id', title: 'ID',width:80}
+                            ,{field: 'workplaceName', title: '职场名称',width:120}
+                            ,{field: 'address', title: '职场地址'}
+                            ,{field: 'district', title: '所在区域',width:120}
+                        ]
+                    ]
+                        ,page:true
+                        ,id: 'workplace'
+                });
+
+                    //搜索功能实现
+                    $('#search').on('click',function () {
+                        // var type = $(this).data('type');
+                        // active[type] ? active[type].call(this) : '';
+                        var demoReload = $('#demoReload');
+                        table.reload('workplace',{
+                            url:[[@{|/setting/workplace/showTable|}]]
+                    ,page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    ,where: {
+                            queryText: demoReload.val()
+                        }
+                    })
+                    });
+
+                    //获取选中的层
+                    table.on('row(workplace)',function (obj) {
+                        id = obj.data.id;
+                        workplaceName = obj.data.workplaceName;
+                    })
+                })
+
+
+            },
+            yes:function (layero, index) {
+                $("#fworkplace").attr("workplace_id",id);
+                $("#fworkplace").val(workplaceName);
+                layer.close(layero)
+            },
+            btn2:function (layero, index) {
+                layer.close(layero)
+            }
+        })
+
+    })
+
+    // //机房单击选择事件
+    // //注意！！！！！！ 动态表格不能放置在form表单中，否则使用里面的单击事件会有问题
+    $("#fnetworkRoom").click(function () {
+
+        var id, networkroom_name = null;
+        var workplace_id = $("#fworkplace").attr("workplace_id");
+
+        //单击触发layer弹出层
+        layer.open({
+            title:"所在机房",
+            area: ['600px', '400px'],
+            type:1,
+            // content:"[[@{|/openQuery|}]]",
+            content:$('#networkroom_layer'),
+            btn:['选择','取消'],
+            success:function (layero, index) {
+                layui.use('table',function () {
+                    var table = layui.table;
+
+                    //自动渲染数据表格
+                    table.render({
+                        // elem: layer.getChildFrame("#ftable", index)
+                        elem: '#fnetworkroom_table'
+                        ,url:[[@{|/setting/workplace/showNetworkroomTable|}]]  //该url必须要返回符合layui要求的前端格式的json数据
+                ,cols: [
+                        [
+                            {type:'radio'}
+                            ,{field: 'id', title: 'ID',width:80}
+                            ,{field: 'networkroom_name', title: '机房名称',width:120}
+                            ,{field: 'floor', title: '机房楼层'}
+                        ]
+                    ]
+                        ,page:false
+                        ,id: 'networkroom'
+                        ,where:{
+                        workplace_id: workplace_id
+                    }
+                });
+
+                    //搜索功能实现
+                    // $('#search').on('click',function () {
+                    //     // var type = $(this).data('type');
+                    //     // active[type] ? active[type].call(this) : '';
+                    //     var demoReload = $('#demoReload');
+                    //     table.reload('workplace',{
+                    //         url:[[@{|/setting/workplace/showTable|}]]
+                    // ,page: {
+                    //         curr: 1 //重新从第 1 页开始
+                    //     }
+                    // ,where: {
+                    //         queryText: demoReload.val()
+                    //     }
+                    // })
+                    // });
+
+                    //获取选中的层
+                    table.on('row(networkroom)',function (obj) {
+                        id = obj.data.id;
+                        networkroom_name = obj.data.networkroom_name;
+                    })
+                })
+
+
+            },
+            yes:function (layero, index) {
+                $("#fnetworkRoom").attr("networkroom_id",id);
+                $("#fnetworkRoom").val(networkroom_name);
+                layer.close(layero)
+            },
+            btn2:function (layero, index) {
+                layer.close(layero)
+            }
+        })
+
+    })
+
+    //查询用户当前用户,并发送异步请求
+    var loadingIndex = -1;
+
+    //ztree配置数据
+    var zTree;
+
+    var setting = {
+
+        //如果后台传入的数据的字段与ztree的节点名不一致，必须要在setting中data的key中指定后台对应的名称
+        //比如这里的departmentName，否则会显示undefined
+        data:{
+            key:{
+                name:"departmentName"
+            }
+        },
+        view: {
+            // selectedMulti: false,
+            addDiyDom: function(treeId, treeNode){
+                var aObj = $("#" + treeNode.tId + "_a"); // tId = permissionTree_1, ==> $("#permissionTree_1_a")
+                aObj.attr("href", "javascript:;");
+                var icoObj = $("#" + treeNode.tId + "_ico"); // tId = permissionTree_1, $("#permissionTree_1_ico")
+                if ( treeNode.icon ) {
+                    icoObj.removeClass("button ico_docu ico_open").addClass(treeNode.icon).css("background","");
+                }
+            },
+        },
+    }
+
+
+    //异步加载所有部门节点
+    function doLoadApplyDepartment() {
+        var url = [[@{|/setting/department/loadData|}]];
+        $.getJSON(url,function(result){
+            if(result.success){
+                zTree = $.fn.zTree.init($("#departmentTree"), setting, result.datas);
+                zTree.expandAll(false)
+            }else{
+                layer.msg(result.message, {time:1000, icon:5, shift:6});
+            }
+        });
+
+        layer.open({
+            title: "职能部门查询",
+            area: ['600px', '400px'],
+            type: 1,
+            content: $('#department_layer'),
+            btn: ['选择', '取消'],
+
+            yes: function (layero, index) {
+                doSetSelectedNode("fapply_department","apply_department_id")
+                layer.close(layero)
+            },
+
+            btn2: function (layero, index) {
+                layer.close(layero)
+            }
+
+        })
+    }
+
+
+    function doSetSelectedNode(department,tid){
+
+        // 1.获得选中的的节点对象
+        // getSelectedNodes是zTree中的一个函数,返回值是一个数组        
+        var selectedNodes = zTree.getSelectedNodes();
+        // 2.获得具体的节点(node)对象
+        var node=selectedNodes[0];
+        // 3.通过node节点数据更新页面内容
+        $("#"+department).attr(tid, node.id);
+        $("#"+department).val(node.departmentName);
+        // 4.关闭弹框
+        //layer.close(index)
+    }
+
+    //异步加载职能部门下的部门节点
+    function doloadUseDepartment(){
+        $("#departmentTree").empty();
+        var apply_department_id = [[${session.order.applyDepartment.id}]]
+        console.log(apply_department_id)
+        var url = [[@{|/setting/department/doloadUseDepartment/|}]] + apply_department_id;
+        $.getJSON(url,function(result){
+            if(result.success){
+                zTree = $.fn.zTree.init($("#departmentTree"), setting, result.datas);
+                zTree.expandAll(true)
+            }else{
+                layer.msg(result.message, {time:1000, icon:5, shift:6});
+            }
+        });
+
+        layer.open({
+            title: "科室|外勤部门查询",
+            area: ['600px', '400px'],
+            type: 1,
+            content: $('#department_layer'),
+            btn: ['选择', '取消'],
+
+            yes: function (layero, index) {
+                doSetSelectedNode("fusedepartment","usedepartment_id")
+                layer.close(layero)
+            },
+
+            btn2: function (layero, index) {
+                layer.close(layero)
+            }
+
+        })
+    }
+
+
+    // $("#auditBtn").click(function () {
+    //     var id = $("#fid").val()
+    //     layer.confirm("确定要提交审核此工单吗？",  {icon: 3, title:'提示'}, function(cindex){
+    //         var url = [[@{|/order/myorder/doAuditOrder/|}]] +id;
+    //         $.getJSON(url,function(result){
+    //             if(result.success){
+    //                 layer.msg("以提交审核", {time:1000, icon:0, shift:6});
+    //                 window.location.href= [[@{|/order/myorder/toIndex|}]]
+    //             }else{
+    //                 layer.msg(result.message, {time:1000, icon:5, shift:6});
+    //             }
+    //         });
+    //         layer.close(cindex);
+    //     }, function(cindex){
+    //         layer.close(cindex);
+    //     });
+    //
+    // })
+    //
+
+
 
 </script>
 </body>
