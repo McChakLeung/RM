@@ -19,9 +19,11 @@ public class Resource {
 
     private Department usedepartment;
 
-    private Long userId;
+    private String username;
 
     private Long equipmentPortId;
+
+    private Expense expense;
 
     private Long expenseId;
 
@@ -32,6 +34,22 @@ public class Resource {
     private Long workplaceId;
 
     private Workplace workplace;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Expense getExpense() {
+        return expense;
+    }
+
+    public void setExpense(Expense expense) {
+        this.expense = expense;
+    }
 
     public Department getDepartment() {
         return department;
@@ -119,14 +137,6 @@ public class Resource {
 
     public void setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Long getEquipmentPortId() {

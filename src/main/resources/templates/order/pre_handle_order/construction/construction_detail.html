@@ -155,7 +155,7 @@
 									<div class="form-group">
 										<label for="fresource_no" class="col-md-2 control-label">资源号码<span style="color:red">* </span></label>
 										<div class="col-md-4">
-											<input type="text" class="form-control" id="fresource_no" name="" >
+											<input type="text" class="form-control" id="fresource_no" name="resourceNo" >
 										</div>
 										<label class="col-md-2 control-label">运营商<span style="color:red">* </span></label>
 										<div class="col-md-4">
@@ -181,24 +181,28 @@
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">所在职场<span style="color:red">* </span></label>
-										<div class="col-md-10">
+										<div class="col-md-4">
 											<input type="text" class="form-control" id="fworkplace" name="workplace.workplaceName" placeholder="请选择所在职场" workplace_id="">
 										</div>
-									</div>
-									<div class="form-group">
 										<label class="col-md-2 control-label">机房<span style="color:red">* </span></label>
 										<div class="col-md-4">
 											<input type="text" class="form-control" id="fnetworkRoom" name="networkRoom.networkroom_name" placeholder="请选择所在机房" networkroom_id="">
 										</div>
-										<label for="fequipment_port" class="col-md-2 control-label">设备端口<span style="color:red">* </span></label>
-										<div class="col-md-4">
-											<input type="text" class="form-control" id="fequipment_port" name="equipment_port" >
-										</div>
 									</div>
+									<!--<div class="form-group">-->
+										<!--<label class="col-md-2 control-label">机房<span style="color:red">* </span></label>-->
+										<!--<div class="col-md-4">-->
+											<!--<input type="text" class="form-control" id="fnetworkRoom" name="networkRoom.networkroom_name" placeholder="请选择所在机房" networkroom_id="">-->
+										<!--</div>-->
+										<!--<label for="fequipment_port" class="col-md-2 control-label">设备端口<span style="color:red">* </span></label>-->
+										<!--<div class="col-md-4">-->
+											<!--<input type="text" class="form-control" id="fequipment_port" name="equipment_port" >-->
+										<!--</div>-->
+									<!--</div>-->
 									<div class="form-group">
 										<label for="fapply_department" class="col-md-2 control-label">挂账部门<span style="color:red">* </span></label>
 										<div class="col-md-4">
-											<input type="text" class="form-control" id="fapply_department" name="applyDepartment.departmentName" placeholder="请选择挂账部门" apply_department_id="" onclick="doLoadApplyDepartment()">
+											<input type="text" class="form-control" id="fapply_department" name="department.departmentName" placeholder="请选择挂账部门" apply_department_id="" onclick="doLoadApplyDepartment()">
 										</div>
 										<label for="fusedepartment" class="col-md-2 control-label">使用科室|外勤部门<span style="color:red">* </span></label>
 										<div class="col-md-4">
@@ -207,9 +211,9 @@
 
 									</div>
 									<div class="form-group">
-										<label for="fuser" class="col-md-2 control-label">使用人<span style="color:red">* </span></label>
+										<label for="fusername" class="col-md-2 control-label">使用人<span style="color:red">* </span></label>
 										<div class="col-md-4">
-											<input type="text" class="form-control" id="fuser" name="user" >
+											<input type="text" class="form-control" id="fusername" name="username" >
 										</div>
 									</div>
 
@@ -232,7 +236,7 @@
 											<td>资费</td>
 											<td>所在职场</td>
 											<td>机房</td>
-											<td>设备端口</td>
+											<td>挂账部门</td>
 											<td>使用科室|外勤部门</td>
 											<td>使用人</td>
 											<td>操作</td>
@@ -286,6 +290,161 @@
 	<!-- END WRAPPER -->
 </div>
 <script type="text/javascript"  th:inline="javascript">
+
+    var loadingIndex = -1;
+
+    var resourceDetailList = new Array();
+
+    $("#addBtn").click(function () {
+        //判断必选项是否为空
+        if($.trim($("#fresource_no").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("资源号码不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fresource_no").val("");
+                $("#fresource_no").focus();
+            })
+            return false
+        }
+
+        if($.trim($("#fprice").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("资费不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fprice").val("");
+                $("#fprice").attr("expense_id","");
+                $("#fprice").focus();
+            })
+            return false
+        }
+
+        if($.trim($("#fworkplace").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("所在职场不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fworkplace").val("");
+                $("#fworkplace").attr("workplace_id","");
+                $("#fworkplace").focus();
+            })
+            return false
+        }
+
+        if($.trim($("#fnetworkRoom").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("机房不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fnetworkRoom").val("");
+                $("#fnetworkRoom").attr("networkroom_id","");
+                $("#fnetworkRoom").focus();
+            })
+            return false
+        }
+
+        if($.trim($("#fapply_department").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("挂账部门不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fapply_department").val("");
+                $("#fapply_department").attr("apply_department_id","");
+                $("#fapply_department").focus();
+            })
+            return false
+        }
+
+        if($.trim($("#fusedepartment").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("使用科室|外勤部门不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fusedepartment").val("");
+                $("#fusedepartment").attr("usedepartment_id","");
+                $("#fusedepartment").focus();
+            })
+            return false
+        }
+
+        if($.trim($("#fusername").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("使用人不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fusername").val("");
+                $("#fusername").focus();
+            })
+            return false
+        }
+
+        var dataArray = {};
+        var formData = $("#form").serializeArray();
+        $.each(formData,function(){
+            //var name = this.name;
+            var value = this.value;
+            //分割name属性，并返回一个数组
+            var paths = this.name.split(".");
+            //返回数组的长度
+            var len = paths.length;
+            var obj = dataArray;
+            $.each(paths,function(i,e){
+                //判断当前的遍历的数据是否有二级数组；i == len-1 为true说明是二级数组，false说明为一级数组
+                if(i == len-1){
+                    //判断该数组是否存在当前遍历的属性
+                    if (obj[e]) {
+                        //push()方法的返回值是把指定的值添加到数组后的新长度，
+                        // "!"是一个布尔操作符，用于将操作的值强制转换为布尔值并取反,
+                        // 即!obj[e].push的值为false
+                        if (!obj[e].push) {
+                            obj[e] = [obj[e]];
+                        }
+                        obj[e].push(value || '');
+                    } else {
+                        obj[e] = value || '';
+                    }
+                }else{
+                    //如一级数组不为空，则将值设置为{}
+                    if(!obj[e]){
+                        obj[e] = {};
+                    }
+                }
+                obj = dataArray[e];
+            });
+
+        });
+
+        dataArray["expense"]["id"] = $("#fprice").attr("expense_id");
+        dataArray["expenseId"] = $("#fprice").attr("expense_id");
+        dataArray["workplace"]["id"] = $("#fworkplace").attr("workplace_id");
+        dataArray["workplaceId"] = $("#fworkplace").attr("workplace_id");
+        dataArray["networkRoom"]["id"] = $("#fnetworkRoom").attr("networkroom_id");
+        dataArray["networkRoomId"] = $("#fnetworkRoom").attr("networkroom_id");
+        dataArray["department"]["id"] = $("#fapply_department").attr("apply_department_id");
+        dataArray["department"] = $("#fapply_department").attr("apply_department_id");
+        dataArray["usedepartment"]["id"] = $("#fusedepartment").attr("usedepartment_id");
+        dataArray["usedepartment_id"] = $("#fusedepartment").attr("usedepartment_id");
+
+
+        console.log(dataArray)
+        resourceDetailList.push(dataArray);
+        showDetail(resourceDetailList);
+    })
+
+    function showDetail(resourceDetailList) {
+
+        var content = '';
+
+        $.each(resourceDetailList,function(i,n){
+            content+='<tr>';
+            content+='  <td>'+(i+1)+'</td>';
+            content+='  <td>'+n.resourceNo+'</td>';
+            content+='  <td>'+n.resourcType+'</td>';
+            content+='  <td>'+n.operator+'</td>';
+            content+='  <td>'+n.expense.price+'</td>';
+            content+='  <td>'+n.workplace.workplaceName + '</td>';
+            content+='  <td>'+n.networkRoom.networkroom_name+'</td>';
+            content+='  <td>'+n.department.departmentName+'</td>';
+            content+='  <td>'+n.usedepartment.departmentName+'</td>';
+            content+='  <td>'+n.username+'</td>';
+            content+='  <td>';
+            content+='	  <button type="button" onclick="deleteBtn('+i+')" class="btn btn-danger btn-xs delteBtn" value="aaa"><i class=" glyphicon glyphicon-remove"></i></button>';
+            content+='  </td>';
+            content+='</tr>';
+
+
+        });
+        $("tbody").html(content);
+
+    }
+
 
     //资费单击选择事件
     //注意！！！！！！ 动态表格不能放置在form表单中，否则使用里面的单击事件会有问题
