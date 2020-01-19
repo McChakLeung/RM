@@ -173,6 +173,12 @@ public class OrderController {
         return result;
     }
 
+
+    @RequestMapping("/myorder/construction/toEquipment")
+    public String toEquipment(){
+        return "/order/myorder/construction/orderEquipmentInfo";
+    }
+
     @RequestMapping("/myorder/construction/toPreviewOrder")
     public String toPreviewOrder(){
         return "/order/myorder/construction/previewOrder";
