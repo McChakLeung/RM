@@ -1,5 +1,7 @@
 package com.dgpalife.resourcemanagement.model;
 
+import java.util.List;
+
 public class Resource {
     private Long id;
 
@@ -34,6 +36,16 @@ public class Resource {
     private Long workplaceId;
 
     private Workplace workplace;
+
+    private List<Order> orderList;
+
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
+    }
 
     public String getUsername() {
         return username;

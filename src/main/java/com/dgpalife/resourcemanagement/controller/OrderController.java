@@ -364,24 +364,26 @@ public class OrderController {
 
     /**
      * 将建设工单临时放置在session中存放
-     * @param order
+     * @param resourceList
      * @param session
      * @return
      */
     @ResponseBody
-    @RequestMapping("/preHandleOrder/construction/saveTemporaryResourceList")
-    public Object saveTemporaryResourceList(@RequestBody Resource resource, HttpSession session){
+    @RequestMapping("/preHandleOrder/construction/saveResourceList")
+    public Object saveResourceList(@RequestBody List<Resource> resourceList, HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
-            session.setAttribute("resource",resource);
+            //session.setAttribute("resource",resource);
             result.setSuccess(true);
         }catch (Exception e){
             e.printStackTrace();
             result.setSuccess(false);
-            result.setMessage("跳转异常，请联系管理员解决");
+            result.setMessage("生成异常，请联系管理员解决");
         }
         return result;
     }
+
+
 
 //    @RequestMapping("/test")
 //    public String test(User user){
