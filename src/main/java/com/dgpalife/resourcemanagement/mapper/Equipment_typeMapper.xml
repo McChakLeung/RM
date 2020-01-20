@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dgpalife.resourcemanagement.mapper.Equipment_typeMapper">
+  <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.Equipment_type">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName" />
+    <result column="equipment_type" jdbcType="VARCHAR" property="equipmentType" />
+    <result column="equipment_portnum" jdbcType="INTEGER" property="equipmentPortnum" />
+    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, equipment_name, equipment_type, equipment_portnum, creator_id, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_equipment_type
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_equipment_type
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Equipment_type">
+    insert into t_equipment_type (id, equipment_name, equipment_type, 
+      equipment_portnum, creator_id, create_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{equipmentName,jdbcType=VARCHAR}, #{equipmentType,jdbcType=VARCHAR}, 
+      #{equipmentPortnum,jdbcType=INTEGER}, #{creatorId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Equipment_type">
+    insert into t_equipment_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="equipmentName != null">
+        equipment_name,
+      </if>
+      <if test="equipmentType != null">
+        equipment_type,
+      </if>
+      <if test="equipmentPortnum != null">
+        equipment_portnum,
+      </if>
+      <if test="creatorId != null">
+        creator_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="equipmentName != null">
+        #{equipmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentType != null">
+        #{equipmentType,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentPortnum != null">
+        #{equipmentPortnum,jdbcType=INTEGER},
+      </if>
+      <if test="creatorId != null">
+        #{creatorId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.Equipment_type">
+    update t_equipment_type
+    <set>
+      <if test="equipmentName != null">
+        equipment_name = #{equipmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentType != null">
+        equipment_type = #{equipmentType,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentPortnum != null">
+        equipment_portnum = #{equipmentPortnum,jdbcType=INTEGER},
+      </if>
+      <if test="creatorId != null">
+        creator_id = #{creatorId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.Equipment_type">
+    update t_equipment_type
+    set equipment_name = #{equipmentName,jdbcType=VARCHAR},
+      equipment_type = #{equipmentType,jdbcType=VARCHAR},
+      equipment_portnum = #{equipmentPortnum,jdbcType=INTEGER},
+      creator_id = #{creatorId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

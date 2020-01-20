@@ -9,7 +9,9 @@ public class EquipmentPurchaseRecord {
 
     private String accountCenter;
 
-    private String equipmentType;
+    private Long equipmentId;
+
+    private Equipment_type equipment_type;
 
     private Long projectId;
 
@@ -18,6 +20,22 @@ public class EquipmentPurchaseRecord {
     private Long creatorId;
 
     private String createTime;
+
+    public Long getEquipmentId() {
+        return equipmentId;
+    }
+
+    public void setEquipmentId(Long equipmentId) {
+        this.equipmentId = equipmentId;
+    }
+
+    public Equipment_type getEquipment_type() {
+        return equipment_type;
+    }
+
+    public void setEquipment_type(Equipment_type equipment_type) {
+        this.equipment_type = equipment_type;
+    }
 
     public Long getId() {
         return id;
@@ -49,14 +67,6 @@ public class EquipmentPurchaseRecord {
 
     public void setAccountCenter(String accountCenter) {
         this.accountCenter = accountCenter;
-    }
-
-    public String getEquipmentType() {
-        return equipmentType;
-    }
-
-    public void setEquipmentType(String equipmentType) {
-        this.equipmentType = equipmentType;
     }
 
     public Long getProjectId() {

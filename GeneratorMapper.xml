@@ -40,8 +40,8 @@
         </javaClientGenerator>
 
         <!-- 数据库表名及对应的Java模型类名 -->
-        <table tableName="t_ticket"
-               domainObjectName="Ticket"
+        <table tableName="t_equipment_type"
+               domainObjectName="Equipment_type"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
