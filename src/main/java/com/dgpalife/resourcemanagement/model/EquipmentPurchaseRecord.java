@@ -5,11 +5,13 @@ public class EquipmentPurchaseRecord {
 
     private Integer purchaseNum;
 
-    private Double expenseId;
+    private Long expenseId;
+
+    private Expense expense;
 
     private String accountCenter;
 
-    private Long equipmentId;
+    private Long equipment_type_id;
 
     private Equipment_type equipment_type;
 
@@ -21,12 +23,20 @@ public class EquipmentPurchaseRecord {
 
     private String createTime;
 
-    public Long getEquipmentId() {
-        return equipmentId;
+    public Expense getExpense() {
+        return expense;
     }
 
-    public void setEquipmentId(Long equipmentId) {
-        this.equipmentId = equipmentId;
+    public void setExpense(Expense expense) {
+        this.expense = expense;
+    }
+
+    public Long getEquipment_type_id() {
+        return equipment_type_id;
+    }
+
+    public void setEquipment_type_id(Long equipment_type_id) {
+        this.equipment_type_id = equipment_type_id;
     }
 
     public Equipment_type getEquipment_type() {
@@ -53,11 +63,11 @@ public class EquipmentPurchaseRecord {
         this.purchaseNum = purchaseNum;
     }
 
-    public Double getExpenseId() {
+    public Long getExpenseId() {
         return expenseId;
     }
 
-    public void setExpenseId(Double expenseId) {
+    public void setExpenseId(Long expenseId) {
         this.expenseId = expenseId;
     }
 

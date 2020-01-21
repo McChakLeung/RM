@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.EquipmentPurchaseRecord">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="purchase_num" jdbcType="INTEGER" property="purchaseNum" />
-    <result column="expense_id" jdbcType="DOUBLE" property="expenseId" />
+    <result column="expense_id" jdbcType="BIGINT" property="expenseId" />
     <result column="account_center" jdbcType="VARCHAR" property="accountCenter" />
     <result column="equipment_id" jdbcType="BIGINT" property="equipmentId" />
     <result column="project_id" jdbcType="BIGINT" property="projectId" />
@@ -31,7 +31,7 @@
       account_center, equipment_id, project_id,
       order_id, creator_id, create_time
       )
-    values (#{id,jdbcType=BIGINT}, #{purchaseNum,jdbcType=INTEGER}, #{expenseId,jdbcType=DOUBLE}, 
+    values (#{id,jdbcType=BIGINT}, #{purchaseNum,jdbcType=INTEGER}, #{expenseId,jdbcType=BIGINT},
       #{accountCenter,jdbcType=VARCHAR}, #{equipmentId,jdbcType=VARCHAR}, #{projectId,jdbcType=BIGINT},
       #{orderId,jdbcType=BIGINT}, #{creatorId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}
       )
@@ -75,7 +75,7 @@
         #{purchaseNum,jdbcType=INTEGER},
       </if>
       <if test="expenseId != null">
-        #{expenseId,jdbcType=DOUBLE},
+        #{expenseId,jdbcType=BIGINT},
       </if>
       <if test="accountCenter != null">
         #{accountCenter,jdbcType=VARCHAR},
@@ -104,7 +104,7 @@
         purchase_num = #{purchaseNum,jdbcType=INTEGER},
       </if>
       <if test="expenseId != null">
-        expense_id = #{expenseId,jdbcType=DOUBLE},
+        expense_id = #{expenseId,jdbcType=BIGINT},
       </if>
       <if test="accountCenter != null">
         account_center = #{accountCenter,jdbcType=VARCHAR},
@@ -130,7 +130,7 @@
   <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.EquipmentPurchaseRecord">
     update t_equipment_purchase_record
     set purchase_num = #{purchaseNum,jdbcType=INTEGER},
-      expense_id = #{expenseId,jdbcType=DOUBLE},
+      expense_id = #{expenseId,jdbcType=BIGINT},
       account_center = #{accountCenter,jdbcType=VARCHAR},
       equipment_id = #{equipmentId,jdbcType=VARCHAR},
       project_id = #{projectId,jdbcType=BIGINT},
