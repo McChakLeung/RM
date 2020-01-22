@@ -103,4 +103,23 @@
       create_time = #{createTime,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectCount" resultType="java.lang.Integer">
+    select count(id) from t_equipment_type
+    <where>
+      <if test="queryText!=null">
+        equipment_name like concat("%",#{queryText},"%")
+      </if>
+    </where>
+  </select>
+
+  <select id="queryEquipmentType" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" />
+    FROM t_equipment_type
+    <where>
+      <if test="queryText!=null">
+        equipment_name like concat("%",#{queryText},"%")
+      </if>
+    </where>
+  </select>
 </mapper>

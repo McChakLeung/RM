@@ -88,11 +88,11 @@
 								<form class="form-horizontal" style="margin-top:20px;margin-bottom: 20px" id="form">
 
 									<div class="form-group">
-										<label class="col-md-2 control-label">购买设备类型名称</label>
+										<label class="col-md-2 control-label">购买设备类型名称<span style="color:red">* </span></label>
 										<div class="col-md-4">
-											<input type="text" class="form-control" id="fequipmentName" name="equipment_type.equipmentName" equipment_type_id="">
+											<input type="text" class="form-control" id="fequipmentType" name="equipment_type.equipmentName" equipment_type_id="">
 										</div>
-										<label class="col-md-2 control-label">购买数量</label>
+										<label class="col-md-2 control-label">购买数量<span style="color:red">* </span></label>
 										<div class="col-md-4">
 											<input type="number" class="form-control" id="fpurchaseNum" name="purchaseNum">
 										</div>
@@ -174,6 +174,14 @@
 			<!--<button class="layui-btn" data-type="reload" id="search">搜索</button>-->
 			<table class="layui-table"  id="fexpense_table" lay-filter="expense"></table>
 		</div>
+		<div style="padding: 1% 1%;display: none" id="equipmentType_layer">
+			搜索设备类型名称：
+			<div class="layui-inline">
+				<input class="layui-input" name="equipmentType" id="equipmentType" placeholder="请输入设备类型名称" autocomplete="off">
+			</div>
+			<button class="layui-btn" data-type="reload" id="equipmentType_search">搜索</button>
+			<table class="layui-table"  id="fequipmentType_table" lay-filter="equipmentType"></table>
+		</div>
 	</div>
 	<!-- END MAIN -->
 	<div class="clearfix"></div>
@@ -183,14 +191,168 @@
 </div>
 <script type="text/javascript" th:inline="javascript">
 
-    // function displayPurchaseList() {
-		// var displayPurchaseList = $("#displayPurchaseList");
-		// if(displayPurchaseList.val() == "否"){
-		//     $("#form").hide();
-		// }else{
-    //         $("#form").show();
-		// }
-    // }
+    var loadingIndex = -1;
+
+    var EquipmnetPurchaseDetailList = new Array();
+
+    $("#addBtn").click(function () {
+        //判断必选项是否为空
+        if($.trim($("#fequipmentType").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("购买设备类型名称不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fequipmentType").val("");
+                $("#fequipmentType").attr("equipment_type_id","");
+                $("#fequipmentType").focus();
+            })
+            return false
+        }
+        if($.trim($("#fpurchaseNum").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("购买设备数量不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fpurchaseNum").val("");
+                $("#fpurchaseNum").focus();
+            })
+            return false
+        }
+
+        if($.trim($("#fprice").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("单价不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fprice").val("");
+                $("#fprice").attr("expense_id","");
+                $("#fprice").focus();
+            })
+            return false
+        }
+
+        if($.trim($("#fworkplace").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("所在职场不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fworkplace").val("");
+                $("#fworkplace").attr("workplace_id","");
+                $("#fworkplace").focus();
+            })
+            return false
+        }
+
+        if($.trim($("#fnetworkRoom").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("机房不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fnetworkRoom").val("");
+                $("#fnetworkRoom").attr("networkroom_id","");
+                $("#fnetworkRoom").focus();
+            })
+            return false
+        }
+
+        var dataArray = {};
+        var formData = $("#form").serializeArray();
+        $.each(formData,function(){
+            //var name = this.name;
+            var value = this.value;
+            //分割name属性，并返回一个数组
+            var paths = this.name.split(".");
+            //返回数组的长度
+            var len = paths.length;
+            var obj = dataArray;
+            $.each(paths,function(i,e){
+                //判断当前的遍历的数据是否有二级数组；i == len-1 为true说明是二级数组，false说明为一级数组
+                if(i == len-1){
+                    //判断该数组是否存在当前遍历的属性
+                    if (obj[e]) {
+                        //push()方法的返回值是把指定的值添加到数组后的新长度，
+                        // "!"是一个布尔操作符，用于将操作的值强制转换为布尔值并取反,
+                        // 即!obj[e].push的值为false
+                        if (!obj[e].push) {
+                            obj[e] = [obj[e]];
+                        }
+                        obj[e].push(value || '');
+                    } else {
+                        obj[e] = value || '';
+                    }
+                }else{
+                    //如一级数组不为空，则将值设置为{}
+                    if(!obj[e]){
+                        obj[e] = {};
+                    }
+                }
+                obj = dataArray[e];
+            });
+
+        });
+
+        dataArray["usedepartment"]["id"] = $("#fusedepartment").attr("usedepartment_id");
+        dataArray["usedepartment_id"] = $("#fusedepartment").attr("usedepartment_id");
+        dataArray["workplace"]["id"] = $("#fworkplace").attr("workplace_id");
+        dataArray["workplaceId"] = $("#fworkplace").attr("workplace_id");
+        dataArray["networkRoom"]["id"] = $("#fnetworkRoom").attr("networkroom_id");
+        dataArray["networkRoomId"] = $("#fnetworkRoom").attr("networkroom_id");
+        dataArray["expense"]["id"] = $("#fprice").attr("expense_id");
+        dataArray["expenseId"] = $("#fprice").attr("expense_id");
+        console.log(dataArray)
+        EquipmnetPurchaseDetailList.push(dataArray);
+        showDetail(EquipmnetPurchaseDetailList);
+    })
+
+    function showDetail(EquipmnetPurchaseDetailList) {
+
+        //order_detail_obj = [{operator:"电信",resourceType:"电话",number:"2",expense:"100",workplace:{address:"东莞市南城区石竹路广发金融大厦17楼"},networkRoom:{name:"机房1"},createtime:"2019-09-23",user:{username:"麦泽良"}}];
+        //console.log(order_detail_obj)
+        var content = '';
+        //console.log(constructDetailList)
+        $.each(EquipmnetPurchaseDetailList,function(i,n){
+            content+='<tr>';
+            content+='  <td>'+(i+1)+'</td>';
+            content+='  <td>'+n.usedepartment.departmentName+'</td>';
+            content+='  <td>'+n.usedepartment_type+'</td>';
+            content+='  <td>'+n.operator+'</td>';
+            content+='  <td>'+n.resourceType+'</td>';
+            content+='  <td>'+n.number+'</td>';
+            content+='  <td>'+n.expense.price+'</td>';
+            content+='  <td>'+n.workplace.workplaceName + '</td>';
+            content+='  <td>'+n.networkRoom.networkroom_name+'</td>';
+            content+='  <td>';
+            // content+='	  <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+            content+='	  <button type="button" onclick="deleteBtn('+i+')" class="btn btn-danger btn-xs delteBtn" value="aaa"><i class=" glyphicon glyphicon-remove"></i></button>';
+            content+='  </td>';
+            content+='</tr>';
+
+
+        });
+        $("tbody").html(content);
+
+    }
+
+    function deleteBtn(i) {
+        layer.confirm("确定要删除此行记录吗？" ,{icon: 3, title:'提示'}, function(cindex){
+            layer.close(cindex);
+            EquipmnetPurchaseDetailList.splice(i,1);
+            showDetail(EquipmnetPurchaseDetailList);
+        },function (cindex) {
+            layer.close(cindex);
+        })
+    }
+
+    $("#nextStep").click(function () {
+        $.ajax({
+            type:"post",
+            url:[[@{|/order/myorder/construction/saveTemporaryConstructionDetailList|}]],
+        	data:JSON.stringify(EquipmnetPurchaseDetailList),
+            dataType:"json",
+            contentType : "application/json;charset=utf-8",
+            beforeSend:function () {
+            	return true
+        	},
+        	success:function (result) {
+            	if(result.success){
+                	window.location.href= [[@{|/order/myorder/construction/toEquipment|}]];
+            	}else{
+                	layer.msg(result.message,{time:2000, icon:5, shift:5})
+            	}
+        	}
+    	})
+
+    })
 
 	$("#displayPurchaseList").change(function () {
 		var displayPurchaseList = $("#displayPurchaseList").val();
@@ -672,6 +834,78 @@
             yes:function (layero, index) {
                 $("#fprice").attr("expense_id",id);
                 $("#fprice").val(price);
+                layer.close(layero)
+            },
+            btn2:function (layero, index) {
+                layer.close(layero)
+            }
+        })
+
+    })
+
+
+    $("#fequipmentType").click(function () {
+
+        var id, equipmentName = null;
+
+        //单击触发layer弹出层
+        layer.open({
+            title:"设备类型",
+            area: ['800px', '600px'],
+            type:1,
+            // content:"[[@{|/openQuery|}]]",
+            content:$('#equipmentType_layer'),
+            btn:['选择','取消'],
+            success:function (layero, index) {
+                layui.use('table',function () {
+                    var table = layui.table;
+
+                    //自动渲染数据表格
+                    table.render({
+                        // elem: layer.getChildFrame("#ftable", index)
+                        elem: '#fequipmentType_table'
+                        ,url:[[@{|/setting/equipmentType/showTable|}]]  //该url必须要返回符合layui要求的前端格式的json数据
+                ,cols: [
+                        [
+                            {type:'radio'}
+                            ,{field: 'id', title: 'ID',width:80}
+                            ,{field: 'equipmentName', title: '设备名称',width:120}
+                            ,{field: 'equipmentType', title: '设备类型'}
+                            ,{field: 'equipmentPortnum', title: '设备端口数量',width:120}
+                        ]
+                    ]
+                        ,page:true
+                        ,id: 'equipmentType'
+                });
+
+                    //搜索功能实现
+                    $('#equipmentType_search').on('click',function () {
+                        // var type = $(this).data('type');
+                        // active[type] ? active[type].call(this) : '';
+                        var equipmentType = $('#equipmentType');
+                        table.reload('equipmentType',{
+                            url:[[@{|/setting/equipmentType/showTable|}]]
+                    ,page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    ,where: {
+                            queryText: equipmentType.val()
+                        }
+                    })
+                    });
+
+                    //获取选中的层
+                    table.on('row(equipmentType)',function (obj) {
+                        id = obj.data.id;
+                        equipmentName = obj.data.equipmentName;
+                    })
+                })
+
+
+            },
+            yes:function (layero, index) {
+                $("#fequipmentType").attr("equipment_type_id",id);
+                $("#fequipmentType").val(equipmentName);
                 layer.close(layero)
             },
             btn2:function (layero, index) {
