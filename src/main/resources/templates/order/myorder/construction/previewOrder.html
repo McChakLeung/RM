@@ -115,8 +115,11 @@
 										<!--<textarea  rows="3"  class="form-control" name="reason" id="freason"></textarea>-->
 									</div>
 								</form>
+								<br>
+								<h3>装机明细</h3>
+								<br>
 								<div>
-									<table id="detailList" class="table table-bordered" style="text-align:center;">
+									<table id="constructDetailList" class="table table-bordered" style="text-align:center;">
 										<thead>
 										<tr class="success">
 											<td>序号</td>
@@ -146,6 +149,30 @@
 									</table>
 								</div>
 								<br>
+								<h3>设备购买明细</h3>
+								<br>
+								<div>
+									<table id="equipmnetPurchaseDetailList" class="table table-bordered" style="text-align:center;">
+										<thead>
+										<tr class="success">
+											<td>序号</td>
+											<td>购买设备类型名称</td>
+											<td>购买数量</td>
+											<td>设备单价</td>
+											<td>列支成本中心</td>
+										</tr>
+										</thead>
+										<tbody >
+										<tr th:each="equipmnetPurchaseDetail:${session.equipmnetPurchaseDetailList}">
+											<td th:text="${equipmnetPurchaseDetailStat.count}">序号</td>
+											<td th:text="${equipmnetPurchaseDetail.equipment_type.equipmentName}">购买设备类型名称</td>
+											<td th:text="${equipmnetPurchaseDetail.purchaseNum}">购买数量</td>
+											<td th:text="${equipmnetPurchaseDetail.expense.price}">设备单价</td>
+											<td th:text="${equipmnetPurchaseDetail.accountCenter}">列支成本中心</td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
 								<!--<button type="button" class="btn btn-default" id="backStep">上一步</button>-->
 								<button type="button" class="btn btn-success" id="submitBtn">创建工单</button>
 							</div>

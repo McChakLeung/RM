@@ -104,7 +104,7 @@
 										</div>
 										<label class="col-md-2 control-label">列支成本中心<span style="color:red">* </span></label>
 										<div class="col-md-4">
-											<input type="text" class="form-control" id="fnumber" name="number">
+											<input type="text" class="form-control" id="faccountCenter" name="accountCenter">
 										</div>
 									</div>
 
@@ -121,14 +121,10 @@
 											<thead>
 											<tr class="success">
 												<td>序号</td>
-												<td>使用科室|外勤部门</td>
-												<td>部门类型</td>
-												<td>运营商</td>
-												<td>资源类型</td>
-												<td>装机数量</td>
-												<td>资费</td>
-												<td>所在职场</td>
-												<td>机房</td>
+												<td>购买设备类型名称</td>
+												<td>购买数量</td>
+												<td>设备单价</td>
+												<td>列支成本中心</td>
 												<td>操作</td>
 											</tr>
 											</thead>
@@ -217,7 +213,7 @@
 
         if($.trim($("#fprice").val()) == ""){
             // $("#fmessage").text("用户名不能为空，请重新输入");
-            layer.msg("单价不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+            layer.msg("设备单价不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
                 $("#fprice").val("");
                 $("#fprice").attr("expense_id","");
                 $("#fprice").focus();
@@ -225,22 +221,11 @@
             return false
         }
 
-        if($.trim($("#fworkplace").val()) == ""){
+        if($.trim($("#faccountCenter").val()) == ""){
             // $("#fmessage").text("用户名不能为空，请重新输入");
-            layer.msg("所在职场不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
-                $("#fworkplace").val("");
-                $("#fworkplace").attr("workplace_id","");
-                $("#fworkplace").focus();
-            })
-            return false
-        }
-
-        if($.trim($("#fnetworkRoom").val()) == ""){
-            // $("#fmessage").text("用户名不能为空，请重新输入");
-            layer.msg("机房不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
-                $("#fnetworkRoom").val("");
-                $("#fnetworkRoom").attr("networkroom_id","");
-                $("#fnetworkRoom").focus();
+            layer.msg("列支成本中心不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#faccountCenter").val("");
+                $("#faccountCenter").focus();
             })
             return false
         }
@@ -281,12 +266,8 @@
 
         });
 
-        dataArray["usedepartment"]["id"] = $("#fusedepartment").attr("usedepartment_id");
-        dataArray["usedepartment_id"] = $("#fusedepartment").attr("usedepartment_id");
-        dataArray["workplace"]["id"] = $("#fworkplace").attr("workplace_id");
-        dataArray["workplaceId"] = $("#fworkplace").attr("workplace_id");
-        dataArray["networkRoom"]["id"] = $("#fnetworkRoom").attr("networkroom_id");
-        dataArray["networkRoomId"] = $("#fnetworkRoom").attr("networkroom_id");
+        dataArray["equipment_type"]["id"] = $("#fequipment_type").attr("equipment_type_id");
+        dataArray["equipment_type_id"] = $("#fequipment_type").attr("equipment_type_id");
         dataArray["expense"]["id"] = $("#fprice").attr("expense_id");
         dataArray["expenseId"] = $("#fprice").attr("expense_id");
         console.log(dataArray)
@@ -303,14 +284,10 @@
         $.each(EquipmnetPurchaseDetailList,function(i,n){
             content+='<tr>';
             content+='  <td>'+(i+1)+'</td>';
-            content+='  <td>'+n.usedepartment.departmentName+'</td>';
-            content+='  <td>'+n.usedepartment_type+'</td>';
-            content+='  <td>'+n.operator+'</td>';
-            content+='  <td>'+n.resourceType+'</td>';
-            content+='  <td>'+n.number+'</td>';
+            content+='  <td>'+n.equipment_type.equipmentName+'</td>';
+            content+='  <td>'+n.purchaseNum+'</td>';
             content+='  <td>'+n.expense.price+'</td>';
-            content+='  <td>'+n.workplace.workplaceName + '</td>';
-            content+='  <td>'+n.networkRoom.networkroom_name+'</td>';
+            content+='  <td>'+n.accountCenter + '</td>';
             content+='  <td>';
             // content+='	  <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
             content+='	  <button type="button" onclick="deleteBtn('+i+')" class="btn btn-danger btn-xs delteBtn" value="aaa"><i class=" glyphicon glyphicon-remove"></i></button>';
@@ -336,7 +313,7 @@
     $("#nextStep").click(function () {
         $.ajax({
             type:"post",
-            url:[[@{|/order/myorder/construction/saveTemporaryConstructionDetailList|}]],
+            url:[[@{|/order/myorder/construction/saveTemporaryEquipmentPurchaseList|}]],
         	data:JSON.stringify(EquipmnetPurchaseDetailList),
             dataType:"json",
             contentType : "application/json;charset=utf-8",
@@ -345,7 +322,7 @@
         	},
         	success:function (result) {
             	if(result.success){
-                	window.location.href= [[@{|/order/myorder/construction/toEquipment|}]];
+                	window.location.href= [[@{|/order/myorder/construction/toPreviewOrder|}]];
             	}else{
                 	layer.msg(result.message,{time:2000, icon:5, shift:5})
             	}
@@ -363,169 +340,6 @@
 		}
 	})
 
-
-    var loadingIndex = -1;
-
-    var constructDetailList = new Array();
-
-    $("#addBtn").click(function () {
-        //判断必选项是否为空
-        if($.trim($("#fusedepartment").val()) == ""){
-            // $("#fmessage").text("用户名不能为空，请重新输入");
-            layer.msg("使用科室|外勤部门不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
-                $("#fusedepartment").val("");
-                $("#fusedepartment").attr("usedepartment_id","");
-                $("#fusedepartment").focus();
-            })
-            return false
-        }
-        if($.trim($("#fnumber").val()) == ""){
-            // $("#fmessage").text("用户名不能为空，请重新输入");
-            layer.msg("装机数量不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
-                $("#fnumber").val("");
-                $("#fnumber").focus();
-            })
-            return false
-        }
-
-        if($.trim($("#fprice").val()) == ""){
-            // $("#fmessage").text("用户名不能为空，请重新输入");
-            layer.msg("资费不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
-                $("#fprice").val("");
-                $("#fprice").attr("expense_id","");
-                $("#fprice").focus();
-            })
-            return false
-        }
-
-        if($.trim($("#fworkplace").val()) == ""){
-            // $("#fmessage").text("用户名不能为空，请重新输入");
-            layer.msg("所在职场不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
-                $("#fworkplace").val("");
-                $("#fworkplace").attr("workplace_id","");
-                $("#fworkplace").focus();
-            })
-            return false
-        }
-
-        if($.trim($("#fnetworkRoom").val()) == ""){
-            // $("#fmessage").text("用户名不能为空，请重新输入");
-            layer.msg("机房不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
-                $("#fnetworkRoom").val("");
-                $("#fnetworkRoom").attr("networkroom_id","");
-                $("#fnetworkRoom").focus();
-            })
-            return false
-        }
-
-        var dataArray = {};
-        var formData = $("#form").serializeArray();
-        $.each(formData,function(){
-            //var name = this.name;
-            var value = this.value;
-            //分割name属性，并返回一个数组
-            var paths = this.name.split(".");
-            //返回数组的长度
-            var len = paths.length;
-            var obj = dataArray;
-            $.each(paths,function(i,e){
-                //判断当前的遍历的数据是否有二级数组；i == len-1 为true说明是二级数组，false说明为一级数组
-                if(i == len-1){
-                    //判断该数组是否存在当前遍历的属性
-                    if (obj[e]) {
-                        //push()方法的返回值是把指定的值添加到数组后的新长度，
-                        // "!"是一个布尔操作符，用于将操作的值强制转换为布尔值并取反,
-                        // 即!obj[e].push的值为false
-                        if (!obj[e].push) {
-                            obj[e] = [obj[e]];
-                        }
-                        obj[e].push(value || '');
-                    } else {
-                        obj[e] = value || '';
-                    }
-                }else{
-                    //如一级数组不为空，则将值设置为{}
-                    if(!obj[e]){
-                        obj[e] = {};
-                    }
-                }
-                obj = dataArray[e];
-            });
-
-        });
-
-        dataArray["usedepartment"]["id"] = $("#fusedepartment").attr("usedepartment_id");
-        dataArray["usedepartment_id"] = $("#fusedepartment").attr("usedepartment_id");
-        dataArray["workplace"]["id"] = $("#fworkplace").attr("workplace_id");
-        dataArray["workplaceId"] = $("#fworkplace").attr("workplace_id");
-        dataArray["networkRoom"]["id"] = $("#fnetworkRoom").attr("networkroom_id");
-        dataArray["networkRoomId"] = $("#fnetworkRoom").attr("networkroom_id");
-        dataArray["expense"]["id"] = $("#fprice").attr("expense_id");
-        dataArray["expenseId"] = $("#fprice").attr("expense_id");
-        console.log(dataArray)
-        constructDetailList.push(dataArray);
-        showDetail(constructDetailList);
-    })
-
-    function showDetail(constructDetailList) {
-
-        //order_detail_obj = [{operator:"电信",resourceType:"电话",number:"2",expense:"100",workplace:{address:"东莞市南城区石竹路广发金融大厦17楼"},networkRoom:{name:"机房1"},createtime:"2019-09-23",user:{username:"麦泽良"}}];
-        //console.log(order_detail_obj)
-        var content = '';
-        //console.log(constructDetailList)
-        $.each(constructDetailList,function(i,n){
-            content+='<tr>';
-            content+='  <td>'+(i+1)+'</td>';
-            content+='  <td>'+n.usedepartment.departmentName+'</td>';
-            content+='  <td>'+n.usedepartment_type+'</td>';
-            content+='  <td>'+n.operator+'</td>';
-            content+='  <td>'+n.resourceType+'</td>';
-            content+='  <td>'+n.number+'</td>';
-            content+='  <td>'+n.expense.price+'</td>';
-            content+='  <td>'+n.workplace.workplaceName + '</td>';
-            content+='  <td>'+n.networkRoom.networkroom_name+'</td>';
-            content+='  <td>';
-            // content+='	  <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
-            content+='	  <button type="button" onclick="deleteBtn('+i+')" class="btn btn-danger btn-xs delteBtn" value="aaa"><i class=" glyphicon glyphicon-remove"></i></button>';
-            content+='  </td>';
-            content+='</tr>';
-
-
-        });
-        $("tbody").html(content);
-
-    }
-
-    function deleteBtn(i) {
-        layer.confirm("确定要删除此行记录吗？" ,{icon: 3, title:'提示'}, function(cindex){
-            layer.close(cindex);
-            constructDetailList.splice(i,1);
-            showDetail(constructDetailList);
-        },function (cindex) {
-            layer.close(cindex);
-        })
-    }
-
-    $("#nextStep").click(function () {
-        $.ajax({
-            type:"post",
-            url:[[@{|/order/myorder/construction/saveTemporaryConstructionDetailList|}]],
-        data:JSON.stringify(constructDetailList),
-            dataType:"json",
-            contentType : "application/json;charset=utf-8",
-            beforeSend:function () {
-            return true
-        },
-        success:function (result) {
-            if(result.success){
-                window.location.href= [[@{|/order/myorder/construction/toEquipment|}]];
-            }else{
-                layer.msg(result.message,{time:2000, icon:5, shift:5})
-            }
-        }
-    })
-
-    })
 
     //查询用户当前用户,并发送异步请求
     var loadingIndex = -1;

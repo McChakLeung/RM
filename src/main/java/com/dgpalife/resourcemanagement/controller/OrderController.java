@@ -179,6 +179,28 @@ public class OrderController {
         return "/order/myorder/construction/orderEquipmentInfo";
     }
 
+
+
+    /**
+     * 将建设工单明细的List集合临时放置在session中存放
+     * @param equipmnetPurchaseDetailList
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/myorder/construction/saveTemporaryEquipmentPurchaseList")
+    public Object saveTemporaryEquipmentPurchaseList(@RequestBody List<EquipmentPurchaseRecord> equipmnetPurchaseDetailList, HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try {
+            session.setAttribute("equipmnetPurchaseDetailList",equipmnetPurchaseDetailList);
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("跳转异常，请联系管理员解决");
+        }
+        return result;
+    }
+
     @RequestMapping("/myorder/construction/toPreviewOrder")
     public String toPreviewOrder(){
         return "/order/myorder/construction/previewOrder";
