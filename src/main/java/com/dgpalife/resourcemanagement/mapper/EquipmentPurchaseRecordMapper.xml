@@ -5,15 +5,14 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="purchase_num" jdbcType="INTEGER" property="purchaseNum" />
     <result column="expense_id" jdbcType="BIGINT" property="expenseId" />
-    <result column="account_center" jdbcType="VARCHAR" property="accountCenter" />
-    <result column="equipment_id" jdbcType="BIGINT" property="equipmentId" />
+    <result column="equipment_type_id" jdbcType="BIGINT" property="equipment_type_id" />
     <result column="project_id" jdbcType="BIGINT" property="projectId" />
     <result column="order_id" jdbcType="BIGINT" property="orderId" />
     <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, purchase_num, expense_id, account_center, equipment_id, project_id, order_id,
+    id, purchase_num, expense_id, equipment_type_id, project_id, order_id,
     creator_id, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -27,12 +26,12 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.EquipmentPurchaseRecord">
-    insert into t_equipment_purchase_record (id, purchase_num, expense_id, 
-      account_center, equipment_id, project_id,
-      order_id, creator_id, create_time
+    insert into t_equipment_purchase_record (
+      id, purchase_num, expense_id, equipment_type_id, project_id, order_id,
+      creator_id, create_time
       )
     values (#{id,jdbcType=BIGINT}, #{purchaseNum,jdbcType=INTEGER}, #{expenseId,jdbcType=BIGINT},
-      #{accountCenter,jdbcType=VARCHAR}, #{equipmentId,jdbcType=VARCHAR}, #{projectId,jdbcType=BIGINT},
+      #{equipment_type_id,jdbcType=BIGINT}, #{projectId,jdbcType=BIGINT},
       #{orderId,jdbcType=BIGINT}, #{creatorId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}
       )
   </insert>
@@ -48,11 +47,8 @@
       <if test="expenseId != null">
         expense_id,
       </if>
-      <if test="accountCenter != null">
-        account_center,
-      </if>
-      <if test="equipmentId != null">
-        equipment_id,
+      <if test="equipment_type_id != null">
+        equipment_type_id,
       </if>
       <if test="projectId != null">
         project_id,
@@ -77,11 +73,8 @@
       <if test="expenseId != null">
         #{expenseId,jdbcType=BIGINT},
       </if>
-      <if test="accountCenter != null">
-        #{accountCenter,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentId != null">
-        #{equipmentId,jdbcType=VARCHAR},
+      <if test="equipment_type_id != null">
+        #{equipment_type_id,jdbcType=BIGINT},
       </if>
       <if test="projectId != null">
         #{projectId,jdbcType=BIGINT},
@@ -106,11 +99,8 @@
       <if test="expenseId != null">
         expense_id = #{expenseId,jdbcType=BIGINT},
       </if>
-      <if test="accountCenter != null">
-        account_center = #{accountCenter,jdbcType=VARCHAR},
-      </if>
       <if test="equipmentId != null">
-        equipment_id = #{equipmentId,jdbcType=VARCHAR},
+        equipment_type_id = #{equipment_type_id,jdbcType=BIGINT},
       </if>
       <if test="projectId != null">
         project_id = #{projectId,jdbcType=BIGINT},
@@ -131,12 +121,24 @@
     update t_equipment_purchase_record
     set purchase_num = #{purchaseNum,jdbcType=INTEGER},
       expense_id = #{expenseId,jdbcType=BIGINT},
-      account_center = #{accountCenter,jdbcType=VARCHAR},
-      equipment_id = #{equipmentId,jdbcType=VARCHAR},
+      equipment_type_id = #{equipment_type_id,jdbcType=BIGINT},
       project_id = #{projectId,jdbcType=BIGINT},
       order_id = #{orderId,jdbcType=BIGINT},
       creator_id = #{creatorId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectEquipmentPurchaseRecordByOrderID" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM t_equipment_purchase_record
+    WHERE order_id = #{id}
+  </select>
+
+  <select id="getPurchaseNumByOrderId" resultType="java.lang.Integer">
+    SELECT SUM(purchase_num) AS purchase_num
+    FROM t_equipment_purchase_record
+    WHERE order_id = #{order_id}
+  </select>
 </mapper>

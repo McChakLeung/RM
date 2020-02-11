@@ -1,7 +1,9 @@
 package com.dgpalife.resourcemanagement.mapper;
 
 import com.dgpalife.resourcemanagement.model.Resource;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface ResourceMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -14,4 +16,6 @@ public interface ResourceMapper {
     int updateByPrimaryKeySelective(Resource record);
 
     int updateByPrimaryKey(Resource record);
+
+    int queryByResourceNo(String resource_no);
 }

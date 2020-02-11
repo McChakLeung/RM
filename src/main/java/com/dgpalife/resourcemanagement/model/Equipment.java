@@ -5,15 +5,39 @@ public class Equipment {
 
     private String equipmentSn;
 
-    private String equipmentType;
+    private Long equipmentTypeId;
 
-    private Integer portNum;
+    private Equipment_type equipmentType;
 
-    private Long networkRoomId;
+    private String account_center;
 
     private String createTime;
 
     private Long creatorId;
+
+    public Long getEquipmentTypeId() {
+        return equipmentTypeId;
+    }
+
+    public void setEquipmentTypeId(Long equipmentTypeId) {
+        this.equipmentTypeId = equipmentTypeId;
+    }
+
+    public Equipment_type getEquipmentType() {
+        return equipmentType;
+    }
+
+    public void setEquipmentType(Equipment_type equipmentType) {
+        this.equipmentType = equipmentType;
+    }
+
+    public String getAccount_center() {
+        return account_center;
+    }
+
+    public void setAccount_center(String account_center) {
+        this.account_center = account_center;
+    }
 
     public Long getId() {
         return id;
@@ -29,30 +53,6 @@ public class Equipment {
 
     public void setEquipmentSn(String equipmentSn) {
         this.equipmentSn = equipmentSn;
-    }
-
-    public String getEquipmentType() {
-        return equipmentType;
-    }
-
-    public void setEquipmentType(String equipmentType) {
-        this.equipmentType = equipmentType;
-    }
-
-    public Integer getPortNum() {
-        return portNum;
-    }
-
-    public void setPortNum(Integer portNum) {
-        this.portNum = portNum;
-    }
-
-    public Long getNetworkRoomId() {
-        return networkRoomId;
-    }
-
-    public void setNetworkRoomId(Long networkRoomId) {
-        this.networkRoomId = networkRoomId;
     }
 
     public String getCreateTime() {

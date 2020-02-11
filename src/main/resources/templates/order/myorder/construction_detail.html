@@ -109,6 +109,9 @@
 									</div>
 									<input type="hidden" id="fid" th:value="${order?.id}">
 								</form>
+								<br>
+								<h3>装机明细</h3>
+								<br>
 								<div>
 									<table id="detailList" class="table table-bordered" style="text-align:center;">
 										<thead>
@@ -131,7 +134,7 @@
 												<td th:text="${constructDetail?.usedepartment_type}">部门类型</td>
 												<td th:text="${constructDetail?.operator}">运营商</td>
 												<td th:text="${constructDetail?.resourceType}">资源类型</td>
-												<td th:text="${constructDetail?.number}">装机数量</td>
+												<td th:text="${constructDetail?.construct_number}">装机数量</td>
 												<td th:text="${constructDetail?.expense?.price}">资费</td>
 												<td th:text="${constructDetail?.workplace?.workplaceName}">所在职场</td>
 												<td th:text="${constructDetail?.networkRoom?.networkroom_name}">机房</td>
@@ -140,6 +143,28 @@
 									</table>
 								</div>
 								<br>
+								<h3>设备购买明细</h3>
+								<br>
+								<div>
+									<table id="equipmnetPurchaseDetailList" class="table table-bordered" style="text-align:center;">
+										<thead>
+										<tr class="success">
+											<td>序号</td>
+											<td>购买设备类型名称</td>
+											<td>购买数量</td>
+											<td>设备单价</td>
+										</tr>
+										</thead>
+										<tbody >
+										<tr th:each="equipmentPurchaseRecord:${order?.equipmentPurchaseRecordList}">
+											<td th:text="${equipmentPurchaseRecordStat?.count}">序号</td>
+											<td th:text="${equipmentPurchaseRecord?.equipment_type.equipmentName}">购买设备类型名称</td>
+											<td th:text="${equipmentPurchaseRecord?.purchaseNum}">购买数量</td>
+											<td th:text="${equipmentPurchaseRecord?.expense.price}">设备单价</td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
 								<!--<button type="button" class="btn btn-default" id="backStep">上一步</button>-->
 								<span th:if="${order?.status=='待提交'}">
 									<button type="button" class="btn btn-primary" id="auditBtn">提交审核</button>

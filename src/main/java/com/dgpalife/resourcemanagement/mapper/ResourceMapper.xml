@@ -3,22 +3,24 @@
 <mapper namespace="com.dgpalife.resourcemanagement.mapper.ResourceMapper">
   <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.Resource">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="resource_no" jdbcType="VARCHAR" property="resourceNo" />
-    <result column="resourc_type" jdbcType="VARCHAR" property="resourcType" />
+    <result column="resource_no" jdbcType="VARCHAR" property="resource_no" />
+    <result column="resourc_type" jdbcType="VARCHAR" property="resourc_type" />
     <result column="operator" jdbcType="VARCHAR" property="operator" />
-    <result column="network_room_id" jdbcType="BIGINT" property="networkRoomId" />
-    <result column="department_id" jdbcType="BIGINT" property="departmentId" />
-    <result column="usedepartment_id" jdbcType="BIGINT" property="usedepartmentId" />
+    <result column="workplace_id" jdbcType="BIGINT" property="workplace_id" />
+    <result column="network_room_id" jdbcType="BIGINT" property="network_room_id" />
+    <result column="department_id" jdbcType="BIGINT" property="department_id" />
+    <result column="usedepartment_id" jdbcType="BIGINT" property="usedepartment_id" />
     <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="equipment_port_id" jdbcType="BIGINT" property="equipmentPortId" />
-    <result column="expense_id" jdbcType="BIGINT" property="expenseId" />
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
-    <result column="workplace_id" jdbcType="BIGINT" property="workplaceId" />
+    <result column="equipment_id" jdbcType="BIGINT" property="equipment_id" />
+    <result column="equipment_port_id" jdbcType="BIGINT" property="equipment_port_id" />
+    <result column="expense_id" jdbcType="BIGINT" property="expense_id" />
+    <result column="account_center" jdbcType="VARCHAR" property="account_center" />
+    <result column="create_time" jdbcType="VARCHAR" property="create_time" />
+    <result column="creator_id" jdbcType="BIGINT" property="creator_id" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, resource_no, resourc_type, operator, network_room_id, department_id, usedepartment_id, username,
-    equipment_port_id, expense_id, create_time, creator_id, workplace_id
+    id, resource_no, resourc_type, operator, workplace_id, network_room_id, department_id, usedepartment_id,
+    username, equipment_id, equipment_port_id, expense_id, account_center, create_time, creator_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -31,14 +33,16 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Resource">
-    insert into t_resource (id, resource_no, resourc_type, 
-      operator, network_room_id, department_id, usedepartment_id,
-      username, equipment_port_id, expense_id,
-      create_time, creator_id,workplace_id)
-    values (#{id,jdbcType=BIGINT}, #{resourceNo,jdbcType=VARCHAR}, #{resourcType,jdbcType=VARCHAR}, 
-      #{operator,jdbcType=VARCHAR}, #{networkRoomId,jdbcType=BIGINT}, #{departmentId,jdbcType=BIGINT}, #{usedepartmentId,jdbcType=BIGINT},
-      #{username,jdbcType=VARCHAR}, #{equipmentPortId,jdbcType=BIGINT}, #{expenseId,jdbcType=BIGINT},
-      #{createTime,jdbcType=VARCHAR}, #{creatorId,jdbcType=BIGINT},#{workplaceId,jdbcType=BIGINT})
+    insert into t_resource (
+      id, resource_no, resourc_type, operator, workplace_id, network_room_id, department_id, usedepartment_id,
+      username, equipment_id, equipment_port_id, expense_id, account_center, create_time, creator_id
+    )
+    values (#{id,jdbcType=BIGINT}, #{resource_no,jdbcType=VARCHAR}, #{resourc_type,jdbcType=VARCHAR},
+      #{operator,jdbcType=VARCHAR},#{workplace_id,jdbcType=BIGINT}, #{network_room_id,jdbcType=BIGINT},
+      #{department_id,jdbcType=BIGINT}, #{usedepartment_id,jdbcType=BIGINT},
+      #{username,jdbcType=VARCHAR}, #{equipment_id,jdbcType=BIGINT}, #{equipment_port_id,jdbcType=BIGINT},
+      #{expense_id,jdbcType=BIGINT},#{account_center,jdbcType=VARCHAR},
+      #{create_time,jdbcType=VARCHAR}, #{creator_id,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Resource">
     insert into t_resource
@@ -46,141 +50,168 @@
       <if test="id != null">
         id,
       </if>
-      <if test="resourceNo != null">
+      <if test="resource_no != null">
         resource_no,
       </if>
-      <if test="resourcType != null">
+      <if test="resourc_type != null">
         resourc_type,
       </if>
       <if test="operator != null">
         operator,
       </if>
-      <if test="networkRoomId != null">
+      <if test="workplace_id != null">
+        workplace_id,
+      </if>
+      <if test="network_room_id != null">
         network_room_id,
       </if>
-      <if test="departmentId != null">
+      <if test="department_id != null">
         department_id,
       </if>
-      <if test="usedepartmentId != null">
+      <if test="usedepartment_id != null">
         usedepartment_id,
       </if>
       <if test="username != null">
         username,
       </if>
-      <if test="equipmentPortId != null">
+      <if test="equipment_id != null">
+        equipment_id,
+      </if>
+      <if test="equipment_port_id != null">
         equipment_port_id,
       </if>
-      <if test="expenseId != null">
+      <if test="expense_id != null">
         expense_id,
+      </if>
+      <if test="account_center != null">
+        account_center,
       </if>
       <if test="createTime != null">
         create_time,
       </if>
       <if test="creatorId != null">
-        creator_id,
+        creator_id
       </if>
-      <if test="workplaceId != null">
-        workplace_id
-      </if>
+
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="resourceNo != null">
-        #{resourceNo,jdbcType=VARCHAR},
+      <if test="resource_no != null">
+        #{resource_no,jdbcType=VARCHAR},
       </if>
-      <if test="resourcType != null">
-        #{resourcType,jdbcType=VARCHAR},
+      <if test="resourc_type != null">
+        #{resourc_type,jdbcType=VARCHAR},
       </if>
       <if test="operator != null">
         #{operator,jdbcType=VARCHAR},
       </if>
-      <if test="networkRoomId != null">
-        #{networkRoomId,jdbcType=BIGINT},
+      <if test="workplace_id != null">
+        #{workplace_id,jdbcType=BIGINT},
       </if>
-      <if test="departmentId != null">
-        #{departmentId,jdbcType=BIGINT},
+      <if test="network_room_id != null">
+        #{network_room_id,jdbcType=BIGINT},
       </if>
-      <if test="usedepartmentId != null">
-        #{usedepartmentId,jdbcType=BIGINT},
+      <if test="department_id != null">
+        #{department_id,jdbcType=BIGINT},
+      </if>
+      <if test="usedepartment_id != null">
+        #{usedepartment_id,jdbcType=BIGINT},
       </if>
       <if test="username != null">
         #{username,jdbcType=VARCHAR},
       </if>
-      <if test="equipmentPortId != null">
-        #{equipmentPortId,jdbcType=BIGINT},
+      <if test="equipment_id != null">
+        #{equipment_id,jdbcType=BIGINT},
       </if>
-      <if test="expenseId != null">
-        #{expenseId,jdbcType=BIGINT},
+      <if test="equipment_port_id != null">
+        #{equipment_port_id,jdbcType=BIGINT},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=VARCHAR},
+      <if test="expense_id != null">
+        #{expense_id,jdbcType=BIGINT},
       </if>
-      <if test="creatorId != null">
-        #{creatorId,jdbcType=BIGINT},
+      <if test="account_center != null">
+        #{account_center,jdbcType=VARCHAR},
       </if>
-      <if test="workplaceId != null">
-        #{workplaceId,jdbcType=BIGINT}
+      <if test="create_time != null">
+        #{create_time,jdbcType=VARCHAR},
+      </if>
+      <if test="creator_id != null">
+        #{creator_id,jdbcType=BIGINT}
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.Resource">
     update t_resource
     <set>
-      <if test="resourceNo != null">
-        resource_no = #{resourceNo,jdbcType=VARCHAR},
+      <if test="resource_no != null">
+        resource_no = #{resource_no,jdbcType=VARCHAR},
       </if>
-      <if test="resourcType != null">
-        resourc_type = #{resourcType,jdbcType=VARCHAR},
+      <if test="resourc_type != null">
+        resourc_type = #{resourc_type,jdbcType=VARCHAR},
       </if>
       <if test="operator != null">
         operator = #{operator,jdbcType=VARCHAR},
       </if>
-      <if test="networkRoomId != null">
-        network_room_id = #{networkRoomId,jdbcType=BIGINT},
+      <if test="workplace_id != null">
+        workplace_id = #{workplace_id,jdbcType=BIGINT},
       </if>
-      <if test="departmentId != null">
-        department_id = #{departmentId,jdbcType=BIGINT},
+      <if test="network_room_id != null">
+        network_room_id = #{network_room_id,jdbcType=BIGINT},
       </if>
-      <if test="usedepartmentId != null">
-        usedepartment_id = #{usedepartmentId,jdbcType=BIGINT},
+      <if test="department_id != null">
+        department_id = #{department_id,jdbcType=BIGINT},
+      </if>
+      <if test="usedepartment_id != null">
+        usedepartment_id = #{usedepartment_id,jdbcType=BIGINT},
       </if>
       <if test="username != null">
         username = #{username,jdbcType=VARCHAR},
       </if>
-      <if test="equipmentPortId != null">
-        equipment_port_id = #{equipmentPortId,jdbcType=BIGINT},
+      <if test="equipment_id != null">
+        equipment_id = #{equipment_id,jdbcType=BIGINT},
       </if>
-      <if test="expenseId != null">
-        expense_id = #{expenseId,jdbcType=BIGINT},
+      <if test="equipment_port_id != null">
+        equipment_port_id = #{equipment_port_id,jdbcType=BIGINT},
       </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=VARCHAR},
+      <if test="expense_id != null">
+        expense_id = #{expense_id,jdbcType=BIGINT},
       </if>
-      <if test="creatorId != null">
-        creator_id = #{creatorId,jdbcType=BIGINT},
+      <if test="account_center != null">
+        account_center = #{account_center,jdbcType=VARCHAR},
       </if>
-      <if test="workplaceId != null">
-        workplace_id = #{workplaceId,jdbcType=BIGINT}
-    </if>
+      <if test="create_time != null">
+        create_time = #{create_time,jdbcType=VARCHAR},
+      </if>
+      <if test="creator_id != null">
+        creator_id = #{creator_id,jdbcType=BIGINT}
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.Resource">
     update t_resource
-    set resource_no = #{resourceNo,jdbcType=VARCHAR},
-      resourc_type = #{resourcType,jdbcType=VARCHAR},
+    set
+      resource_no = #{resource_no,jdbcType=VARCHAR},
+      resourc_type = #{resourc_type,jdbcType=VARCHAR},
       operator = #{operator,jdbcType=VARCHAR},
-      network_room_id = #{networkRoomId,jdbcType=BIGINT},
-      department_id = #{departmentId,jdbcType=BIGINT},
-      usedepartment_id = #{usedepartmentId,jdbcType=BIGINT},
+      workplace_id = #{workplace_id,jdbcType=BIGINT},
+      network_room_id = #{network_room_id,jdbcType=BIGINT},
+      department_id = #{department_id,jdbcType=BIGINT},
+      usedepartment_id = #{usedepartment_id,jdbcType=BIGINT},
       username = #{username,jdbcType=VARCHAR},
-      equipment_port_id = #{equipmentPortId,jdbcType=BIGINT},
-      expense_id = #{expenseId,jdbcType=BIGINT},
-      create_time = #{createTime,jdbcType=VARCHAR},
-      creator_id = #{creatorId,jdbcType=BIGINT},
-      workplace_id = #{workplaceId,jdbcType=BIGINT}
+      equipment_id = #{equipment_id,jdbcType=BIGINT},
+      equipment_port_id = #{equipment_port_id,jdbcType=BIGINT},
+      expense_id = #{expense_id,jdbcType=BIGINT},
+      account_center = #{account_center,jdbcType=VARCHAR},
+      create_time = #{create_time,jdbcType=VARCHAR},
+      creator_id = #{creator_id,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="queryByResourceNo" resultType="java.lang.Integer">
+    SELECT count(id) from t_resource
+    WHERE resource_no = #{resource_no,jdbcType=VARCHAR}
+  </select>
 </mapper>

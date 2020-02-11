@@ -118,6 +118,9 @@
 									</div>
 									<input type="hidden" id="fid" th:value="${order?.id}">
 								</form>
+								<br>
+								<h3>装机明细</h3>
+								<br>
 								<div>
 									<table id="detailList" class="table table-bordered" style="text-align:center;">
 										<thead>
@@ -133,18 +136,41 @@
 											<td>机房</td>
 										</tr>
 										</thead>
-										<tbody >
+										<tbody id="t1">
 											<tr th:each="constructDetail:${order?.constructDetailList}">
 												<td th:text="${constructDetailStat?.count}">序号</td>
 												<td th:text="${constructDetail?.usedepartment?.departmentName}">使用科室|外勤部门</td>
 												<td th:text="${constructDetail?.usedepartment_type}">部门类型</td>
 												<td th:text="${constructDetail?.operator}">运营商</td>
 												<td th:text="${constructDetail?.resourceType}">资源类型</td>
-												<td th:text="${constructDetail?.number}">装机数量</td>
+												<td th:text="${constructDetail?.construct_number}">装机数量</td>
 												<td th:text="${constructDetail?.expense?.price}">资费</td>
 												<td th:text="${constructDetail?.workplace?.workplaceName}">所在职场</td>
 												<td th:text="${constructDetail?.networkRoom?.networkroom_name}">机房</td>
 											</tr>
+										</tbody>
+									</table>
+								</div>
+								<br>
+								<h3>设备购买明细</h3>
+								<br>
+								<div>
+									<table id="equipmnetPurchaseDetailList" class="table table-bordered" style="text-align:center;">
+										<thead>
+										<tr class="success">
+											<td>序号</td>
+											<td>购买设备类型名称</td>
+											<td>购买数量</td>
+											<td>设备单价</td>
+										</tr>
+										</thead>
+										<tbody id="t2">
+										<tr th:each="equipmentPurchaseRecord:${order?.equipmentPurchaseRecordList}">
+											<td th:text="${equipmentPurchaseRecordStat?.count}">序号</td>
+											<td th:text="${equipmentPurchaseRecord?.equipment_type.equipmentName}">购买设备类型名称</td>
+											<td th:text="${equipmentPurchaseRecord?.purchaseNum}">购买数量</td>
+											<td th:text="${equipmentPurchaseRecord?.expense.price}">设备单价</td>
+										</tr>
 										</tbody>
 									</table>
 								</div>
@@ -154,11 +180,11 @@
 								<ul class="nav nav-tabs" role="tablist">
 									<li role="presentation" class="active"><a><span class="badge">2</span> 资源录入</a></li>
 								</ul>
-								<form class="form-horizontal" style="margin-top:20px;margin-bottom: 20px" id="form">
+								<form class="form-horizontal" style="margin-top:20px;margin-bottom: 20px" id="resourceListForm">
 									<div class="form-group">
 										<label for="fresource_no" class="col-md-2 control-label">资源号码<span style="color:red">* </span></label>
 										<div class="col-md-4">
-											<input type="text" class="form-control" id="fresource_no" name="resourceNo" >
+											<input type="text" class="form-control" id="fresource_no" name="resource_no" >
 										</div>
 										<label class="col-md-2 control-label">运营商<span style="color:red">* </span></label>
 										<div class="col-md-4">
@@ -171,7 +197,7 @@
 									<div class="form-group">
 										<label class="col-md-2 control-label">资源类型<span style="color:red">* </span>	</label>
 										<div class="col-md-4">
-											<select class="form-control" id="fresourceType" name="resourcType">
+											<select class="form-control" id="fresourceType" name="resourc_type">
 												<option>电话</option>
 												<option>宽带</option>
 												<option>专线</option>
@@ -218,6 +244,10 @@
 										<div class="col-md-4">
 											<input type="text" class="form-control" id="fusername" name="username" >
 										</div>
+										<label class="col-md-2 control-label">列支成本中心<span style="color:red">* </span></label>
+										<div class="col-md-4">
+											<input type="text" class="form-control" id="fResource_accountCenter" name="account_center">
+										</div>
 									</div>
 
 									<div class="form-group">
@@ -242,6 +272,7 @@
 											<td>挂账部门</td>
 											<td>使用科室|外勤部门</td>
 											<td>使用人</td>
+											<td>列支成本中心</td>
 											<td>操作</td>
 										</tr>
 										</thead>
@@ -251,8 +282,61 @@
 									</table>
 								</div>
 								<br>
+								<hr>
+								<br>
+								<ul class="nav nav-tabs" role="tablist">
+									<li role="presentation" class="active"><a><span class="badge">3</span> 设备购买录入</a></li>
+								</ul>
+								<form class="form-horizontal" style="margin-top:20px;margin-bottom: 20px" id="equipmentPurchaseListForm">
+									<div class="form-group">
+										<label class="col-md-2 control-label">购买设备SN号<span style="color:red">* </span></label>
+										<div class="col-md-4">
+											<input type="text" class="form-control" id="fequipmentSn" name="equipmentSn">
+										</div>
+										<label class="col-md-2 control-label">购买设备类型名称<span style="color:red">* </span></label>
+										<div class="col-md-4">
+											<input type="text" class="form-control" id="fequipmentType" name="equipment_type.equipmentName" equipment_type_id="">
+										</div>
+
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">设备单价<span style="color:red">* </span>	</label>
+										<div class="col-md-4">
+											<input type="number" class="form-control" id="fEquipmentPrice" name="expense.price" expense_id="">
+										</div>
+										<label class="col-md-2 control-label">列支成本中心<span style="color:red">* </span></label>
+										<div class="col-md-4">
+											<input type="text" class="form-control" id="faccountCenter" name="accountCenter">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label"></label>
+										<div class="col-sm-10">
+											<button id="addEqipmentBtn" type="button" class="btn btn-primary">添加</button>
+											<button id="resetEqipmentBtn" class="btn btn-default">重置</button>
+										</div>
+									</div>
+								</form>
+								<div>
+									<table id="equipmentPurchaseList" class="table table-bordered" style="text-align:center;">
+										<thead>
+										<tr class="success">
+											<td>序号</td>
+											<td>购买设备SN号</td>
+											<td>购买设备类型名称</td>
+											<td>设备单价</td>
+											<td>列支成本中心</td>
+											<td>操作</td>
+										</tr>
+										</thead>
+										<tbody id="equipmentList">
+
+										</tbody>
+									</table>
+								</div>
 								<!--<button type="button" class="btn btn-default" id="backStep">上一步</button>-->
-								<button type="button" class="btn btn-success" id="generateResource">生成资源</button>
+								<!--<button type="button" class="btn btn-success" id="generateResource">生成资源</button>-->
+								<button type="button" class="btn btn-success" id="nextStep">下一步</button>
 							</div>
 						</div>
 						<!-- END BASIC TABLE -->
@@ -287,6 +371,14 @@
 		<!--<button class="layui-btn" data-type="reload" id="search">搜索</button>-->
 		<table class="layui-table"  id="fexpense_table" lay-filter="expense"></table>
 	</div>
+	<div style="padding: 1% 1%;display: none" id="equipmentType_layer">
+		搜索设备类型名称：
+		<div class="layui-inline">
+			<input class="layui-input" name="equipmentType" id="equipmentType" placeholder="请输入设备类型名称" autocomplete="off">
+		</div>
+		<button class="layui-btn" data-type="reload" id="equipmentType_search">搜索</button>
+		<table class="layui-table"  id="fequipmentType_table" lay-filter="equipmentType"></table>
+	</div>
 	<div class="clearfix"></div>
 	<div id="footer" th:include="/commons/footer :: footerContext"></div>
 
@@ -299,6 +391,24 @@
     var resourceDetailList = new Array();
 
     $("#addBtn").click(function () {
+
+        var resource_no = $("#fresource_no").val();
+
+		$.ajax({
+            url:[[@{|/resource/verify_resourceNo|}]],
+        	data:{
+            	resource_no: resource_no
+        	},
+        	type:"post",
+            dataType: "json",
+            success:function (result) {
+            if(result.success == true){
+                layer.msg("该号码已存在，请确认后再输入", {time:1000, icon:5, shift:6});
+            }
+        }
+		})
+
+
         //判断必选项是否为空
         if($.trim($("#fresource_no").val()) == ""){
             // $("#fmessage").text("用户名不能为空，请重新输入");
@@ -308,6 +418,7 @@
             })
             return false
         }
+
 
         if($.trim($("#fprice").val()) == ""){
             // $("#fmessage").text("用户名不能为空，请重新输入");
@@ -368,8 +479,17 @@
             return false
         }
 
+        if($.trim($("#fResource_accountCenter").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("列支成本不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fResource_accountCenter").val("");
+                $("#fResource_accountCenter").focus();
+            })
+            return false
+        }
+
         var dataArray = {};
-        var formData = $("#form").serializeArray();
+        var formData = $("#resourceListForm").serializeArray();
         $.each(formData,function(){
             //var name = this.name;
             var value = this.value;
@@ -430,8 +550,8 @@
         $.each(resourceDetailList,function(i,n){
             content+='<tr>';
             content+='  <td>'+(i+1)+'</td>';
-            content+='  <td>'+n.resourceNo+'</td>';
-            content+='  <td>'+n.resourcType+'</td>';
+            content+='  <td>'+n.resource_no+'</td>';
+            content+='  <td>'+n.resourc_type+'</td>';
             content+='  <td>'+n.operator+'</td>';
             content+='  <td>'+n.expense.price+'</td>';
             content+='  <td>'+n.workplace.workplaceName + '</td>';
@@ -439,6 +559,7 @@
             content+='  <td>'+n.department.departmentName+'</td>';
             content+='  <td>'+n.usedepartment.departmentName+'</td>';
             content+='  <td>'+n.username+'</td>';
+            content+='  <td>'+n.account_center+'</td>';
             content+='  <td>';
             content+='	  <button type="button" onclick="deleteBtn('+i+')" class="btn btn-danger btn-xs delteBtn" value="aaa"><i class=" glyphicon glyphicon-remove"></i></button>';
             content+='  </td>';
@@ -786,11 +907,345 @@
         $("#fusedepartment").attr("usedepartment_id","");
     })
 
-    $("#generateResource").click(function () {
+
+    $("#fequipmentType").click(function () {
+
+        var id, equipmentName = null;
+
+        //单击触发layer弹出层
+        layer.open({
+            title:"设备类型",
+            area: ['800px', '600px'],
+            type:1,
+            // content:"[[@{|/openQuery|}]]",
+            content:$('#equipmentType_layer'),
+            btn:['选择','取消'],
+            success:function (layero, index) {
+                layui.use('table',function () {
+                    var table = layui.table;
+
+                    //自动渲染数据表格
+                    table.render({
+                        // elem: layer.getChildFrame("#ftable", index)
+                        elem: '#fequipmentType_table'
+                        ,url:[[@{|/setting/equipmentType/showTable|}]]  //该url必须要返回符合layui要求的前端格式的json数据
+                ,cols: [
+                        [
+                            {type:'radio'}
+                            ,{field: 'id', title: 'ID',width:80}
+                            ,{field: 'equipmentName', title: '设备名称',width:120}
+                            ,{field: 'equipmentType', title: '设备类型'}
+                            ,{field: 'equipmentPortnum', title: '设备端口数量',width:120}
+                        ]
+                    ]
+                        ,page:true
+                        ,id: 'equipmentType'
+                });
+
+                    //搜索功能实现
+                    $('#equipmentType_search').on('click',function () {
+                        // var type = $(this).data('type');
+                        // active[type] ? active[type].call(this) : '';
+                        var equipmentType = $('#equipmentType');
+                        table.reload('equipmentType',{
+                            url:[[@{|/setting/equipmentType/showTable|}]]
+                    ,page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    ,where: {
+                            queryText: equipmentType.val()
+                        }
+                    })
+                    });
+
+                    //获取选中的层
+                    table.on('row(equipmentType)',function (obj) {
+                        id = obj.data.id;
+                        equipmentName = obj.data.equipmentName;
+                    })
+                })
+
+
+            },
+            yes:function (layero, index) {
+                $("#fequipmentType").attr("equipment_type_id",id);
+                $("#fequipmentType").val(equipmentName);
+                layer.close(layero)
+            },
+            btn2:function (layero, index) {
+                layer.close(layero)
+            }
+        })
+
+    })
+
+
+    //资费单击选择事件
+    //注意！！！！！！ 动态表格不能放置在form表单中，否则使用里面的单击事件会有问题
+    $("#fEquipmentPrice").click(function () {
+
+        var id, price = null;
+
+        //单击触发layer弹出层
+        layer.open({
+            title:"选择资费",
+            area: ['600px', '400px'],
+            type:1,
+            // content:"[[@{|/openQuery|}]]",
+            content:$('#expense_layer'),
+            btn:['选择','取消'],
+            success:function (layero, index) {
+                layui.use('table',function () {
+                    var table = layui.table;
+
+                    //自动渲染数据表格
+                    table.render({
+                        // elem: layer.getChildFrame("#ftable", index)
+                        elem: '#fexpense_table'
+                        ,url:[[@{|/setting/expense/showExpenseTable|}]]  //该url必须要返回符合layui要求的前端格式的json数据
+                ,cols: [
+                        [
+                            {type:'radio'}
+                            ,{field: 'id', title: 'ID',width:80}
+                            ,{field: 'expenseType', title: '资费类别',width:120}
+                            ,{field: 'price', title: '金额'}
+                            ,{field: 'chargeFrequency', title: '缴费频率'}
+                        ]
+                    ]
+                        ,page:false
+                        ,id: 'expense'
+                });
+
+                    //获取选中的层
+                    table.on('row(expense)',function (obj) {
+                        id = obj.data.id;
+                        price = obj.data.price;
+                    })
+                })
+
+
+            },
+            yes:function (layero, index) {
+                $("#fEquipmentPrice").attr("expense_id",id);
+                $("#fEquipmentPrice").val(price);
+                layer.close(layero)
+            },
+            btn2:function (layero, index) {
+                layer.close(layero)
+            }
+        })
+
+    })
+
+    var loadingIndex = -1;
+
+    var equipmentList = new Array();
+
+    $("#addEqipmentBtn").click(function () {
+
+
+        //判断必选项是否为空
+        if($.trim($("#fequipmentSn").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("设备SN号不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fequipmentSn").val("");
+                $("#fequipmentSn").focus();
+            })
+            return false
+        }
+
+        var equipmentSn = $("#fequipmentSn").val();
+
+        $.ajax({
+            url:[[@{|/equipment/verify_equipmentSn|}]],
+        data:{
+            equipmentSn: equipmentSn
+        },
+        type:"post",
+            dataType: "json",
+            success:function (result) {
+            if(result.success == true){
+                layer.msg("该设备已存在，请确认后再输入", {time:1000, icon:5, shift:6});
+            }
+        }
+    	})
+
+
+
+        if($.trim($("#fequipmentType").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("设备类型不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fequipmentType").val("");
+                $("#fequipmentType").attr("equipment_type_id","");
+                $("#fequipmentType").focus();
+            })
+            return false
+        }
+
+        if($.trim($("#fEquipmentPrice").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("设备单价不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fEquipmentPrice").val("");
+                $("#fEquipmentPrice").attr("expense_id","");
+                $("#fEquipmentPrice").focus();
+            })
+            return false
+        }
+
+        if($.trim($("#faccountCenter").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("机房不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#faccountCenter").val("");
+                $("#faccountCenter").focus();
+            })
+            return false
+        }
+
+
+        var dataArray = {};
+        var formData = $("#equipmentPurchaseListForm").serializeArray();
+        $.each(formData,function(){
+            //var name = this.name;
+            var value = this.value;
+            //分割name属性，并返回一个数组
+            var paths = this.name.split(".");
+            //返回数组的长度
+            var len = paths.length;
+            var obj = dataArray;
+            $.each(paths,function(i,e){
+                //判断当前的遍历的数据是否有二级数组；i == len-1 为true说明是二级数组，false说明为一级数组
+                if(i == len-1){
+                    //判断该数组是否存在当前遍历的属性
+                    if (obj[e]) {
+                        //push()方法的返回值是把指定的值添加到数组后的新长度，
+                        // "!"是一个布尔操作符，用于将操作的值强制转换为布尔值并取反,
+                        // 即!obj[e].push的值为false
+                        if (!obj[e].push) {
+                            obj[e] = [obj[e]];
+                        }
+                        obj[e].push(value || '');
+                    } else {
+                        obj[e] = value || '';
+                    }
+                }else{
+                    //如一级数组不为空，则将值设置为{}
+                    if(!obj[e]){
+                        obj[e] = {};
+                    }
+                }
+                obj = dataArray[e];
+            });
+
+        });
+
+        dataArray["equipment_type"]["id"] = $("#fequipmentType").attr("equipment_type_id");
+        dataArray["equipment_type_id"] = $("#fequipmentType").attr("equipment_type_id");
+        dataArray["expense"]["id"] = $("#fprice").attr("expense_id");
+        dataArray["expenseId"] = $("#fprice").attr("expense_id");
+
+
+        console.log(dataArray)
+        equipmentList.push(dataArray);
+        showEquipmentDetail(equipmentList);
+    })
+
+    function showEquipmentDetail(equipmentList) {
+
+        var content = '';
+
+        console.log(equipmentList)
+
+        $.each(equipmentList,function(i,n){
+            content+='<tr>';
+            content+='  <td>'+(i+1)+'</td>';
+            content+='  <td>'+n.equipmentSn+'</td>';
+            content+='  <td>'+n.equipment_type.equipmentName+'</td>';
+            content+='  <td>'+n.expense.price+'</td>';
+            content+='  <td>'+n.accountCenter + '</td>';
+            content+='  <td>';
+            content+='	  <button type="button" onclick="deleteEquipmentBtn('+i+')" class="btn btn-danger btn-xs delteBtn" value="aaa"><i class=" glyphicon glyphicon-remove"></i></button>';
+            content+='  </td>';
+            content+='</tr>';
+
+
+        });
+        $("#equipmentList").html(content);
+
+    }
+
+
+    function deleteEquipmentBtn(i) {
+        layer.confirm("确定要删除此行记录吗？" ,{icon: 3, title:'提示'}, function(cindex){
+            layer.close(cindex);
+            equipmentList.splice(i,1);
+            showEquipmentDetail(equipmentList);
+        },function (cindex) {
+            layer.close(cindex);
+        })
+    }
+
+
+    // $("#generateResource").click(function () {
+    //
+    //     var order_id = [[${order?.id}]]
+    //     var OrderConstructNum = getTableNum("t1",5);
+		// var OrderEquipmentPurchaseNum = getTableNum("t2",2);
+    //
+		// //判断工单的装机数量与添加的资源数量是否一致
+		// if(OrderConstructNum != resourceDetailList.length){
+    //         layer.msg("添加的资源数量与工单的数量不一致，请重新填写",{time:2000, icon:5, shift:5})
+		// 	return false;
+		// }
+    //
+    //     //判断工单的购买设备数量与添加的设备数量是否一致
+    //     if(OrderEquipmentPurchaseNum != equipmentList.length){
+    //         layer.msg("添加的设备数量与工单的购买数量数量不一致，请重新填写",{time:2000, icon:5, shift:5})
+    //         return false;
+    //     }
+    //
+    //     $.ajax({
+    //         type:"post",
+    //         url:[[@{|/resource/generateResource|}]],
+    //     	data:JSON.stringify({'resourceDetailList':resourceDetailList,'equipmentList':equipmentList,'order_id':order_id}),
+    //         dataType:"json",
+    //         contentType : "application/json;charset=utf-8",
+    //         beforeSend:function () {
+    //         return true
+    //     },
+    //     success:function (result) {
+    //         if(result.success){
+    //             layer.msg('资源创建成功',{time:2000, icon:5, shift:5})
+    //             window.location.href= [[@{|/resource/toIndex|}]];
+    //         }else{
+    //             layer.msg(result.message,{time:2000, icon:5, shift:5})
+    //         }
+    //     }
+	 //  })
+    //
+    // })
+
+    $("#nextStep").click(function () {
+
+        var order_id = [[${order?.id}]]
+        var OrderConstructNum = getTableNum("t1",5);
+        var OrderEquipmentPurchaseNum = getTableNum("t2",2);
+
+        //判断工单的装机数量与添加的资源数量是否一致
+        if(OrderConstructNum != resourceDetailList.length){
+            layer.msg("添加的资源数量与工单的数量不一致，请重新填写",{time:2000, icon:5, shift:5})
+            return false;
+        }
+
+        //判断工单的购买设备数量与添加的设备数量是否一致
+        if(OrderEquipmentPurchaseNum != equipmentList.length){
+            layer.msg("添加的设备数量与工单的购买数量数量不一致，请重新填写",{time:2000, icon:5, shift:5})
+            return false;
+        }
+
         $.ajax({
             type:"post",
-            url:[[@{|/order/preHandleOrder/construction/saveResourceList|}]],
-        	data:JSON.stringify(resourceDetailList),
+            url:[[@{|/order/preHandleOrder/construction/saveTemperateData|}]],
+        	data:JSON.stringify({'resourceDetailList':resourceDetailList,'equipmentList':equipmentList,'order_id':order_id}),
             dataType:"json",
             contentType : "application/json;charset=utf-8",
             beforeSend:function () {
@@ -798,35 +1253,46 @@
         },
         success:function (result) {
             if(result.success){
-                window.location.href= [[@{|/order/preHandleOrder/PreHandleOrderIndex|}]];
+                if(equipmentList.length > 0){
+                    window.location.href= [[@{|/order/preHandleOrder/construction/toPairNewEquipment|}]];
+				}else{
+                    window.location.href= [[@{|/order/preHandleOrder/construction/toPairExistEquipment|}]];
+				}
+
             }else{
                 layer.msg(result.message,{time:2000, icon:5, shift:5})
             }
         }
-    })
+    	})
 
     })
 
-    // $("#auditBtn").click(function () {
-    //     var id = $("#fid").val()
-    //     layer.confirm("确定要提交审核此工单吗？",  {icon: 3, title:'提示'}, function(cindex){
-    //         var url = [[@{|/order/myorder/doAuditOrder/|}]] +id;
-    //         $.getJSON(url,function(result){
-    //             if(result.success){
-    //                 layer.msg("以提交审核", {time:1000, icon:0, shift:6});
-    //                 window.location.href= [[@{|/order/myorder/toIndex|}]]
-    //             }else{
-    //                 layer.msg(result.message, {time:1000, icon:5, shift:6});
-    //             }
-    //         });
-    //         layer.close(cindex);
-    //     }, function(cindex){
-    //         layer.close(cindex);
-    //     });
-    //
-    // })
-    //
 
+    //查询订单购买设备数量
+    function getTableNum(table_id,row){
+
+        //table_id： 要统计的table 的id值
+        //row：要统计哪一列
+
+        var total = 0;
+        $("#" + table_id).each(function () {
+            var num = $($(this).find("td")[row]).text();
+            total += getNumValue(num);
+        });
+
+        return Number(total);
+
+    }
+
+    function getNumValue(num) {
+        if (!isNaN(num)) {
+            num = parseInt(num);
+        }
+        else {
+            num = 0;
+        }
+        return num;
+    }
 
 
 </script>

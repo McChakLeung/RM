@@ -3,15 +3,23 @@ package com.dgpalife.resourcemanagement.model;
 public class EquipmentPort {
     private Long id;
 
-    private Integer portNo;
+    private String port_type;
 
-    private Long equipmentId;
+    private Integer port_no;
 
-    private Long resourceId;
+    private Long equipment_id;
 
-    private String createTime;
+    private Equipment equipment;
 
-    private Long creatorId;
+    private Long resource_id;
+
+    private Resource resource;
+
+    private String create_time;
+
+    private Long creator_id;
+
+    private User cretor;
 
     public Long getId() {
         return id;
@@ -21,43 +29,75 @@ public class EquipmentPort {
         this.id = id;
     }
 
-    public Integer getPortNo() {
-        return portNo;
+    public String getPort_type() {
+        return port_type;
     }
 
-    public void setPortNo(Integer portNo) {
-        this.portNo = portNo;
+    public void setPort_type(String port_type) {
+        this.port_type = port_type;
     }
 
-    public Long getEquipmentId() {
-        return equipmentId;
+    public Integer getPort_no() {
+        return port_no;
     }
 
-    public void setEquipmentId(Long equipmentId) {
-        this.equipmentId = equipmentId;
+    public void setPort_no(Integer port_no) {
+        this.port_no = port_no;
     }
 
-    public Long getResourceId() {
-        return resourceId;
+    public Long getEquipment_id() {
+        return equipment_id;
     }
 
-    public void setResourceId(Long resourceId) {
-        this.resourceId = resourceId;
+    public void setEquipment_id(Long equipment_id) {
+        this.equipment_id = equipment_id;
     }
 
-    public String getCreateTime() {
-        return createTime;
+    public Equipment getEquipment() {
+        return equipment;
     }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
     }
 
-    public Long getCreatorId() {
-        return creatorId;
+    public Long getResource_id() {
+        return resource_id;
     }
 
-    public void setCreatorId(Long creatorId) {
-        this.creatorId = creatorId;
+    public void setResource_id(Long resource_id) {
+        this.resource_id = resource_id;
+    }
+
+    public Resource getResource() {
+        return resource;
+    }
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
+
+    public String getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(String create_time) {
+        this.create_time = create_time;
+    }
+
+    public Long getCreator_id() {
+        return creator_id;
+    }
+
+    public void setCreator_id(Long creator_id) {
+        this.creator_id = creator_id;
+    }
+
+    public User getCretor() {
+        return cretor;
+    }
+
+    public void setCretor(User cretor) {
+        this.cretor = cretor;
     }
 }

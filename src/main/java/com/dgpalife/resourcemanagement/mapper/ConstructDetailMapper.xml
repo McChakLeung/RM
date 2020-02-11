@@ -7,19 +7,20 @@
     <result column="usedepartment_type" jdbcType="VARCHAR" property="usedepartment_type" />
     <result column="operator" jdbcType="VARCHAR" property="operator" />
     <result column="resource_type" jdbcType="VARCHAR" property="resourceType" />
-    <result column="number" jdbcType="INTEGER" property="number" />
+    <result column="construct_number" jdbcType="INTEGER" property="construct_number" />
     <result column="expense_id" jdbcType="BIGINT" property="expenseId" />
     <result column="workplace_id" jdbcType="BIGINT" property="workplaceId" />
     <result column="network_room_id" jdbcType="BIGINT" property="networkRoomId" />
-    <!--<result column="project_id" jdbcType="BIGINT" property="projectId" />-->
+    <result column="project_id" jdbcType="BIGINT" property="projectId" />
     <result column="order_id" jdbcType="BIGINT" property="orderId" />
     <result column="template_id" jdbcType="BIGINT" property="templateId" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, usedepartment_id,usedepartment_type,operator, resource_type, number, expense_id,workplace_id, network_room_id, order_id,
-    template_id, create_time, creator_id
+    id, usedepartment_id,usedepartment_type,operator, resource_type,
+    construct_number, expense_id,workplace_id, network_room_id, project_id,
+    order_id,template_id, create_time, creator_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -33,11 +34,11 @@
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.ConstructDetail">
     insert into t_construct_detail (id, operator, resource_type, 
-      number, expense_id, workplace_id,network_room_id,
+      construct_number, expense_id, workplace_id,network_room_id,
       project_id, order_id, template_id, 
       create_time, creator_id)
     values (#{id,jdbcType=BIGINT}, #{operator,jdbcType=VARCHAR}, #{resourceType,jdbcType=VARCHAR}, 
-      #{number,jdbcType=INTEGER}, #{expenseId,jdbcType=BIGINT},#{workplaceId,jdbcType=BIGINT}, #{networkRoomId,jdbcType=BIGINT},
+      #{construct_number,jdbcType=INTEGER}, #{expenseId,jdbcType=BIGINT},#{workplaceId,jdbcType=BIGINT}, #{networkRoomId,jdbcType=BIGINT},
       #{projectId,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{templateId,jdbcType=BIGINT}, 
       #{createTime,jdbcType=VARCHAR}, #{creatorId,jdbcType=BIGINT})
   </insert>
@@ -59,8 +60,8 @@
       <if test="resourceType != null">
         resource_type,
       </if>
-      <if test="number != null">
-        number,
+      <if test="construct_number != null">
+        construct_number,
       </if>
       <if test="expenseId != null">
         expense_id,
@@ -103,8 +104,8 @@
       <if test="resourceType != null">
         #{resourceType,jdbcType=VARCHAR},
       </if>
-      <if test="number != null">
-        #{number,jdbcType=INTEGER},
+      <if test="construct_number != null">
+        #{construct_number,jdbcType=INTEGER},
       </if>
       <if test="expenseId != null">
         #{expenseId,jdbcType=BIGINT},
@@ -141,8 +142,8 @@
       <if test="resourceType != null">
         resource_type = #{resourceType,jdbcType=VARCHAR},
       </if>
-      <if test="number != null">
-        number = #{number,jdbcType=INTEGER},
+      <if test="construct_number != null">
+        construct_number = #{construct_number,jdbcType=INTEGER},
       </if>
       <if test="expenseId != null">
         expense_id = #{expenseId,jdbcType=BIGINT},
@@ -175,7 +176,7 @@
     update t_construct_detail
     set operator = #{operator,jdbcType=VARCHAR},
       resource_type = #{resourceType,jdbcType=VARCHAR},
-      number = #{number,jdbcType=INTEGER},
+      construct_number = #{construct_number,jdbcType=INTEGER},
       expense_id = #{expenseId,jdbcType=BIGINT},
       workplace_id = #{workplaceId,jdbcType=BIGINT},
       network_room_id = #{networkRoomId,jdbcType=BIGINT},
@@ -188,14 +189,16 @@
   </update>
   <insert id="insertByBatch" >
       insert into t_construct_detail (usedepartment_id,usedepartment_type,operator, resource_type,
-      number, expense_id, workplace_id,network_room_id,
+      construct_number, expense_id, workplace_id,network_room_id,
       project_id, order_id,
       create_time, creator_id) values
       <foreach collection="constructDetailList" item="constructDetail" separator=",">
         (#{constructDetail.operator,jdbcType=VARCHAR}, #{constructDetail.resourceType,jdbcType=VARCHAR},
-        #{constructDetail.number,jdbcType=INTEGER}, #{constructDetail.expenseId,jdbcType=BIGINT},#{constructDetail.workplaceId,jdbcType=BIGINT}, #{constructDetail.networkRoomId,jdbcType=BIGINT},
-        #{constructDetail.projectId,jdbcType=BIGINT}, #{constructDetail.orderId,jdbcType=BIGINT}, #{constructDetail.templateId,jdbcType=BIGINT},
-        #{constructDetail.createTime,jdbcType=VARCHAR}, #{constructDetail.creatorId,jdbcType=BIGINT})
+        #{constructDetail.construct_number,jdbcType=INTEGER}, #{constructDetail.expenseId,jdbcType=BIGINT},
+        #{constructDetail.workplaceId,jdbcType=BIGINT}, #{constructDetail.networkRoomId,jdbcType=BIGINT},
+        #{constructDetail.projectId,jdbcType=BIGINT}, #{constructDetail.orderId,jdbcType=BIGINT},
+        #{constructDetail.templateId,jdbcType=BIGINT},#{constructDetail.createTime,jdbcType=VARCHAR},
+        #{constructDetail.creatorId,jdbcType=BIGINT})
         <!--insert into t_construct_detail-->
         <!--<trim prefix="(" suffix=")" suffixOverrides=",">-->
           <!--<if test="constructDetail.id != null">-->
@@ -280,5 +283,11 @@
     <include refid="Base_Column_List" />
     FROM t_construct_detail
     WHERE order_id = #{id}
+  </select>
+
+  <select id="getConstructDetailNumByOrderId" resultType="java.lang.Integer">
+    SELECT SUM(number) AS construct_num
+    FROM t_construct_detail
+    WHERE order_id = #{order_id}
   </select>
 </mapper>

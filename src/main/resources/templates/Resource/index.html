@@ -58,7 +58,7 @@
 
                                     <!--</div>-->
 
-									<form class="form-horizontal" id="selectOptionForm" th:action="@{|/resource/selectByOption|}">
+									<form class="form-horizontal" id="selectOptionForm" >
 										<!--<h4 class="page-title">筛选条件:</h4>-->
 										<div class="form-group">
 											<label class="col-md-3">筛选条件：</label>
@@ -78,7 +78,7 @@
 											<div class="col-md-3">
 												<select class="form-control" name="parentDeptNo" id="parentDeptNo"  onchange="selectSubDept()">
 													<option value="0">请选择</option>
-													<option th:each="parentDept:${resourceMap.departmentList}" th:value="${parentDept.DeptNo}" th:text="${parentDept.DeptName}">请选择</option>
+													<!--<option th:each="parentDept:${resourceMap.departmentList}" th:value="${parentDept.DeptNo}" th:text="${parentDept.DeptName}">请选择</option>-->
 												</select>
 											</div>
 
@@ -128,17 +128,17 @@
 											</tr>
 										</thead>
 										<tbody id="tbody" >
-										<tr th:each="resource:${resourceMap.resourceList}">
-											<td th:text="${resourceStat.count}"></td>
-											<td th:text="${resource.ResourceNo}"></td>
-											<td th:text="${resource.ResourceType}"></td>
-											<td th:text="${resource.ServiceSupplier}"></td>
-											<td th:text="${resource.d1_isSecretary}"></td>
-											<td th:text="${resource.pdName}"></td>
-											<td th:text="${resource.dName}"></td>
-											<td th:text="${resource.UserName}"></td>
-											<td><a href="#">查看明细</a></td>
-										</tr>
+										<!--<tr th:each="resource:${resourceMap.resourceList}">-->
+											<!--<td th:text="${resourceStat.count}"></td>-->
+											<!--<td th:text="${resource.ResourceNo}"></td>-->
+											<!--<td th:text="${resource.ResourceType}"></td>-->
+											<!--<td th:text="${resource.ServiceSupplier}"></td>-->
+											<!--<td th:text="${resource.d1_isSecretary}"></td>-->
+											<!--<td th:text="${resource.pdName}"></td>-->
+											<!--<td th:text="${resource.dName}"></td>-->
+											<!--<td th:text="${resource.UserName}"></td>-->
+											<!--<td><a href="#">查看明细</a></td>-->
+										<!--</tr>-->
 										</tbody>
 									</table>
 									<!--分页-->

@@ -1,5 +1,6 @@
 package com.dgpalife.resourcemanagement.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.dgpalife.resourcemanagement.common.AjaxResult;
 import com.dgpalife.resourcemanagement.common.Const;
 import com.dgpalife.resourcemanagement.common.Page;
@@ -42,6 +43,9 @@ public class OrderController {
 
     @Autowired
     private TicketService ticketService;
+
+    @Autowired
+    private EquipmentPurchaseRecordService equipmentPurchaseRecordService;
 
 //    @Autowired
 //    private ActUserEntityService actUserEntityService;
@@ -214,6 +218,7 @@ public class OrderController {
             User user = (User)session.getAttribute("user");
             Order order = (Order)session.getAttribute("order");
             List<ConstructDetail> constructDetailList = (List<ConstructDetail>)session.getAttribute("constructDetailList");
+            List<EquipmentPurchaseRecord> equipmnetPurchaseDetailList = (List<EquipmentPurchaseRecord>)session.getAttribute("equipmnetPurchaseDetailList");
             if(order == null){
                 result.setSuccess(false);
                 result.setMessage("暂未填写工单基本信息，请重新填写");
@@ -221,7 +226,7 @@ public class OrderController {
             }
             if(constructDetailList==null){
                 result.setSuccess(false);
-                result.setMessage("暂未填写工单明细信息，请重新填写");
+                result.setMessage("暂未填写装机明细信息，请重新填写");
                 return result;
             }
 
@@ -243,9 +248,19 @@ public class OrderController {
             //发送给后台处理
             constructDetailService.saveConstructDetailBatch(constructDetailList);
 
+            for(EquipmentPurchaseRecord equipmentPurchaseRecord: equipmnetPurchaseDetailList){
+                equipmentPurchaseRecord.setCreateTime(sdf.format(date));
+                equipmentPurchaseRecord.setCreatorId(user.getId());
+                equipmentPurchaseRecord.setOrderId(order.getId());
+            }
+
+            //发送给后台处理
+            equipmentPurchaseRecordService.saveEquipmentPurchaseRecordByBatch(equipmnetPurchaseDetailList);
+
             //创建工单后销毁相关的session属性
             session.removeAttribute("order");
             session.removeAttribute("constructDetailList");
+            session.removeAttribute("equipmnetPurchaseDetailList");
 
             result.setSuccess(true);
         }catch (Exception e){
@@ -411,7 +426,51 @@ public class OrderController {
         return result;
     }
 
+    /**
+     * 将待处理工单的临时数据存放到session中，用于资源配对设备页面
+     * @param jsonObject
+     * @param session
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/preHandleOrder/construction/saveTemperateData")
+    public Object saveTemperateData(@RequestBody JSONObject jsonObject, HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try {
+            //User user = (User)session.getAttribute(Const.LOGIN_USER);
+            List<Resource> resourceList = jsonObject.getJSONArray("resourceDetailList").toJavaList(Resource.class);
+            List<Equipment> equipmentList = jsonObject.getJSONArray("equipmentList").toJavaList(Equipment.class);
+            Long order_id = jsonObject.getLong("order_id");
 
+            //判断获取的数据是否为空
+            if(resourceList.isEmpty()){
+                result.setMessage("未添加资源号码，请重新输入");
+                result.setSuccess(false);
+                return result;
+            }
+
+            session.setAttribute("resourceList",resourceList);
+            session.setAttribute("equipmentList",equipmentList);
+            session.setAttribute("order_id",order_id);
+
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("跳转异常，请联系管理员解决");
+        }
+        return result;
+    }
+
+    @RequestMapping("/preHandleOrder/construction/toPairExistEquipment")
+    public String toPairResource(){
+        return "/order/pre_handle_order/construction/pairEquipment/pairExistEquipment";
+    }
+
+    @RequestMapping("/preHandleOrder/construction/toPairNewEquipment")
+    public String toPairNewEquipment(){
+        return "/order/pre_handle_order/construction/pairEquipment/pairNewEquipment";
+    }
 
 //    @RequestMapping("/test")
 //    public String test(User user){

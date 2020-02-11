@@ -1,7 +1,9 @@
 package com.dgpalife.resourcemanagement.mapper;
 
 import com.dgpalife.resourcemanagement.model.Equipment;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface EquipmentMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -14,4 +16,6 @@ public interface EquipmentMapper {
     int updateByPrimaryKeySelective(Equipment record);
 
     int updateByPrimaryKey(Equipment record);
+
+    int queryByEquipmentSn(String equipmentSn);
 }

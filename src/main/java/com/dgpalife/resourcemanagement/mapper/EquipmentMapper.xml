@@ -4,14 +4,13 @@
   <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.Equipment">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="equipment_sn" jdbcType="VARCHAR" property="equipmentSn" />
-    <result column="equipment_type" jdbcType="VARCHAR" property="equipmentType" />
-    <result column="port_num" jdbcType="INTEGER" property="portNum" />
+    <result column="equipment_type_id" jdbcType="BIGINT" property="equipmentTypeId" />
     <result column="network_room_id" jdbcType="BIGINT" property="networkRoomId" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, equipment_sn, equipment_type, port_num, network_room_id, create_time, creator_id
+    id, equipment_sn, equipment_type_id, network_room_id, create_time, creator_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -24,11 +23,11 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Equipment">
-    insert into t_equipment (id, equipment_sn, equipment_type, 
-      port_num, network_room_id, create_time, 
+    insert into t_equipment (id, equipment_sn, equipment_type_id,
+      network_room_id, create_time,
       creator_id)
-    values (#{id,jdbcType=BIGINT}, #{equipmentSn,jdbcType=VARCHAR}, #{equipmentType,jdbcType=VARCHAR}, 
-      #{portNum,jdbcType=INTEGER}, #{networkRoomId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{equipmentSn,jdbcType=VARCHAR}, #{equipmentTypeId,jdbcType=BIGINT},
+      #{networkRoomId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR},
       #{creatorId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Equipment">
@@ -40,11 +39,8 @@
       <if test="equipmentSn != null">
         equipment_sn,
       </if>
-      <if test="equipmentType != null">
-        equipment_type,
-      </if>
-      <if test="portNum != null">
-        port_num,
+      <if test="equipmentTypeId != null">
+        equipment_type_id,
       </if>
       <if test="networkRoomId != null">
         network_room_id,
@@ -63,11 +59,8 @@
       <if test="equipmentSn != null">
         #{equipmentSn,jdbcType=VARCHAR},
       </if>
-      <if test="equipmentType != null">
-        #{equipmentType,jdbcType=VARCHAR},
-      </if>
-      <if test="portNum != null">
-        #{portNum,jdbcType=INTEGER},
+      <if test="equipmentTypeId != null">
+        #{equipmentTypeId,jdbcType=BIGINT},
       </if>
       <if test="networkRoomId != null">
         #{networkRoomId,jdbcType=BIGINT},
@@ -86,11 +79,8 @@
       <if test="equipmentSn != null">
         equipment_sn = #{equipmentSn,jdbcType=VARCHAR},
       </if>
-      <if test="equipmentType != null">
-        equipment_type = #{equipmentType,jdbcType=VARCHAR},
-      </if>
-      <if test="portNum != null">
-        port_num = #{portNum,jdbcType=INTEGER},
+      <if test="equipmentTypeId != null">
+        equipment_type_id = #{equipmentTypeId,jdbcType=BIGINT},
       </if>
       <if test="networkRoomId != null">
         network_room_id = #{networkRoomId,jdbcType=BIGINT},
@@ -107,11 +97,15 @@
   <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.Equipment">
     update t_equipment
     set equipment_sn = #{equipmentSn,jdbcType=VARCHAR},
-      equipment_type = #{equipmentType,jdbcType=VARCHAR},
-      port_num = #{portNum,jdbcType=INTEGER},
+      equipment_type_id = #{equipmentTypeId,jdbcType=BIGINT},
       network_room_id = #{networkRoomId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=VARCHAR},
       creator_id = #{creatorId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="queryByEquipmentSn" resultType="java.lang.Integer">
+    SELECT count(id) FROM t_equipment
+    WHERE equipment_sn = #{equipmentSn,jdbcType=VARCHAR}
+  </select>
 </mapper>

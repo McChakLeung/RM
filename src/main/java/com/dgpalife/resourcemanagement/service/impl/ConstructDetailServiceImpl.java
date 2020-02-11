@@ -20,4 +20,9 @@ public class ConstructDetailServiceImpl implements ConstructDetailService {
             constructDetailMapper.insertSelective(constructDetail);
         }
     }
+
+    @Override
+    public int getConstructDetailNumByOrderId(Long order_id) {
+        return constructDetailMapper.getConstructDetailNumByOrderId(order_id);
+    }
 }

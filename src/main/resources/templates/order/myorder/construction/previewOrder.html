@@ -75,17 +75,17 @@
 								<form role="form" style="margin-top:20px;">
 									<div class="form-group">
 										<label for="ftype">工单类型：</label>
-										<span id="ftype" class="form-control" th:text="${session.order.type}"></span>
+										<span id="ftype" class="form-control" th:text="${session?.order?.type}"></span>
 										<!--<input type="text" class="form-control" name="type" id="ftype" value="建设工单" disabled>-->
 									</div>
 									<div class="form-group">
 										<label for="ftitle">标题</label>
-										<span id="ftitle" class="form-control" th:text="${session.order.title}"></span>
+										<span id="ftitle" class="form-control" th:text="${session?.order?.title}"></span>
 										<!--<input type="text" class="form-control" name="title" id="ftitle">-->
 									</div>
 									<div class="form-group">
 										<label for="fapply_department">申请职能部门</label>
-										<span id="fapply_department" class="form-control" th:text="${session.order.applyDepartment.departmentName}"></span>
+										<span id="fapply_department" class="form-control" th:text="${session?.order?.applyDepartment?.departmentName}"></span>
 										<!--<input type="text" class="form-control" id="fapply_department" placeholder="请选择职能部门或营业区" apply_department_id="" onclick="doLoadApplyDepartment()">-->
 									</div>
 									<!--<div class="form-group">-->
@@ -94,23 +94,23 @@
 									<!--</div>-->
 									<div class="form-group">
 										<label for="fproject">所属项目</label>
-										<span id="fproject" class="form-control" th:text="${session.order.project.projectName}"></span>
+										<span id="fproject" class="form-control" th:text="${session?.order?.project?.projectName}"></span>
 										<!--<input type="text" class="form-control" id="fproject" placeholder="请选择所属项目" project_id="">-->
 									</div>
 									<div class="form-group">
 										<label for="fproposer">申请人</label>
-										<span id="fproposer" class="form-control" th:text="${session.user.username}"></span>
+										<span id="fproposer" class="form-control" th:text="${session?.user?.username}"></span>
 										<!--<input type="text" class="form-control" name="proposer" id="fproposer" th:value="${session.user.username}" th:attr="proposer_id = ${session.user.id}" disabled>-->
 									</div>
 									<div class="form-group">
 										<label for="fcontact">联系方式</label>
-										<span id="fcontact" class="form-control" th:text="${session.user.contact}"></span>
+										<span id="fcontact" class="form-control" th:text="${session?.user?.contact}"></span>
 										<!--<input type="text" class="form-control" name="contact" id="fcontact" th:value="${session.user.contact!=null}?${session.user.contact}:''" disabled>-->
 										<!--<input type="text" class="form-control" name="contact" id="fcontact" th:value="${session.user.contact}" disabled>-->
 									</div>
 									<div class="form-group">
 										<label for="freason">申请原因</label>
-										<span id="freason" class="form-control" th:text="${session.order.reason}"></span>
+										<span id="freason" class="form-control" th:text="${session?.order?.reason}"></span>
 										<!--<input type="textarea"  rows="5" cols="30" class="form-control" name="reason" id="freason">-->
 										<!--<textarea  rows="3"  class="form-control" name="reason" id="freason"></textarea>-->
 									</div>
@@ -134,16 +134,16 @@
 										</tr>
 										</thead>
 										<tbody >
-											<tr th:each="constructDetail:${session.constructDetailList}">
-												<td th:text="${constructDetailStat.count}">序号</td>
-												<td th:text="${constructDetail.usedepartment.departmentName}">使用科室|外勤部门</td>
-												<td th:text="${constructDetail.usedepartment_type}">部门类型</td>
-												<td th:text="${constructDetail.operator}">运营商</td>
-												<td th:text="${constructDetail.resourceType}">资源类型</td>
-												<td th:text="${constructDetail.number}">装机数量</td>
-												<td th:text="${constructDetail.expense.price}">资费</td>
-												<td th:text="${constructDetail.workplace.workplaceName}">所在职场</td>
-												<td th:text="${constructDetail.networkRoom.networkroom_name}">机房</td>
+											<tr th:each="constructDetail:${session?.constructDetailList}">
+												<td th:text="${constructDetailStat?.count}">序号</td>
+												<td th:text="${constructDetail?.usedepartment?.departmentName}">使用科室|外勤部门</td>
+												<td th:text="${constructDetail?.usedepartment_type}">部门类型</td>
+												<td th:text="${constructDetail?.operator}">运营商</td>
+												<td th:text="${constructDetail?.resourceType}">资源类型</td>
+												<td th:text="${constructDetail?.construct_number}">装机数量</td>
+												<td th:text="${constructDetail?.expense?.price}">资费</td>
+												<td th:text="${constructDetail?.workplace?.workplaceName}">所在职场</td>
+												<td th:text="${constructDetail?.networkRoom?.networkroom_name}">机房</td>
 											</tr>
 										</tbody>
 									</table>
@@ -159,7 +159,6 @@
 											<td>购买设备类型名称</td>
 											<td>购买数量</td>
 											<td>设备单价</td>
-											<td>列支成本中心</td>
 										</tr>
 										</thead>
 										<tbody >
@@ -168,7 +167,6 @@
 											<td th:text="${equipmnetPurchaseDetail.equipment_type.equipmentName}">购买设备类型名称</td>
 											<td th:text="${equipmnetPurchaseDetail.purchaseNum}">购买数量</td>
 											<td th:text="${equipmnetPurchaseDetail.expense.price}">设备单价</td>
-											<td th:text="${equipmnetPurchaseDetail.accountCenter}">列支成本中心</td>
 										</tr>
 										</tbody>
 									</table>

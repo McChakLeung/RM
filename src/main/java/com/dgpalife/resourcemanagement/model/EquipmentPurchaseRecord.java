@@ -9,19 +9,27 @@ public class EquipmentPurchaseRecord {
 
     private Expense expense;
 
-    private String accountCenter;
-
     private Long equipment_type_id;
 
     private Equipment_type equipment_type;
 
     private Long projectId;
 
+    private Project project;
+
     private Long orderId;
 
     private Long creatorId;
 
     private String createTime;
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
 
     public Expense getExpense() {
         return expense;
@@ -69,14 +77,6 @@ public class EquipmentPurchaseRecord {
 
     public void setExpenseId(Long expenseId) {
         this.expenseId = expenseId;
-    }
-
-    public String getAccountCenter() {
-        return accountCenter;
-    }
-
-    public void setAccountCenter(String accountCenter) {
-        this.accountCenter = accountCenter;
     }
 
     public Long getProjectId() {

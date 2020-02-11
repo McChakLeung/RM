@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ConstructDetailService {
     void saveConstructDetailBatch(List<ConstructDetail> constructDetailList);
+
+    int getConstructDetailNumByOrderId(Long order_id);
 }

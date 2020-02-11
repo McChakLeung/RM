@@ -13,7 +13,7 @@ public class ConstructDetail {
 
     private String resourceType;
 
-    private Integer number;
+    private Integer construct_number;
 
     private Long expenseId;
 
@@ -157,12 +157,12 @@ public class ConstructDetail {
         this.resourceType = resourceType;
     }
 
-    public Integer getNumber() {
-        return number;
+    public Integer getConstruct_number() {
+        return construct_number;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setConstruct_number(Integer construct_number) {
+        this.construct_number = construct_number;
     }
 
     public Long getExpenseId() {

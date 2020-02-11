@@ -3,14 +3,15 @@
 <mapper namespace="com.dgpalife.resourcemanagement.mapper.EquipmentPortMapper">
   <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.EquipmentPort">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="port_no" jdbcType="INTEGER" property="portNo" />
-    <result column="equipment_id" jdbcType="BIGINT" property="equipmentId" />
-    <result column="resource_id" jdbcType="BIGINT" property="resourceId" />
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
+    <result column="port_type" jdbcType="VARCHAR" property="port_type" />
+    <result column="port_no" jdbcType="INTEGER" property="port_no" />
+    <result column="equipment_id" jdbcType="BIGINT" property="equipment_id" />
+    <result column="resource_id" jdbcType="BIGINT" property="resource_id" />
+    <result column="create_time" jdbcType="VARCHAR" property="create_time" />
+    <result column="creator_id" jdbcType="BIGINT" property="creator_id" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, port_no, equipment_id, resource_id, create_time, creator_id
+    id ,port_type, port_no, equipment_id, resource_id, create_time, creator_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -23,11 +24,12 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.EquipmentPort">
-    insert into t_equipment_port (id, port_no, equipment_id, 
-      resource_id, create_time, creator_id
+    insert into t_equipment_port (
+      id ,port_type, port_no, equipment_id, resource_id, create_time, creator_id
       )
-    values (#{id,jdbcType=BIGINT}, #{portNo,jdbcType=INTEGER}, #{equipmentId,jdbcType=BIGINT}, 
-      #{resourceId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}, #{creatorId,jdbcType=BIGINT}
+    values (
+      #{id,jdbcType=BIGINT}, #{port_type,jdbcType=VARCHAR}, #{port_no,jdbcType=INTEGER}, #{equipment_id,jdbcType=BIGINT},
+      #{resource_id,jdbcType=BIGINT}, #{create_time,jdbcType=VARCHAR}, #{creator_id,jdbcType=BIGINT}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.EquipmentPort">
@@ -36,71 +38,81 @@
       <if test="id != null">
         id,
       </if>
-      <if test="portNo != null">
+      <if test="port_type != null">
+        port_type,
+      </if>
+      <if test="port_no != null">
         port_no,
       </if>
-      <if test="equipmentId != null">
+      <if test="equipment_id != null">
         equipment_id,
       </if>
-      <if test="resourceId != null">
+      <if test="resource_id != null">
         resource_id,
       </if>
-      <if test="createTime != null">
+      <if test="create_time != null">
         create_time,
       </if>
-      <if test="creatorId != null">
-        creator_id,
+      <if test="creator_id != null">
+        creator_id
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="portNo != null">
-        #{portNo,jdbcType=INTEGER},
+      <if test="port_type != null">
+        #{port_type,jdbcType=VARCHAR},
       </if>
-      <if test="equipmentId != null">
-        #{equipmentId,jdbcType=BIGINT},
+      <if test="port_no != null">
+        #{port_no,jdbcType=INTEGER},
       </if>
-      <if test="resourceId != null">
-        #{resourceId,jdbcType=BIGINT},
+      <if test="equipment_id != null">
+        #{equipment_id,jdbcType=BIGINT},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=VARCHAR},
+      <if test="resource_id != null">
+        #{resource_id,jdbcType=BIGINT},
       </if>
-      <if test="creatorId != null">
-        #{creatorId,jdbcType=BIGINT},
+      <if test="create_time != null">
+        #{create_time,jdbcType=VARCHAR},
+      </if>
+      <if test="creator_id != null">
+        #{creator_id,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.EquipmentPort">
     update t_equipment_port
     <set>
-      <if test="portNo != null">
-        port_no = #{portNo,jdbcType=INTEGER},
+      <if test="port_type != null">
+        port_type = #{port_type,jdbcType=VARCHAR},
       </if>
-      <if test="equipmentId != null">
-        equipment_id = #{equipmentId,jdbcType=BIGINT},
+      <if test="port_no != null">
+        port_no = #{port_no,jdbcType=INTEGER},
       </if>
-      <if test="resourceId != null">
-        resource_id = #{resourceId,jdbcType=BIGINT},
+      <if test="equipment_id != null">
+        equipment_id = #{equipment_id,jdbcType=BIGINT},
       </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=VARCHAR},
+      <if test="resource_id != null">
+        resource_id = #{resource_id,jdbcType=BIGINT},
       </if>
-      <if test="creatorId != null">
-        creator_id = #{creatorId,jdbcType=BIGINT},
+      <if test="create_time != null">
+        create_time = #{create_time,jdbcType=VARCHAR},
+      </if>
+      <if test="creator_id != null">
+        creator_id = #{creator_id,jdbcType=BIGINT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.EquipmentPort">
     update t_equipment_port
-    set port_no = #{portNo,jdbcType=INTEGER},
-      equipment_id = #{equipmentId,jdbcType=BIGINT},
-      resource_id = #{resourceId,jdbcType=BIGINT},
-      create_time = #{createTime,jdbcType=VARCHAR},
-      creator_id = #{creatorId,jdbcType=BIGINT}
+    set port_type = #{port_type,jdbcType=VARCHAR},
+      port_no = #{port_no,jdbcType=INTEGER},
+      equipment_id = #{equipment_id,jdbcType=BIGINT},
+      resource_id = #{resource_id,jdbcType=BIGINT},
+      create_time = #{create_time,jdbcType=VARCHAR},
+      creator_id = #{creator_id,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

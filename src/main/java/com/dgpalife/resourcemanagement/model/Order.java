@@ -106,6 +106,16 @@ public class Order {
 
     private List<ChangeItemRecord> changeItemRecordList;
 
+    private List<EquipmentPurchaseRecord> equipmentPurchaseRecordList;
+
+    public List<EquipmentPurchaseRecord> getEquipmentPurchaseRecordList() {
+        return equipmentPurchaseRecordList;
+    }
+
+    public void setEquipmentPurchaseRecordList(List<EquipmentPurchaseRecord> equipmentPurchaseRecordList) {
+        this.equipmentPurchaseRecordList = equipmentPurchaseRecordList;
+    }
+
     public Project getProject() {
         return project;
     }

@@ -39,6 +39,12 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private NetworkRoomMapper networkRoomMapper;
 
+    @Autowired
+    private EquipmentPurchaseRecordMapper equipmentPurchaseRecordMapper;
+
+    @Autowired
+    private Equipment_typeMapper equipment_typeMapper;
+
 //    @Override
 //    public Integer createOrder(Order order) {
 //        try{
@@ -100,10 +106,18 @@ public class OrderServiceImpl implements OrderService {
             constructDetail.setWorkplace(workplaceMapper.selectByPrimaryKey(constructDetail.getWorkplaceId()));
             constructDetail.setNetworkRoom(networkRoomMapper.selectByPrimaryKey(constructDetail.getNetworkRoomId()));
         }
+        List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = equipmentPurchaseRecordMapper.selectEquipmentPurchaseRecordByOrderID(order.getId());
+        for(EquipmentPurchaseRecord equipmentPurchaseRecord: equipmentPurchaseRecordList){
+            equipmentPurchaseRecord.setEquipment_type(equipment_typeMapper.selectByPrimaryKey(equipmentPurchaseRecord.getEquipment_type_id()));
+            equipmentPurchaseRecord.setExpense(expenseMapper.selectByPrimaryKey(equipmentPurchaseRecord.getExpenseId()));
+//            constructDetail.setWorkplace(workplaceMapper.selectByPrimaryKey(constructDetail.getWorkplaceId()));
+//            constructDetail.setNetworkRoom(networkRoomMapper.selectByPrimaryKey(constructDetail.getNetworkRoomId()));
+        }
         order.setApplyDepartment(applyDepartment);
         order.setProposer(user);
         order.setProject(project);
         order.setConstructDetailList(constructDetailList);
+        order.setEquipmentPurchaseRecordList(equipmentPurchaseRecordList);
         return order;
     }
 

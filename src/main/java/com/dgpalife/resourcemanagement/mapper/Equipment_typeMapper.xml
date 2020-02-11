@@ -5,12 +5,13 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName" />
     <result column="equipment_type" jdbcType="VARCHAR" property="equipmentType" />
-    <result column="equipment_portnum" jdbcType="INTEGER" property="equipmentPortnum" />
+    <result column="telphone_portnum" jdbcType="INTEGER" property="telphone_portnum" />
+    <result column="network_portnum" jdbcType="INTEGER" property="network_portnum" />
     <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, equipment_name, equipment_type, equipment_portnum, creator_id, create_time
+    id, equipment_name, equipment_type, telphone_portnum, network_portnum,creator_id, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -23,11 +24,11 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Equipment_type">
-    insert into t_equipment_type (id, equipment_name, equipment_type, 
-      equipment_portnum, creator_id, create_time
+    insert into t_equipment_type (
+      id, equipment_name, equipment_type, telphone_portnum, network_portnum,creator_id, create_time
       )
     values (#{id,jdbcType=BIGINT}, #{equipmentName,jdbcType=VARCHAR}, #{equipmentType,jdbcType=VARCHAR}, 
-      #{equipmentPortnum,jdbcType=INTEGER}, #{creatorId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}
+      #{telphone_portnum,jdbcType=INTEGER}, #{network_portnum,jdbcType=INTEGER},#{creatorId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Equipment_type">
@@ -42,8 +43,11 @@
       <if test="equipmentType != null">
         equipment_type,
       </if>
-      <if test="equipmentPortnum != null">
-        equipment_portnum,
+      <if test="telphone_portnum != null">
+        telphone_portnum,
+      </if>
+      <if test="network_portnum != null">
+        network_portnum,
       </if>
       <if test="creatorId != null">
         creator_id,
@@ -62,8 +66,11 @@
       <if test="equipmentType != null">
         #{equipmentType,jdbcType=VARCHAR},
       </if>
-      <if test="equipmentPortnum != null">
-        #{equipmentPortnum,jdbcType=INTEGER},
+      <if test="telphone_portnum != null">
+        #{telphone_portnum,jdbcType=INTEGER},
+      </if>
+      <if test="network_portnum != null">
+        #{network_portnum,jdbcType=INTEGER},
       </if>
       <if test="creatorId != null">
         #{creatorId,jdbcType=BIGINT},
@@ -82,8 +89,11 @@
       <if test="equipmentType != null">
         equipment_type = #{equipmentType,jdbcType=VARCHAR},
       </if>
-      <if test="equipmentPortnum != null">
-        equipment_portnum = #{equipmentPortnum,jdbcType=INTEGER},
+      <if test="telphone_portnum != null">
+        telphone_portnum = #{telphone_portnum,jdbcType=INTEGER},
+      </if>
+      <if test="network_portnum != null">
+        network_portnum = #{network_portnum,jdbcType=INTEGER},
       </if>
       <if test="creatorId != null">
         creator_id = #{creatorId,jdbcType=BIGINT},
@@ -98,7 +108,8 @@
     update t_equipment_type
     set equipment_name = #{equipmentName,jdbcType=VARCHAR},
       equipment_type = #{equipmentType,jdbcType=VARCHAR},
-      equipment_portnum = #{equipmentPortnum,jdbcType=INTEGER},
+      telphone_portnum = #{telphone_portnum,jdbcType=INTEGER},
+      network_portnum = #{network_portnum,jdbcType=INTEGER},
       creator_id = #{creatorId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
