@@ -1,51 +1,51 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<beans xmlns="http://www.springframework.org/schema/beans"-->
+       <!--xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+       <!--xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">-->
 
-    <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
-          id="transactionManager">
-        <!--注入数据库连接池-->
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
-        <property name="driverClass" value="com.mysql.cj.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/resourcemanagement?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=Hongkong&amp;nullCatalogMeansCurrent=true" />
-        <property name="username" value="root" />
-        <property name="password" value="Pa888888" />
-    </bean>
-    <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
-        <property name="dataSource" ref="dataSource" />
-        <property name="transactionManager" ref="transactionManager" />
-        <property name="databaseSchemaUpdate" value="true" />
-        <property name="jobExecutorActivate" value="true" />
-        <property name="labelFontName" value="宋体" />
-        <property name="activityFontName" value="宋体" />
-        <!-- 自定义SessionFactory -->
-        <property name="customSessionFactories">
-            <list>
-                <bean class="com.dgpalife.resourcemanagement.service.activiti.CustomUserEntityManagerFactory">
-                    <property name="customUserEntityManager" ref="customUserEntityManager">
-                    </property>
-                </bean>
-                <bean class="com.dgpalife.resourcemanagement.service.activiti.CustomGroupEntityManagerFactory">
-                    <property name="customGroupEntityManager" ref="customGroupEntityManager">
-                    </property>
-                </bean>
-            </list>
-        </property>
-    </bean>
-    <bean id="customUserEntityManager" class="com.dgpalife.resourcemanagement.service.activiti.CustomUserEntityManager">
-    </bean>
-    <bean id="customGroupEntityManager" class="com.dgpalife.resourcemanagement.service.activiti.CustomGroupEntityManager">
-    </bean>
+    <!--<bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager"-->
+          <!--id="transactionManager">-->
+        <!--&lt;!&ndash;注入数据库连接池&ndash;&gt;-->
+        <!--<property name="dataSource" ref="dataSource"/>-->
+    <!--</bean>-->
+    <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">-->
+        <!--<property name="driverClass" value="com.mysql.cj.jdbc.Driver" />-->
+        <!--<property name="url" value="jdbc:mysql://localhost:3306/resourcemanagement?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=Hongkong&amp;nullCatalogMeansCurrent=true" />-->
+        <!--<property name="username" value="root" />-->
+        <!--<property name="password" value="Pa888888" />-->
+    <!--</bean>-->
+    <!--<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">-->
+        <!--<property name="dataSource" ref="dataSource" />-->
+        <!--<property name="transactionManager" ref="transactionManager" />-->
+        <!--<property name="databaseSchemaUpdate" value="true" />-->
+        <!--<property name="jobExecutorActivate" value="true" />-->
+        <!--<property name="labelFontName" value="宋体" />-->
+        <!--<property name="activityFontName" value="宋体" />-->
+        <!--&lt;!&ndash; 自定义SessionFactory &ndash;&gt;-->
+        <!--<property name="customSessionFactories">-->
+            <!--<list>-->
+                <!--<bean class="com.dgpalife.resourcemanagement.service.activiti.CustomUserEntityManagerFactory">-->
+                    <!--<property name="customUserEntityManager" ref="customUserEntityManager">-->
+                    <!--</property>-->
+                <!--</bean>-->
+                <!--<bean class="com.dgpalife.resourcemanagement.service.activiti.CustomGroupEntityManagerFactory">-->
+                    <!--<property name="customGroupEntityManager" ref="customGroupEntityManager">-->
+                    <!--</property>-->
+                <!--</bean>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+    <!--<bean id="customUserEntityManager" class="com.dgpalife.resourcemanagement.service.activiti.CustomUserEntityManager">-->
+    <!--</bean>-->
+    <!--<bean id="customGroupEntityManager" class="com.dgpalife.resourcemanagement.service.activiti.CustomGroupEntityManager">-->
+    <!--</bean>-->
 
-    <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean" destroy-method="destroy">
-        <property name="processEngineConfiguration" ref="processEngineConfiguration" />
-    </bean>
+    <!--<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean" destroy-method="destroy">-->
+        <!--<property name="processEngineConfiguration" ref="processEngineConfiguration" />-->
+    <!--</bean>-->
 
-    <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />
-    <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
-    <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />
-    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />
-</beans>
+    <!--<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />-->
+    <!--<bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />-->
+    <!--<bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />-->
+    <!--<bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />-->
+<!--</beans>-->

@@ -14,14 +14,15 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-//@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
-@ImportResource(locations = {"classpath:/spring/*.xml"})
-@SpringBootApplication
-@ServletComponentScan
-@EnableAutoConfiguration(exclude = {
-		//org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration.class,
-		org.activiti.spring.boot.SecurityAutoConfiguration.class
-})
+@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+//@ImportResource(locations = {"classpath:/spring/*.xml"})
+//@SpringBootApplication
+//@ServletComponentScan
+@EnableAutoConfiguration
+//		(exclude = {
+//		org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration.class
+////		org.activiti.spring.boot.SecurityAutoConfiguration.class
+//})
 public class SpringbootResourcemanagementApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
