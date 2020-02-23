@@ -17,6 +17,26 @@ public class User {
 
     private String contact;
 
+    private Long department_id;
+
+    private Department department;
+
+    public Long getDepartment_id() {
+        return department_id;
+    }
+
+    public void setDepartment_id(Long department_id) {
+        this.department_id = department_id;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
     public String getContact() {
         return contact;
     }

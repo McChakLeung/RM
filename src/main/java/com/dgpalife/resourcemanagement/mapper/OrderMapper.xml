@@ -345,4 +345,10 @@
     ORDER BY t1.create_time DESC
     limit #{startline}, #{pagesize}
   </select>
+
+  <select id="queryOrderlistByResourceID" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" />
+    FROM t_order
+    WHERE resource_id = #{id}
+  </select>
 </mapper>

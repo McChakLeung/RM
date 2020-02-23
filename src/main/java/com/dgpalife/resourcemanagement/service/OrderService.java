@@ -27,5 +27,7 @@ public interface OrderService {
 
     Page<Object> selectPreHandleOrder(Map<String, Object> params);
 
+    List<Order> queryOrderlistByResourceID(Long id);
+
     //Order selectOrderByIdAndStatus(Long id, String Status);
 }

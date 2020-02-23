@@ -6,6 +6,7 @@
     <result column="resource_no" jdbcType="VARCHAR" property="resource_no" />
     <result column="resourc_type" jdbcType="VARCHAR" property="resourc_type" />
     <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="usedepartment_type" jdbcType="VARCHAR" property="usedepartment_type" />
     <result column="workplace_id" jdbcType="BIGINT" property="workplace_id" />
     <result column="network_room_id" jdbcType="BIGINT" property="network_room_id" />
     <result column="department_id" jdbcType="BIGINT" property="department_id" />
@@ -19,7 +20,7 @@
     <result column="creator_id" jdbcType="BIGINT" property="creator_id" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, resource_no, resourc_type, operator, workplace_id, network_room_id, department_id, usedepartment_id,
+    id, resource_no, resourc_type, operator,usedepartment_type,workplace_id, network_room_id, department_id, usedepartment_id,
     username, equipment_id, equipment_port_id, expense_id, account_center, create_time, creator_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -34,11 +35,11 @@
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Resource">
     insert into t_resource (
-      id, resource_no, resourc_type, operator, workplace_id, network_room_id, department_id, usedepartment_id,
+      id, resource_no, resourc_type, operator,usedepartment_type, workplace_id, network_room_id, department_id, usedepartment_id,
       username, equipment_id, equipment_port_id, expense_id, account_center, create_time, creator_id
     )
     values (#{id,jdbcType=BIGINT}, #{resource_no,jdbcType=VARCHAR}, #{resourc_type,jdbcType=VARCHAR},
-      #{operator,jdbcType=VARCHAR},#{workplace_id,jdbcType=BIGINT}, #{network_room_id,jdbcType=BIGINT},
+      #{operator,jdbcType=VARCHAR},#{usedepartment_type,jdbcType=VARCHAR},#{workplace_id,jdbcType=BIGINT}, #{network_room_id,jdbcType=BIGINT},
       #{department_id,jdbcType=BIGINT}, #{usedepartment_id,jdbcType=BIGINT},
       #{username,jdbcType=VARCHAR}, #{equipment_id,jdbcType=BIGINT}, #{equipment_port_id,jdbcType=BIGINT},
       #{expense_id,jdbcType=BIGINT},#{account_center,jdbcType=VARCHAR},
@@ -58,6 +59,9 @@
       </if>
       <if test="operator != null">
         operator,
+      </if>
+      <if test="usedepartment_type != null">
+        usedepartment_type,
       </if>
       <if test="workplace_id != null">
         workplace_id,
@@ -107,6 +111,9 @@
       <if test="operator != null">
         #{operator,jdbcType=VARCHAR},
       </if>
+      <if test="usedepartment_type != null">
+        #{usedepartment_type,jdbcType=VARCHAR},
+      </if>
       <if test="workplace_id != null">
         #{workplace_id,jdbcType=BIGINT},
       </if>
@@ -154,6 +161,9 @@
       <if test="operator != null">
         operator = #{operator,jdbcType=VARCHAR},
       </if>
+      <if test="usedepartment_type != null">
+        usedepartment_type = #{usedepartment_type,jdbcType=VARCHAR},
+      </if>
       <if test="workplace_id != null">
         workplace_id = #{workplace_id,jdbcType=BIGINT},
       </if>
@@ -196,6 +206,7 @@
       resource_no = #{resource_no,jdbcType=VARCHAR},
       resourc_type = #{resourc_type,jdbcType=VARCHAR},
       operator = #{operator,jdbcType=VARCHAR},
+      usedepartment_type = #{usedepartment_type,jdbcType=VARCHAR},
       workplace_id = #{workplace_id,jdbcType=BIGINT},
       network_room_id = #{network_room_id,jdbcType=BIGINT},
       department_id = #{department_id,jdbcType=BIGINT},
@@ -213,5 +224,70 @@
   <select id="queryByResourceNo" resultType="java.lang.Integer">
     SELECT count(id) from t_resource
     WHERE resource_no = #{resource_no,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="queryResourceNo" resultType="map">
+    SELECT t1.id id,t1.resource_no resource_no, t1.resourc_type resourc_type, t1.operator operator,
+    t1.usedepartment_type usedepartment_type, t2.department_name department_name,
+    t3.department_name use_department_name, t1.username username
+    FROM t_resource t1
+    LEFT JOIN t_department t2 ON t1.department_id = t2.id
+    LEFT JOIN t_department t3 ON t1.usedepartment_id = t3.id
+    <where>
+      <if test="resource_no != null">
+        AND t1.resource_no = #{resource_no}
+      </if>
+      <if test="resourc_type != null">
+        AND t1.resourc_type = #{resourc_type}
+      </if>
+      <if test="department_id != null">
+        AND t1.department_id = #{department_id}
+      </if>
+      <if test="usedepartment_id != null">
+        AND t1.usedepartment_id = #{usedepartment_id}
+      </if>
+      <if test="usedepartment_type != null">
+        AND t1.usedepartment_type = #{usedepartment_type}
+      </if>
+      <if test="operator != null">
+        AND t1.operator = #{operator}
+      </if>
+    </where>
+    ORDER BY t1.create_time DESC
+    limit #{startline}, #{pagesize}
+  </select>
+
+  <select id="selectCount" resultType="Integer">
+    SELECT COUNT(id) FROM t_resource
+    <where>
+      <if test="resource_no != null">
+        AND resource_no = #{resource_no}
+      </if>
+      <if test="resourc_type != null">
+        AND resourc_type = #{resourc_type}
+      </if>
+      <if test="department_id != null">
+        AND department_id = #{department_id}
+      </if>
+      <if test="usedepartment_id != null">
+        AND usedepartment_id = #{usedepartment_id}
+      </if>
+      <if test="usedepartment_type != null">
+        AND usedepartment_type = #{usedepartment_type}
+      </if>
+      <if test="operator != null">
+        AND operator = #{operator}
+      </if>
+    </where>
+    ORDER BY create_time DESC
+    limit #{startline}, #{pagesize}
+  </select>
+
+  <select id="queryPortInfoByResourceID" resultType="map">
+    SELECT t2.equipment_sn equipment_sn,t3.equipment_name equipment_name,t1.port_no port_no, t1.equipment_id equipment_id
+    FROM t_equipment_port t1
+    LEFT JOIN t_equipment t2 ON t1.equipment_id = t2.id
+    LEFT JOIN t_equipment_type t3 ON t2.equipment_type_id = t3.id
+    WHERE t1.resource_id = #{id}
   </select>
 </mapper>

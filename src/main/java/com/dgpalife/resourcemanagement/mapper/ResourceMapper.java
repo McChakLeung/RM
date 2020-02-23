@@ -3,6 +3,9 @@ package com.dgpalife.resourcemanagement.mapper;
 import com.dgpalife.resourcemanagement.model.Resource;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+import java.util.Map;
+
 @Mapper
 public interface ResourceMapper {
     int deleteByPrimaryKey(Long id);
@@ -18,4 +21,10 @@ public interface ResourceMapper {
     int updateByPrimaryKey(Resource record);
 
     int queryByResourceNo(String resource_no);
+
+    List<Map<String,Object>> queryResourceNo(Map<String, Object> params);
+
+    Integer selectCount(Map<String, Object> params);
+
+    Map<String,Object> queryPortInfoByResourceID(Long id);
 }

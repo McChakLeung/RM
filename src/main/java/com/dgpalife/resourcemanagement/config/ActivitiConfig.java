@@ -1,10 +1,7 @@
 package com.dgpalife.resourcemanagement.config;
 
 
-import com.dgpalife.resourcemanagement.service.activiti.CustomGroupEntityManagerFactory;
-import com.dgpalife.resourcemanagement.service.activiti.CustomUserEntityManagerFactory;
 import org.activiti.engine.*;
-import org.activiti.engine.impl.interceptor.SessionFactory;
 import org.activiti.spring.SpringProcessEngineConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +12,6 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Configuration
 public class ActivitiConfig {

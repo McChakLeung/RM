@@ -30,7 +30,7 @@
 	<script th:src="@{|/static/js/scripts/klorofil-common.js|}"></script>
 	<script th:src="@{|/static/js/layer/layer.js|}"></script>
 	<script th:src="@{|/static/js/layui/layui.js|}"></script>
-	<script th:src="@{|/static/js/common.js|}"></script>
+	<script th:src="@{|/static/js/vendor/common.js|}"></script>
 	<script th:src="@{|/static/ztree/jquery.ztree.all-3.5.min.js|}"></script>
 
 </head>
@@ -404,6 +404,7 @@
             success:function (result) {
             if(result.success == true){
                 layer.msg("该号码已存在，请确认后再输入", {time:1000, icon:5, shift:6});
+                return false;
             }
         }
 		})

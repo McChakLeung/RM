@@ -12,6 +12,8 @@ public class Resource {
 
     private String operator;
 
+    private String usedepartment_type;
+
     private Long workplace_id;
 
     private Workplace workplace;
@@ -51,6 +53,14 @@ public class Resource {
     private User creator;
 
     private List<Order> orderList;
+
+    public String getUsedepartment_type() {
+        return usedepartment_type;
+    }
+
+    public void setUsedepartment_type(String usedepartment_type) {
+        this.usedepartment_type = usedepartment_type;
+    }
 
     public Long getId() {
         return id;

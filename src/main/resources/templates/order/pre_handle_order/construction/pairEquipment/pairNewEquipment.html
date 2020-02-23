@@ -34,15 +34,16 @@
     <script th:src="@{|/static/js/vendor/jquery/jquery.min.js|}"></script>
     <script th:src="@{|/static/js/vendor/bootstrap/js/bootstrap.min.js|}"></script>
     <script th:src="@{|/static/js/vendor/jquery-slimscroll/jquery.slimscroll.min.js|}"></script>
-    <script th:src="@{|/static/js/scripts/klorofil-common.js|}"></script>
+    <!--<script th:src="@{|/static/js/klorofil-common.js|}"></script>-->
     <script th:src="@{|/static/js/layer/layer.js|}"></script>
     <script th:src="@{|/static/js/layui/layui.js|}"></script>
-    <script th:src="@{|/static/js/common.js|}"></script>
+    <script th:src="@{|/static/js/vendor/common.js|}"></script>
     <script th:src="@{|/static/ztree/jquery.ztree.all-3.5.min.js|}"></script>
     <script th:src="@{|/static/droppable/js/jquery.min.js|}"></script>
     <script th:src="@{|/static/droppable/js/jquery-ui.min.js|}"></script>
     <script th:src="@{|/static/droppable/js/jquery.top-droppable.js|}"></script>
     <script th:src="@{|/static/droppable/js/sweet-alert.min.js|}"></script>
+    <script th:src="@{|/static/js/vendor/jtopo/jtopo-min.js|}"></script>
 
 </head>
 
@@ -71,7 +72,7 @@
                         <!-- BASIC TABLE -->
                         <div class="panel">
                             <div class="panel-body">
-
+                                <!--<canvas id="canvas" width="985" height="400"></canvas>-->
                                 <div class="select-wrapper">
                                     <div class="div-group">
                                         <br>
@@ -84,25 +85,28 @@
                                             </div>
                                         </div>
                                         <br>
-                                        <h2 style="font-size: 18px">设备端口清单</h2>
+                                        <h2 style="font-size: 18px">设备及端口清单</h2>
                                         <br>
                                         <!--<div class="width-58 clearfix">-->
                                         <div class="div-group">
                                             <div class="form-content pink-border-color border-2px clearfix" data-bs="lead" id="leading">
-                                                <div class="form-left">
-                                                    <div class="form-title pink-bg-color">部门负责人</div>
-                                                </div>
-                                                <div class="form-right">
+                                                <!--<div class="form-left">-->
+                                                    <!--<div class="form-title pink-bg-color">部门负责人</div>-->
+                                                <!--</div>-->
+                                                <!--<div class="form-right">-->
                                                     <div class="score-wrapper clearfix">
                                                         <div class="score-f">
                                                             <span class="score-span blue-bg"></span>
-                                                            100 :
+                                                            端口1 :
                                                         </div>
                                                         <div class="top-droppable pink-border-color people-group clearfix">
-
+                                                            <div>1</div>
+                                                            <div>1</div>
+                                                            <div>1</div>
+                                                            <div>1</div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                <!--</div>-->
                                             </div>
                                             <br>
                                         </div>
@@ -119,17 +123,6 @@
             </div>
         </div>
         <!-- END MAIN CONTENT -->
-        <div id="department_layer" style="display: none;">
-            <div id="departmentTree" class="ztree"></div>
-        </div>
-        <div style="padding: 1% 1%;display: none" id="project_layer">
-            搜索项目：
-            <div class="layui-inline">
-                <input class="layui-input" name="projectName" id="demoReload" placeholder="请输入项目名称" autocomplete="off">
-            </div>
-            <button class="layui-btn" data-type="reload" id="search">搜索</button>
-            <table class="layui-table"  id="ftable" lay-filter="project"></table>
-        </div>
     </div>
     <!-- END MAIN -->
     <div class="clearfix"></div>
@@ -138,6 +131,18 @@
 </div>
 <!-- END WRAPPER -->
 <script type="text/javascript">
+
+    // $(function () {
+    //     var canvas = document.getElementById('canvas');
+    //     var stage = new JTopo.Stage(canvas);
+    //     var scene = new JTopo.Scene(stage);
+    //
+    //     scene.background='[[@{|/static/img/background.jpg|}]]';
+    //     stage.add(scene);
+    // })
+
+
+
     $(function() {
         changeData(10,$("#leader-wrapper"),'lead','张三');
         // 放在加载人员的函数里

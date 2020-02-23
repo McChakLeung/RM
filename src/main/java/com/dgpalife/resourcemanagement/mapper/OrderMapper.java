@@ -39,5 +39,7 @@ public interface OrderMapper {
 
     List<Map<String,Object>> selectPreHandleOrder(Map<String, Object> params);
 
+    List<Order> queryOrderlistByResourceID(Long id);
+
     //Order queryOrderByIdAndStatus(Long id, String Status);
 }

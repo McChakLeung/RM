@@ -17,8 +17,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 //@ImportResource(locations = {"classpath:/spring/*.xml"})
 //@SpringBootApplication
-//@ServletComponentScan
-@EnableAutoConfiguration
+@ServletComponentScan
+//@EnableAutoConfiguration
 //		(exclude = {
 //		org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration.class
 ////		org.activiti.spring.boot.SecurityAutoConfiguration.class

@@ -157,6 +157,20 @@ public class OrderServiceImpl implements OrderService {
         return page;
     }
 
+    @Override
+    public List<Order> queryOrderlistByResourceID(Long id) {
+        List<Order> orderList = orderMapper.queryOrderlistByResourceID(id);
+        for(Order order : orderList){
+            Department department = departmentMapper.selectByPrimaryKey(order.getApplyDepartmentId());
+            User proposer = userMapper.selectByPrimaryKey(order.getProposerId());
+            Project project = projectMapper.selectByPrimaryKey(order.getProposerId());
+            order.setApplyDepartment(department);
+            order.setProposer(proposer);
+            order.setProject(project);
+        }
+        return orderList;
+    }
+
 //    @Override
 //    public Order selectOrderByIdAndStatus(Long id, String Status) {
 //        Order order = orderMapper.queryOrderByIdAndStatus(id,Status);
