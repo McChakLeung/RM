@@ -130,7 +130,7 @@
 
 </div>
 <!-- END WRAPPER -->
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
 
     // $(function () {
     //     var canvas = document.getElementById('canvas');
@@ -141,10 +141,12 @@
     //     stage.add(scene);
     // })
 
+    var resourceList = [[${session.resourceList}]];
+    var equipmentList = [[${session.equipmentList}]];
 
 
     $(function() {
-        changeData(10,$("#leader-wrapper"),'lead','张三');
+        showResourceList5(resourceList.length,$("#leader-wrapper"),'lead',resourceList);
         // 放在加载人员的函数里
         changeHeight();
         $(".list-wrapper>li").draggable({
@@ -198,12 +200,12 @@
             changeHeight()
         })
     });
-    function changeData(num,parent,bmName,name) {
+    function showResourceList(num,parent,bmName,resourceList) {
         var leadHtml='';
         for(var i=0;i<num;i++){
             leadHtml+='<li id="'+bmName+i+'" data-bs="'+bmName+'">' +
-                '<span class="name">'+name+i+'</span>' +
-                '<span class="infor"></span>' +
+                '<span class="name">'+resourceList[i].resource_no+'</span>' +
+                // '<span class="infor"></span>' +
                 '</li>'
         }
         $(parent).html(leadHtml);
