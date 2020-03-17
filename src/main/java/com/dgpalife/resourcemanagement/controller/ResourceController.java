@@ -89,6 +89,7 @@ public class ResourceController {
         return "/resource/detail";
     }
 
+
     @ResponseBody
     @RequestMapping("/generateResource")
     public Object generateResource(@RequestBody JSONObject jsonObject, HttpSession session){

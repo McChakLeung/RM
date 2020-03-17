@@ -429,30 +429,20 @@ public class OrderController {
     /**
      * 将待处理工单的临时数据存放到session中，用于资源配对设备页面
      * @param jsonObject
-     * @param session
      * @return
      */
     @ResponseBody
     @RequestMapping("/preHandleOrder/construction/saveTemperateData")
-    public Object saveTemperateData(@RequestBody JSONObject jsonObject, HttpSession session){
+    public Object saveTemperateData(@RequestBody JSONObject jsonObject, Model model){
         AjaxResult result = new AjaxResult();
         try {
-            //User user = (User)session.getAttribute(Const.LOGIN_USER);
             List<Resource> resourceList = jsonObject.getJSONArray("resourceDetailList").toJavaList(Resource.class);
             List<Equipment> equipmentList = jsonObject.getJSONArray("equipmentList").toJavaList(Equipment.class);
             Long order_id = jsonObject.getLong("order_id");
 
-            //判断获取的数据是否为空
-            if(resourceList.isEmpty()){
-                result.setMessage("未添加资源号码，请重新输入");
-                result.setSuccess(false);
-                return result;
-            }
-
-            session.setAttribute("resourceList",resourceList);
-            session.setAttribute("equipmentList",equipmentList);
-            session.setAttribute("order_id",order_id);
-
+            model.addAttribute("resourceList",resourceList);
+            model.addAttribute("equipmentList",equipmentList);
+            model.addAttribute("order_id",order_id);
             result.setSuccess(true);
         }catch (Exception e){
             e.printStackTrace();
@@ -461,6 +451,12 @@ public class OrderController {
         }
         return result;
     }
+
+    @RequestMapping("/preHandleOrder/construction/toPairEquipment")
+    public String toPairEquipment(){
+        return "/order/pre_handle_order/construction/pairEquipment";
+    }
+
 
     @RequestMapping("/preHandleOrder/construction/toPairExistEquipment")
     public String toPairResource(){

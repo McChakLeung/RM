@@ -335,8 +335,8 @@
 									</table>
 								</div>
 								<!--<button type="button" class="btn btn-default" id="backStep">上一步</button>-->
-								<button type="button" class="btn btn-success" id="generateResource">生成资源</button>
-								<!--<button type="button" class="btn btn-success" id="nextStep">下一步</button>-->
+								<!--<button type="button" class="btn btn-success" id="generateResource">生成资源</button>-->
+								<button type="button" class="btn btn-success" id="nextStep">下一步</button>
 							</div>
 						</div>
 						<!-- END BASIC TABLE -->
@@ -1185,18 +1185,17 @@
         })
     }
 
-
-    $("#generateResource").click(function () {
+    $("#nextStep").click(function () {
 
         var order_id = [[${order?.id}]]
         var OrderConstructNum = getTableNum("t1",5);
-		var OrderEquipmentPurchaseNum = getTableNum("t2",2);
+        var OrderEquipmentPurchaseNum = getTableNum("t2",2);
 
-		//判断工单的装机数量与添加的资源数量是否一致
-		if(OrderConstructNum != resourceDetailList.length){
+        //判断工单的装机数量与添加的资源数量是否一致
+        if(OrderConstructNum != resourceDetailList.length){
             layer.msg("添加的资源数量与工单的数量不一致，请重新填写",{time:2000, icon:5, shift:5})
-			return false;
-		}
+            return false;
+        }
 
         //判断工单的购买设备数量与添加的设备数量是否一致
         if(OrderEquipmentPurchaseNum != equipmentList.length){
@@ -1206,7 +1205,7 @@
 
         $.ajax({
             type:"post",
-            url:[[@{|/resource/generateResource|}]],
+            url:[[@{|/order/preHandleOrder/construction/saveTemperateData|}]],
         	data:JSON.stringify({'resourceDetailList':resourceDetailList,'equipmentList':equipmentList,'order_id':order_id}),
             dataType:"json",
             contentType : "application/json;charset=utf-8",
@@ -1215,15 +1214,54 @@
         },
         success:function (result) {
             if(result.success){
-                layer.msg('资源创建成功',{time:2000, icon:5, shift:5})
-                window.location.href= [[@{|/resource/toIndex|}]];
+				window.location.href= [[@{|/order/preHandleOrder/construction/toPairEquipment|}]];
             }else{
                 layer.msg(result.message,{time:2000, icon:5, shift:5})
             }
         }
-	  })
+    	})
 
     })
+
+
+    // $("#generateResource").click(function () {
+    //
+    //     var order_id = [[${order?.id}]]
+    //     var OrderConstructNum = getTableNum("t1",5);
+		// var OrderEquipmentPurchaseNum = getTableNum("t2",2);
+    //
+		// //判断工单的装机数量与添加的资源数量是否一致
+		// if(OrderConstructNum != resourceDetailList.length){
+    //         layer.msg("添加的资源数量与工单的数量不一致，请重新填写",{time:2000, icon:5, shift:5})
+		// 	return false;
+		// }
+    //
+    //     //判断工单的购买设备数量与添加的设备数量是否一致
+    //     if(OrderEquipmentPurchaseNum != equipmentList.length){
+    //         layer.msg("添加的设备数量与工单的购买数量数量不一致，请重新填写",{time:2000, icon:5, shift:5})
+    //         return false;
+    //     }
+    //
+    //     $.ajax({
+    //         type:"post",
+    //         url:[[@{|/resource/generateResource|}]],
+    //     	data:JSON.stringify({'resourceDetailList':resourceDetailList,'equipmentList':equipmentList,'order_id':order_id}),
+    //         dataType:"json",
+    //         contentType : "application/json;charset=utf-8",
+    //         beforeSend:function () {
+    //         return true
+    //     },
+    //     success:function (result) {
+    //         if(result.success){
+    //             layer.msg('资源创建成功',{time:2000, icon:5, shift:5})
+    //             window.location.href= [[@{|/resource/toIndex|}]];
+    //         }else{
+    //             layer.msg(result.message,{time:2000, icon:5, shift:5})
+    //         }
+    //     }
+	 //  })
+    //
+    // })
 
     // $("#nextStep").click(function () {
     //
