@@ -3,6 +3,9 @@ package com.dgpalife.resourcemanagement.mapper;
 import com.dgpalife.resourcemanagement.model.Equipment;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+import java.util.Map;
+
 @Mapper
 public interface EquipmentMapper {
     int deleteByPrimaryKey(Long id);
@@ -18,4 +21,8 @@ public interface EquipmentMapper {
     int updateByPrimaryKey(Equipment record);
 
     int queryByEquipmentSn(String equipmentSn);
+
+    List<Object> selectEquipmentByQueryText(Map<String, Object> params);
+
+    int selectCountByQueryText(Map<String, Object> params);
 }

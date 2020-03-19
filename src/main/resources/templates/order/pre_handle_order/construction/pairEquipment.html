@@ -80,7 +80,7 @@
                                 </ul>
                                 <br>
                                 <br>
-                                <form class="form-horizontal" id="equipmentPurchaseListForm">
+                                <form class="form-horizontal" id="equipmentPortForm">
                                     <!--<div class="form-group">-->
                                         <!--&lt;!&ndash;<label class="control-label col-xs-2" >号码1：85820711</label>&ndash;&gt;-->
                                         <!--&lt;!&ndash;&lt;!&ndash;<div class="col-xs-2">&ndash;&gt;&ndash;&gt;-->
@@ -101,55 +101,39 @@
                                     <!--</div>-->
                                 </form>
                                 <table class="table table-bordered">
-                                    <tr>
-                                        <td>
-                                            号码：<input type="text">
-                                        </td>
-                                        <td>
-                                            是否新设备：
-                                            <select>
-                                                <option>是</option>
-                                                <option>否</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            选择设备：
-                                            <select>
-                                                <option>aaaaaaaaaaaaaaa</option>
-                                                <option>aaaaaaaaaaaaaaa</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            端口号：
-                                            <input type="text" value="1111">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            号码：<input type="text">
-                                        </td>
-                                        <td>
-                                            是否新设备：
-                                            <select>
-                                                <option>是</option>
-                                                <option>否</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            选择设备：
-                                            <select>
-                                                <option>aaaaaaaaaaaaaaa</option>
-                                                <option>aaaaaaaaaaaaaaa</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            端口号：
-                                            <input type="text" value="1111">
-                                        </td>
-                                    </tr>
+                                    <thead>
+                                        <tr class="success">
+                                            <td>号码</td>
+                                            <td>是否新设备</td>
+                                            <td>选择新设备</td>
+                                            <td>选择旧设备</td>
+                                            <td>端口号</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="resource,interStat:${session.resourceList}">
+                                            <td>
+                                                <input type="text" th:value="${resource.resource_no}" disabled>
+                                            </td>
+                                            <td>
+                                                是：<input type="radio" th:name="selecttype + '[' +${interStat.index } + ']'" value="1" />
+                                                否：<input type="radio" th:name="selecttype + '[' +${interStat.index } + ']'" value="0" />
+                                            </td>
+                                            <td>
+                                                <select th:id="fnew_equipment + '[' +${interStat.index } + ']'" >
+                                                    <option value="">请选择</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="text" value="" th:id="fold_equipment + '[' +${interStat.index } + ']'"  equipment_id="">
+                                            </td>
+                                            <td>
+                                                <input type="text" value="">
+                                            </td>
+                                        </tr>
+                                    </tbody>
                                 </table>
-
-
+                                <button type="button" class="btn btn-success" id="generateResource">生成资源</button>
                             </div>
                         </div>
                         <!-- END BASIC TABLE -->
@@ -161,6 +145,14 @@
         </div>
         <!-- END MAIN CONTENT -->
     </div>
+    <div style="padding: 1% 1%;display: none" id="equipment_layer">
+        搜索设备：
+        <div class="layui-inline">
+            <input class="layui-input" name="equipment_sn" id="equipment_sn" placeholder="请输入设备sn号" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload" id="equipment_search">搜索</button>
+        <table class="layui-table"  id="fequipment_table" lay-filter="equipment"></table>
+    </div>
     <!-- END MAIN -->
     <div class="clearfix"></div>
     <div id="footer" th:include="/commons/footer :: footerContext"></div>
@@ -168,6 +160,89 @@
 </div>
 <!-- END WRAPPER -->
 <script type="text/javascript" th:inline="javascript">
+
+    $(function () {
+        $('input[type=radio][name=selecttype]').change(function() {
+            if (this.value == '1') {
+                $("#fnew_equipment").prop("disabled",false);
+                $("#fold_equipment").prop("disabled",true);
+            }
+            else if (this.value == '0') {
+                $("#fnew_equipment").prop("disabled",true);
+                $("#fold_equipment").prop("disabled",false);
+            }
+        });
+    })
+
+
+    $("#fold_equipment").click(function () {
+        var id, equipment_sn = null;
+
+        //单击触发layer弹出层
+        layer.open({
+            title:"设备列表",
+            area: ['800px', '600px'],
+            type:1,
+            // content:"[[@{|/openQuery|}]]",
+            content:$('#equipment_layer'),
+            btn:['选择','取消'],
+            success:function (layero, index) {
+                layui.use('table',function () {
+                    var table = layui.table;
+
+                    //自动渲染数据表格
+                    table.render({
+                        // elem: layer.getChildFrame("#ftable", index)
+                        elem: '#fequipment_table'
+                        ,url:[[@{|/setting/equipment/showTable|}]]  //该url必须要返回符合layui要求的前端格式的json数据
+                ,cols: [
+                        [
+                            {type:'radio'}
+                            ,{field: 'id', title: 'ID',width:80}
+                            ,{field: 'equipment_sn', title: '设备序列号',width:120}
+                            ,{field: 'account_center', title: '成本中心'}
+                            ,{field: 'create_time', title: '创建时间',width:120}
+                        ]
+                    ]
+                        ,page:true
+                        ,id: 'equipment'
+                });
+
+                    //搜索功能实现
+                    $('#equipment_search').on('click',function () {
+                        // var type = $(this).data('type');
+                        // active[type] ? active[type].call(this) : '';
+                        var equipment_sn = $('#equipment_sn');
+                        table.reload('equipment_sn',{
+                            url:[[@{|/setting/equipment/showTable|}]]
+                    ,page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    ,where: {
+                            queryText: equipment_sn.val()
+                        }
+                    })
+                    });
+
+                    //获取选中的层
+                    table.on('row(equipment)',function (obj) {
+                        id = obj.data.id;
+                        equipment_sn = obj.data.equipment_sn;
+                    })
+                })
+
+
+            },
+            yes:function (layero, index) {
+                $("#fequipment").attr("equipment_id",id);
+                $("#fequipment").val(equipment_sn);
+                layer.close(layero)
+            },
+            btn2:function (layero, index) {
+                layer.close(layero)
+            }
+        })
+    })
 
 
 </script>

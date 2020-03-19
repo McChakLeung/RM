@@ -5,6 +5,9 @@ import com.dgpalife.resourcemanagement.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class EquipmentServiceImpl implements EquipmentService{
 
@@ -14,5 +17,15 @@ public class EquipmentServiceImpl implements EquipmentService{
     @Override
     public int queryByEquipmentSn(String equipmentSn) {
         return equipmentMapper.queryByEquipmentSn(equipmentSn);
+    }
+
+    @Override
+    public List<Object> selectEquipmentByQueryText(Map<String, Object> params) {
+        return equipmentMapper.selectEquipmentByQueryText(params);
+    }
+
+    @Override
+    public int selectCountByQueryText(Map<String, Object> params) {
+        return equipmentMapper.selectCountByQueryText(params);
     }
 }

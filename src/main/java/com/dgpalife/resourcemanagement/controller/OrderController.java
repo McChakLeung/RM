@@ -433,15 +433,15 @@ public class OrderController {
      */
     @ResponseBody
     @RequestMapping("/preHandleOrder/construction/saveTemperateData")
-    public Object saveTemperateData(@RequestBody JSONObject jsonObject, Model model){
+    public Object saveTemperateData(@RequestBody JSONObject jsonObject, Model model, HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
             List<Resource> resourceList = jsonObject.getJSONArray("resourceDetailList").toJavaList(Resource.class);
             List<Equipment> equipmentList = jsonObject.getJSONArray("equipmentList").toJavaList(Equipment.class);
             Long order_id = jsonObject.getLong("order_id");
 
-            model.addAttribute("resourceList",resourceList);
-            model.addAttribute("equipmentList",equipmentList);
+            session.setAttribute("resourceList",resourceList);
+            session.setAttribute("equipmentList",equipmentList);
             model.addAttribute("order_id",order_id);
             result.setSuccess(true);
         }catch (Exception e){

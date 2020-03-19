@@ -108,4 +108,24 @@
     SELECT count(id) FROM t_equipment
     WHERE equipment_sn = #{equipmentSn,jdbcType=VARCHAR}
   </select>
+
+  <select id="selectEquipmentByQueryText" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_equipment
+    <where>
+      <if test="queryText!=null">
+        project_sn like concat("%",#{queryText},"%")
+      </if>
+    </where>
+  </select>
+
+  <select id="selectCountByQueryText" resultType="Integer">
+    select count(*) from t_equipment
+    <where>
+      <if test="queryText!=null">
+        project_sn like concat("%",#{queryText},"%")
+      </if>
+    </where>
+  </select>
 </mapper>
