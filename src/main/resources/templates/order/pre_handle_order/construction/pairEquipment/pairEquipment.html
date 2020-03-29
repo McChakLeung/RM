@@ -184,10 +184,13 @@
 
     function changeYes(obj) {
         if (obj.checked == true) {
-           $(obj).parent().parent().children("td:eq(3)").find("input").prop("disabled",false);
-           $(obj).parent().parent().children("td:eq(3)").find("input").prop("disabled",false);
+           // $(obj).pare nt().children("td:eq(3)").prop("disabled",false);
+           // $(obj).parent().children("td:eq(4)").prop("disabled",false);
+           $("#fnew_equipment").prop("disabled",true);
+           $("#fold_equipment").prop("disabled",false);
         }
     }
+
 
 
     // $("#fold_equipment").click(function () {

@@ -35,7 +35,7 @@ public class EquipmentController {
     }
 
     @ResponseBody
-    @RequestMapping("/equipment/showTable")
+    @RequestMapping("/setting/showTable")
     public Object showTable(String queryText){
 
         LayuiVO layuiVO = new LayuiVO();

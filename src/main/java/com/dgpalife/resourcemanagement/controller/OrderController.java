@@ -387,12 +387,12 @@ public class OrderController {
     }
 
     @RequestMapping("/preHandleOrder/toPreHandleOrderDetail/{id}")
-    public String toPreHandleOrderDetail(@PathVariable Long id,Model model){
+    public String toPreHandleOrderDetail(@PathVariable Long id,HttpSession session){
         Order order = orderService.selectOrderById(id);
-        model.addAttribute("order",order);
+        session.setAttribute("order",order);
 
         if(Const.CONSTRUCTION.equals(order.getType())){
-            return "/order/pre_handle_order/construction/construction_detail";
+            return "/order/pre_handle_order/construction/construction_equipment";
         }else if (Const.MIGRATION.equals(order.getType())){
             return "/order/pre_handle_order/construction/migration_detail";
         }else if(Const.REMOVEMENT.equals(order.getType())){
@@ -436,11 +436,11 @@ public class OrderController {
     public Object saveTemperateData(@RequestBody JSONObject jsonObject, Model model, HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
-            List<Resource> resourceList = jsonObject.getJSONArray("resourceDetailList").toJavaList(Resource.class);
+            //List<Resource> resourceList = jsonObject.getJSONArray("resourceDetailList").toJavaList(Resource.class);
             List<Equipment> equipmentList = jsonObject.getJSONArray("equipmentList").toJavaList(Equipment.class);
             Long order_id = jsonObject.getLong("order_id");
 
-            session.setAttribute("resourceList",resourceList);
+            //session.setAttribute("resourceList",resourceList);
             session.setAttribute("equipmentList",equipmentList);
             model.addAttribute("order_id",order_id);
             result.setSuccess(true);
@@ -452,9 +452,9 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping("/preHandleOrder/construction/toPairEquipment")
-    public String toPairEquipment(){
-        return "/order/pre_handle_order/construction/pairEquipment";
+    @RequestMapping("/preHandleOrder/construction/toResource")
+    public String toResource(){
+        return "/order/pre_handle_order/construction/construction_resource";
     }
 
 

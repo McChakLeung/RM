@@ -5,12 +5,11 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="equipment_sn" jdbcType="VARCHAR" property="equipmentSn" />
     <result column="equipment_type_id" jdbcType="BIGINT" property="equipmentTypeId" />
-    <result column="network_room_id" jdbcType="BIGINT" property="networkRoomId" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, equipment_sn, equipment_type_id, network_room_id, create_time, creator_id
+    id, equipment_sn, equipment_type_id, create_time, creator_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -27,8 +26,7 @@
       network_room_id, create_time,
       creator_id)
     values (#{id,jdbcType=BIGINT}, #{equipmentSn,jdbcType=VARCHAR}, #{equipmentTypeId,jdbcType=BIGINT},
-      #{networkRoomId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR},
-      #{creatorId,jdbcType=BIGINT})
+      #{createTime,jdbcType=VARCHAR},#{creatorId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Equipment">
     insert into t_equipment
@@ -41,9 +39,6 @@
       </if>
       <if test="equipmentTypeId != null">
         equipment_type_id,
-      </if>
-      <if test="networkRoomId != null">
-        network_room_id,
       </if>
       <if test="createTime != null">
         create_time,
@@ -62,9 +57,6 @@
       <if test="equipmentTypeId != null">
         #{equipmentTypeId,jdbcType=BIGINT},
       </if>
-      <if test="networkRoomId != null">
-        #{networkRoomId,jdbcType=BIGINT},
-      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=VARCHAR},
       </if>
@@ -82,9 +74,6 @@
       <if test="equipmentTypeId != null">
         equipment_type_id = #{equipmentTypeId,jdbcType=BIGINT},
       </if>
-      <if test="networkRoomId != null">
-        network_room_id = #{networkRoomId,jdbcType=BIGINT},
-      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=VARCHAR},
       </if>
@@ -98,7 +87,6 @@
     update t_equipment
     set equipment_sn = #{equipmentSn,jdbcType=VARCHAR},
       equipment_type_id = #{equipmentTypeId,jdbcType=BIGINT},
-      network_room_id = #{networkRoomId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=VARCHAR},
       creator_id = #{creatorId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
@@ -109,23 +97,26 @@
     WHERE equipment_sn = #{equipmentSn,jdbcType=VARCHAR}
   </select>
 
-  <select id="selectEquipmentByQueryText" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from t_equipment
+  <select id="selectEquipmentByQueryText" resultType="map">
+    SELECT t1.id id, t1.equipment_sn equipment_sn, t2.equipment_name equipment_name, t1.create_time create_time
+    FROM t_equipment t1
+    LEFT JOIN t_equipment_type t2
+    ON t1. equipment_type_id = t2.id
     <where>
       <if test="queryText!=null">
-        project_sn like concat("%",#{queryText},"%")
+        equipment_sn like concat("%",#{queryText},"%")
       </if>
     </where>
+    ORDER BY t1.create_time DESC
   </select>
 
   <select id="selectCountByQueryText" resultType="Integer">
     select count(*) from t_equipment
     <where>
       <if test="queryText!=null">
-        project_sn like concat("%",#{queryText},"%")
+        equipment_sn like concat("%",#{queryText},"%")
       </if>
     </where>
+    ORDER BY create_time ASC
   </select>
 </mapper>
