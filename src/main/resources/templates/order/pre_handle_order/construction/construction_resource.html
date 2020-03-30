@@ -255,14 +255,14 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-xs-2 control-label">选择设备<span style="color:red">* </span></label>
+										<label class="col-xs-2 control-label">选择新设备<span style="color:red">* </span></label>
 										<div class="col-xs-4">
 											<!--<input type="text" class="form-control" id="fselect_equipment" onclick="selectEquipment()">-->
-											<select class="form-control" id="fselect_newequipment" onclick="selectNewEquipment()">
+											<select class="form-control" id="fselect_newequipment">
 												<option>请选择</option>
 											</select>
 										</div>
-										<label class="col-xs-2 control-label">选择设备<span style="color:red">* </span></label>
+										<label class="col-xs-2 control-label">选择旧设备<span style="color:red">* </span></label>
 										<div class="col-xs-4">
 											<input type="text" class="form-control" id="fselect_oldequipment" onclick="selectOldEquipment()" equipment_id="">
 										</div>
@@ -534,6 +534,8 @@
             content+='  <td>'+n.usedepartment.departmentName+'</td>';
             content+='  <td>'+n.username+'</td>';
             content+='  <td>'+n.account_center+'</td>';
+            content+='  <td>'+n.equipment_port+'</td>';
+            content+='  <td>'+n.equipmentSn+'</td>';
             content+='  <td>';
             content+='	  <button type="button" onclick="deleteBtn('+i+')" class="btn btn-danger btn-xs delteBtn" value="aaa"><i class=" glyphicon glyphicon-remove"></i></button>';
             content+='  </td>';
@@ -894,8 +896,10 @@
     // }
 
 	$(function () {
+
         $("#fselect_newequipment").prop("disabled",true);
         $("#fselect_oldequipment").prop("disabled",true);
+
         $('input[type=radio][name=isNewEquipment]').change(function() {
             if (this.value == '0') {
                 $("#fselect_newequipment").prop("disabled",false);
@@ -906,11 +910,29 @@
                 $("#fselect_oldequipment").prop("disabled",false);
             }
         });
+
+        selectNewEquipment();
+        // var equipmentList = [[${session?.equipmentList}]];
+        // //console.log(equipmentList)
+        // $("#fselect_newequipment option:gt(0)").empty();
+        // for(var i=0; i<=equipmentList.length; i++){
+        //     var equipmentSn = equipmentList[i].equipmentSn;
+        //     var equipmentName= equipmentList[i].equipmentType.equipmentName;
+        //     $("#fselect_newequipment").append("<option value='" + equipmentName + "'>"+equipmentSn+"</option>")
+        // }
     })
 
 
-	function selectNewEquipment() {
-
+    function selectNewEquipment() {
+		var equipmentList = [[${session?.equipmentList}]];
+		//console.log(equipmentList)
+		$("#fselect_newequipment option:gt(0)").empty();
+		for(var i=0; i<=equipmentList.length; i++){
+		    var equipmentSn = equipmentList[i].equipmentSn;
+		    var equipmentName= equipmentList[i].equipmentType.equipmentName;
+            $("#fselect_newequipment").append("<option value='" + equipmentName + "'>"+equipmentSn+"</option>")
+            // $("#fselect_newequipment").val(equipmentSn);
+		}
     }
 
     function selectOldEquipment() {
