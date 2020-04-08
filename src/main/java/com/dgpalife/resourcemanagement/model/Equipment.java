@@ -5,31 +5,13 @@ public class Equipment {
 
     private String equipmentSn;
 
-    private Long equipmentTypeId;
-
-    private Equipment_type equipmentType;
+    private String equipmentType;
 
     private String account_center;
 
     private String createTime;
 
     private Long creatorId;
-
-    public Long getEquipmentTypeId() {
-        return equipmentTypeId;
-    }
-
-    public void setEquipmentTypeId(Long equipmentTypeId) {
-        this.equipmentTypeId = equipmentTypeId;
-    }
-
-    public Equipment_type getEquipmentType() {
-        return equipmentType;
-    }
-
-    public void setEquipmentType(Equipment_type equipmentType) {
-        this.equipmentType = equipmentType;
-    }
 
     public String getAccount_center() {
         return account_center;
@@ -45,6 +27,14 @@ public class Equipment {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getEquipmentType() {
+        return equipmentType;
+    }
+
+    public void setEquipmentType(String equipmentType) {
+        this.equipmentType = equipmentType;
     }
 
     public String getEquipmentSn() {

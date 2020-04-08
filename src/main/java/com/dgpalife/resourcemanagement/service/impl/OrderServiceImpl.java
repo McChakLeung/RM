@@ -42,8 +42,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private EquipmentPurchaseRecordMapper equipmentPurchaseRecordMapper;
 
-    @Autowired
-    private Equipment_typeMapper equipment_typeMapper;
+    //@Autowired
+    //private Equipment_typeMapper equipment_typeMapper;
 
 //    @Override
 //    public Integer createOrder(Order order) {
@@ -108,7 +108,7 @@ public class OrderServiceImpl implements OrderService {
         }
         List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = equipmentPurchaseRecordMapper.selectEquipmentPurchaseRecordByOrderID(order.getId());
         for(EquipmentPurchaseRecord equipmentPurchaseRecord: equipmentPurchaseRecordList){
-            equipmentPurchaseRecord.setEquipment_type(equipment_typeMapper.selectByPrimaryKey(equipmentPurchaseRecord.getEquipment_type_id()));
+            //equipmentPurchaseRecord.setEquipment_type(equipment_typeMapper.selectByPrimaryKey(equipmentPurchaseRecord.getEquipment_type()));
             equipmentPurchaseRecord.setExpense(expenseMapper.selectByPrimaryKey(equipmentPurchaseRecord.getExpenseId()));
 //            constructDetail.setWorkplace(workplaceMapper.selectByPrimaryKey(constructDetail.getWorkplaceId()));
 //            constructDetail.setNetworkRoom(networkRoomMapper.selectByPrimaryKey(constructDetail.getNetworkRoomId()));

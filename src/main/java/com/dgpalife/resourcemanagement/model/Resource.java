@@ -36,9 +36,7 @@ public class Resource {
 
     private Equipment equipment;
 
-    private Long equipment_port_id;
-
-    private EquipmentPort equipmentPort;
+    private String equipment_port_num;
 
     private Long expense_id;
 
@@ -53,6 +51,14 @@ public class Resource {
     private User creator;
 
     private List<Order> orderList;
+
+    public String getEquipment_port_num() {
+        return equipment_port_num;
+    }
+
+    public void setEquipment_port_num(String equipment_port_num) {
+        this.equipment_port_num = equipment_port_num;
+    }
 
     public String getUsedepartment_type() {
         return usedepartment_type;
@@ -180,22 +186,6 @@ public class Resource {
 
     public void setEquipment(Equipment equipment) {
         this.equipment = equipment;
-    }
-
-    public Long getEquipment_port_id() {
-        return equipment_port_id;
-    }
-
-    public void setEquipment_port_id(Long equipment_port_id) {
-        this.equipment_port_id = equipment_port_id;
-    }
-
-    public EquipmentPort getEquipmentPort() {
-        return equipmentPort;
-    }
-
-    public void setEquipmentPort(EquipmentPort equipmentPort) {
-        this.equipmentPort = equipmentPort;
     }
 
     public Long getExpense_id() {

@@ -167,7 +167,7 @@
 										<tbody id="t2">
 										<tr th:each="equipmentPurchaseRecord:${session.order?.equipmentPurchaseRecordList}">
 											<td th:text="${equipmentPurchaseRecordStat?.count}">序号</td>
-											<td th:text="${equipmentPurchaseRecord?.equipment_type.equipmentName}">购买设备类型名称</td>
+											<td th:text="${equipmentPurchaseRecord?.equipment_type}">购买设备类型</td>
 											<td th:text="${equipmentPurchaseRecord?.purchaseNum}">购买数量</td>
 											<td th:text="${equipmentPurchaseRecord?.expense.price}">设备单价</td>
 										</tr>
@@ -251,20 +251,20 @@
 										</div>
 										<label class="col-xs-2 control-label">设备端口<span style="color:red">* </span></label>
 										<div class="col-xs-4">
-											<input type="text" class="form-control" id="fequipment_port">
+											<input type="text" class="form-control" id="fequipment_port_num" name="equipment_port_num">
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-xs-2 control-label">选择新设备<span style="color:red">* </span></label>
 										<div class="col-xs-4">
 											<!--<input type="text" class="form-control" id="fselect_equipment" onclick="selectEquipment()">-->
-											<select class="form-control" id="fselect_newequipment">
+											<select class="form-control" id="fselect_newequipment" name="equipmentSn">
 												<option>请选择</option>
 											</select>
 										</div>
 										<label class="col-xs-2 control-label">选择旧设备<span style="color:red">* </span></label>
 										<div class="col-xs-4">
-											<input type="text" class="form-control" id="fselect_oldequipment" onclick="selectOldEquipment()" equipment_id="">
+											<input type="text" class="form-control" id="fselect_oldequipment" name="equipment.equipmentType.equipmentSn" onclick="selectOldEquipment()" equipment_id="">
 										</div>
 									</div>
 									<div class="form-group">
@@ -290,6 +290,9 @@
 											<td>使用科室|外勤部门</td>
 											<td>使用人</td>
 											<td>列支成本中心</td>
+											<td>设备端口</td>
+											<td>是否新设备</td>
+											<td>设备编号</td>
 											<td>操作</td>
 										</tr>
 										</thead>
@@ -474,7 +477,7 @@
             var obj = dataArray;
             $.each(paths,function(i,e){
                 //判断当前的遍历的数据是否有二级数组；i == len-1 为true说明是二级数组，false说明为一级数组
-                if(i == len-1){
+				if(i == len-1){
                     //判断该数组是否存在当前遍历的属性
                     if (obj[e]) {
                         //push()方法的返回值是把指定的值添加到数组后的新长度，
@@ -498,6 +501,8 @@
 
         });
 
+        var isNew = $("input[type=radio][name=isNewEquipment]").val()
+
         dataArray["expense"]["id"] = $("#fprice").attr("expense_id");
         dataArray["expenseId"] = $("#fprice").attr("expense_id");
         dataArray["workplace"]["id"] = $("#fworkplace").attr("workplace_id");
@@ -508,7 +513,16 @@
         dataArray["departmentId"] = $("#fapply_department").attr("apply_department_id");
         dataArray["usedepartment"]["id"] = $("#fusedepartment").attr("usedepartment_id");
         dataArray["usedepartmentId"] = $("#fusedepartment").attr("usedepartment_id");
-
+        //dataArray["equipment_port_num"] = $("#fequipment_port").attr("equipment_port_num");
+        // if(isNew == 0){
+        //     dataArray["isNewEquipment"] = $("input[type=radio][name=isNewEquipment]").text();
+        //     dataArray["equipment"]["equipmentType"]["id"] = $("#fselect_newequipment:selected").val();
+        //     dataArray["equipment"]["equipmentType"]["equipmentSn"] = $("#fselect_newequipment:selected").text();
+        // }else {
+        //     dataArray["isNewEquipment"] = $("input[type=radio][name=isNewEquipment]").text();
+        //     dataArray["equipment"]["id"] = $("#fselect_oldequipment").attr("equipment_id");
+        //     dataArray["equipment"]["equipmentType"]["equipmentSn"] = $("#fselect_oldequipment").attr("equipment_id");
+        // }
 
         console.log(dataArray)
         resourceDetailList.push(dataArray);
@@ -525,8 +539,8 @@
             content+='<tr>';
             content+='  <td>'+(i+1)+'</td>';
             content+='  <td>'+n.resource_no+'</td>';
-            content+='  <td>'+n.resourc_type+'</td>';
             content+='  <td>'+n.operator+'</td>';
+            content+='  <td>'+n.resourc_type+'</td>';
             content+='  <td>'+n.expense.price+'</td>';
             content+='  <td>'+n.workplace.workplaceName + '</td>';
             content+='  <td>'+n.networkRoom.networkroom_name+'</td>';
@@ -534,7 +548,8 @@
             content+='  <td>'+n.usedepartment.departmentName+'</td>';
             content+='  <td>'+n.username+'</td>';
             content+='  <td>'+n.account_center+'</td>';
-            content+='  <td>'+n.equipment_port+'</td>';
+            content+='  <td>'+n.equipment_port_num+'</td>';
+            content+='  <td>'+n.isNewEquipment+'</td>';
             content+='  <td>'+n.equipmentSn+'</td>';
             content+='  <td>';
             content+='	  <button type="button" onclick="deleteBtn('+i+')" class="btn btn-danger btn-xs delteBtn" value="aaa"><i class=" glyphicon glyphicon-remove"></i></button>';
@@ -833,7 +848,7 @@
     //异步加载职能部门下的部门节点
     function doloadUseDepartment(){
         $("#departmentTree").empty();
-        var apply_department_id = [[${order?.applyDepartment?.id}]]
+        var apply_department_id = $("#fapply_department").attr("apply_department_id")
         console.log(apply_department_id)
         var url = [[@{|/setting/department/doloadUseDepartment/|}]] + apply_department_id;
         $.getJSON(url,function(result){
@@ -929,8 +944,8 @@
 		$("#fselect_newequipment option:gt(0)").empty();
 		for(var i=0; i<=equipmentList.length; i++){
 		    var equipmentSn = equipmentList[i].equipmentSn;
-		    var equipmentName= equipmentList[i].equipmentType.equipmentName;
-            $("#fselect_newequipment").append("<option value='" + equipmentName + "'>"+equipmentSn+"</option>")
+		    var equipmentTypeId= equipmentList[i].equipmentTypeId;
+            $("#fselect_newequipment").append("<option value='" + equipmentTypeId + "'>"+equipmentSn+"</option>")
             // $("#fselect_newequipment").val(equipmentSn);
 		}
     }

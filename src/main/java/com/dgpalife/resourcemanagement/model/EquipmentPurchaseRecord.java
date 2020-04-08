@@ -9,9 +9,7 @@ public class EquipmentPurchaseRecord {
 
     private Expense expense;
 
-    private Long equipment_type_id;
-
-    private Equipment_type equipment_type;
+    private String equipment_type;
 
     private Long projectId;
 
@@ -22,6 +20,14 @@ public class EquipmentPurchaseRecord {
     private Long creatorId;
 
     private String createTime;
+
+    public String getEquipment_type() {
+        return equipment_type;
+    }
+
+    public void setEquipment_type(String equipment_type) {
+        this.equipment_type = equipment_type;
+    }
 
     public Project getProject() {
         return project;
@@ -37,22 +43,6 @@ public class EquipmentPurchaseRecord {
 
     public void setExpense(Expense expense) {
         this.expense = expense;
-    }
-
-    public Long getEquipment_type_id() {
-        return equipment_type_id;
-    }
-
-    public void setEquipment_type_id(Long equipment_type_id) {
-        this.equipment_type_id = equipment_type_id;
-    }
-
-    public Equipment_type getEquipment_type() {
-        return equipment_type;
-    }
-
-    public void setEquipment_type(Equipment_type equipment_type) {
-        this.equipment_type = equipment_type;
     }
 
     public Long getId() {

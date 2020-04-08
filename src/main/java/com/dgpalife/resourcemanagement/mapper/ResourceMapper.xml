@@ -13,7 +13,7 @@
     <result column="usedepartment_id" jdbcType="BIGINT" property="usedepartment_id" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="equipment_id" jdbcType="BIGINT" property="equipment_id" />
-    <result column="equipment_port_id" jdbcType="BIGINT" property="equipment_port_id" />
+    <result column="equipment_port_num" jdbcType="VARCHAR" property="equipment_port_num" />
     <result column="expense_id" jdbcType="BIGINT" property="expense_id" />
     <result column="account_center" jdbcType="VARCHAR" property="account_center" />
     <result column="create_time" jdbcType="VARCHAR" property="create_time" />
@@ -21,7 +21,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, resource_no, resourc_type, operator,usedepartment_type,workplace_id, network_room_id, department_id, usedepartment_id,
-    username, equipment_id, equipment_port_id, expense_id, account_center, create_time, creator_id
+    username, equipment_id, equipment_port_num, expense_id, account_center, create_time, creator_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -36,12 +36,12 @@
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Resource">
     insert into t_resource (
       id, resource_no, resourc_type, operator,usedepartment_type, workplace_id, network_room_id, department_id, usedepartment_id,
-      username, equipment_id, equipment_port_id, expense_id, account_center, create_time, creator_id
+      username, equipment_id, equipment_port_num, expense_id, account_center, create_time, creator_id
     )
     values (#{id,jdbcType=BIGINT}, #{resource_no,jdbcType=VARCHAR}, #{resourc_type,jdbcType=VARCHAR},
       #{operator,jdbcType=VARCHAR},#{usedepartment_type,jdbcType=VARCHAR},#{workplace_id,jdbcType=BIGINT}, #{network_room_id,jdbcType=BIGINT},
       #{department_id,jdbcType=BIGINT}, #{usedepartment_id,jdbcType=BIGINT},
-      #{username,jdbcType=VARCHAR}, #{equipment_id,jdbcType=BIGINT}, #{equipment_port_id,jdbcType=BIGINT},
+      #{username,jdbcType=VARCHAR}, #{equipment_id,jdbcType=BIGINT}, #{equipment_port_num,jdbcType=VARCHAR},
       #{expense_id,jdbcType=BIGINT},#{account_center,jdbcType=VARCHAR},
       #{create_time,jdbcType=VARCHAR}, #{creator_id,jdbcType=BIGINT})
   </insert>
@@ -81,8 +81,8 @@
       <if test="equipment_id != null">
         equipment_id,
       </if>
-      <if test="equipment_port_id != null">
-        equipment_port_id,
+      <if test="equipment_port_num != null">
+        equipment_port_num,
       </if>
       <if test="expense_id != null">
         expense_id,
@@ -132,8 +132,8 @@
       <if test="equipment_id != null">
         #{equipment_id,jdbcType=BIGINT},
       </if>
-      <if test="equipment_port_id != null">
-        #{equipment_port_id,jdbcType=BIGINT},
+      <if test="equipment_port_num != null">
+        #{equipment_port_num,jdbcType=VARCHAR},
       </if>
       <if test="expense_id != null">
         #{expense_id,jdbcType=BIGINT},
@@ -182,8 +182,8 @@
       <if test="equipment_id != null">
         equipment_id = #{equipment_id,jdbcType=BIGINT},
       </if>
-      <if test="equipment_port_id != null">
-        equipment_port_id = #{equipment_port_id,jdbcType=BIGINT},
+      <if test="equipment_port_num != null">
+        equipment_port_num = #{equipment_port_num,jdbcType=VARCHAR},
       </if>
       <if test="expense_id != null">
         expense_id = #{expense_id,jdbcType=BIGINT},
@@ -213,7 +213,7 @@
       usedepartment_id = #{usedepartment_id,jdbcType=BIGINT},
       username = #{username,jdbcType=VARCHAR},
       equipment_id = #{equipment_id,jdbcType=BIGINT},
-      equipment_port_id = #{equipment_port_id,jdbcType=BIGINT},
+      equipment_port_num = #{equipment_port_num,jdbcType=VARCHAR},
       expense_id = #{expense_id,jdbcType=BIGINT},
       account_center = #{account_center,jdbcType=VARCHAR},
       create_time = #{create_time,jdbcType=VARCHAR},
@@ -284,10 +284,10 @@
   </select>
 
   <select id="queryPortInfoByResourceID" resultType="map">
-    SELECT t2.equipment_sn equipment_sn,t3.equipment_name equipment_name,t1.port_no port_no, t1.equipment_id equipment_id
-    FROM t_equipment_port t1
-    LEFT JOIN t_equipment t2 ON t1.equipment_id = t2.id
-    LEFT JOIN t_equipment_type t3 ON t2.equipment_type_id = t3.id
-    WHERE t1.resource_id = #{id}
+--     SELECT t2.equipment_sn equipment_sn,t3.equipment_name equipment_name,t1.port_no port_no, t1.equipment_id equipment_id
+--     FROM t_equipment t1
+--     LEFT JOIN t_equipment t2 ON t1.equipment_id = t2.id
+--     LEFT JOIN t_equipment_type t3 ON t2.equipment_type_id = t3.id
+--     WHERE t1.resource_id = #{id}
   </select>
 </mapper>

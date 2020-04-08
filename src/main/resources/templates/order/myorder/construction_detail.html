@@ -158,7 +158,7 @@
 										<tbody >
 										<tr th:each="equipmentPurchaseRecord:${order?.equipmentPurchaseRecordList}">
 											<td th:text="${equipmentPurchaseRecordStat?.count}">序号</td>
-											<td th:text="${equipmentPurchaseRecord?.equipment_type.equipmentName}">购买设备类型名称</td>
+											<td th:text="${equipmentPurchaseRecord?.equipment_type}">购买设备类型名称</td>
 											<td th:text="${equipmentPurchaseRecord?.purchaseNum}">购买数量</td>
 											<td th:text="${equipmentPurchaseRecord?.expense.price}">设备单价</td>
 										</tr>

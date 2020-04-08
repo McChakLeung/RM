@@ -88,9 +88,9 @@
 								<form class="form-horizontal" style="margin-top:20px;margin-bottom: 20px" id="form">
 
 									<div class="form-group">
-										<label class="col-md-2 control-label">购买设备类型名称<span style="color:red">* </span></label>
+										<label class="col-md-2 control-label">购买设备类型<span style="color:red">* </span></label>
 										<div class="col-md-4">
-											<input type="text" class="form-control" id="fequipmentType" name="equipment_type.equipmentName" equipment_type_id="">
+											<input type="text" class="form-control" id="fequipmentType" name="equipment_type">
 										</div>
 										<label class="col-md-2 control-label">购买数量<span style="color:red">* </span></label>
 										<div class="col-md-4">
@@ -121,7 +121,7 @@
 											<thead>
 											<tr class="success">
 												<td>序号</td>
-												<td>购买设备类型名称</td>
+												<td>购买设备类型</td>
 												<td>购买数量</td>
 												<td>设备单价</td>
 												<!--<td>列支成本中心</td>-->
@@ -170,14 +170,14 @@
 			<!--<button class="layui-btn" data-type="reload" id="search">搜索</button>-->
 			<table class="layui-table"  id="fexpense_table" lay-filter="expense"></table>
 		</div>
-		<div style="padding: 1% 1%;display: none" id="equipmentType_layer">
-			搜索设备类型名称：
-			<div class="layui-inline">
-				<input class="layui-input" name="equipmentType" id="equipmentType" placeholder="请输入设备类型名称" autocomplete="off">
-			</div>
-			<button class="layui-btn" data-type="reload" id="equipmentType_search">搜索</button>
-			<table class="layui-table"  id="fequipmentType_table" lay-filter="equipmentType"></table>
-		</div>
+		<!--<div style="padding: 1% 1%;display: none" id="equipmentType_layer">-->
+			<!--搜索设备类型名称：-->
+			<!--<div class="layui-inline">-->
+				<!--<input class="layui-input" name="equipmentType" id="equipmentType" placeholder="请输入设备类型名称" autocomplete="off">-->
+			<!--</div>-->
+			<!--<button class="layui-btn" data-type="reload" id="equipmentType_search">搜索</button>-->
+			<!--<table class="layui-table"  id="fequipmentType_table" lay-filter="equipmentType"></table>-->
+		<!--</div>-->
 	</div>
 	<!-- END MAIN -->
 	<div class="clearfix"></div>
@@ -197,7 +197,7 @@
             // $("#fmessage").text("用户名不能为空，请重新输入");
             layer.msg("购买设备类型名称不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
                 $("#fequipmentType").val("");
-                $("#fequipmentType").attr("equipment_type_id","");
+                // $("#fequipmentType").attr("equipment_type_id","");
                 $("#fequipmentType").focus();
             })
             return false
@@ -221,14 +221,14 @@
             return false
         }
 
-        if($.trim($("#faccountCenter").val()) == ""){
-            // $("#fmessage").text("用户名不能为空，请重新输入");
-            layer.msg("列支成本中心不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
-                $("#faccountCenter").val("");
-                $("#faccountCenter").focus();
-            })
-            return false
-        }
+        // if($.trim($("#faccountCenter").val()) == ""){
+        //     // $("#fmessage").text("用户名不能为空，请重新输入");
+        //     layer.msg("列支成本中心不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+        //         $("#faccountCenter").val("");
+        //         $("#faccountCenter").focus();
+        //     })
+        //     return false
+        // }
 
         var dataArray = {};
         var formData = $("#form").serializeArray();
@@ -266,8 +266,8 @@
 
         });
 
-        dataArray["equipment_type"]["id"] = $("#fequipmentType").attr("equipment_type_id");
-        dataArray["equipment_type_id"] = $("#fequipmentType").attr("equipment_type_id");
+        // dataArray["equipment_type"]["id"] = $("#fequipmentType").attr("equipment_type_id");
+        // dataArray["equipment_type_id"] = $("#fequipmentType").attr("equipment_type_id");
         dataArray["expense"]["id"] = $("#fprice").attr("expense_id");
         dataArray["expenseId"] = $("#fprice").attr("expense_id");
         console.log(dataArray)
@@ -284,7 +284,7 @@
         $.each(EquipmnetPurchaseDetailList,function(i,n){
             content+='<tr>';
             content+='  <td>'+(i+1)+'</td>';
-            content+='  <td>'+n.equipment_type.equipmentName+'</td>';
+            content+='  <td>'+n.equipment_type+'</td>';
             content+='  <td>'+n.purchaseNum+'</td>';
             content+='  <td>'+n.expense.price+'</td>';
             // content+='  <td>'+n.accountCenter + '</td>';
@@ -658,76 +658,76 @@
     })
 
 
-    $("#fequipmentType").click(function () {
-
-        var id, equipmentName = null;
-
-        //单击触发layer弹出层
-        layer.open({
-            title:"设备类型",
-            area: ['800px', '600px'],
-            type:1,
-            // content:"[[@{|/openQuery|}]]",
-            content:$('#equipmentType_layer'),
-            btn:['选择','取消'],
-            success:function (layero, index) {
-                layui.use('table',function () {
-                    var table = layui.table;
-
-                    //自动渲染数据表格
-                    table.render({
-                        // elem: layer.getChildFrame("#ftable", index)
-                        elem: '#fequipmentType_table'
-                        ,url:[[@{|/setting/equipmentType/showTable|}]]  //该url必须要返回符合layui要求的前端格式的json数据
-                ,cols: [
-                        [
-                            {type:'radio'}
-                            ,{field: 'id', title: 'ID',width:80}
-                            ,{field: 'equipmentName', title: '设备名称',width:120}
-                            ,{field: 'equipmentType', title: '设备类型'}
-                            ,{field: 'equipmentPortnum', title: '设备端口数量',width:120}
-                        ]
-                    ]
-                        ,page:true
-                        ,id: 'equipmentType'
-                });
-
-                    //搜索功能实现
-                    $('#equipmentType_search').on('click',function () {
-                        // var type = $(this).data('type');
-                        // active[type] ? active[type].call(this) : '';
-                        var equipmentType = $('#equipmentType');
-                        table.reload('equipmentType',{
-                            url:[[@{|/setting/equipmentType/showTable|}]]
-                    ,page: {
-                            curr: 1 //重新从第 1 页开始
-                        }
-                    ,where: {
-                            queryText: equipmentType.val()
-                        }
-                    })
-                    });
-
-                    //获取选中的层
-                    table.on('row(equipmentType)',function (obj) {
-                        id = obj.data.id;
-                        equipmentName = obj.data.equipmentName;
-                    })
-                })
-
-
-            },
-            yes:function (layero, index) {
-                $("#fequipmentType").attr("equipment_type_id",id);
-                $("#fequipmentType").val(equipmentName);
-                layer.close(layero)
-            },
-            btn2:function (layero, index) {
-                layer.close(layero)
-            }
-        })
-
-    })
+    // $("#fequipmentType").click(function () {
+    //
+    //     var id, equipmentName = null;
+    //
+    //     //单击触发layer弹出层
+    //     layer.open({
+    //         title:"设备类型",
+    //         area: ['800px', '600px'],
+    //         type:1,
+    //         // content:"[[@{|/openQuery|}]]",
+    //         content:$('#equipmentType_layer'),
+    //         btn:['选择','取消'],
+    //         success:function (layero, index) {
+    //             layui.use('table',function () {
+    //                 var table = layui.table;
+    //
+    //                 //自动渲染数据表格
+    //                 table.render({
+    //                     // elem: layer.getChildFrame("#ftable", index)
+    //                     elem: '#fequipmentType_table'
+    //                     ,url:[[@{|/setting/equipmentType/showTable|}]]  //该url必须要返回符合layui要求的前端格式的json数据
+    //             ,cols: [
+    //                     [
+    //                         {type:'radio'}
+    //                         ,{field: 'id', title: 'ID',width:80}
+    //                         ,{field: 'equipmentName', title: '设备名称',width:120}
+    //                         ,{field: 'equipmentType', title: '设备类型'}
+    //                         ,{field: 'equipmentPortnum', title: '设备端口数量',width:120}
+    //                     ]
+    //                 ]
+    //                     ,page:true
+    //                     ,id: 'equipmentType'
+    //             });
+    //
+    //                 //搜索功能实现
+    //                 $('#equipmentType_search').on('click',function () {
+    //                     // var type = $(this).data('type');
+    //                     // active[type] ? active[type].call(this) : '';
+    //                     var equipmentType = $('#equipmentType');
+    //                     table.reload('equipmentType',{
+    //                         url:[[@{|/setting/equipmentType/showTable|}]]
+    //                 ,page: {
+    //                         curr: 1 //重新从第 1 页开始
+    //                     }
+    //                 ,where: {
+    //                         queryText: equipmentType.val()
+    //                     }
+    //                 })
+    //                 });
+    //
+    //                 //获取选中的层
+    //                 table.on('row(equipmentType)',function (obj) {
+    //                     id = obj.data.id;
+    //                     equipmentName = obj.data.equipmentName;
+    //                 })
+    //             })
+    //
+    //
+    //         },
+    //         yes:function (layero, index) {
+    //             $("#fequipmentType").attr("equipment_type_id",id);
+    //             $("#fequipmentType").val(equipmentName);
+    //             layer.close(layero)
+    //         },
+    //         btn2:function (layero, index) {
+    //             layer.close(layero)
+    //         }
+    //     })
+    //
+    // })
 
     $("#resetBtn").click(function () {
         $("#form")[0].reset();
