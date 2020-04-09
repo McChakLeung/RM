@@ -97,7 +97,7 @@ public class ResourceController {
         try {
             User user = (User)session.getAttribute(Const.LOGIN_USER);
             List<Resource> resourceList = jsonObject.getJSONArray("resourceDetailList").toJavaList(Resource.class);
-            List<Equipment> equipmentList = jsonObject.getJSONArray("equipmentList").toJavaList(Equipment.class);
+            List<Equipment> equipmentList = (List<Equipment>)session.getAttribute("equipmentList");
             Long order_id = jsonObject.getLong("order_id");
 
             //判断获取的数据是否为空

@@ -258,13 +258,13 @@
 										<label class="col-xs-2 control-label">选择新设备<span style="color:red">* </span></label>
 										<div class="col-xs-4">
 											<!--<input type="text" class="form-control" id="fselect_equipment" onclick="selectEquipment()">-->
-											<select class="form-control" id="fselect_newequipment" name="equipmentSn">
+											<select class="form-control" id="fselect_newequipment" name="equipment.equipmentSn" equipment_id="">
 												<option>请选择</option>
 											</select>
 										</div>
 										<label class="col-xs-2 control-label">选择旧设备<span style="color:red">* </span></label>
 										<div class="col-xs-4">
-											<input type="text" class="form-control" id="fselect_oldequipment" name="equipment.equipmentType.equipmentSn" onclick="selectOldEquipment()" equipment_id="">
+											<input type="text" class="form-control" id="fselect_oldequipment" name="equipment.equipmentSn" onclick="selectOldEquipment()" equipment_id="">
 										</div>
 									</div>
 									<div class="form-group">
@@ -370,22 +370,6 @@
 
         var resource_no = $("#fresource_no").val();
 
-		$.ajax({
-            url:[[@{|/resource/verify_resourceNo|}]],
-        	data:{
-            	resource_no: resource_no
-        	},
-        	type:"post",
-            dataType: "json",
-            success:function (result) {
-            if(result.success == true){
-                layer.msg("该号码已存在，请确认后再输入", {time:1000, icon:5, shift:6});
-                return false;
-            }
-        }
-		})
-
-
         //判断必选项是否为空
         if($.trim($("#fresource_no").val()) == ""){
             // $("#fmessage").text("用户名不能为空，请重新输入");
@@ -465,6 +449,21 @@
             return false
         }
 
+        $.ajax({
+            url:[[@{|/resource/verify_resourceNo|}]],
+        data:{
+            resource_no: resource_no
+        },
+        type:"post",
+            dataType: "json",
+            success:function (result) {
+            if(result.success == true){
+                layer.msg("该号码已存在，请确认后再输入", {time:1000, icon:5, shift:6});
+                return false;
+            }
+        }
+    })
+
         var dataArray = {};
         var formData = $("#resourceListForm").serializeArray();
         $.each(formData,function(){
@@ -514,15 +513,16 @@
         dataArray["usedepartment"]["id"] = $("#fusedepartment").attr("usedepartment_id");
         dataArray["usedepartmentId"] = $("#fusedepartment").attr("usedepartment_id");
         //dataArray["equipment_port_num"] = $("#fequipment_port").attr("equipment_port_num");
-        // if(isNew == 0){
-        //     dataArray["isNewEquipment"] = $("input[type=radio][name=isNewEquipment]").text();
-        //     dataArray["equipment"]["equipmentType"]["id"] = $("#fselect_newequipment:selected").val();
-        //     dataArray["equipment"]["equipmentType"]["equipmentSn"] = $("#fselect_newequipment:selected").text();
-        // }else {
-        //     dataArray["isNewEquipment"] = $("input[type=radio][name=isNewEquipment]").text();
-        //     dataArray["equipment"]["id"] = $("#fselect_oldequipment").attr("equipment_id");
-        //     dataArray["equipment"]["equipmentType"]["equipmentSn"] = $("#fselect_oldequipment").attr("equipment_id");
-        // }
+        if(isNew == 0){
+            //dataArray["isNewEquipment"] = $("input[type=radio][name=isNewEquipment]").text();
+            //dataArray["equipment"]["equipmentType"]["id"] = $("#fselect_newequipment:selected").val();
+            dataArray["equipment"]["id"] = $("#fselect_newequipment").attr("equipment_id");
+            dataArray["equipmentId"] = $("#fselect_newequipment").attr("equipment_id");
+        }else {
+            //dataArray["isNewEquipment"] = $("input[type=radio][name=isNewEquipment]").text();
+            dataArray["equipment"]["id"] = $("#fselect_oldequipment").attr("equipment_id");
+            dataArray["equipmentId"] = $("#fselect_oldequipment").attr("equipment_id");
+        }
 
         console.log(dataArray)
         resourceDetailList.push(dataArray);
@@ -530,6 +530,10 @@
     })
 
     function showDetail(resourceDetailList) {
+
+        //var isNewEquipment = $("input[type=radio][name=isNewEquipment]").attr("checked",true).text()
+
+		//console.log(isNewEquipment)
 
         var content = '';
 
@@ -549,8 +553,13 @@
             content+='  <td>'+n.username+'</td>';
             content+='  <td>'+n.account_center+'</td>';
             content+='  <td>'+n.equipment_port_num+'</td>';
-            content+='  <td>'+n.isNewEquipment+'</td>';
-            content+='  <td>'+n.equipmentSn+'</td>';
+            if(n.isNewEquipment == 0){
+                content+='  <td>是</td>';
+			}else{
+                content+='  <td>否</td>';
+			}
+
+            content+='  <td>'+n.equipment.equipmentSn+'</td>';
             content+='  <td>';
             content+='	  <button type="button" onclick="deleteBtn('+i+')" class="btn btn-danger btn-xs delteBtn" value="aaa"><i class=" glyphicon glyphicon-remove"></i></button>';
             content+='  </td>';
@@ -944,8 +953,8 @@
 		$("#fselect_newequipment option:gt(0)").empty();
 		for(var i=0; i<=equipmentList.length; i++){
 		    var equipmentSn = equipmentList[i].equipmentSn;
-		    var equipmentTypeId= equipmentList[i].equipmentTypeId;
-            $("#fselect_newequipment").append("<option value='" + equipmentTypeId + "'>"+equipmentSn+"</option>")
+		    //var equipmentTypeId= equipmentList[i].equipmentTypeId;
+            $("#fselect_newequipment").append("<option>"+equipmentSn+"</option>")
             // $("#fselect_newequipment").val(equipmentSn);
 		}
     }
@@ -1030,7 +1039,7 @@
 
     $("#nextStep").click(function () {
 
-        var order_id = [[${order?.id}]]
+        var order_id = [[${session.order?.id}]]
         var OrderConstructNum = getTableNum("t1",5);
 //        var OrderEquipmentPurchaseNum = getTableNum("t2",2);
 
@@ -1043,8 +1052,8 @@
 
         $.ajax({
             type:"post",
-            url:[[@{|/order/preHandleOrder/construction/saveTemperateData|}]],
-        	data:JSON.stringify({'resourceDetailList':resourceDetailList,'equipmentList':equipmentList,'order_id':order_id}),
+            url:[[@{|/resource/generateResource|}]],
+        	data:JSON.stringify({'resourceDetailList':resourceDetailList,'order_id':order_id}),
             dataType:"json",
             contentType : "application/json;charset=utf-8",
             beforeSend:function () {
@@ -1052,9 +1061,10 @@
         },
         success:function (result) {
             if(result.success){
-				window.location.href= [[@{|/order/preHandleOrder/construction/toPairEquipment|}]];
+				window.location.href= [[@{|/resource/toIndex|}]];
             }else{
                 layer.msg(result.message,{time:2000, icon:5, shift:5})
+				return false;
             }
         }
     	})

@@ -287,22 +287,6 @@
 
         var resource_no = $("#fresource_no").val();
 
-		$.ajax({
-            url:[[@{|/resource/verify_resourceNo|}]],
-        	data:{
-            	resource_no: resource_no
-        	},
-        	type:"post",
-            dataType: "json",
-            success:function (result) {
-            if(result.success == true){
-                layer.msg("该号码已存在，请确认后再输入", {time:1000, icon:5, shift:6});
-                return false;
-            }
-        }
-		})
-
-
         //判断必选项是否为空
         if($.trim($("#fresource_no").val()) == ""){
             // $("#fmessage").text("用户名不能为空，请重新输入");
@@ -381,6 +365,21 @@
             })
             return false
         }
+
+        $.ajax({
+            url:[[@{|/resource/verify_resourceNo|}]],
+        data:{
+            resource_no: resource_no
+        },
+        type:"post",
+            dataType: "json",
+            success:function (result) {
+            if(result.success == true){
+                layer.msg("该号码已存在，请确认后再输入", {time:1000, icon:5, shift:6});
+                return false;
+            }
+        }
+    })
 
         var dataArray = {};
         var formData = $("#resourceListForm").serializeArray();
@@ -937,7 +936,6 @@
 
     $("#addEqipmentBtn").click(function () {
 
-
         //判断必选项是否为空
         if($.trim($("#fequipmentSn").val()) == ""){
             // $("#fmessage").text("用户名不能为空，请重新输入");
@@ -947,24 +945,6 @@
             })
             return false
         }
-
-        var equipmentSn = $("#fequipmentSn").val();
-
-        $.ajax({
-            url:[[@{|/equipment/verify_equipmentSn|}]],
-        data:{
-            equipmentSn: equipmentSn
-        },
-        type:"post",
-            dataType: "json",
-            success:function (result) {
-            if(result.success == true){
-                layer.msg("该设备已存在，请确认后再输入", {time:1000, icon:5, shift:6});
-            }
-        }
-    	})
-
-
 
         if($.trim($("#fequipmentType").val()) == ""){
             // $("#fmessage").text("用户名不能为空，请重新输入");
@@ -994,6 +974,24 @@
             })
             return false
         }
+
+
+        var equipmentSn = $("#fequipmentSn").val();
+
+        $.ajax({
+            url:[[@{|/equipment/verify_equipmentSn|}]],
+        data:{
+            equipmentSn: equipmentSn
+        },
+        type:"post",
+            dataType: "json",
+            success:function (result) {
+            if(result.success == true){
+                layer.msg("该设备已存在，请确认后再输入", {time:1000, icon:5, shift:6});
+                return false;
+            }
+        }
+    })
 
 
         var dataArray = {};
