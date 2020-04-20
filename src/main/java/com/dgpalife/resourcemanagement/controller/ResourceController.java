@@ -111,6 +111,11 @@ public class ResourceController {
                 result.setSuccess(false);
             }
 
+            //生成资源
+
+
+            //
+
             result.setSuccess(true);
         }catch (Exception e){
             e.printStackTrace();

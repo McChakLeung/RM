@@ -239,33 +239,37 @@
 											<input type="text" class="form-control" id="fResource_accountCenter" name="account_center">
 										</div>
 									</div>
+									<!--<div class="form-group">-->
+										<!--<label class="col-xs-2 control-label">新设备<span style="color:red">* </span></label>-->
+										<!--<div class="col-xs-4">-->
+											<!--<label class="radio-inline">-->
+												<!--<input type="radio" name="isNewEquipment" value="0"> 是-->
+											<!--</label>-->
+											<!--<label class="radio-inline">-->
+												<!--<input type="radio" name="isNewEquipment" value="1"> 否-->
+											<!--</label>-->
+										<!--</div>-->
+										<!--<label class="col-xs-2 control-label">设备端口<span style="color:red">* </span></label>-->
+										<!--<div class="col-xs-4">-->
+											<!--<input type="text" class="form-control" id="fequipment_port_num" name="equipment_port_num">-->
+										<!--</div>-->
+									<!--</div>-->
 									<div class="form-group">
-										<label class="col-xs-2 control-label">新设备<span style="color:red">* </span></label>
-										<div class="col-xs-4">
-											<label class="radio-inline">
-												<input type="radio" name="isNewEquipment" value="0"> 是
-											</label>
-											<label class="radio-inline">
-												<input type="radio" name="isNewEquipment" value="1"> 否
-											</label>
-										</div>
-										<label class="col-xs-2 control-label">设备端口<span style="color:red">* </span></label>
-										<div class="col-xs-4">
-											<input type="text" class="form-control" id="fequipment_port_num" name="equipment_port_num">
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="col-xs-2 control-label">选择新设备<span style="color:red">* </span></label>
+										<label class="col-xs-2 control-label">选择设备<span style="color:red">* </span></label>
 										<div class="col-xs-4">
 											<!--<input type="text" class="form-control" id="fselect_equipment" onclick="selectEquipment()">-->
 											<select class="form-control" id="fselect_newequipment" name="equipment.equipmentSn" equipment_id="">
 												<option>请选择</option>
 											</select>
 										</div>
-										<label class="col-xs-2 control-label">选择旧设备<span style="color:red">* </span></label>
+										<label class="col-xs-2 control-label">设备端口<span style="color:red">* </span></label>
 										<div class="col-xs-4">
-											<input type="text" class="form-control" id="fselect_oldequipment" name="equipment.equipmentSn" onclick="selectOldEquipment()" equipment_id="">
+											<input type="text" class="form-control" id="fequipment_port_num" name="equipment_port_num">
 										</div>
+										<!--<label class="col-xs-2 control-label">选择旧设备<span style="color:red">* </span></label>-->
+										<!--<div class="col-xs-4">-->
+											<!--<input type="text" class="form-control" id="fselect_oldequipment" name="equipment.equipmentSn" onclick="selectOldEquipment()" equipment_id="">-->
+										<!--</div>-->
 									</div>
 									<div class="form-group">
 										<label class="col-sm-2 control-label"></label>
@@ -291,7 +295,7 @@
 											<td>使用人</td>
 											<td>列支成本中心</td>
 											<td>设备端口</td>
-											<td>是否新设备</td>
+											<!--<td>是否新设备</td>-->
 											<td>设备编号</td>
 											<td>操作</td>
 										</tr>
@@ -304,7 +308,7 @@
 
 								<!--<button type="button" class="btn btn-default" id="backStep">上一步</button>-->
 								<!--<button type="button" class="btn btn-success" id="generateResource">生成资源</button>-->
-								<button type="button" class="btn btn-success" id="nextStep">下一步</button>
+								<button type="button" class="btn btn-success" id="preview">预览</button>
 							</div>
 						</div>
 						<!-- END BASIC TABLE -->
@@ -513,16 +517,16 @@
         dataArray["usedepartment"]["id"] = $("#fusedepartment").attr("usedepartment_id");
         dataArray["usedepartmentId"] = $("#fusedepartment").attr("usedepartment_id");
         //dataArray["equipment_port_num"] = $("#fequipment_port").attr("equipment_port_num");
-        if(isNew == 0){
+        //if(isNew == 0){
             //dataArray["isNewEquipment"] = $("input[type=radio][name=isNewEquipment]").text();
             //dataArray["equipment"]["equipmentType"]["id"] = $("#fselect_newequipment:selected").val();
-            dataArray["equipment"]["id"] = $("#fselect_newequipment").attr("equipment_id");
-            dataArray["equipmentId"] = $("#fselect_newequipment").attr("equipment_id");
-        }else {
-            //dataArray["isNewEquipment"] = $("input[type=radio][name=isNewEquipment]").text();
-            dataArray["equipment"]["id"] = $("#fselect_oldequipment").attr("equipment_id");
-            dataArray["equipmentId"] = $("#fselect_oldequipment").attr("equipment_id");
-        }
+		dataArray["equipment"]["id"] = $("#fselect_newequipment").attr("equipment_id");
+		dataArray["equipmentId"] = $("#fselect_newequipment").attr("equipment_id");
+        // }else {
+        //     //dataArray["isNewEquipment"] = $("input[type=radio][name=isNewEquipment]").text();
+        //     dataArray["equipment"]["id"] = $("#fselect_oldequipment").attr("equipment_id");
+        //     dataArray["equipmentId"] = $("#fselect_oldequipment").attr("equipment_id");
+        // }
 
         console.log(dataArray)
         resourceDetailList.push(dataArray);
@@ -553,11 +557,11 @@
             content+='  <td>'+n.username+'</td>';
             content+='  <td>'+n.account_center+'</td>';
             content+='  <td>'+n.equipment_port_num+'</td>';
-            if(n.isNewEquipment == 0){
-                content+='  <td>是</td>';
-			}else{
-                content+='  <td>否</td>';
-			}
+            // if(n.isNewEquipment == 0){
+             //    content+='  <td>是</td>';
+			// }else{
+             //    content+='  <td>否</td>';
+			// }
 
             content+='  <td>'+n.equipment.equipmentSn+'</td>';
             content+='  <td>';
@@ -920,20 +924,20 @@
     // }
 
 	$(function () {
-
-        $("#fselect_newequipment").prop("disabled",true);
-        $("#fselect_oldequipment").prop("disabled",true);
-
-        $('input[type=radio][name=isNewEquipment]').change(function() {
-            if (this.value == '0') {
-                $("#fselect_newequipment").prop("disabled",false);
-                $("#fselect_oldequipment").prop("disabled",true);
-            }
-            else if (this.value == '1') {
-                $("#fselect_newequipment").prop("disabled",true);
-                $("#fselect_oldequipment").prop("disabled",false);
-            }
-        });
+        //
+        // $("#fselect_newequipment").prop("disabled",true);
+        // $("#fselect_oldequipment").prop("disabled",true);
+        //
+        // $('input[type=radio][name=isNewEquipment]').change(function() {
+        //     if (this.value == '0') {
+        //         $("#fselect_newequipment").prop("disabled",false);
+        //         $("#fselect_oldequipment").prop("disabled",true);
+        //     }
+        //     else if (this.value == '1') {
+        //         $("#fselect_newequipment").prop("disabled",true);
+        //         $("#fselect_oldequipment").prop("disabled",false);
+        //     }
+        // });
 
         selectNewEquipment();
         // var equipmentList = [[${session?.equipmentList}]];
@@ -1037,7 +1041,7 @@
 
     }
 
-    $("#nextStep").click(function () {
+    $("#preview").click(function () {
 
         var order_id = [[${session.order?.id}]]
         var OrderConstructNum = getTableNum("t1",5);
