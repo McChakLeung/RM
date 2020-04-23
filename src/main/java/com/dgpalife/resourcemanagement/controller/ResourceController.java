@@ -6,6 +6,7 @@ import com.dgpalife.resourcemanagement.common.AjaxResult;
 import com.dgpalife.resourcemanagement.common.Const;
 import com.dgpalife.resourcemanagement.common.Page;
 import com.dgpalife.resourcemanagement.model.*;
+import com.dgpalife.resourcemanagement.service.EquipmentService;
 import com.dgpalife.resourcemanagement.service.OrderService;
 import com.dgpalife.resourcemanagement.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +30,9 @@ public class ResourceController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private EquipmentService equipmentService;
 
     @RequestMapping("/toIndex")
     public String toIndex(){
@@ -92,13 +98,13 @@ public class ResourceController {
 
     @ResponseBody
     @RequestMapping("/generateResource")
-    public Object generateResource(@RequestBody JSONObject jsonObject, HttpSession session){
+    public Object generateResource(HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
             User user = (User)session.getAttribute(Const.LOGIN_USER);
-            List<Resource> resourceList = jsonObject.getJSONArray("resourceDetailList").toJavaList(Resource.class);
+            List<Resource> resourceList = (List<Resource>) session.getAttribute("resourceList");
             List<Equipment> equipmentList = (List<Equipment>)session.getAttribute("equipmentList");
-            Long order_id = jsonObject.getLong("order_id");
+
 
             //判断获取的数据是否为空
             if(resourceList.isEmpty()){
@@ -113,8 +119,24 @@ public class ResourceController {
 
             //生成资源
 
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-            //
+            //第一步：在资源表中添加资源记录
+            for(Resource resource: resourceList){
+                resource.setCreate_time(sdf.format(date));
+                resource.setCreator_id(user.getId());
+            }
+
+            resourceService.insertResourceList(resourceList);
+
+            //第二步：在设备表中添加设备记录
+            for(Equipment equipment: equipmentList){
+                equipment.setCreateTime(sdf.format(date));
+                equipment.setCreatorId(user.getId());
+            }
+
+            equipmentService.insertEquipmentList(equipmentList);
 
             result.setSuccess(true);
         }catch (Exception e){
@@ -122,6 +144,12 @@ public class ResourceController {
             result.setSuccess(false);
             result.setMessage("生成资源异常，请联系管理员解决");
         }
+
+        //释放session空间，否则占用服务器资源
+        session.removeAttribute("resourceList");
+        session.removeAttribute("equipmentList");
+        session.removeAttribute("order");
+
         return result;
     }
 

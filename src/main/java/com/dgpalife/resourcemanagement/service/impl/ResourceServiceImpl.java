@@ -70,4 +70,11 @@ public class ResourceServiceImpl implements ResourceService {
     public Map<String, Object> queryPortInfoByResourceID(Long id) {
         return resourceMapper.queryPortInfoByResourceID(id);
     }
+
+    @Override
+    public void insertResourceList(List<Resource> resourceList) {
+        for (Resource resource: resourceList) {
+            resourceMapper.insertSelective(resource);
+        }
+    }
 }

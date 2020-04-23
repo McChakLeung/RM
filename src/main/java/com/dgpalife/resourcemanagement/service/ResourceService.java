@@ -3,6 +3,7 @@ package com.dgpalife.resourcemanagement.service;
 import com.dgpalife.resourcemanagement.common.Page;
 import com.dgpalife.resourcemanagement.model.Resource;
 
+import java.util.List;
 import java.util.Map;
 
 public interface ResourceService {
@@ -13,4 +14,6 @@ public interface ResourceService {
     Resource queryByResourceID(Long id);
 
     Map<String,Object> queryPortInfoByResourceID(Long id);
+
+    void insertResourceList(List<Resource> resourceList);
 }

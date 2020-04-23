@@ -6,11 +6,12 @@
     <result column="equipment_sn" jdbcType="VARCHAR" property="equipmentSn" />
     <result column="equipment_type" jdbcType="VARCHAR" property="equipmentType" />
     <result column="account_center" jdbcType="VARCHAR" property="account_center" />
+    <result column="expense_id" jdbcType="BIGINT" property="expense_id" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, equipment_sn, equipment_type, account_center, create_time, creator_id
+    id, equipment_sn, equipment_type, account_center, expense_id, create_time, creator_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -23,10 +24,10 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Equipment">
-    insert into t_equipment (id, equipment_sn, equipment_type, account_center,
+    insert into t_equipment (id, equipment_sn, equipment_type, account_center,expense_id,
        create_time,creator_id)
-    values (#{id,jdbcType=BIGINT}, #{equipmentSn,jdbcType=VARCHAR}, #{equipmentType,jdbcType=VARCHAR}, #{account_center,jdbcType=VARCHAR},
-      #{createTime,jdbcType=VARCHAR},#{creatorId,jdbcType=BIGINT})
+    values (#{id,jdbcType=BIGINT}, #{equipmentSn,jdbcType=VARCHAR}, #{equipmentType,jdbcType=VARCHAR},
+    #{account_center,jdbcType=VARCHAR},#{expense_id,jdbcType=BIGINT},#{createTime,jdbcType=VARCHAR},#{creatorId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Equipment">
     insert into t_equipment
@@ -43,11 +44,14 @@
       <if test="account_center != null">
         account_center,
       </if>
+      <if test="expense_id != null">
+        expense_id,
+      </if>
       <if test="createTime != null">
         create_time,
       </if>
       <if test="creatorId != null">
-        creator_id,
+        creator_id
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -63,11 +67,14 @@
       <if test="account_center != null">
         #{account_center,jdbcType=VARCHAR},
       </if>
+      <if test="expense_id != null">
+        #{expense_id,jdbcType=BIGINT},
+      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=VARCHAR},
       </if>
       <if test="creatorId != null">
-        #{creatorId,jdbcType=BIGINT},
+        #{creatorId,jdbcType=BIGINT}
       </if>
     </trim>
   </insert>
@@ -83,11 +90,14 @@
       <if test="account_center != null">
         #{account_center,jdbcType=VARCHAR},
       </if>
+      <if test="expense_id != null">
+        expense_id = #{expense_id,jdbcType=BIGINT},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=VARCHAR},
       </if>
       <if test="creatorId != null">
-        creator_id = #{creatorId,jdbcType=BIGINT},
+        creator_id = #{creatorId,jdbcType=BIGINT}
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -97,6 +107,7 @@
     set equipment_sn = #{equipmentSn,jdbcType=VARCHAR},
       equipment_type = #{equipmentType,jdbcType=VARCHAR},
       account_center = #{account_center,jdbcType=VARCHAR},
+      expense_id = #{expense_id,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=VARCHAR},
       creator_id = #{creatorId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}

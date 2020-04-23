@@ -7,11 +7,31 @@ public class Equipment {
 
     private String equipmentType;
 
+    private Long expense_id;
+
+    private Expense expense;
+
     private String account_center;
 
     private String createTime;
 
     private Long creatorId;
+
+    public Long getExpense_id() {
+        return expense_id;
+    }
+
+    public void setExpense_id(Long expense_id) {
+        this.expense_id = expense_id;
+    }
+
+    public Expense getExpense() {
+        return expense;
+    }
+
+    public void setExpense(Expense expense) {
+        this.expense = expense;
+    }
 
     public String getAccount_center() {
         return account_center;

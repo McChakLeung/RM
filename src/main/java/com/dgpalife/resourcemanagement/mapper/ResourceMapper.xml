@@ -90,10 +90,10 @@
       <if test="account_center != null">
         account_center,
       </if>
-      <if test="createTime != null">
+      <if test="create_time != null">
         create_time,
       </if>
-      <if test="creatorId != null">
+      <if test="creator_id != null">
         creator_id
       </if>
 

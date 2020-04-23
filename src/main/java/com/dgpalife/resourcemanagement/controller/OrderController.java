@@ -405,26 +405,26 @@ public class OrderController {
 
     }
 
-    /**
-     * 将建设工单临时放置在session中存放
-     * @param resourceList
-     * @param session
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/preHandleOrder/construction/saveResourceList")
-    public Object saveResourceList(@RequestBody List<Resource> resourceList, HttpSession session){
-        AjaxResult result = new AjaxResult();
-        try {
-            //session.setAttribute("resource",resource);
-            result.setSuccess(true);
-        }catch (Exception e){
-            e.printStackTrace();
-            result.setSuccess(false);
-            result.setMessage("生成异常，请联系管理员解决");
-        }
-        return result;
-    }
+//    /**
+//     * 将建设工单临时放置在session中存放
+//     * @param resourceList
+//     * @param session
+//     * @return
+//     */
+//    @ResponseBody
+//    @RequestMapping("/preHandleOrder/construction/saveResourceList")
+//    public Object saveResourceList(@RequestBody List<Resource> resourceList, HttpSession session){
+//        AjaxResult result = new AjaxResult();
+//        try {
+//            //session.setAttribute("resource",resource);
+//            result.setSuccess(true);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            result.setSuccess(false);
+//            result.setMessage("生成异常，请联系管理员解决");
+//        }
+//        return result;
+//    }
 
     /**
      * 将待处理工单的临时数据存放到session中，用于资源配对设备页面
@@ -432,17 +432,12 @@ public class OrderController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/preHandleOrder/construction/saveTemperateData")
-    public Object saveTemperateData(@RequestBody JSONObject jsonObject, Model model, HttpSession session){
+    @RequestMapping("/preHandleOrder/construction/saveEquipmentList")
+    public Object saveEquipmentList(@RequestBody JSONObject jsonObject, Model model, HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
-            //List<Resource> resourceList = jsonObject.getJSONArray("resourceDetailList").toJavaList(Resource.class);
             List<Equipment> equipmentList = jsonObject.getJSONArray("equipmentList").toJavaList(Equipment.class);
-            Long order_id = jsonObject.getLong("order_id");
-
-            //session.setAttribute("resourceList",resourceList);
             session.setAttribute("equipmentList",equipmentList);
-            model.addAttribute("order_id",order_id);
             result.setSuccess(true);
         }catch (Exception e){
             e.printStackTrace();
@@ -468,47 +463,33 @@ public class OrderController {
         return "/order/pre_handle_order/construction/pairEquipment/pairNewEquipment";
     }
 
-//    @RequestMapping("/test")
-//    public String test(User user){
-//        actUserEntityService.findById(user.getId().toString());
-//        return null;
-//    }
 
-//    @RequestMapping("/construction/toConstructionAdd")
-//    public String toConstructionAdd(){
-//        return "/order/myorder/construction/add";
-//    }
-//
-//    @ResponseBody
-//    @RequestMapping("/construction/doConstructionAdd")
-//    public Object createOrder(@RequestBody Order order){
-//        AjaxResult result = new AjaxResult();
-//        try{
-//            Integer count = orderService.createOrder(order);
-//            result.setSuccess(count>0);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            result.setSuccess(false);
-//            result.setMessage("创建工单失败");
-//        }
-//
-//        return result;
-//    }
-//
-//    @RequestMapping("/remove/toRemoveOrderAdd")
-//    public String toRemoveOrderAdd(){
-//        return "/order/remove/add";
-//    }
-//
-//    @RequestMapping("/maintaining/toMaintainingAdd")
-//    public String toMaintainingAdd(){
-//        return "/order/maintaining/add";
-//    }
-//
-//    @RequestMapping("/migration/toMigrationAdd")
-//    public String toMigrationAdd(){
-//        return "/order/migration/add";
-//    }
+    /**
+     * 将待处理工单的临时数据存放到session中，用于资源配对设备页面
+     * @param jsonObject
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/preHandleOrder/construction/saveResourceList")
+    public Object saveResourceList(@RequestBody JSONObject jsonObject, HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try {
+            List<Resource> resourceList = jsonObject.getJSONArray("resourceDetailList").toJavaList(Resource.class);
+            session.setAttribute("resourceList",resourceList);
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("跳转异常，请联系管理员解决");
+        }
+        return result;
+    }
+
+    @RequestMapping("/preHandleOrder/construction/toPreview")
+    public String toPreview(){
+        return "/order/pre_handle_order/construction/construction_preview";
+    }
+
 
 
 

@@ -424,8 +424,8 @@
 <script type="text/javascript"  th:inline="javascript">
 
     $(function () {
-		var equipmenNum = [[${session.order?.equipmentPurchaseRecordList}]].length
-		if(equipmenNum > 0){
+		var equipmentNum = [[${session.order?.equipmentPurchaseRecordList}]].length
+		if(equipmentNum > 0){
 		    $("#useNewEquipment").show();
 		    $("#useOldEquipment").hide();
 		}else{
@@ -1313,15 +1313,7 @@
 
     $("#addResource").click(function () {
 
-        var order_id = [[${order?.id}]]
-        //var OrderConstructNum = getTableNum("t1",5);
         var OrderEquipmentPurchaseNum = getTableNum("t2",2);
-
-        //判断工单的装机数量与添加的资源数量是否一致
-        // if(OrderConstructNum != resourceDetailList.length){
-        //     layer.msg("添加的资源数量与工单的数量不一致，请重新填写",{time:2000, icon:5, shift:5})
-        //     return false;
-        // }
 
         //判断工单的购买设备数量与添加的设备数量是否一致
         if(OrderEquipmentPurchaseNum != equipmentList.length){
@@ -1331,8 +1323,8 @@
 
         $.ajax({
             type:"post",
-            url:[[@{|/order/preHandleOrder/construction/saveTemperateData|}]],
-        	data:JSON.stringify({'equipmentList':equipmentList,'order_id':order_id}),
+            url:[[@{|/order/preHandleOrder/construction/saveEquipmentList|}]],
+        	data:JSON.stringify({'equipmentList':equipmentList}),
             dataType:"json",
             contentType : "application/json;charset=utf-8",
             beforeSend:function () {
@@ -1350,87 +1342,36 @@
     })
 
 
-    // $("#generateResource").click(function () {
-    //
-    //     var order_id = [[${order?.id}]]
-    //     var OrderConstructNum = getTableNum("t1",5);
-		// var OrderEquipmentPurchaseNum = getTableNum("t2",2);
-    //
-		// //判断工单的装机数量与添加的资源数量是否一致
-		// if(OrderConstructNum != resourceDetailList.length){
-    //         layer.msg("添加的资源数量与工单的数量不一致，请重新填写",{time:2000, icon:5, shift:5})
-		// 	return false;
-		// }
-    //
-    //     //判断工单的购买设备数量与添加的设备数量是否一致
-    //     if(OrderEquipmentPurchaseNum != equipmentList.length){
-    //         layer.msg("添加的设备数量与工单的购买数量数量不一致，请重新填写",{time:2000, icon:5, shift:5})
-    //         return false;
-    //     }
-    //
-    //     $.ajax({
-    //         type:"post",
-    //         url:[[@{|/resource/generateResource|}]],
-    //     	data:JSON.stringify({'resourceDetailList':resourceDetailList,'equipmentList':equipmentList,'order_id':order_id}),
-    //         dataType:"json",
-    //         contentType : "application/json;charset=utf-8",
-    //         beforeSend:function () {
-    //         return true
-    //     },
-    //     success:function (result) {
-    //         if(result.success){
-    //             layer.msg('资源创建成功',{time:2000, icon:5, shift:5})
-    //             window.location.href= [[@{|/resource/toIndex|}]];
-    //         }else{
-    //             layer.msg(result.message,{time:2000, icon:5, shift:5})
-    //         }
-    //     }
-	 //  })
-    //
-    // })
+    $("#preview").click(function () {
 
-    // $("#nextStep").click(function () {
-    //
-    //     var order_id = [[${order?.id}]]
-    //     var OrderConstructNum = getTableNum("t1",5);
-    //     var OrderEquipmentPurchaseNum = getTableNum("t2",2);
-    //
-    //     //判断工单的装机数量与添加的资源数量是否一致
-    //     if(OrderConstructNum != resourceDetailList.length){
-    //         layer.msg("添加的资源数量与工单的数量不一致，请重新填写",{time:2000, icon:5, shift:5})
-    //         return false;
-    //     }
-    //
-    //     //判断工单的购买设备数量与添加的设备数量是否一致
-    //     if(OrderEquipmentPurchaseNum != equipmentList.length){
-    //         layer.msg("添加的设备数量与工单的购买数量数量不一致，请重新填写",{time:2000, icon:5, shift:5})
-    //         return false;
-    //     }
-    //
-    //     $.ajax({
-    //         type:"post",
-    //         url:[[@{|/order/preHandleOrder/construction/saveTemperateData|}]],
-    //     	data:JSON.stringify({'resourceDetailList':resourceDetailList,'equipmentList':equipmentList,'order_id':order_id}),
-    //         dataType:"json",
-    //         contentType : "application/json;charset=utf-8",
-    //         beforeSend:function () {
-    //         return true
-    //     },
-    //     success:function (result) {
-    //         if(result.success){
-    //             if(equipmentList.length > 0){
-    //                 window.location.href= [[@{|/order/preHandleOrder/construction/toPairNewEquipment|}]];
-		// 		}else{
-    //                 window.location.href= [[@{|/order/preHandleOrder/construction/toPairExistEquipment|}]];
-		// 		}
-    //
-    //         }else{
-    //             layer.msg(result.message,{time:2000, icon:5, shift:5})
-    //         }
-    //     }
-    // 	})
-    //
-    // })
+        var OrderConstructNum = getTableNum("t1",5);
+
+        //判断工单的装机数量与添加的资源数量是否一致
+        if(OrderConstructNum != resourceDetailList.length){
+            layer.msg("添加的资源数量与工单的数量不一致，请重新填写",{time:2000, icon:5, shift:5})
+            return false;
+        }
+
+
+        $.ajax({
+            type:"post",
+            url:[[@{|/order/preHandleOrder/construction/saveResourceList|}]],
+        	data:JSON.stringify({'resourceDetailList':resourceDetailList}),
+            dataType:"json",
+            contentType : "application/json;charset=utf-8",
+            beforeSend:function () {
+            return true
+        },
+        success:function (result) {
+            if(result.success){
+				window.location.href= [[@{|/order/preHandleOrder/construction/toPreview|}]];
+            }else{
+                layer.msg(result.message,{time:2000, icon:5, shift:5})
+            }
+        }
+    	})
+
+    })
 
 
     //查询订单购买设备数量

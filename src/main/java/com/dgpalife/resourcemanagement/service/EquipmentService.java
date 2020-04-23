@@ -1,5 +1,7 @@
 package com.dgpalife.resourcemanagement.service;
 
+import com.dgpalife.resourcemanagement.model.Equipment;
+
 import java.util.List;
 import java.util.Map;
 
@@ -9,4 +11,6 @@ public interface EquipmentService {
     List<Object> selectEquipmentByQueryText(Map<String, Object> params);
 
     int selectCountByQueryText(Map<String, Object> params);
+
+    void insertEquipmentList(List<Equipment> equipmentList);
 }
