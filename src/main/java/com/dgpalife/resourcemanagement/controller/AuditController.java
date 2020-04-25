@@ -62,12 +62,14 @@ public class AuditController {
         AjaxResult result = new AjaxResult();
 
         try{
-
+            //建立查询请求
             TaskQuery query = processEngine.getTaskService().createTaskQuery();
+            //根据流程定义文件查询分配给admin的任务列表
             List<Task> taskList = query.processDefinitionKey("order_auth").taskCandidateGroup("admin").listPage((pageno-1)*pagesize, pagesize);
 
             List<Map<String, Object>> taskMapList = new ArrayList<Map<String, Object>>();//避免JSON数据转换出错
 
+            //遍历任务，并将任务信息存放在taskMap中展示到前端
             for(Task task:taskList){
                 Map<String, Object> taskMap = new HashMap<String, Object>();
                 taskMap.put("id", task.getId());
