@@ -107,7 +107,7 @@
 									<div class="form-group">
 										<label class="col-md-2 control-label">装机数量<span style="color:red">* </span></label>
 										<div class="col-md-4">
-											<input type="number" class="form-control" id="fnumber" name="number">
+											<input type="number" class="form-control" id="fconstruct_number" name="construct_number">
 										</div>
 										<label class="col-md-2 control-label">资费<span style="color:red">* </span>	</label>
 										<div class="col-md-4">
@@ -236,11 +236,11 @@
             })
             return false
         }
-        if($.trim($("#fnumber").val()) == ""){
+        if($.trim($("#fconstruct_number").val()) == ""){
             // $("#fmessage").text("用户名不能为空，请重新输入");
             layer.msg("装机数量不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
-                $("#fnumber").val("");
-                $("#fnumber").focus();
+                $("#fconstruct_number").val("");
+                $("#fconstruct_number").focus();
             })
             return false
         }
@@ -337,7 +337,7 @@
             content+='  <td>'+n.usedepartment_type+'</td>';
             content+='  <td>'+n.operator+'</td>';
             content+='  <td>'+n.resourceType+'</td>';
-            content+='  <td>'+n.number+'</td>';
+            content+='  <td>'+n.construct_number+'</td>';
             content+='  <td>'+n.expense.price+'</td>';
             content+='  <td>'+n.workplace.workplaceName + '</td>';
             content+='  <td>'+n.networkRoom.networkroom_name+'</td>';

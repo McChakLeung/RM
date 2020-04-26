@@ -104,7 +104,7 @@ public class ResourceController {
             User user = (User)session.getAttribute(Const.LOGIN_USER);
             List<Resource> resourceList = (List<Resource>) session.getAttribute("resourceList");
             List<Equipment> equipmentList = (List<Equipment>)session.getAttribute("equipmentList");
-
+            Order order = (Order)session.getAttribute("order");
 
             //判断获取的数据是否为空
             if(resourceList.isEmpty()){
@@ -112,10 +112,10 @@ public class ResourceController {
                 result.setSuccess(false);
             }
 
-            if(equipmentList.isEmpty()){
-                result.setMessage("未添加设备，请重新输入");
-                result.setSuccess(false);
-            }
+//            if(equipmentList.isEmpty()){
+//                result.setMessage("未添加设备，请重新输入");
+//                result.setSuccess(false);
+//            }
 
             //生成资源
 
@@ -131,26 +131,32 @@ public class ResourceController {
             resourceService.insertResourceList(resourceList);
 
             //第二步：在设备表中添加设备记录
-            for(Equipment equipment: equipmentList){
-                equipment.setCreateTime(sdf.format(date));
-                equipment.setCreatorId(user.getId());
+            if(equipmentList != null) {
+                for (Equipment equipment : equipmentList) {
+                    equipment.setCreateTime(sdf.format(date));
+                    equipment.setCreatorId(user.getId());
+                }
+                equipmentService.insertEquipmentList(equipmentList);
             }
 
-            equipmentService.insertEquipmentList(equipmentList);
+            //第三步：更新order状态为已完成
+            order.setStatus("已完成");
+            orderService.updateOrder(order);
 
             result.setSuccess(true);
+
         }catch (Exception e){
             e.printStackTrace();
             result.setSuccess(false);
             result.setMessage("生成资源异常，请联系管理员解决");
+        }finally {
+            //释放session空间，否则占用服务器资源
+            session.removeAttribute("resourceList");
+            session.removeAttribute("equipmentList");
+            session.removeAttribute("order");
         }
-
-        //释放session空间，否则占用服务器资源
-        session.removeAttribute("resourceList");
-        session.removeAttribute("equipmentList");
-        session.removeAttribute("order");
-
         return result;
+
     }
 
 

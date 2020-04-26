@@ -1381,9 +1381,12 @@
         //row：要统计哪一列
 
         var total = 0;
-        $("#" + table_id).each(function () {
-            var num = $($(this).find("td")[row]).text();
-            total += getNumValue(num);
+        $("#"+ table_id +" tr").each(function () {
+            // var num = parseInt(($(this).find("td")[row]).innerText);
+            // total += getNumValue(num);
+			$(this).find("td:eq("+ row +")").each(function () {
+                total += parseInt($(this).text());
+            })
         });
 
         return Number(total);
