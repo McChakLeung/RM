@@ -14,13 +14,12 @@
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="approval_opinion" jdbcType="LONGVARCHAR" property="approval_opinion" />
     <result column="isFinish" jdbcType="BOOLEAN" property="isFinish" />
-    <result column="resource_id" jdbcType="BIGINT" property="resource_id" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.dgpalife.resourcemanagement.model.Order">
     <result column="reason" jdbcType="LONGVARCHAR" property="reason" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, type, status, title, apply_department_id, proposer_id, project_id,create_time,reason,approval_opinion,isFinish,resource_id
+    id, type, status, title, apply_department_id, proposer_id, project_id,create_time,reason,approval_opinion,isFinish
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
     select 
@@ -45,7 +44,7 @@
       #{proposerId,jdbcType=BIGINT},#{projectId,jdbcType=BIGINT},
       #{createTime,jdbcType=VARCHAR}, #{reason,jdbcType=LONGVARCHAR},
       #{approval_opinion,jdbcType=LONGVARCHAR},
-      #{isFinish,jdbcType=BOOLEAN},#{resource_id,jdbcType=BIGINT}
+      #{isFinish,jdbcType=BOOLEAN}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Order" useGeneratedKeys="true" keyProperty="id">
@@ -60,12 +59,6 @@
       <if test="title != null">
         title,
       </if>
-      <!--<if test="piid != null">-->
-        <!--piid,-->
-      <!--</if>-->
-      <!--<if test="approvalLinkId != null">-->
-        <!--approval_link_id,-->
-      <!--</if>-->
       <if test="applyDepartmentId != null">
         apply_department_id,
       </if>
@@ -85,10 +78,7 @@
         approval_opinion,
       </if>
       <if test="isFinish != null">
-        isFinish,
-      </if>
-      <if test="resource_id != null">
-        resource_id
+        isFinish
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -101,12 +91,6 @@
       <if test="title != null">
         #{title,jdbcType=VARCHAR},
       </if>
-      <!--<if test="piid != null">-->
-        <!--#{piid,jdbcType=VARCHAR},-->
-      <!--</if>-->
-      <!--<if test="approvalLinkId != null">-->
-        <!--#{approvalLinkId,jdbcType=BIGINT},-->
-      <!--</if>-->
       <if test="applyDepartmentId != null">
         #{applyDepartmentId,jdbcType=BIGINT},
       </if>
@@ -126,10 +110,7 @@
         #{approval_opinion,jdbcType=LONGVARCHAR},
       </if>
       <if test="isFinish != null">
-        #{isFinish,jdbcType=BOOLEAN},
-      </if>
-      <if test="resource_id != null">
-        #{resource_id,jdbcType=BiGINT}
+        #{isFinish,jdbcType=BOOLEAN}
       </if>
     </trim>
   </insert>
@@ -145,12 +126,6 @@
       <if test="title != null">
         title = #{title,jdbcType=VARCHAR},
       </if>
-      <!--<if test="piid != null">-->
-        <!--piid = #{piid,jdbcType=VARCHAR},-->
-      <!--</if>-->
-      <!--<if test="approvalLinkId != null">-->
-        <!--approval_link_id = #{approvalLinkId,jdbcType=BIGINT},-->
-      <!--</if>-->
       <if test="applyDepartmentId != null">
         apply_department_id = #{applyDepartmentId,jdbcType=BIGINT},
       </if>
@@ -167,11 +142,8 @@
         approval_opinion = #{approval_opinion,jdbcType=LONGVARCHAR},
       </if>
       <if test="isFinish != null">
-        isFinish = #{isFinish,jdbcType=BOOLEAN},
+        isFinish = #{isFinish,jdbcType=BOOLEAN}
       </if>
-      <if test="resource_id != null">
-        #{resource_id,jdbcType=BiGINT}
-    </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -187,8 +159,7 @@
       create_time = #{createTime,jdbcType=VARCHAR},
       reason = #{reason,jdbcType=LONGVARCHAR},
       approval_opinion = #{approval_opinion,jdbcType=LONGVARCHAR},
-      isFinish = #{isFinish,jdbcType=BOOLEAN},
-      resource_id = #{resource_id,jdbcType=BIGINT}
+      isFinish = #{isFinish,jdbcType=BOOLEAN}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.Order">
@@ -203,8 +174,7 @@
       create_time = #{createTime,jdbcType=VARCHAR},
       reason = #{reason,jdbcType=LONGVARCHAR},
       approval_opinion = #{approval_opinion,jdbcType=LONGVARCHAR},
-      isFinish = #{isFinish,jdbcType=BOOLEAN},
-      resource_id = #{resource_id,jdbcType=BIGINT}
+      isFinish = #{isFinish,jdbcType=BOOLEAN}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -283,14 +253,13 @@
       proposer_id, project_id,
       create_time,reason,
       approval_opinion,
-      isFinish,resource_id
+      isFinish
       )
     values (#{type,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
       #{title,jdbcType=VARCHAR},#{applyDepartmentId,jdbcType=BIGINT},
       #{proposerId,jdbcType=BIGINT},#{projectId,jdbcType=BIGINT},
       #{createTime,jdbcType=VARCHAR}, #{reason,jdbcType=LONGVARCHAR},
-      #{approval_opinion,jdbcType=VARCHAR}, #{isFinish,jdbcType=BOOLEAN},
-      #{resource_id,jdbcType=BIGINT}
+      #{approval_opinion,jdbcType=VARCHAR}, #{isFinish,jdbcType=BOOLEAN}
       )
   </insert>
 
@@ -346,9 +315,13 @@
     limit #{startline}, #{pagesize}
   </select>
 
-  <select id="queryOrderlistByResourceID" resultMap="BaseResultMap">
-    SELECT <include refid="Base_Column_List" />
-    FROM t_order
-    WHERE resource_id = #{id}
+  <select id="queryOrderByID" resultType="map">
+    SELECT t1.id id, t1.type order_type, t1.status order_status, t1.title title, t2.department_name department_name,
+    t3.username username, t4.project_name project_name, t1.create_time create_time
+    FROM t_order t1
+    LEFT JOIN t_department t2 ON t1.apply_department_id = t2.id
+    LEFT JOIN t_user t3 ON t1.proposer_id = t3.id
+    LEFT JOIN t_project t4 ON t1.project_id = t4.id
+    WHERE t1.id =  #{id}
   </select>
 </mapper>

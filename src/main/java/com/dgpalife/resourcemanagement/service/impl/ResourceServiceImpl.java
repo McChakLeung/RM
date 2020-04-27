@@ -4,9 +4,12 @@ import com.dgpalife.resourcemanagement.common.Page;
 import com.dgpalife.resourcemanagement.mapper.*;
 import com.dgpalife.resourcemanagement.model.*;
 import com.dgpalife.resourcemanagement.service.ResourceService;
+import org.activiti.engine.impl.transformer.LongToInteger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +30,9 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
     private ExpenseMapper expenseMapper;
+
+    @Autowired
+    private Order_resourceMapper order_resourceMapper;
 
     @Override
     public int queryByResourceNo(String resource_no) {
@@ -72,9 +78,25 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public void insertResourceList(List<Resource> resourceList) {
+    public void insertResourceList(List<Resource> resourceList, Order order, User user) {
+
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         for (Resource resource: resourceList) {
-            resourceMapper.insertSelective(resource);
+            //设置resource信息
+            resource.setCreate_time(sdf.format(date));
+            resource.setCreator_id(user.getId());
+
+            //返回自动生成的主键ID
+            Long id = resourceMapper.insertSelective(resource);
+
+            //插入中间表
+            Order_resource order_resource = new Order_resource();
+            order_resource.setOrderId(order.getId());
+            order_resource.setResourceId(id);
+            order_resourceMapper.insertSelective(order_resource);
+
         }
     }
 }

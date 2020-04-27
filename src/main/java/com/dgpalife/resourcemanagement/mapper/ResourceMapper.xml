@@ -45,7 +45,7 @@
       #{expense_id,jdbcType=BIGINT},#{account_center,jdbcType=VARCHAR},
       #{create_time,jdbcType=VARCHAR}, #{creator_id,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Resource">
+  <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Resource" useGeneratedKeys="true" keyProperty="id">
     insert into t_resource
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -284,10 +284,10 @@
   </select>
 
   <select id="queryPortInfoByResourceID" resultType="map">
---     SELECT t2.equipment_sn equipment_sn,t3.equipment_name equipment_name,t1.port_no port_no, t1.equipment_id equipment_id
---     FROM t_equipment t1
---     LEFT JOIN t_equipment t2 ON t1.equipment_id = t2.id
---     LEFT JOIN t_equipment_type t3 ON t2.equipment_type_id = t3.id
---     WHERE t1.resource_id = #{id}
+    SELECT t2.equipment_sn equipment_sn,t2.equipment_type equipment_type,
+    t1.equipment_port_num equipment_port_num, t1.equipment_id equipment_id
+    FROM t_resource t1
+    LEFT JOIN t_equipment t2 ON t1.equipment_id = t2.id
+    WHERE t1.id = #{id}
   </select>
 </mapper>

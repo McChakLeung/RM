@@ -12,7 +12,7 @@ public interface ResourceMapper {
 
     int insert(Resource record);
 
-    int insertSelective(Resource record);
+    Long insertSelective(Resource record);
 
     Resource selectByPrimaryKey(Long id);
 

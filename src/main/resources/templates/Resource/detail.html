@@ -134,15 +134,15 @@
                                         <div class="col-md-4">
                                             <input type="text" class="form-control" id="fequipment_sn" th:value="${portInfo?.equipment_sn}" disabled>
                                         </div>
-                                        <label for="fequipment_name" class="col-md-2 control-label">设备类型名称</label>
+                                        <label for="fequipment_name" class="col-md-2 control-label">设备类型</label>
                                         <div class="col-md-4">
-                                            <input type="text" class="form-control" id="fequipment_name" th:value="${portInfo?.equipment_name}" disabled>
+                                            <input type="text" class="form-control" id="fequipment_name" th:value="${portInfo?.equipment_type}" disabled>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="fport_no" class="col-md-2 control-label">设备端口号</label>
                                         <div class="col-md-4">
-                                            <input type="text" class="form-control" id="fport_no" th:value="${portInfo?.port_no}" disabled>
+                                            <input type="text" class="form-control" id="fport_no" th:value="${portInfo?.equipment_port_num}" disabled>
                                         </div>
                                         <label for="fequipment_id" class="col-md-2 control-label"></label>
                                         <div class="col-md-4">
@@ -171,13 +171,13 @@
 										<tbody>
                                         <tr th:each="order:${orderList}">
                                             <td th:text="${orderStat?.count}">序号</td>
-                                            <td th:text="${order?.type}">工单类型</td>
-                                            <td th:text="${order?.status}">工单状态</td>
+                                            <td th:text="${order?.order_type}">工单类型</td>
+                                            <td th:text="${order?.order_status}">工单状态</td>
                                             <td th:text="${order?.title}">工单标题</td>
-                                            <td th:text="${order?.applyDepartment?.departmentName}">职能部门|营业区</td>
-                                            <td th:text="${order?.proposer?.username}">申请人</td>
-                                            <td th:text="${order?.project?.projectName}">所属项目</td>
-                                            <td th:text="${order?.createTime}">创建时间</td>
+                                            <td th:text="${order?.department_name}">职能部门|营业区</td>
+                                            <td th:text="${order?.username}">申请人</td>
+                                            <td th:text="${order?.project_name}">所属项目</td>
+                                            <td th:text="${order?.create_time}">创建时间</td>
                                             <td><button type="button" class="btn btn-success btn-xs" th:onclick="toDetail([[${order?.id}]])">明细</button></td>
                                         </tr>
 										</tbody>

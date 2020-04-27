@@ -39,24 +39,14 @@ public class Order {
 
     private Boolean isFinish = false;
 
-    private Long resource_id;
+    private List<Resource> resourceList;
 
-    private Resource resource;
-
-    public Long getResource_id() {
-        return resource_id;
+    public List<Resource> getResourceList() {
+        return resourceList;
     }
 
-    public void setResource_id(Long resource_id) {
-        this.resource_id = resource_id;
-    }
-
-    public Resource getResource() {
-        return resource;
-    }
-
-    public void setResource(Resource resource) {
-        this.resource = resource;
+    public void setResourceList(List<Resource> resourceList) {
+        this.resourceList = resourceList;
     }
 
     public Boolean getFinish() {

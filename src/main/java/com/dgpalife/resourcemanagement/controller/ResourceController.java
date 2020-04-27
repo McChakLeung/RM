@@ -8,6 +8,7 @@ import com.dgpalife.resourcemanagement.common.Page;
 import com.dgpalife.resourcemanagement.model.*;
 import com.dgpalife.resourcemanagement.service.EquipmentService;
 import com.dgpalife.resourcemanagement.service.OrderService;
+import com.dgpalife.resourcemanagement.service.Order_resourceService;
 import com.dgpalife.resourcemanagement.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +35,9 @@ public class ResourceController {
     @Autowired
     private EquipmentService equipmentService;
 
+    @Autowired
+    private Order_resourceService order_resourceService;
+
     @RequestMapping("/toIndex")
     public String toIndex(){
         return "/resource/index";
@@ -49,23 +53,14 @@ public class ResourceController {
                         @RequestParam(value = "department_id",required = false) Long department_id,
                         @RequestParam(value = "usedepartment_id",required = false) Long usedepartment_id,
                         @RequestParam(value = "usedepartment_type",required = false) String usedepartment_type,
-                        @RequestParam(value = "operator",required = false) String operator,
-                        HttpSession session){
+                        @RequestParam(value = "operator",required = false) String operator){
 
         AjaxResult result = new AjaxResult();
 
         try{
-            User user = (User)session.getAttribute(Const.LOGIN_USER);
-            Role role = (Role)session.getAttribute(Const.ROLE);
-
-
             Map<String,Object> params = new HashMap<>();
             params.put("pageno",pageno);
             params.put("pagesize",pagesize);
-            //判断当前登陆的角色是否为管理员或IT岗角色,如果不是，则只能显示当前登陆用户的
-//            if(role.getId()==3){
-//                params.put("department_id",user.getDepartment_id());
-//            }
             params.put("resource_no",resource_no);
             params.put("resourc_type",resourc_type);
             params.put("department_id",department_id);
@@ -88,7 +83,7 @@ public class ResourceController {
     public String toDetail(@PathVariable Long id, Model model){
         Resource resource = resourceService.queryByResourceID(id);
         Map<String,Object> portInfo = resourceService.queryPortInfoByResourceID(resource.getId());
-        List<Order> orderList = orderService.queryOrderlistByResourceID(resource.getId());
+        List<Map<String,Object>> orderList = (List<Map<String,Object>>)order_resourceService.queryOrderlistByResourceID(resource.getId());
         model.addAttribute("resource",resource);
         model.addAttribute("portInfo",portInfo);
         model.addAttribute("orderList",orderList);
@@ -119,28 +114,17 @@ public class ResourceController {
 
             //生成资源
 
-            Date date = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
             //第一步：在资源表中添加资源记录
-            for(Resource resource: resourceList){
-                resource.setCreate_time(sdf.format(date));
-                resource.setCreator_id(user.getId());
-            }
-
-            resourceService.insertResourceList(resourceList);
+            resourceService.insertResourceList(resourceList,order,user);
 
             //第二步：在设备表中添加设备记录
             if(equipmentList != null) {
-                for (Equipment equipment : equipmentList) {
-                    equipment.setCreateTime(sdf.format(date));
-                    equipment.setCreatorId(user.getId());
-                }
-                equipmentService.insertEquipmentList(equipmentList);
+                equipmentService.insertEquipmentList(equipmentList,user);
             }
 
             //第三步：更新order状态为已完成
             order.setStatus("已完成");
+            order.setFinish(true);
             orderService.updateOrder(order);
 
             result.setSuccess(true);

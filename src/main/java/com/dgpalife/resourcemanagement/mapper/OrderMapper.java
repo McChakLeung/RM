@@ -41,5 +41,7 @@ public interface OrderMapper {
 
     List<Order> queryOrderlistByResourceID(Long id);
 
+    Map<String,Object> queryOrderByID(Long orderId);
+
     //Order queryOrderByIdAndStatus(Long id, String Status);
 }
