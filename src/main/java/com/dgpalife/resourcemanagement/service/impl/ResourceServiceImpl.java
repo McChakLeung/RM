@@ -89,12 +89,12 @@ public class ResourceServiceImpl implements ResourceService {
             resource.setCreator_id(user.getId());
 
             //返回自动生成的主键ID
-            Long id = resourceMapper.insertSelective(resource);
+            resourceMapper.insertSelective(resource);
 
             //插入中间表
             Order_resource order_resource = new Order_resource();
             order_resource.setOrderId(order.getId());
-            order_resource.setResourceId(id);
+            order_resource.setResourceId(resource.getId());
             order_resourceMapper.insertSelective(order_resource);
 
         }

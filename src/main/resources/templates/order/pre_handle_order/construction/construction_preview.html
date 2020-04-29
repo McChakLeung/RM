@@ -86,6 +86,7 @@
 													<td>机房</td>
 													<td>挂账部门</td>
 													<td>使用科室|外勤部门</td>
+													<td>使用部门类型</td>
 													<td>使用人</td>
 													<td>列支成本中心</td>
 													<td>设备端口</td>
@@ -103,6 +104,7 @@
 													<td th:text="${resource?.networkRoom?.networkroom_name}">机房</td>
 													<td th:text="${resource?.department?.departmentName}">挂账部门</td>
 													<td th:text="${resource?.usedepartment?.departmentName}">使用科室|外勤部门</td>
+													<td th:text="${resource?.usedepartment_type}">使用部门类型</td>
 													<td th:text="${resource?.username}">使用人</td>
 													<td th:text="${resource?.account_center}">列支成本中心</td>
 													<td th:text="${resource?.equipment_port_num}">设备端口</td>
