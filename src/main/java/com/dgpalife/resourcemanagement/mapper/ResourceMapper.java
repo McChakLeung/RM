@@ -27,4 +27,10 @@ public interface ResourceMapper {
     Integer selectCount(Map<String, Object> params);
 
     Map<String,Object> queryPortInfoByResourceID(Long id);
+
+    List<Object> selectResourceByQueryText(Map<String, Object> params);
+
+    int selectSearchResult(Map<String, Object> params);
+
+    Map<String,Object> queryResoureDetailByID(Long resource_id);
 }

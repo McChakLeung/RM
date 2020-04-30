@@ -18,4 +18,10 @@ public interface ResourceService {
     Map<String,Object> queryPortInfoByResourceID(Long id);
 
     void insertResourceList(List<Resource> resourceList,Order order, User user);
+
+    List<Object> selectResourceByQueryText(Map<String, Object> params);
+
+    int selectCount(Map<String, Object> params);
+
+    Map<String,Object> queryResoureDetailByID(Long resource_id);
 }

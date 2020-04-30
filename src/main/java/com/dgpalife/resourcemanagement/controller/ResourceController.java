@@ -5,11 +5,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.dgpalife.resourcemanagement.common.AjaxResult;
 import com.dgpalife.resourcemanagement.common.Const;
 import com.dgpalife.resourcemanagement.common.Page;
+import com.dgpalife.resourcemanagement.common.StringUtil;
 import com.dgpalife.resourcemanagement.model.*;
 import com.dgpalife.resourcemanagement.service.EquipmentService;
 import com.dgpalife.resourcemanagement.service.OrderService;
 import com.dgpalife.resourcemanagement.service.Order_resourceService;
 import com.dgpalife.resourcemanagement.service.ResourceService;
+import com.dgpalife.resourcemanagement.vo.LayuiVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -155,6 +157,58 @@ public class ResourceController {
             result.setSuccess(true);
         }
 
+        return result;
+    }
+
+
+    /**
+     * 搜索查询
+     * @param queryText
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/showTable")
+    public Object showTable(String queryText){
+
+        LayuiVO layuiVO = new LayuiVO();
+
+        try {
+            Map<String,Object> params = new HashMap<>();
+            if(StringUtil.isNotEmpty(queryText)){
+                if(queryText.contains("%")){
+                    queryText = queryText.replaceAll("%", "\\\\%");
+                }
+                params.put("queryText", queryText); //   \%
+            }
+            List<Object> resourceList = resourceService.selectResourceByQueryText(params);
+            int count = resourceService.selectCount(params);
+            layuiVO.setData(resourceList);
+            layuiVO.setCount(count);
+            layuiVO.setCode(0);
+        }catch (Exception e){
+            e.printStackTrace();
+            layuiVO.setCode(1);
+            layuiVO.setMsg("查询异常，请联系管理员处理");
+        }
+
+        return layuiVO;
+
+    }
+
+    @ResponseBody
+    @RequestMapping("/queryResoureDetailByID")
+    public Object queryResoureDetailByID(@RequestParam(value = "resource_id",required = false) Long resource_id){
+        AjaxResult result = new AjaxResult();
+
+        try{
+            Map<String,Object> resource = resourceService.queryResoureDetailByID(resource_id);
+            result.setDatas(resource);
+            result.setSuccess(true);
+        }catch (Exception e){
+            result.setSuccess(false);
+            result.setMessage("查询异常，请联系管理员处理");
+            e.printStackTrace();
+        }
         return result;
     }
 }

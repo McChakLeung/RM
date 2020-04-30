@@ -99,4 +99,19 @@ public class ResourceServiceImpl implements ResourceService {
 
         }
     }
+
+    @Override
+    public List<Object> selectResourceByQueryText(Map<String, Object> params) {
+        return resourceMapper.selectResourceByQueryText(params);
+    }
+
+    @Override
+    public int selectCount(Map<String, Object> params) {
+        return resourceMapper.selectSearchResult(params);
+    }
+
+    @Override
+    public Map<String, Object> queryResoureDetailByID(Long resource_id) {
+        return resourceMapper.queryResoureDetailByID(resource_id);
+    }
 }

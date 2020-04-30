@@ -114,9 +114,11 @@ public class OrderController {
 //        }
         switch (order_type){
             case "construction_order":
-                return "redirect:/order/myorder/construction/toOrderInfo";
+                return "redirect:/order/myorder/construction/toConstructOrder";
             case "migration_order":
-                return "/order/myorder/maintaining";
+                return "redirect:/order/myorder/maintaining";
+            case "removement_order":
+                return "redirect:/order/myorder/removement/toRemoveOrder";
 
         }
         return "redirect:/order/myorder/toSelectOrderType";
@@ -126,10 +128,20 @@ public class OrderController {
      * 跳转至建设工单基本信息页面
      * @return
      */
-    @RequestMapping("/myorder/construction/toOrderInfo")
-    public String toOrderInfo(){
+    @RequestMapping("/myorder/construction/toConstructOrder")
+    public String toConstructOrder(){
         return "/order/myorder/construction/orderInfo";
     }
+
+    /**
+     * 跳转至拆机工单基本信息页面
+     * @return
+     */
+    @RequestMapping("/myorder/removement/toRemoveOrder")
+    public String toRemoveOrder(){
+        return "/order/myorder/removement/orderInfo";
+    }
+
 
     /**
      * 将建设工单临时放置在session中存放
@@ -152,9 +164,36 @@ public class OrderController {
         return result;
     }
 
+    /**
+     * 将拆机工单临时放置在session中存放
+     * @param order
+     * @param session
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/myorder/removement/saveTemporaryRemovementOrder")
+    public Object saveTemporaryRemovementOrder(@RequestBody Order order, HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try {
+            session.setAttribute("order",order);
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("跳转异常，请联系管理员解决");
+        }
+        return result;
+    }
+
+
     @RequestMapping("/myorder/construction/toConstructionDetail")
     public String toConstructionDetail(){
         return "/order/myorder/construction/orderDetail";
+    }
+
+    @RequestMapping("/myorder/removement/toRemovementDetail")
+    public String toRemovementDetail(){
+        return "/order/myorder/removement/orderDetail";
     }
 
     /**
@@ -175,6 +214,35 @@ public class OrderController {
             result.setMessage("跳转异常，请联系管理员解决");
         }
         return result;
+    }
+
+
+
+
+    /**
+     * 将建设工单明细的List集合临时放置在session中存放
+     * @param resourceRemovementList
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/myorder/removement/saveTemporaryResourceRemovementList")
+    public Object saveTemporaryResourceRemovementList(@RequestBody List<Map<String,Object>> resourceRemovementList, HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try {
+            session.setAttribute("resourceRemovementList",resourceRemovementList);
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("跳转异常，请联系管理员解决");
+        }
+        return result;
+    }
+
+
+    @RequestMapping("/order/myorder/removement/toPreviewRemovementOrder")
+    public String toPreviewRemovementOrder(){
+        return "/order/myorder/removement/previewOrder";
     }
 
 
@@ -204,6 +272,7 @@ public class OrderController {
         }
         return result;
     }
+
 
     @RequestMapping("/myorder/construction/toPreviewOrder")
     public String toPreviewOrder(){
