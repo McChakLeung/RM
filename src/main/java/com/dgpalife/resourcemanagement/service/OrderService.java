@@ -1,7 +1,7 @@
 package com.dgpalife.resourcemanagement.service;
 
 import com.dgpalife.resourcemanagement.common.Page;
-import com.dgpalife.resourcemanagement.model.Order;
+import com.dgpalife.resourcemanagement.model.*;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +28,14 @@ public interface OrderService {
     Page<Object> selectPreHandleOrder(Map<String, Object> params);
 
     List<Order> queryOrderlistByResourceID(Long id);
+
+    List<ConstructDetail> queryConstructDetailListByOrder(Order order);
+
+    List<EquipmentPurchaseRecord> queryEquipmentPurchaseRecordListByOrder(Order order);
+
+    List<ResourceRemovement> queryResourceRemovementListByOrder(Order order);
+
+    List<ResourceMigration> queryResourceMigrationListByOrder(Order order);
 
     //Order selectOrderByIdAndStatus(Long id, String Status);
 }

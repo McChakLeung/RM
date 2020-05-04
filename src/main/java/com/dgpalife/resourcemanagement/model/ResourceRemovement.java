@@ -5,15 +5,55 @@ public class ResourceRemovement {
 
     private Long resourceId;
 
+    private Resource resource;
+
     private Long orderId;
 
+    private Order order;
+
     private Long projectId;
+
+    private Project project;
 
     private Long templateId;
 
     private Long creatorId;
 
+    private User creator;
+
     private String createTime;
+
+    public Resource getResource() {
+        return resource;
+    }
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
 
     public Long getId() {
         return id;

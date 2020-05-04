@@ -1,6 +1,7 @@
 package com.dgpalife.resourcemanagement.model;
 
 import java.util.List;
+import java.util.Map;
 
 public class Order {
     private Long id;

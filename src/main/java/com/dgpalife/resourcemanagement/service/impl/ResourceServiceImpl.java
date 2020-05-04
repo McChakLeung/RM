@@ -114,4 +114,11 @@ public class ResourceServiceImpl implements ResourceService {
     public Map<String, Object> queryResoureDetailByID(Long resource_id) {
         return resourceMapper.queryResoureDetailByID(resource_id);
     }
+
+    @Override
+    public void deleteResourceList(List<ResourceRemovement> resourceRemovementList) {
+        for(ResourceRemovement resourceRemovement: resourceRemovementList){
+            resourceMapper.updateResource(resourceRemovement.getResourceId());
+        }
+    }
 }

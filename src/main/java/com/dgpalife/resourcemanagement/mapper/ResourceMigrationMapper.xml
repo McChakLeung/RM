@@ -3,19 +3,28 @@
 <mapper namespace="com.dgpalife.resourcemanagement.mapper.ResourceMigrationMapper">
   <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.ResourceMigration">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="resource_id" jdbcType="BIGINT" property="resourceId" />
-    <result column="new_workplace_id" jdbcType="BIGINT" property="workplaceId" />
-    <result column="new_network_room_id" jdbcType="BIGINT" property="newNetworkRoomId" />
-    <result column="expense_id" jdbcType="BIGINT" property="expenseId" />
-    <result column="project_id" jdbcType="BIGINT" property="projectId" />
-    <result column="order_id" jdbcType="BIGINT" property="orderId" />
-    <result column="template_id" jdbcType="BIGINT" property="templateId" />
-    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="resource_id" jdbcType="BIGINT" property="resource_id" />
+    <result column="resource_no" jdbcType="VARCHAR" property="resource_no" />
+    <result column="new_workplace_id" jdbcType="BIGINT" property="new_workplace_id" />
+    <result column="new_workplace_name" jdbcType="VARCHAR" property="new_workplace_name" />
+    <result column="new_network_room_id" jdbcType="BIGINT" property="new_network_room_id" />
+    <result column="new_network_room_name" jdbcType="VARCHAR" property="new_network_room_name" />
+    <result column="new_department_id" jdbcType="BIGINT" property="new_department_id" />
+    <result column="new_department_name" jdbcType="VARCHAR" property="new_department_name" />
+    <result column="new_usedepartment_id" jdbcType="BIGINT" property="new_usedepartment_id" />
+    <result column="new_usedepartment_name" jdbcType="VARCHAR" property="new_usedepartment_name" />
+    <result column="expense_id" jdbcType="BIGINT" property="expense_id" />
+    <result column="price" jdbcType="DOUBLE" property="price" />
+    <result column="project_id" jdbcType="BIGINT" property="project_id" />
+    <result column="order_id" jdbcType="BIGINT" property="order_id" />
+    <result column="template_id" jdbcType="BIGINT" property="template_id" />
+    <result column="creator_id" jdbcType="BIGINT" property="creator_id" />
+    <result column="create_time" jdbcType="VARCHAR" property="create_time" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, resource_id,new_workplace_id,new_network_room_id, expense_id, project_id, order_id, template_id,
-    creator_id, create_time
+    id, resource_id, resource_no, new_workplace_id, new_workplace_name, new_network_room_id, new_network_room_name,
+    new_department_id, new_department_name, new_usedepartment_id, new_usedepartment_name, 
+    expense_id, price, project_id, order_id, template_id, creator_id, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -28,14 +37,18 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.ResourceMigration">
-    insert into t_resource_migration (id, resource_id, new_workplace_id,new_network_room_id,
-      expense_id, project_id, order_id, 
-      template_id, creator_id, create_time
-      )
-    values (#{id,jdbcType=BIGINT}, #{resourceId,jdbcType=BIGINT}, #{workplaceId,jdbcType=BIGINT},#{newNetworkRoomId,jdbcType=BIGINT},
-      #{expenseId,jdbcType=BIGINT}, #{projectId,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, 
-      #{templateId,jdbcType=BIGINT}, #{creatorId,jdbcType=BIGINT}, #{createTime,jdbcType=VARCHAR}
-      )
+    insert into t_resource_migration (id, resource_id, resource_no, 
+      new_workplace_id, new_workplace_name, new_network_room_id, new_network_room_name,
+      new_department_id, new_department_name, new_usedepartment_id, 
+      new_usedepartment_name, expense_id, price, project_id,
+      order_id, template_id, creator_id, 
+      create_time)
+    values (#{id,jdbcType=BIGINT}, #{resource_id,jdbcType=BIGINT}, #{resource_no,jdbcType=VARCHAR},
+      #{new_workplace_id,jdbcType=BIGINT}, #{new_workplace_name,jdbcType=VARCHAR}, #{new_network_room_id,jdbcType=BIGINT}, #{new_network_room_name,jdbcType=VARCHAR},
+      #{new_department_id,jdbcType=BIGINT}, #{new_department_name,jdbcType=VARCHAR}, #{new_usedepartment_id,jdbcType=BIGINT},
+      #{new_usedepartment_name,jdbcType=VARCHAR}, #{expense_id,jdbcType=BIGINT}, #{price,jdbcType=DOUBLE}, #{project_id,jdbcType=BIGINT},
+      #{order_id,jdbcType=BIGINT}, #{template_id,jdbcType=BIGINT}, #{creator_id,jdbcType=BIGINT},
+      #{create_time,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.ResourceMigration">
     insert into t_resource_migration
@@ -43,31 +56,55 @@
       <if test="id != null">
         id,
       </if>
-      <if test="resourceId != null">
+      <if test="resource_id != null">
         resource_id,
       </if>
-      <if test="workplaceId != null">
+      <if test="resource_no != null">
+        resource_no,
+      </if>
+      <if test="new_workplace_id != null">
         new_workplace_id,
       </if>
-      <if test="newNetworkRoomId != null">
+      <if test="new_workplace_name != null">
+        new_workplace_name,
+      </if>
+      <if test="new_network_room_id != null">
         new_network_room_id,
       </if>
-      <if test="expenseId != null">
+      <if test="new_network_room_name != null">
+        new_network_room_name,
+      </if>
+      <if test="new_department_id != null">
+        new_department_id,
+      </if>
+      <if test="new_department_name != null">
+        new_department_name,
+      </if>
+      <if test="new_usedepartment_id != null">
+        new_usedepartment_id,
+      </if>
+      <if test="new_usedepartment_name != null">
+        new_usedepartment_name,
+      </if>
+      <if test="expense_id != null">
         expense_id,
       </if>
-      <if test="projectId != null">
+      <if test="price != null">
+        price,
+      </if>
+      <if test="project_id != null">
         project_id,
       </if>
-      <if test="orderId != null">
+      <if test="order_id != null">
         order_id,
       </if>
-      <if test="templateId != null">
+      <if test="template_id != null">
         template_id,
       </if>
-      <if test="creatorId != null">
+      <if test="creator_id != null">
         creator_id,
       </if>
-      <if test="createTime != null">
+      <if test="create_time != null">
         create_time,
       </if>
     </trim>
@@ -75,79 +112,161 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="resourceId != null">
-        #{resourceId,jdbcType=BIGINT},
+      <if test="resource_id != null">
+        #{resource_id,jdbcType=BIGINT},
       </if>
-      <if test="workplaceId != null">
-        #{workplaceId,jdbcType=BIGINT},
+      <if test="resource_no != null">
+        #{resource_no,jdbcType=VARCHAR},
       </if>
-      <if test="newNetworkRoomId != null">
-        #{newNetworkRoomId,jdbcType=BIGINT},
+      <if test="new_workplace_id != null">
+        #{new_workplace_id,jdbcType=BIGINT},
       </if>
-      <if test="expenseId != null">
-        #{expenseId,jdbcType=BIGINT},
+      <if test="new_workplace_name != null">
+        #{new_workplace_name,jdbcType=VARCHAR},
       </if>
-      <if test="projectId != null">
-        #{projectId,jdbcType=BIGINT},
+      <if test="new_network_room_id != null">
+        #{new_network_room_id,jdbcType=BIGINT},
       </if>
-      <if test="orderId != null">
-        #{orderId,jdbcType=BIGINT},
+      <if test="new_network_room_name != null">
+        #{new_network_room_name,jdbcType=VARCHAR},
       </if>
-      <if test="templateId != null">
-        #{templateId,jdbcType=BIGINT},
+      <if test="new_department_id != null">
+        #{new_department_id,jdbcType=BIGINT},
       </if>
-      <if test="creatorId != null">
-        #{creatorId,jdbcType=BIGINT},
+      <if test="new_department_name != null">
+        #{new_department_name,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=VARCHAR},
+      <if test="new_usedepartment_id != null">
+        #{new_usedepartment_id,jdbcType=BIGINT},
+      </if>
+      <if test="new_usedepartment_name != null">
+        #{new_usedepartment_name,jdbcType=VARCHAR},
+      </if>
+      <if test="expense_id != null">
+        #{expense_id,jdbcType=BIGINT},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="project_id != null">
+        #{project_id,jdbcType=BIGINT},
+      </if>
+      <if test="order_id != null">
+        #{order_id,jdbcType=BIGINT},
+      </if>
+      <if test="template_id != null">
+        #{template_id,jdbcType=BIGINT},
+      </if>
+      <if test="creator_id != null">
+        #{creator_id,jdbcType=BIGINT},
+      </if>
+      <if test="create_time != null">
+        #{create_time,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.ResourceMigration">
     update t_resource_migration
     <set>
-      <if test="resourceId != null">
-        resource_id = #{resourceId,jdbcType=BIGINT},
+      <if test="resource_id != null">
+        resource_id = #{resource_id,jdbcType=BIGINT},
       </if>
-      <if test="workplaceId != null">
-        new_workplace_id = #{workplaceId,jdbcType=BIGINT},
+      <if test="resource_no != null">
+        resource_no = #{resource_no,jdbcType=VARCHAR},
       </if>
-      <if test="newNetworkRoomId != null">
-        new_network_room_id = #{newNetworkRoomId,jdbcType=BIGINT},
+      <if test="new_workplace_id != null">
+        new_workplace_id = #{new_workplace_id,jdbcType=BIGINT},
       </if>
-      <if test="expenseId != null">
-        expense_id = #{expenseId,jdbcType=BIGINT},
+      <if test="new_workplace_name != null">
+        new_workplace_name = #{new_workplace_name,jdbcType=VARCHAR},
       </if>
-      <if test="projectId != null">
-        project_id = #{projectId,jdbcType=BIGINT},
+      <if test="new_network_room_id != null">
+        new_network_room_id = #{new_network_room_id,jdbcType=BIGINT},
       </if>
-      <if test="orderId != null">
-        order_id = #{orderId,jdbcType=BIGINT},
+      <if test="new_network_room_name != null">
+        new_network_room_name = #{new_network_room_name,jdbcType=VARCHAR},
       </if>
-      <if test="templateId != null">
-        template_id = #{templateId,jdbcType=BIGINT},
+      <if test="new_department_id != null">
+        new_department_id = #{new_department_id,jdbcType=BIGINT},
       </if>
-      <if test="creatorId != null">
-        creator_id = #{creatorId,jdbcType=BIGINT},
+      <if test="new_department_name != null">
+        new_department_name = #{new_department_name,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=VARCHAR},
+      <if test="new_usedepartment_id != null">
+        new_usedepartment_id = #{new_usedepartment_id,jdbcType=BIGINT},
+      </if>
+      <if test="new_usedepartment_name != null">
+        new_usedepartment_name = #{new_usedepartment_name,jdbcType=VARCHAR},
+      </if>
+      <if test="expense_id != null">
+        expense_id = #{expense_id,jdbcType=BIGINT},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="project_id != null">
+        project_id = #{project_id,jdbcType=BIGINT},
+      </if>
+      <if test="order_id != null">
+        order_id = #{order_id,jdbcType=BIGINT},
+      </if>
+      <if test="template_id != null">
+        template_id = #{template_id,jdbcType=BIGINT},
+      </if>
+      <if test="creator_id != null">
+        creator_id = #{creator_id,jdbcType=BIGINT},
+      </if>
+      <if test="create_time != null">
+        create_time = #{create_time,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.ResourceMigration">
     update t_resource_migration
-    set resource_id = #{resourceId,jdbcType=BIGINT},
-      new_workplace_id = #{workplaceId,jdbcType=BIGINT},
-      new_network_room_id = #{newNetworkRoomId,jdbcType=BIGINT},
-      expense_id = #{expenseId,jdbcType=BIGINT},
-      project_id = #{projectId,jdbcType=BIGINT},
-      order_id = #{orderId,jdbcType=BIGINT},
-      template_id = #{templateId,jdbcType=BIGINT},
-      creator_id = #{creatorId,jdbcType=BIGINT},
-      create_time = #{createTime,jdbcType=VARCHAR}
+    set resource_id = #{resource_id,jdbcType=BIGINT},
+      resource_no = #{resource_no,jdbcType=VARCHAR},
+      new_workplace_id = #{new_workplace_id,jdbcType=BIGINT},
+      new_workplace_name = #{new_workplace_name,jdbcType=VARCHAR},
+      new_network_room_id = #{new_network_room_id,jdbcType=BIGINT},
+      new_network_room_name = #{new_network_room_name,jdbcType=VARCHAR},
+      new_department_id = #{new_department_id,jdbcType=BIGINT},
+      new_department_name = #{new_department_name,jdbcType=VARCHAR},
+      new_usedepartment_id = #{new_usedepartment_id,jdbcType=BIGINT},
+      new_usedepartment_name = #{new_usedepartment_name,jdbcType=VARCHAR},
+      expense_id = #{expense_id,jdbcType=BIGINT},
+      price = #{price,jdbcType=DOUBLE},
+      project_id = #{project_id,jdbcType=BIGINT},
+      order_id = #{order_id,jdbcType=BIGINT},
+      template_id = #{template_id,jdbcType=BIGINT},
+      creator_id = #{creator_id,jdbcType=BIGINT},
+      create_time = #{create_time,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <insert id="saveMigrationResourceList" parameterType="java.util.List">
+    insert into t_resource_migration (resource_id, resource_no,
+      new_workplace_id, new_workplace_name, new_network_room_id, new_network_room_name,
+      new_department_id, new_department_name, new_usedepartment_id,
+      new_usedepartment_name, expense_id, price, project_id,
+      order_id, template_id, creator_id,
+      create_time)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.resource_id,jdbcType=BIGINT}, #{item.resource_no,jdbcType=VARCHAR},
+      #{item.new_workplace_id,jdbcType=BIGINT}, #{item.new_workplace_name,jdbcType=VARCHAR}, #{item.new_network_room_id,jdbcType=BIGINT}, #{item.new_network_room_name,jdbcType=VARCHAR},
+      #{item.new_department_id,jdbcType=BIGINT}, #{item.new_department_name,jdbcType=VARCHAR}, #{item.new_usedepartment_id,jdbcType=BIGINT},
+      #{item.new_usedepartment_name,jdbcType=VARCHAR}, #{item.expense_id,jdbcType=BIGINT}, #{item.price,jdbcType=DOUBLE}, #{item.project_id,jdbcType=BIGINT},
+      #{item.order_id,jdbcType=BIGINT}, #{item.template_id,jdbcType=BIGINT}, #{item.creator_id,jdbcType=BIGINT},
+      #{item.create_time,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+
+  <select id="selectByOrderID" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM t_resource_migration
+    WHERE
+    order_id = #{id}
+  </select>
 </mapper>

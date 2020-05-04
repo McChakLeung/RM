@@ -114,4 +114,23 @@
       create_time = #{createTime,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <insert id="saveResourceRemovementListByBatch" parameterType="java.util.List">
+    insert into t_resource_removement (resource_id, order_id,
+      project_id, creator_id,
+      create_time)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.resourceId,jdbcType=BIGINT}, #{item.orderId,jdbcType=BIGINT},
+      #{item.projectId,jdbcType=BIGINT}, #{item.creatorId,jdbcType=BIGINT},
+      #{item.createTime,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+
+  <select id="selectResourceRemovementListByOrderId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_resource_removement
+    where order_id = #{id,jdbcType=BIGINT}
+  </select>
 </mapper>

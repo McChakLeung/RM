@@ -3,6 +3,7 @@ package com.dgpalife.resourcemanagement.service;
 import com.dgpalife.resourcemanagement.common.Page;
 import com.dgpalife.resourcemanagement.model.Order;
 import com.dgpalife.resourcemanagement.model.Resource;
+import com.dgpalife.resourcemanagement.model.ResourceRemovement;
 import com.dgpalife.resourcemanagement.model.User;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public interface ResourceService {
     int selectCount(Map<String, Object> params);
 
     Map<String,Object> queryResoureDetailByID(Long resource_id);
+
+    void deleteResourceList(List<ResourceRemovement> resourceRemovementList);
 }

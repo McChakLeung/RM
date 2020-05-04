@@ -42,6 +42,16 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private EquipmentPurchaseRecordMapper equipmentPurchaseRecordMapper;
 
+    @Autowired
+    private ResourceRemovementMapper resourceRemovementMapper;
+
+    @Autowired
+    private ResourceMapper resourceMapper;
+
+    @Autowired
+    private ResourceMigrationMapper resourceMigrationMapper;
+
+
     //@Autowired
     //private Equipment_typeMapper equipment_typeMapper;
 
@@ -99,6 +109,17 @@ public class OrderServiceImpl implements OrderService {
         Department applyDepartment = departmentMapper.selectByPrimaryKey(order.getApplyDepartmentId());
         User user = userMapper.selectByPrimaryKey(order.getProposerId());
         Project project = projectMapper.selectByPrimaryKey(order.getProjectId());
+
+        order.setApplyDepartment(applyDepartment);
+        order.setProposer(user);
+        order.setProject(project);
+        //order.setConstructDetailList(constructDetailList);
+        //order.setEquipmentPurchaseRecordList(equipmentPurchaseRecordList);
+        return order;
+    }
+
+    @Override
+    public List<ConstructDetail> queryConstructDetailListByOrder(Order order) {
         List<ConstructDetail> constructDetailList = constructDetailMapper.selectByOrderID(order.getId());
         for(ConstructDetail constructDetail: constructDetailList){
             constructDetail.setUsedepartment(departmentMapper.selectByPrimaryKey(constructDetail.getUsedepartment_id()));
@@ -106,6 +127,11 @@ public class OrderServiceImpl implements OrderService {
             constructDetail.setWorkplace(workplaceMapper.selectByPrimaryKey(constructDetail.getWorkplaceId()));
             constructDetail.setNetworkRoom(networkRoomMapper.selectByPrimaryKey(constructDetail.getNetworkRoomId()));
         }
+        return constructDetailList;
+    }
+
+    @Override
+    public List<EquipmentPurchaseRecord> queryEquipmentPurchaseRecordListByOrder(Order order) {
         List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = equipmentPurchaseRecordMapper.selectEquipmentPurchaseRecordByOrderID(order.getId());
         for(EquipmentPurchaseRecord equipmentPurchaseRecord: equipmentPurchaseRecordList){
             //equipmentPurchaseRecord.setEquipment_type(equipment_typeMapper.selectByPrimaryKey(equipmentPurchaseRecord.getEquipment_type()));
@@ -113,12 +139,31 @@ public class OrderServiceImpl implements OrderService {
 //            constructDetail.setWorkplace(workplaceMapper.selectByPrimaryKey(constructDetail.getWorkplaceId()));
 //            constructDetail.setNetworkRoom(networkRoomMapper.selectByPrimaryKey(constructDetail.getNetworkRoomId()));
         }
-        order.setApplyDepartment(applyDepartment);
-        order.setProposer(user);
-        order.setProject(project);
-        order.setConstructDetailList(constructDetailList);
-        order.setEquipmentPurchaseRecordList(equipmentPurchaseRecordList);
-        return order;
+        return equipmentPurchaseRecordList;
+    }
+
+    @Override
+    public List<ResourceRemovement> queryResourceRemovementListByOrder(Order order) {
+        List<ResourceRemovement> resourceRemovementList = resourceRemovementMapper.selectResourceRemovementListByOrderId(order.getId());
+        for(ResourceRemovement resourceRemovement:resourceRemovementList){
+
+            Resource resource = resourceMapper.selectByPrimaryKey(resourceRemovement.getResourceId());
+            if(resource == null){
+                resourceRemovement.setResource(null);
+            }else {
+                resource.setDepartment(departmentMapper.selectByPrimaryKey(resource.getDepartment_id()));
+                resource.setUsedepartment(departmentMapper.selectByPrimaryKey(resource.getUsedepartment_id()));
+                resource.setWorkplace(workplaceMapper.selectByPrimaryKey(resource.getWorkplace_id()));
+                resource.setNetworkRoom(networkRoomMapper.selectByPrimaryKey(resource.getNetwork_room_id()));
+                resourceRemovement.setResource(resource);
+            }
+        }
+        return resourceRemovementList;
+    }
+
+    @Override
+    public List<ResourceMigration> queryResourceMigrationListByOrder(Order order) {
+        return resourceMigrationMapper.selectByOrderID(order.getId());
     }
 
     @Override
@@ -170,6 +215,8 @@ public class OrderServiceImpl implements OrderService {
         }
         return orderList;
     }
+
+
 
 //    @Override
 //    public Order selectOrderByIdAndStatus(Long id, String Status) {

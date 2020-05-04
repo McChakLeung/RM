@@ -1,7 +1,11 @@
 package com.dgpalife.resourcemanagement.mapper;
 
 import com.dgpalife.resourcemanagement.model.ResourceMigration;
+import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
+@Mapper
 public interface ResourceMigrationMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -14,4 +18,8 @@ public interface ResourceMigrationMapper {
     int updateByPrimaryKeySelective(ResourceMigration record);
 
     int updateByPrimaryKey(ResourceMigration record);
+
+    void saveMigrationResourceList(List<ResourceMigration> resourceMigrationList);
+
+    List<ResourceMigration> selectByOrderID(Long id);
 }

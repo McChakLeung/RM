@@ -53,7 +53,7 @@
 				<ol class="breadcrumb">
 					<li><a th:href="@{|#|}">首页</a></li>
 					<li><a th:href="@{|#|}">资源管理</a></li>
-					<li class="active">工单审核</li>
+					<li class="active">工单管理</li>
 				</ol>
 				<div class="row">
 					<div class="col-md-12">
@@ -61,7 +61,7 @@
 						<div class="panel">
 							<div class="panel-body">
 								<div class="panel-header" style="padding-top: 20px">
-									<h2>工单审核</h2>
+									<h2>拆机工单明细</h2>
 								</div>
 								<br>
 
@@ -103,83 +103,54 @@
 									</div>
 									<div class="form-group">
 										<label for="freason">申请原因</label>
-										<!--<span id="freason" class="form-control" th:text="${order?.reason}"></span>-->
+										<span id="freason" class="form-control" th:text="${order?.reason}"></span>
 										<!--<input type="textarea"  rows="5" cols="30" class="form-control" name="reason" id="freason">-->
-										<textarea  rows="3" disabled class="form-control" name="reason" id="freason" th:text="${order?.reason}"></textarea>
+										<!--<textarea  rows="3"  class="form-control" name="reason" id="freason"></textarea>-->
 									</div>
 									<input type="hidden" id="fid" th:value="${order?.id}">
-									<input type="hidden" id="f_piid" th:value="${ticket?.piid}">
-									<!--<input type="hidden" id="fid" th:value="${order?.id}">-->
 								</form>
 								<br>
-								<h3>装机明细</h3>
+								<br>
+								<h3>拆机明细</h3>
 								<br>
 								<div>
-									<table id="detailList" class="table table-bordered" style="text-align:center;">
+									<table id="resourceRemovementList" class="table table-bordered" style="text-align:center;">
 										<thead>
 										<tr class="success">
-											<td>序号</td>
-											<td>使用科室|外勤部门</td>
-											<td>部门类型</td>
-											<td>运营商</td>
+											<td>ID</td>
+											<td>资源号码</td>
 											<td>资源类型</td>
-											<td>装机数量</td>
-											<td>资费</td>
-											<td>所在职场</td>
-											<td>机房</td>
+											<td>运营商</td>
+											<td>职场名称</td>
+											<td>所在机房</td>
+											<td>挂账部门</td>
+											<td>使用部门</td>
+											<td>使用人</td>
 										</tr>
 										</thead>
 										<tbody >
-											<tr th:each="constructDetail:${constructDetailList}">
-												<td th:text="${constructDetailStat?.count}">序号</td>
-												<td th:text="${constructDetail?.usedepartment?.departmentName}">使用科室|外勤部门</td>
-												<td th:text="${constructDetail?.usedepartment_type}">部门类型</td>
-												<td th:text="${constructDetail?.operator}">运营商</td>
-												<td th:text="${constructDetail?.resourceType}">资源类型</td>
-												<td th:text="${constructDetail?.construct_number}">装机数量</td>
-												<td th:text="${constructDetail?.expense?.price}">资费</td>
-												<td th:text="${constructDetail?.workplace?.workplaceName}">所在职场</td>
-												<td th:text="${constructDetail?.networkRoom?.networkroom_name}">机房</td>
+											<tr th:each="resourceRemovement:${resourceRemovementList}">
+												<td th:text="${resourceRemovement?.resource?.id}">id</td>
+												<td th:text="${resourceRemovement?.resource?.resource_no}">资源号码</td>
+												<td th:text="${resourceRemovement?.resource?.resourc_type}">资源类型</td>
+												<td th:text="${resourceRemovement?.resource?.operator}">运营商</td>
+												<td th:text="${resourceRemovement?.resource?.workplace?.workplaceName}">职场名称</td>
+												<td th:text="${resourceRemovement?.resource?.networkRoom?.networkroom_name}">所在机房</td>
+												<td th:text="${resourceRemovement?.resource?.department?.departmentName}">挂账部门</td>
+												<td th:text="${resourceRemovement?.resource?.usedepartment?.departmentName}">使用部门</td>
+												<td th:text="${resourceRemovement?.resource?.username}">使用人</td>
 											</tr>
 										</tbody>
 									</table>
 								</div>
 								<br>
-								<h3>设备购买明细</h3>
-								<br>
-								<div>
-									<table id="equipmnetPurchaseDetailList" class="table table-bordered" style="text-align:center;">
-										<thead>
-										<tr class="success">
-											<td>序号</td>
-											<td>购买设备类型</td>
-											<td>购买数量</td>
-											<td>设备单价</td>
-										</tr>
-										</thead>
-										<tbody >
-										<tr th:each="equipmentPurchaseRecord:${equipmentPurchaseRecordList}">
-											<td th:text="${equipmentPurchaseRecordStat?.count}">序号</td>
-											<td th:text="${equipmentPurchaseRecord?.equipment_type}">购买设备类型</td>
-											<td th:text="${equipmentPurchaseRecord?.purchaseNum}">购买数量</td>
-											<td th:text="${equipmentPurchaseRecord?.expense.price}">设备单价</td>
-										</tr>
-										</tbody>
-									</table>
-								</div>
-								<hr>
-								<div>
-									<div class="form-group">
-										<label for="fcomment">审批意见</label>
-										<!--<span id="fcomment" class="form-control"></span>-->
-										<!--<input type="textarea"  rows="5" cols="30" class="form-control" name="reason" id="freason">-->
-										<textarea  rows="3"  class="form-control" name="reason" id="fcomment"></textarea>
-									</div>
-								</div>
-								<br>
 								<!--<button type="button" class="btn btn-default" id="backStep">上一步</button>-->
-								<button type="button" class="btn btn-primary" id="agreeBtn">同意</button>
-								<button type="button" class="btn btn-warning" id="refuseBtn">拒绝</button>
+								<span th:if="${order?.status=='待提交'}">
+									<button type="button" class="btn btn-primary" id="auditBtn">提交审核</button>
+								</span>
+								<span th:if="${order?.status!='待提交'}">
+									<button type="button" class="btn btn-primary" id="auditBtn" disabled>提交审核</button>
+								</span>
 							</div>
 						</div>
 						<!-- END BASIC TABLE -->
@@ -197,43 +168,26 @@
 
 	<!-- END WRAPPER -->
 </div>
-<script type="text/javascript" th:inline="javascript">
+<script type="text/javascript">
 
-    $("#agreeBtn").click(function(){
-        $.ajax({
-            type : "POST",
-            url  : [[@{|/audit/orders/agree|}]],
-            data : {
-                order_id : [[${order?.id}]],
-                piid : [[${ticket?.piid}]],
-				comment:$("#fcomment").val()
-            },
-            success : function(result) {
-                window.location.href = [[@{|/audit/orders/toIndex|}]];
-            }
-
+    $("#auditBtn").click(function () {
+        var id = $("#fid").val()
+        layer.confirm("确定要提交审核此工单吗？",  {icon: 3, title:'提示'}, function(cindex){
+            var url = "[[@{|/order/myorder/doAuditOrder/|}]]" +id;
+            $.getJSON(url,function(result){
+                if(result.success){
+                    layer.msg("已提交审核", {time:1000, icon:3, shift:1});
+                    window.location.href="[[@{|/order/myorder/toIndex|}]]"
+                }else{
+                    layer.msg(result.message, {time:1000, icon:5, shift:6});
+                }
+            });
+            layer.close(cindex);
+        }, function(cindex){
+            layer.close(cindex);
         });
 
-    });
-
-
-    $("#refuseBtn").click(function(){
-        $.ajax({
-            type : "POST",
-            url  : [[@{|/audit/orders/refuse|}]],
-            data : {
-                order_id : [[${order?.id}]],
-                piid : [[${ticket?.piid}]],
-                comment:$("#fcomment").val()
-            },
-            success : function(result) {
-                window.location.href = [[@{|/audit/orders/toIndex|}]];
-            }
-
-        });
-
-    });
-
+    })
 
 </script>
 </body>

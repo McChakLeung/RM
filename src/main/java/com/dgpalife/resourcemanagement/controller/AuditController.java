@@ -3,9 +3,7 @@ package com.dgpalife.resourcemanagement.controller;
 import com.dgpalife.resourcemanagement.common.AjaxResult;
 import com.dgpalife.resourcemanagement.common.Const;
 import com.dgpalife.resourcemanagement.common.Page;
-import com.dgpalife.resourcemanagement.model.Order;
-import com.dgpalife.resourcemanagement.model.Ticket;
-import com.dgpalife.resourcemanagement.model.User;
+import com.dgpalife.resourcemanagement.model.*;
 import com.dgpalife.resourcemanagement.service.*;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -123,10 +121,20 @@ public class AuditController {
         model.addAttribute("order",order);
 
         if(Const.CONSTRUCTION.equals(order.getType())){
+            List<ConstructDetail> constructDetailList = orderService.queryConstructDetailListByOrder(order);
+            List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = orderService.queryEquipmentPurchaseRecordListByOrder(order);
+            model.addAttribute("constructDetailList",constructDetailList);
+            model.addAttribute("equipmentPurchaseRecordList",equipmentPurchaseRecordList);
             return "/audit/orders/detail/construction_detail";
         }else if (Const.MIGRATION.equals(order.getType())){
+            List<ResourceMigration> resourceMigrationList = orderService.queryResourceMigrationListByOrder(order);
+            List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = orderService.queryEquipmentPurchaseRecordListByOrder(order);
+            model.addAttribute("resourceMigrationList",resourceMigrationList);
+            model.addAttribute("equipmentPurchaseRecordList",equipmentPurchaseRecordList);
             return "/audit/orders/detail/migration_detail";
         }else if(Const.REMOVEMENT.equals(order.getType())){
+            List<ResourceRemovement> resourceRemovementList = orderService.queryResourceRemovementListByOrder(order);
+            model.addAttribute("resourceRemovementList",resourceRemovementList);
             return "/audit/orders/detail/removement_detail";
         }else if(Const.CHANGE_ITEM.equals(order.getType())){
             return "/audit/orders/detail/change_item_detail";

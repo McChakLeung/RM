@@ -118,29 +118,25 @@
 									<table id="detailList" class="table table-bordered" style="text-align:center;">
 										<thead>
 										<tr class="success">
-											<td>序号</td>
-											<td>使用科室|外勤部门</td>
-											<td>部门类型</td>
-											<td>运营商</td>
-											<td>资源类型</td>
-											<td>装机数量</td>
+											<td>资源ID</td>
+											<td>资源号码</td>
+											<td>新职场</td>
+											<td>新机房</td>
+											<td>新挂账部门</td>
+											<td>新使用部门</td>
 											<td>资费</td>
-											<td>所在职场</td>
-											<td>机房</td>
 										</tr>
 										</thead>
 										<tbody >
-											<tr th:each="constructDetail:${constructDetailList}">
-												<td th:text="${constructDetailStat?.count}">序号</td>
-												<td th:text="${constructDetail?.usedepartment?.departmentName}">使用科室|外勤部门</td>
-												<td th:text="${constructDetail?.usedepartment_type}">部门类型</td>
-												<td th:text="${constructDetail?.operator}">运营商</td>
-												<td th:text="${constructDetail?.resourceType}">资源类型</td>
-												<td th:text="${constructDetail?.construct_number}">装机数量</td>
-												<td th:text="${constructDetail?.expense?.price}">资费</td>
-												<td th:text="${constructDetail?.workplace?.workplaceName}">所在职场</td>
-												<td th:text="${constructDetail?.networkRoom?.networkroom_name}">机房</td>
-											</tr>
+										<tr th:each="resourceMigration:${resourceMigrationList}">
+											<td th:text="${resourceMigration?.resource_id}">资源ID</td>
+											<td th:text="${resourceMigration?.resource_no}">资源号码</td>
+											<td th:text="${resourceMigration?.new_workplace_name}">新职场</td>
+											<td th:text="${resourceMigration?.new_network_room_name}">新机房</td>
+											<td th:text="${resourceMigration?.new_department_name}">新挂账部门</td>
+											<td th:text="${resourceMigration?.new_usedepartment_name}">新使用部门</td>
+											<td th:text="${resourceMigration?.price}">资费</td>
+										</tr>
 										</tbody>
 									</table>
 								</div>

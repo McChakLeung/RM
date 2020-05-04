@@ -92,7 +92,11 @@ public class ResourceController {
         return "/resource/detail";
     }
 
-
+    /**
+     * 建设工单转换成资源
+     * @param session
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/generateResource")
     public Object generateResource(HttpSession session){
@@ -210,5 +214,48 @@ public class ResourceController {
             e.printStackTrace();
         }
         return result;
+    }
+
+    /**
+     * 拆除资源
+     * @param session
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/removeResource")
+    public Object removeResource(HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try {
+            List<ResourceRemovement> resourceRemovementList = (List<ResourceRemovement>) session.getAttribute("resourceRemovementList");
+            Order order = (Order)session.getAttribute("order");
+
+            //判断获取的数据是否为空
+            if(resourceRemovementList.isEmpty()){
+                result.setMessage("未添加资源号码，请重新输入");
+                result.setSuccess(false);
+            }
+
+            //拆除资源
+            //第一步：在资源表中添加资源记录
+            resourceService.deleteResourceList(resourceRemovementList);
+
+            //第二步：更新order状态为已完成
+            order.setStatus("已完成");
+            order.setFinish(true);
+            orderService.updateOrder(order);
+
+            result.setSuccess(true);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("生成资源异常，请联系管理员解决");
+        }finally {
+            //释放session空间，否则占用服务器资源
+            session.removeAttribute("resourceRemovementList");
+            session.removeAttribute("order");
+        }
+        return result;
+
     }
 }

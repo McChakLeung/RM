@@ -116,10 +116,10 @@
 									</div>
 								</form>
 								<br>
-								<h3>装机明细</h3>
+								<h3>拆机明细</h3>
 								<br>
 								<div>
-									<table id="constructDetailList" class="table table-bordered" style="text-align:center;">
+									<table id="resourceRemovementList" class="table table-bordered" style="text-align:center;">
 										<thead>
 										<tr class="success">
 											<td>ID</td>
@@ -171,7 +171,7 @@
     var loadingIndex = -1;
 
     $("#submitBtn").click(function () {
-        var url = "[[@{|/order/myorder/construction/doAddConstructionOrder|}]]";
+        var url = "[[@{|/order/myorder/removement/doAddRemovementOrder|}]]";
         $.getJSON(url,function(result){
             if(result.success){
                 layer.msg("创建成功", {time:1000, icon:0, shift:6});

@@ -40,8 +40,8 @@
         </javaClientGenerator>
 
         <!-- 数据库表名及对应的Java模型类名 -->
-        <table tableName="t_order_resource"
-               domainObjectName="Order_resource"
+        <table tableName="t_resource_migration"
+               domainObjectName="Resource_Migration"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"

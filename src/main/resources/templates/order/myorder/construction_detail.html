@@ -128,7 +128,7 @@
 										</tr>
 										</thead>
 										<tbody >
-											<tr th:each="constructDetail:${order?.constructDetailList}">
+											<tr th:each="constructDetail:${constructDetailList}">
 												<td th:text="${constructDetailStat?.count}">序号</td>
 												<td th:text="${constructDetail?.usedepartment?.departmentName}">使用科室|外勤部门</td>
 												<td th:text="${constructDetail?.usedepartment_type}">部门类型</td>
@@ -156,7 +156,7 @@
 										</tr>
 										</thead>
 										<tbody >
-										<tr th:each="equipmentPurchaseRecord:${order?.equipmentPurchaseRecordList}">
+										<tr th:each="equipmentPurchaseRecord:${equipmentPurchaseRecordList}">
 											<td th:text="${equipmentPurchaseRecordStat?.count}">序号</td>
 											<td th:text="${equipmentPurchaseRecord?.equipment_type}">购买设备类型名称</td>
 											<td th:text="${equipmentPurchaseRecord?.purchaseNum}">购买数量</td>

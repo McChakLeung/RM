@@ -20,10 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/order")
@@ -51,7 +48,10 @@ public class OrderController {
 //    private ActUserEntityService actUserEntityService;
 
     @Autowired
-    private RoleService roleService;
+    private ResourceRemovementService resourceRemovementService;
+
+    @Autowired
+    private ResourceMigrationService resourceMigrationService;
 
     @RequestMapping("/myorder/toIndex")
     public String toIndex(){
@@ -116,7 +116,7 @@ public class OrderController {
             case "construction_order":
                 return "redirect:/order/myorder/construction/toConstructOrder";
             case "migration_order":
-                return "redirect:/order/myorder/maintaining";
+                return "redirect:/order/myorder/migration/toMigrationOrder";
             case "removement_order":
                 return "redirect:/order/myorder/removement/toRemoveOrder";
 
@@ -131,6 +131,15 @@ public class OrderController {
     @RequestMapping("/myorder/construction/toConstructOrder")
     public String toConstructOrder(){
         return "/order/myorder/construction/orderInfo";
+    }
+
+    /**
+     * 跳转至迁移工单基本信息页面
+     * @return
+     */
+    @RequestMapping("/myorder/migration/toMigrationOrder")
+    public String toMigrationOrder(){
+        return "/order/myorder/migration/orderInfo";
     }
 
     /**
@@ -165,6 +174,28 @@ public class OrderController {
     }
 
     /**
+     * 将建设工单临时放置在session中存放
+     * @param order
+     * @param session
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/myorder/migration/saveTemporaryMigrationOrder")
+    public Object saveTemporaryMigrationOrder(@RequestBody Order order, HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try {
+            session.setAttribute("order",order);
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("跳转异常，请联系管理员解决");
+        }
+        return result;
+    }
+
+
+    /**
      * 将拆机工单临时放置在session中存放
      * @param order
      * @param session
@@ -189,6 +220,11 @@ public class OrderController {
     @RequestMapping("/myorder/construction/toConstructionDetail")
     public String toConstructionDetail(){
         return "/order/myorder/construction/orderDetail";
+    }
+
+    @RequestMapping("/myorder/migration/toMigrationDetail")
+    public String toMigrationDetail(){
+        return "/order/myorder/migration/orderDetail";
     }
 
     @RequestMapping("/myorder/removement/toRemovementDetail")
@@ -217,10 +253,8 @@ public class OrderController {
     }
 
 
-
-
     /**
-     * 将建设工单明细的List集合临时放置在session中存放
+     * 将拆机工单明细的List集合临时放置在session中存放
      * @param resourceRemovementList
      * @return
      */
@@ -240,17 +274,41 @@ public class OrderController {
     }
 
 
-    @RequestMapping("/order/myorder/removement/toPreviewRemovementOrder")
+    /**
+     * 将拆机工单明细的List集合临时放置在session中存放
+     * @param resourceMigrationList
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("myorder/migration/saveTemporaryResourceMigrationList")
+    public Object saveTemporaryResourceMigrationList(@RequestBody List<ResourceMigration> resourceMigrationList, HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try {
+            session.setAttribute("resourceMigrationList",resourceMigrationList);
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("跳转异常，请联系管理员解决");
+        }
+        return result;
+    }
+
+    @RequestMapping("/myorder/removement/toPreviewRemovementOrder")
     public String toPreviewRemovementOrder(){
         return "/order/myorder/removement/previewOrder";
     }
 
 
-    @RequestMapping("/myorder/construction/toEquipment")
-    public String toEquipment(){
+    @RequestMapping("/myorder/construction/toConstructionEquipment")
+    public String toConstructionEquipment(){
         return "/order/myorder/construction/orderEquipmentInfo";
     }
 
+    @RequestMapping("/myorder/migration/toMigrationEquipment")
+    public String toMigrationEquipment(){
+        return "/order/myorder/migration/orderEquipmentInfo";
+    }
 
 
     /**
@@ -259,7 +317,7 @@ public class OrderController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/myorder/construction/saveTemporaryEquipmentPurchaseList")
+    @RequestMapping("/myorder/saveTemporaryEquipmentPurchaseList")
     public Object saveTemporaryEquipmentPurchaseList(@RequestBody List<EquipmentPurchaseRecord> equipmnetPurchaseDetailList, HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
@@ -274,8 +332,8 @@ public class OrderController {
     }
 
 
-    @RequestMapping("/myorder/construction/toPreviewOrder")
-    public String toPreviewOrder(){
+    @RequestMapping("/myorder/construction/toPreviewConstructionOrder")
+    public String toPreviewConstructionOrder(){
         return "/order/myorder/construction/previewOrder";
     }
 
@@ -340,16 +398,180 @@ public class OrderController {
         return result;
     }
 
+    @ResponseBody
+    @RequestMapping("/myorder/removement/doAddRemovementOrder")
+    public Object doAddRemovementOrder(HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try {
+            User user = (User)session.getAttribute("user");
+            Order order = (Order)session.getAttribute("order");
+            List<Map<String,Object>> resourceRemovementList = (List<Map<String,Object>>)session.getAttribute("resourceRemovementList");
+            if(order == null){
+                result.setSuccess(false);
+                result.setMessage("暂未填写工单基本信息，请重新填写");
+                return result;
+            }
+            if(resourceRemovementList==null){
+                result.setSuccess(false);
+                result.setMessage("暂未填写装机明细信息，请重新填写");
+                return result;
+            }
+
+            //设置order的其他信息
+            order.setStatus("待提交");
+            order.setProposerId(user.getId());
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            order.setCreateTime(sdf.format(date));
+
+            orderService.saveOrder(order);
+
+            //遍历拆机清单，将Map集合中的数据存放到ResourceRemovement类中
+            List<ResourceRemovement> RMList = new ArrayList<>();
+
+//            for(Map<String,Object> resource: resourceRemovementList){
+//                ResourceRemovement resourceRemovement = new ResourceRemovement();
+//                resourceRemovement.setOrderId(order.getId());
+//                resourceRemovement.setResourceId((Long)resource.get("id"));
+//                resourceRemovement.setProjectId(order.getProjectId());
+//                resourceRemovement.setCreatorId(user.getId());
+//                resourceRemovement.setCreateTime(sdf.format(date));
+//                RMList.add(resourceRemovement);
+//            }
+
+            for(int i = 0;i<resourceRemovementList.size();i++){
+                ResourceRemovement resourceRemovement = new ResourceRemovement();
+//                Map<String, Object> map = resourceRemovementList.get(i);
+//                Iterator iterator = map.keySet().iterator();
+//                while (iterator.hasNext()){
+//                    resourceRemovement.setOrderId(order.getId());
+//                    Integer resource_id = (Integer)map.get("id");
+//                    resourceRemovement.setResourceId(resource_id.longValue());
+//                    resourceRemovement.setProjectId(order.getProjectId());
+//                    resourceRemovement.setCreatorId(user.getId());
+//                    resourceRemovement.setCreateTime(sdf.format(date));
+//                    RMList.add(resourceRemovement);
+//                }
+                Integer resource_id = (Integer)resourceRemovementList.get(i).get("id");
+                resourceRemovement.setOrderId(order.getId());
+                resourceRemovement.setResourceId(resource_id.longValue());
+                resourceRemovement.setProjectId(order.getProjectId());
+                resourceRemovement.setCreatorId(user.getId());
+                resourceRemovement.setCreateTime(sdf.format(date));
+                RMList.add(resourceRemovement);
+            }
+
+            //发送给后台处理
+            int count = resourceRemovementService.saveResourceRemovementListByBatch(RMList);
+            result.setSuccess(count>0);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("创建工单异常，请联系管理员解决");
+        }finally {
+            //创建工单后销毁相关的session属性
+            session.removeAttribute("order");
+            session.removeAttribute("resourceRemovementList");
+        }
+        return result;
+    }
+
+    @RequestMapping("/myorder/migration/toPreviewMigrationOrder")
+    public String toPreviewMigrationOrder(){
+        return "/order/myorder/migration/previewOrder";
+    }
+
+
+    /**
+     * 生成迁移工单
+     * @param session
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/myorder/migration/doAddMigrationOrder")
+    public Object doAddMigrationOrder(HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try {
+            User user = (User)session.getAttribute("user");
+            Order order = (Order)session.getAttribute("order");
+            List<ResourceMigration> resourceMigrationList = (List<ResourceMigration>)session.getAttribute("resourceMigrationList");
+            List<EquipmentPurchaseRecord> equipmnetPurchaseDetailList = (List<EquipmentPurchaseRecord>)session.getAttribute("equipmnetPurchaseDetailList");
+            if(order == null){
+                result.setSuccess(false);
+                result.setMessage("暂未填写工单基本信息，请重新填写");
+                return result;
+            }
+            if(resourceMigrationList==null){
+                result.setSuccess(false);
+                result.setMessage("暂未填写装机明细信息，请重新填写");
+                return result;
+            }
+
+            //设置order的其他信息
+            order.setStatus("待提交");
+            order.setProposerId(user.getId());
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            order.setCreateTime(sdf.format(date));
+
+            orderService.saveOrder(order);
+
+            for(ResourceMigration resourceMigration: resourceMigrationList){
+                resourceMigration.setCreate_time(sdf.format(date));
+                resourceMigration.setCreator_id(user.getId());
+                resourceMigration.setOrder_id(order.getId());
+            }
+
+            //发送给后台处理
+            resourceMigrationService.saveMigrationResourceList(resourceMigrationList);
+
+            for(EquipmentPurchaseRecord equipmentPurchaseRecord: equipmnetPurchaseDetailList){
+                equipmentPurchaseRecord.setCreateTime(sdf.format(date));
+                equipmentPurchaseRecord.setCreatorId(user.getId());
+                equipmentPurchaseRecord.setOrderId(order.getId());
+            }
+
+            //发送给后台处理
+            equipmentPurchaseRecordService.saveEquipmentPurchaseRecordByBatch(equipmnetPurchaseDetailList);
+
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("创建工单异常，请联系管理员解决");
+        }finally {
+            //创建工单后销毁相关的session属性
+            session.removeAttribute("order");
+            session.removeAttribute("resourceMigrationList");
+            session.removeAttribute("equipmnetPurchaseDetailList");
+
+        }
+        return result;
+    }
+
+
+
     @RequestMapping("/myorder/toDetail/{id}")
     public String toDetail(@PathVariable Long id,Model model){
+
         Order order = orderService.selectOrderById(id);
         model.addAttribute("order",order);
-
         if(Const.CONSTRUCTION.equals(order.getType())){
+            List<ConstructDetail> constructDetailList = orderService.queryConstructDetailListByOrder(order);
+            List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = orderService.queryEquipmentPurchaseRecordListByOrder(order);
+            model.addAttribute("constructDetailList",constructDetailList);
+            model.addAttribute("equipmentPurchaseRecordList",equipmentPurchaseRecordList);
             return "/order/myorder/construction_detail";
         }else if (Const.MIGRATION.equals(order.getType())){
+            List<ResourceMigration> resourceMigrationList = orderService.queryResourceMigrationListByOrder(order);
+            List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = orderService.queryEquipmentPurchaseRecordListByOrder(order);
+            model.addAttribute("resourceMigrationList",resourceMigrationList);
+            model.addAttribute("equipmentPurchaseRecordList",equipmentPurchaseRecordList);
             return "/order/myorder/migration_detail";
         }else if(Const.REMOVEMENT.equals(order.getType())){
+            List<ResourceRemovement> resourceRemovementList = orderService.queryResourceRemovementListByOrder(order);
+            model.addAttribute("resourceRemovementList",resourceRemovementList);
             return "/order/myorder/removement_detail";
         }else if(Const.CHANGE_ITEM.equals(order.getType())){
             return "/order/myorder/change_item_detail";
@@ -461,11 +683,21 @@ public class OrderController {
         session.setAttribute("order",order);
 
         if(Const.CONSTRUCTION.equals(order.getType())){
+            List<ConstructDetail> constructDetailList = orderService.queryConstructDetailListByOrder(order);
+            List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = orderService.queryEquipmentPurchaseRecordListByOrder(order);
+            session.setAttribute("constructDetailList",constructDetailList);
+            session.setAttribute("equipmentPurchaseRecordList",equipmentPurchaseRecordList);
             return "/order/pre_handle_order/construction/construction_equipment";
         }else if (Const.MIGRATION.equals(order.getType())){
-            return "/order/pre_handle_order/construction/migration_detail";
+            List<ResourceMigration> resourceMigrationList = orderService.queryResourceMigrationListByOrder(order);
+            List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = orderService.queryEquipmentPurchaseRecordListByOrder(order);
+            session.setAttribute("resourceMigrationList",resourceMigrationList);
+            session.setAttribute("equipmentPurchaseRecordList",equipmentPurchaseRecordList);
+            return "/order/pre_handle_order/migration/migration_equipment";
         }else if(Const.REMOVEMENT.equals(order.getType())){
-            return "/order/pre_handle_order/construction/removement_detail";
+            List<ResourceRemovement> resourceRemovementList = orderService.queryResourceRemovementListByOrder(order);
+            session.setAttribute("resourceRemovementList",resourceRemovementList);
+            return "/order/pre_handle_order/removement/removement_detail";
         }else if(Const.CHANGE_ITEM.equals(order.getType())){
             return "/order/pre_handle_order/construction/change_item_detail";
         }
@@ -501,7 +733,7 @@ public class OrderController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/preHandleOrder/construction/saveEquipmentList")
+    @RequestMapping("/preHandleOrder/saveEquipmentList")
     public Object saveEquipmentList(@RequestBody JSONObject jsonObject, Model model, HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
@@ -516,22 +748,15 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping("/preHandleOrder/construction/toResource")
-    public String toResource(){
+    @RequestMapping("/preHandleOrder/construction/toResourceConstruction")
+    public String toResourceConstruction(){
         return "/order/pre_handle_order/construction/construction_resource";
     }
 
-
-    @RequestMapping("/preHandleOrder/construction/toPairExistEquipment")
-    public String toPairResource(){
-        return "/order/pre_handle_order/construction/pairEquipment/pairExistEquipment";
+    @RequestMapping("/preHandleOrder/migration/toResourceMigration")
+    public String toResourceMigration(){
+        return "/order/pre_handle_order/migration/migration_resource";
     }
-
-    @RequestMapping("/preHandleOrder/construction/toPairNewEquipment")
-    public String toPairNewEquipment(){
-        return "/order/pre_handle_order/construction/pairEquipment/pairNewEquipment";
-    }
-
 
     /**
      * 将待处理工单的临时数据存放到session中，用于资源配对设备页面

@@ -61,13 +61,13 @@
 						<div class="panel">
 							<div class="panel-body">
 								<div class="panel-header" style="padding-top: 20px">
-									<h2>建设工单转资源处理</h2>
+									<h2>迁移工单处理</h2>
 								</div>
 								<br>
 								<hr>
 								<br>
 								<ul class="nav nav-tabs" role="tablist">
-									<li role="presentation" class="active"><a><span class="badge">1</span> 工单信息预览</a></li>
+									<li role="presentation" class="active"><a>工单信息预览</a></li>
 								</ul>
 								<form role="form" style="margin-top:20px;" class="form-horizontal">
 									<div class="form-group">
@@ -125,28 +125,24 @@
 									<table id="detailList" class="table table-bordered" style="text-align:center;">
 										<thead>
 										<tr class="success">
-											<td>序号</td>
-											<td>使用科室|外勤部门</td>
-											<td>部门类型</td>
-											<td>运营商</td>
-											<td>资源类型</td>
-											<td>装机数量</td>
+											<td>资源ID</td>
+											<td>资源号码</td>
+											<td>新职场</td>
+											<td>新机房</td>
+											<td>新挂账部门</td>
+											<td>新使用部门</td>
 											<td>资费</td>
-											<td>所在职场</td>
-											<td>机房</td>
 										</tr>
 										</thead>
 										<tbody id="t1">
-											<tr th:each="constructDetail:${session.order?.constructDetailList}">
-												<td th:text="${constructDetailStat?.count}">序号</td>
-												<td th:text="${constructDetail?.usedepartment?.departmentName}">使用科室|外勤部门</td>
-												<td th:text="${constructDetail?.usedepartment_type}">部门类型</td>
-												<td th:text="${constructDetail?.operator}">运营商</td>
-												<td th:text="${constructDetail?.resourceType}">资源类型</td>
-												<td th:text="${constructDetail?.construct_number}">装机数量</td>
-												<td th:text="${constructDetail?.expense?.price}">资费</td>
-												<td th:text="${constructDetail?.workplace?.workplaceName}">所在职场</td>
-												<td th:text="${constructDetail?.networkRoom?.networkroom_name}">机房</td>
+											<tr th:each="resourceMigration:${session?.resourceMigrationList}">
+												<td th:text="${resourceMigration?.resource_id}">资源ID</td>
+												<td th:text="${resourceMigration?.resource_no}">资源号码</td>
+												<td th:text="${resourceMigration?.new_workplace_name}">新职场</td>
+												<td th:text="${resourceMigration?.new_network_room_name}">新机房</td>
+												<td th:text="${resourceMigration?.new_department_name}">新挂账部门</td>
+												<td th:text="${resourceMigration?.new_usedepartment_name}">新使用部门</td>
+												<td th:text="${resourceMigration?.price}">资费</td>
 											</tr>
 										</tbody>
 									</table>
@@ -165,21 +161,21 @@
 										</tr>
 										</thead>
 										<tbody id="t2">
-										<tr th:each="equipmentPurchaseRecord:${session.order?.equipmentPurchaseRecordList}">
-											<td th:text="${equipmentPurchaseRecordStat?.count}">序号</td>
-											<td th:text="${equipmentPurchaseRecord?.equipment_type}">购买设备类型</td>
-											<td th:text="${equipmentPurchaseRecord?.purchaseNum}">购买数量</td>
-											<td th:text="${equipmentPurchaseRecord?.expense.price}">设备单价</td>
-										</tr>
+											<tr th:each="equipmentPurchaseRecord:${session?.equipmentPurchaseRecordList}">
+												<td th:text="${equipmentPurchaseRecordStat?.count}">序号</td>
+												<td th:text="${equipmentPurchaseRecord?.equipment_type}">购买设备类型</td>
+												<td th:text="${equipmentPurchaseRecord?.purchaseNum}">购买数量</td>
+												<td th:text="${equipmentPurchaseRecord?.expense.price}">设备单价</td>
+											</tr>
 										</tbody>
 									</table>
 								</div>
 								<br>
 								<hr>
 								<br>
-								<div id="useNewEquipment">
+								<div id="NewEquipment">
 									<ul class="nav nav-tabs" role="tablist">
-										<li role="presentation" class="active"><a><span class="badge">2</span> 设备购买录入</a></li>
+										<li role="presentation" class="active"><a>设备购买录入</a></li>
 									</ul>
 									<form class="form-horizontal" style="margin-top:20px;margin-bottom: 20px" id="equipmentPurchaseListForm">
 										<div class="form-group">
@@ -230,122 +226,53 @@
 									</div>
 									<!--<button type="button" class="btn btn-default" id="backStep">上一步</button>-->
 									<!--<button type="button" class="btn btn-success" id="generateResource">生成资源</button>-->
-									<button type="button" class="btn btn-success" id="addResource">添加资源</button>
+									<!--<button type="button" class="btn btn-success" id="addResource">添加资源</button>-->
 								</div>
-								<div id="useOldEquipment">
+								<br>
+								<br>
+								<div id="ResourceMigration">
 									<ul class="nav nav-tabs" role="tablist">
-										<li role="presentation" class="active"><a><span class="badge">2</span> 资源录入</a></li>
+										<li role="presentation" class="active"><a>资源录入</a></li>
 									</ul>
-									<form class="form-horizontal" style="margin-top:20px;margin-bottom: 20px" id="resourceListForm">
-										<div class="form-group">
-											<label for="fresource_no" class="col-md-2 control-label">资源号码<span style="color:red">* </span></label>
-											<div class="col-md-4">
-												<input type="text" class="form-control" id="fresource_no" name="resource_no" >
-											</div>
-											<label class="col-md-2 control-label">运营商<span style="color:red">* </span></label>
-											<div class="col-md-4">
-												<select class="form-control" id="foperator" name="operator">
-													<option>电信</option>
-													<option>联通</option>
-												</select>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-md-2 control-label">资源类型<span style="color:red">* </span>	</label>
-											<div class="col-md-4">
-												<select class="form-control" id="fresourceType" name="resourc_type">
-													<option>电话</option>
-													<option>宽带</option>
-													<option>专线</option>
-												</select>
-											</div>
-											<label class="col-md-2 control-label">资费<span style="color:red">* </span></label>
-											<div class="col-md-4">
-												<input type="number" class="form-control" id="fprice" name="expense.price" expense_id="">
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-md-2 control-label">所在职场<span style="color:red">* </span></label>
-											<div class="col-md-4">
-												<input type="text" class="form-control" id="fworkplace" name="workplace.workplaceName" placeholder="请选择所在职场" workplace_id="">
-											</div>
-											<label class="col-md-2 control-label">机房<span style="color:red">* </span></label>
-											<div class="col-md-4">
-												<input type="text" class="form-control" id="fnetworkRoom" name="networkRoom.networkroom_name" placeholder="请选择所在机房" networkroom_id="">
-											</div>
-										</div>
-										<div class="form-group">
-											<label for="fapply_department" class="col-md-2 control-label">挂账部门<span style="color:red">* </span></label>
-											<div class="col-md-4">
-												<input type="text" class="form-control" id="fapply_department" name="department.departmentName" placeholder="请选择挂账部门" apply_department_id="" onclick="doLoadApplyDepartment()">
-											</div>
-											<label for="fusedepartment" class="col-md-2 control-label">使用科室|外勤部门<span style="color:red">* </span></label>
-											<div class="col-md-4">
-												<input type="text" class="form-control" id="fusedepartment" name="usedepartment.departmentName" placeholder="请选择科室|外勤部门" usedepartment_id="" onclick="doloadUseDepartment()">
-											</div>
-
-										</div>
-										<div class="form-group">
-											<label for="fusedepartment_type" class="col-md-2 control-label">使用部门类型<span style="color:red">* </span></label>
-											<div class="col-md-4">
-												<select class="form-control" id="fusedepartment_type" name="usedepartment_type">
-													<option>内勤</option>
-													<option>外勤</option>
-												</select>
-											</div>
-											<label for="fusername" class="col-md-2 control-label">使用人<span style="color:red">* </span></label>
-											<div class="col-md-4">
-												<input type="text" class="form-control" id="fusername" name="username" >
-											</div>
-
-										</div>
-										<div class="form-group">
-											<label class="col-xs-2 control-label">选择设备<span style="color:red">* </span></label>
-											<div class="col-xs-4">
-												<input type="text" class="form-control" id="fselect_oldequipment" name="equipment.equipmentSn" onclick="selectOldEquipment()" equipment_id="">
-											</div>
-											<label class="col-xs-2 control-label">设备端口<span style="color:red">* </span></label>
-											<div class="col-xs-4">
-												<input type="text" class="form-control" id="fequipment_port_num" name="equipment_port_num">
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-md-2 control-label">列支成本中心<span style="color:red">* </span></label>
-											<div class="col-md-4">
-												<input type="text" class="form-control" id="fResource_accountCenter" name="account_center">
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-sm-2 control-label"></label>
-											<div class="col-sm-10">
-												<button id="addBtn" type="button" class="btn btn-primary">添加</button>
-												<button id="resetBtn" class="btn btn-default">重置</button>
-											</div>
-										</div>
-									</form>
+									<br>
 									<div>
 										<table id="temp_resource_list" class="table table-bordered" style="text-align:center;">
 											<thead>
 											<tr class="success">
-												<td>序号</td>
+												<td>资源ID</td>
 												<td>资源号码</td>
-												<td>运营商</td>
-												<td>资源类型</td>
+												<td>新职场</td>
+												<td>新机房</td>
+												<td>新挂账部门</td>
+												<td>新使用部门</td>
 												<td>资费</td>
-												<td>所在职场</td>
-												<td>机房</td>
-												<td>挂账部门</td>
-												<td>使用科室|外勤部门</td>
-												<td>使用部门类型</td>
-												<td>使用人</td>
-												<td>列支成本中心</td>
+												<td>所用设备</td>
 												<td>设备端口</td>
 												<td>设备编号</td>
 												<td>操作</td>
 											</tr>
 											</thead>
 											<tbody id="resourceList">
-
+											<tr th:each="resourceMigration:${session?.resourceMigrationList}">
+												<td th:text="${resourceMigration?.resource_id}">资源ID</td>
+												<td th:text="${resourceMigration?.resource_no}">资源号码</td>
+												<td th:text="${resourceMigration?.new_workplace_name}">新职场</td>
+												<td th:text="${resourceMigration?.new_network_room_name}">新机房</td>
+												<td th:text="${resourceMigration?.new_department_name}">新挂账部门</td>
+												<td th:text="${resourceMigration?.new_usedepartment_name}">新使用部门</td>
+												<td th:text="${resourceMigration?.price}">资费</td>
+												<td th:if="${#lists.isEmpty(session?.equipmentPurchaseRecordList)}">
+													<input type="text" th:id="fselect_oldequipment+${resourceMigrationStat?.count}" th:onclick="|select_oldequipment(${resourceMigrationStat?.count})|" equipment_id="" style="width: 80px">
+												</td>
+												<td th:if="${not #lists.isEmpty(session?.equipmentPurchaseRecordList)}">
+													<select th:id="fselect_newequipment+${resourceMigrationStat?.count}" th:onclick="|select_newequipment(${resourceMigrationStat?.count})|" equipment_id="" style="width: 80px">
+														<option>请选择</option>
+													</select>
+												</td>
+												<td width="20px"><input type="text" id="fequipment_port_num"  style="width: 80px"></td>
+												<td width="20px"><input type="text" id="fResource_accountCenter" style="width: 80px"></td>
+												<td><button type="button" class="btn btn-primary" id="confirmResource">确定</td>
+											</tr>
 											</tbody>
 										</table>
 									</div>
@@ -413,15 +340,29 @@
 <script type="text/javascript"  th:inline="javascript">
 
     $(function () {
-		var equipmentNum = [[${session.order?.equipmentPurchaseRecordList}]].length
+		var equipmentNum = [[${session?.equipmentPurchaseRecordList}]].length
 		if(equipmentNum > 0){
-		    $("#useNewEquipment").show();
-		    $("#useOldEquipment").hide();
+		    $("#NewEquipment").show();
+		    // $("#useOldEquipment").hide();
 		}else{
-            $("#useNewEquipment").hide();
-            $("#useOldEquipment").show();
+            $("#NewEquipment").hide();
+            // $("#useOldEquipment").show();
 		}
     })
+
+
+    function select_newequipment(i) {
+        var equipmentList = [[${session?.equipmentList}]];
+        var select_new_equipment_row = $("#fselect_newequipment"+i)
+        //console.log(equipmentList)
+        select_new_equipment_row.empty();
+        for(var i=0; i<=equipmentList.length; i++){
+            var equipmentSn = equipmentList[i].equipmentSn;
+            //var equipmentTypeId= equipmentList[i].equipmentTypeId;
+            select_new_equipment_row.append("<option>"+equipmentSn+"</option>")
+            // $("#fselect_newequipment").val(equipmentSn);
+        }
+    }
 
     var loadingIndex = -1;
 
@@ -929,8 +870,11 @@
         })
     }
 
-    function selectOldEquipment() {
+    function select_equipment(i) {
+
         var id, equipment_sn = null;
+
+        var select_equipment_row = $("#fselect_equipment"+i)
 
         layer.open({
             title: "设备列表",
@@ -996,8 +940,8 @@
 
             },
             yes: function (layero, index) {
-                $("#fselect_oldequipment").attr("equipment_id", id);
-                $("#fselect_oldequipment").val(equipment_sn);
+                select_equipment_row.attr("equipment_id", id);
+                select_equipment_row.val(equipment_sn);
                 layer.close(layero)
             },
             btn2: function (layero, index) {
@@ -1324,7 +1268,7 @@
         },
         success:function (result) {
             if(result.success){
-				window.location.href= [[@{|/order/preHandleOrder/construction/toResourceConstruction|}]];
+				window.location.href= [[@{|/order/preHandleOrder/migration/toResourceMigration|}]];
             }else{
                 layer.msg(result.message,{time:2000, icon:5, shift:5})
             }

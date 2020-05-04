@@ -50,7 +50,17 @@ public class Resource {
 
     private User creator;
 
+    private Boolean deleted;
+
     private List<Order> orderList;
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
 
     public String getEquipment_port_num() {
         return equipment_port_num;
