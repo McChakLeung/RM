@@ -693,7 +693,7 @@ public class OrderController {
             List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = orderService.queryEquipmentPurchaseRecordListByOrder(order);
             session.setAttribute("resourceMigrationList",resourceMigrationList);
             session.setAttribute("equipmentPurchaseRecordList",equipmentPurchaseRecordList);
-            return "/order/pre_handle_order/migration/migration_equipment";
+            return "/order/pre_handle_order/migration/migration_detail";
         }else if(Const.REMOVEMENT.equals(order.getType())){
             List<ResourceRemovement> resourceRemovementList = orderService.queryResourceRemovementListByOrder(order);
             session.setAttribute("resourceRemovementList",resourceRemovementList);
@@ -733,10 +733,11 @@ public class OrderController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/preHandleOrder/saveEquipmentList")
-    public Object saveEquipmentList(@RequestBody JSONObject jsonObject, Model model, HttpSession session){
+    @RequestMapping("/preHandleOrder/migration/saveEquipmentList")
+    public Object saveEquipmentList(@RequestBody JSONObject jsonObject,HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
+            session.removeAttribute("equipmentList");
             List<Equipment> equipmentList = jsonObject.getJSONArray("equipmentList").toJavaList(Equipment.class);
             session.setAttribute("equipmentList",equipmentList);
             result.setSuccess(true);
@@ -779,9 +780,14 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping("/preHandleOrder/construction/toPreview")
-    public String toPreview(){
+    @RequestMapping("/preHandleOrder/construction/toPreviewConstruction")
+    public String toPreviewConstruction(){
         return "/order/pre_handle_order/construction/construction_preview";
+    }
+
+    @RequestMapping("/preHandleOrder/migration/toPreviewMigration")
+    public String toPreviewMigration(){
+        return "/order/pre_handle_order/migration/migration_preview";
     }
 
 
