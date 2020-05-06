@@ -247,8 +247,20 @@
 												<td>新使用部门</td>
 												<td>资费</td>
 												<td>所用设备</td>
+												<td>设备类型</td>
 												<td>设备端口</td>
-												<td>设备编号</td>
+											</tr>
+											<tr class="success" style="display: none">
+												<td>resource_id</td>
+												<td>resource_no</td>
+												<td>new_workplace_name</td>
+												<td>new_network_room_name</td>
+												<td>new_department_name</td>
+												<td>new_usedepartment_name</td>
+												<td>price</td>
+												<td>所用设备</td>
+												<td>设备类型</td>
+												<td>设备端口</td>
 											</tr>
 											</thead>
 											<tbody id="resourceList">
@@ -260,16 +272,23 @@
 												<td th:text="${resourceMigration?.new_department_name}">新挂账部门</td>
 												<td th:text="${resourceMigration?.new_usedepartment_name}">新使用部门</td>
 												<td th:text="${resourceMigration?.price}">资费</td>
+												<!--<td th:if="${#lists.isEmpty(session?.equipmentPurchaseRecordList)}">-->
+													<!--<input type="text" th:id="fselect_oldequipment+${resourceMigrationStat?.count}" th:onclick="|select_oldequipment(${resourceMigrationStat?.count})|" equipment_id="" style="width: 100px">-->
+												<!--</td>-->
+												<!--<td th:if="${not #lists.isEmpty(session?.equipmentPurchaseRecordList)}">-->
+													<!--<select class="form-control" th:id="fselect_newequipment+${resourceMigrationStat?.count}" th:onclick="|select_newequipment(${resourceMigrationStat?.count})|" equipment_id="" style="width: 100px">-->
+														<!--<option>请选择</option>-->
+													<!--</select>-->
+												<!--</td>-->
 												<td th:if="${#lists.isEmpty(session?.equipmentPurchaseRecordList)}">
 													<input type="text" th:id="fselect_oldequipment+${resourceMigrationStat?.count}" th:onclick="|select_oldequipment(${resourceMigrationStat?.count})|" equipment_id="" style="width: 100px">
 												</td>
 												<td th:if="${not #lists.isEmpty(session?.equipmentPurchaseRecordList)}">
-													<select class="form-control" th:id="fselect_newequipment+${resourceMigrationStat?.count}" th:onclick="|select_newequipment(${resourceMigrationStat?.count})|" equipment_id="" style="width: 100px">
-														<option>请选择</option>
+													<select class="fselect_newequipment"  style="width: 100px">
 													</select>
 												</td>
+												<td><input type="text" id="fequipment_type" style="width: 80px"></td>
 												<td><input type="text" id="fequipment_port_num"  style="width: 80px"></td>
-												<td><input type="text" id="fResource_accountCenter" style="width: 80px"></td>
 											</tr>
 											</tbody>
 										</table>
@@ -350,8 +369,30 @@
             $("#NewEquipment").hide();
             // $("#useOldEquipment").show();
 		}
+
+        // var list = equipmentList
+        // var url = [[@{|/order/preHandleOrder/migration/deleteEquipmentList|}]]
+        // updateSession(list,url);
+
     })
 
+    // function updateSession(list,url) {
+    //     $.ajax({
+    //         type:"post",
+    //         url:url,
+    //     	data:{list:list},
+    //         dataType:"json",
+    //         contentType : "application/json;charset=utf-8",
+    //         beforeSend:function () {
+    //         return true
+    //     },
+		// 	success:function (result) {
+		// 		if(!result.success){
+		// 			layer.msg(result.message,{time:2000, icon:5, shift:5})
+		// 		}
+		// 	}
+    // 	})
+    // }
 
     function select_oldequipment(i) {
 
@@ -434,15 +475,15 @@
 
     }
 
-    function deleteBtn(i) {
-        layer.confirm("确定要删除此行记录吗？" ,{icon: 3, title:'提示'}, function(cindex){
-            layer.close(cindex);
-            resourceDetailList.splice(i,1);
-            showDetail(resourceDetailList);
-        },function (cindex) {
-            layer.close(cindex);
-        })
-    }
+    // function deleteBtn(i) {
+    //     layer.confirm("确定要删除此行记录吗？" ,{icon: 3, title:'提示'}, function(cindex){
+    //         layer.close(cindex);
+    //         resourceDetailList.splice(i,1);
+    //         showDetail(resourceDetailList);
+    //     },function (cindex) {
+    //         layer.close(cindex);
+    //     })
+    // }
 
 
     //资费单击选择事件
@@ -538,7 +579,7 @@
 
         if($.trim($("#faccountCenter").val()) == ""){
             // $("#fmessage").text("用户名不能为空，请重新输入");
-            layer.msg("机房不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+            layer.msg("成本中心不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
                 $("#faccountCenter").val("");
                 $("#faccountCenter").focus();
             })
@@ -605,27 +646,16 @@
         dataArray["expense"]["id"] = $("#fprice").attr("expense_id");
         dataArray["expenseId"] = $("#fprice").attr("expense_id");
 
-
-
         console.log(dataArray)
         equipmentList.push(dataArray);
         showEquipmentDetail(equipmentList);
 
-        $.ajax({
-            type:"post",
-            url:[[@{|/order/preHandleOrder/migration/saveEquipmentList|}]],
-        	data:JSON.stringify({'equipmentList':equipmentList}),
-            dataType:"json",
-            contentType : "application/json;charset=utf-8",
-            beforeSend:function () {
-            return true
-        },
-        success:function (result) {
-            if(!result.success){
-                layer.msg(result.message,{time:2000, icon:5, shift:5})
-            }
-        }
-    	})
+        updateNewEquipment(equipmentList);
+
+        // var list = JSON.stringify({'equipmentList':equipmentList});
+        // var url = [[@{|/order/preHandleOrder/migration/saveEquipmentList|}]];
+        // updateSession(list,url)
+
     })
 
     function showEquipmentDetail(equipmentList) {
@@ -658,22 +688,20 @@
             layer.close(cindex);
             equipmentList.splice(i,1);
             showEquipmentDetail(equipmentList);
+            updateNewEquipment(equipmentList);
         },function (cindex) {
             layer.close(cindex);
         })
     }
 
-    function select_newequipment(i) {
+    function updateNewEquipment(equipmentList) {
 
-        var equipmentList = [[${session?.equipmentList}]];
-        var select_new_equipment_row = $("#fselect_newequipment"+i)
-        console.log(equipmentList)
-        select_new_equipment_row.empty();
+        // var resourceMigrationCount = [[${session?.resourceMigrationList}]];
+        var select_new_equipment_row = $(".fselect_newequipment")
+        $(".fselect_newequipment").empty();
         for(var i=0; i<equipmentList.length; i++){
             var equipmentSn = equipmentList[i].equipmentSn;
-            //var equipmentTypeId= equipmentList[i].equipmentTypeId;
             select_new_equipment_row.append("<option>"+equipmentSn+"</option>")
-            // $("#fselect_newequipment").val(equipmentSn);
         }
     }
 
@@ -681,34 +709,49 @@
 
     $("#preview").click(function () {
 
-        var OrderConstructNum = getTableNum("t1",5);
+        var OrderEquipmentNum = getTableNum("t2",2);
 
-        //判断工单的装机数量与添加的资源数量是否一致
-        if(OrderConstructNum != resourceDetailList.length){
-            layer.msg("添加的资源数量与工单的数量不一致，请重新填写",{time:2000, icon:5, shift:5})
+        //判断工单的设备数量与添加的设备数量是否一致
+        if(OrderEquipmentNum != equipmentList.length){
+            layer.msg("添加的设备数量与工单的采购数量不一致，请重新填写",{time:2000, icon:5, shift:5})
             return false;
         }
 
+        var table = "temp_resource_list";
 
-        $.ajax({
-            type:"post",
-            url:[[@{|/order/preHandleOrder/construction/saveResourceList|}]],
-        	data:JSON.stringify({'resourceDetailList':resourceDetailList}),
-            dataType:"json",
-            contentType : "application/json;charset=utf-8",
-            beforeSend:function () {
-            return true
-        },
-        success:function (result) {
-            if(result.success){
-				window.location.href= [[@{|/order/preHandleOrder/construction/toPreview|}]];
-            }else{
-                layer.msg(result.message,{time:2000, icon:5, shift:5})
-            }
-        }
-    	})
+		var tableToJson = tabToJSONForJquery(table)
+		console.log(tableToJson);
+
+        // $.ajax({
+         //    type:"post",
+         //    url:[[@{|/order/preHandleOrder/construction/saveResourceList|}]],
+        	// data:JSON.stringify({'resourceDetailList':resourceDetailList}),
+         //    dataType:"json",
+         //    contentType : "application/json;charset=utf-8",
+         //    beforeSend:function () {
+         //    return true
+        // },
+        // success:function (result) {
+         //    if(result.success){
+			// 	window.location.href= [[@{|/order/preHandleOrder/construction/toPreview|}]];
+         //    }else{
+         //        layer.msg(result.message,{time:2000, icon:5, shift:5})
+         //    }
+        // }
+    	// })
 
     })
+
+    function tabToJSONForJquery(id) {
+        var titles = $("#" + id).find("tr:first td");  //获得表头td数组
+        //遍历非表头的，tr、td...拼装json
+        var json = "[" + $("#" + id).find("tr:not(:first)").map(function(i, e) {
+            return "{" + $(e).children("td").map(function(j, el) {
+                return $(titles[j]).text() + ":" + $(el).text();
+            }).get().join(",") + "}";
+        }).get().join(",") + "]";
+        return json
+    }
 
 
     //查询订单购买设备数量

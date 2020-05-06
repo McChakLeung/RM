@@ -749,6 +749,28 @@ public class OrderController {
         return result;
     }
 
+
+    /**
+     * 将待处理工单的临时数据存放到session中，用于资源配对设备页面
+     * @param list
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/preHandleOrder/migration/deleteEquipmentList")
+    public Object deleteEquipmentList(@RequestParam(value = "list",required = false) String list,HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try {
+            //List<Equipment> equipmentList = jsonObject.getJSONArray("equipmentList").toJavaList(Equipment.class);
+            session.removeAttribute(list);
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("跳转异常，请联系管理员解决");
+        }
+        return result;
+    }
+
     @RequestMapping("/preHandleOrder/construction/toResourceConstruction")
     public String toResourceConstruction(){
         return "/order/pre_handle_order/construction/construction_resource";
