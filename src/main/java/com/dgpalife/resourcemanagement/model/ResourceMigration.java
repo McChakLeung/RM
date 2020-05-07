@@ -37,6 +37,36 @@ public class ResourceMigration {
 
     private String create_time;
 
+    private Long equipment_id;
+
+    private String equipment_sn;
+
+    private String equipment_port_num;
+
+    public Long getEquipment_id() {
+        return equipment_id;
+    }
+
+    public void setEquipment_id(Long equipment_id) {
+        this.equipment_id = equipment_id;
+    }
+
+    public String getEquipment_sn() {
+        return equipment_sn;
+    }
+
+    public void setEquipment_sn(String equipment_sn) {
+        this.equipment_sn = equipment_sn;
+    }
+
+    public String getEquipment_port_num() {
+        return equipment_port_num;
+    }
+
+    public void setEquipment_port_num(String equipment_port_num) {
+        this.equipment_port_num = equipment_port_num;
+    }
+
     public Long getId() {
         return id;
     }

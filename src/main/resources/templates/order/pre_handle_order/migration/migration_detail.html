@@ -246,22 +246,20 @@
 												<td>新挂账部门</td>
 												<td>新使用部门</td>
 												<td>资费</td>
-												<td>所用设备</td>
-												<td>设备类型</td>
+												<td>设备SN号</td>
 												<td>设备端口</td>
 											</tr>
-											<tr class="success" style="display: none">
-												<td>resource_id</td>
-												<td>resource_no</td>
-												<td>new_workplace_name</td>
-												<td>new_network_room_name</td>
-												<td>new_department_name</td>
-												<td>new_usedepartment_name</td>
-												<td>price</td>
-												<td>所用设备</td>
-												<td>设备类型</td>
-												<td>设备端口</td>
-											</tr>
+											<!--<tr class="success" style="display: none">-->
+												<!--<td>resource_id</td>-->
+												<!--<td>resource_no</td>-->
+												<!--<td>new_workplace_name</td>-->
+												<!--<td>new_network_room_name</td>-->
+												<!--<td>new_department_name</td>-->
+												<!--<td>new_usedepartment_name</td>-->
+												<!--<td>price</td>-->
+												<!--<td>equipment_sn</td>-->
+												<!--<td>equipment_port_num</td>-->
+											<!--</tr>-->
 											</thead>
 											<tbody id="resourceList">
 											<tr th:each="resourceMigration:${session?.resourceMigrationList}">
@@ -287,7 +285,6 @@
 													<select class="fselect_newequipment"  style="width: 100px">
 													</select>
 												</td>
-												<td><input type="text" id="fequipment_type" style="width: 80px"></td>
 												<td><input type="text" id="fequipment_port_num"  style="width: 80px"></td>
 											</tr>
 											</tbody>
@@ -719,38 +716,76 @@
 
         var table = "temp_resource_list";
 
-		var tableToJson = tabToJSONForJquery(table)
-		console.log(tableToJson);
+		var resourceMigrationList = tabToJSONForJquery(table)
+		//alert(tableToJson);
 
-        // $.ajax({
-         //    type:"post",
-         //    url:[[@{|/order/preHandleOrder/construction/saveResourceList|}]],
-        	// data:JSON.stringify({'resourceDetailList':resourceDetailList}),
-         //    dataType:"json",
-         //    contentType : "application/json;charset=utf-8",
-         //    beforeSend:function () {
-         //    return true
-        // },
-        // success:function (result) {
-         //    if(result.success){
-			// 	window.location.href= [[@{|/order/preHandleOrder/construction/toPreview|}]];
-         //    }else{
-         //        layer.msg(result.message,{time:2000, icon:5, shift:5})
-         //    }
-        // }
-    	// })
+        $.ajax({
+            type:"post",
+            url:[[@{|/order/preHandleOrder/construction/saveResourceList|}]],
+        	data:JSON.stringify({'resourceMigrationList':resourceMigrationList}),
+            dataType:"json",
+            contentType : "application/json;charset=utf-8",
+            beforeSend:function () {
+            return true
+        },
+        success:function (result) {
+            if(result.success){
+				window.location.href= [[@{|/order/preHandleOrder/construction/toPreview|}]];
+            }else{
+                layer.msg(result.message,{time:2000, icon:5, shift:5})
+            }
+        }
+    	})
 
     })
 
-    function tabToJSONForJquery(id) {
-        var titles = $("#" + id).find("tr:first td");  //获得表头td数组
-        //遍历非表头的，tr、td...拼装json
-        var json = "[" + $("#" + id).find("tr:not(:first)").map(function(i, e) {
-            return "{" + $(e).children("td").map(function(j, el) {
-                return $(titles[j]).text() + ":" + $(el).text();
-            }).get().join(",") + "}";
-        }).get().join(",") + "]";
-        return json
+    function tabToJSONForJquery(table) {
+		     // var arrTR = $("#"+id).children();
+			 // var Context = "";
+			 // $("#"+id).find("tr:gt(1)").each(function () {
+				//  var arrtd = $(this).children();
+				//  tdContext = $.trim(arrtd.eq(0).text());
+				//  tdContext += ":" + arrtd.eq(8).find("input").val() + ";";
+				//  Context += tdContext;
+			 // })
+          	//  return Context = Context.substring(Context.indexOf(";") + 1);
+            // //$("#txtContent").val(Context);
+
+
+        // var titles = $("#" + id).find("tr:eq(1) td");  //获得表头td数组
+        // //遍历非表头的，tr、td...拼装json
+        // var json = "[" + $("#" + id).find("tr:gt(1)").map(function(i, e) {
+        //     return "{" + $(e).children("td").map(function(j, el) {
+        //         if($(el).find("input[type='text']") == true){
+        //             return $(titles[j]).text() + ":" + $(el).val();
+        //         }else{
+        //             return $(titles[j]).text() + ":" + $(el).text();
+        //         }
+        //
+        //     }).get().join(",") + "}";
+        // }).get().join(",") + "]";
+        // return json
+
+		var rows = $("#"+table).find("tr:gt(0)");
+        var num = rows.length;
+        var info = [];
+        for (var i = 0; i < num; i++) {
+            var obj = {};
+            obj.resource_id = rows.eq(i).children("td").eq(0).text();
+            obj.resource_no = rows.eq(i).children("td").eq(1).text();
+            obj.new_workplace_name = rows.eq(i).children("td").eq(2).text();
+            obj.new_network_room_name = rows.eq(i).children("td").eq(3).text();
+            obj.new_department_name = rows.eq(i).children("td").eq(4).text();
+            obj.new_usedepartment_name = rows.eq(i).children("td").eq(5).text();
+            obj.price= rows.eq(i).children("td").eq(6).text();
+            obj.equipment_sn= rows.eq(i).children("td").eq(7).children("select").val();
+            obj.equipment_port_num= rows.eq(i).children("td").eq(8).children("input").val();
+            console.log(obj)
+            info.push(obj);
+        }
+        console.log(info)
+		return info;
+
     }
 
 
