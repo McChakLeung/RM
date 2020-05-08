@@ -721,8 +721,8 @@
 
         $.ajax({
             type:"post",
-            url:[[@{|/order/preHandleOrder/construction/saveResourceList|}]],
-        	data:JSON.stringify({'resourceMigrationList':resourceMigrationList}),
+            url:[[@{|/order/preHandleOrder/migration/saveResourceMigrationList|}]],
+        	data:JSON.stringify({'resourceMigrationList':resourceMigrationList,'equipmentList':equipmentList}),
             dataType:"json",
             contentType : "application/json;charset=utf-8",
             beforeSend:function () {
@@ -730,7 +730,7 @@
         },
         success:function (result) {
             if(result.success){
-				window.location.href= [[@{|/order/preHandleOrder/construction/toPreview|}]];
+				window.location.href= [[@{|/order/preHandleOrder/migration/toPreviewMigration|}]];
             }else{
                 layer.msg(result.message,{time:2000, icon:5, shift:5})
             }

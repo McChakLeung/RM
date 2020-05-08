@@ -733,12 +733,13 @@ public class OrderController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/preHandleOrder/migration/saveEquipmentList")
-    public Object saveEquipmentList(@RequestBody JSONObject jsonObject,HttpSession session){
+    @RequestMapping("/preHandleOrder/migration/saveResourceMigrationList")
+    public Object saveResourceMigrationList(@RequestBody JSONObject jsonObject,HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
-            session.removeAttribute("equipmentList");
+            List<ResourceMigration> resourceMigrationList = jsonObject.getJSONArray("resourceMigrationList").toJavaList(ResourceMigration.class);
             List<Equipment> equipmentList = jsonObject.getJSONArray("equipmentList").toJavaList(Equipment.class);
+            session.setAttribute("resourceMigrationList",resourceMigrationList);
             session.setAttribute("equipmentList",equipmentList);
             result.setSuccess(true);
         }catch (Exception e){
@@ -750,26 +751,6 @@ public class OrderController {
     }
 
 
-    /**
-     * 将待处理工单的临时数据存放到session中，用于资源配对设备页面
-     * @param list
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/preHandleOrder/migration/deleteEquipmentList")
-    public Object deleteEquipmentList(@RequestParam(value = "list",required = false) String list,HttpSession session){
-        AjaxResult result = new AjaxResult();
-        try {
-            //List<Equipment> equipmentList = jsonObject.getJSONArray("equipmentList").toJavaList(Equipment.class);
-            session.removeAttribute(list);
-            result.setSuccess(true);
-        }catch (Exception e){
-            e.printStackTrace();
-            result.setSuccess(false);
-            result.setMessage("跳转异常，请联系管理员解决");
-        }
-        return result;
-    }
 
     @RequestMapping("/preHandleOrder/construction/toResourceConstruction")
     public String toResourceConstruction(){

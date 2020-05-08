@@ -67,7 +67,7 @@
 								<hr>
 								<br>
 								<ul class="nav nav-tabs" role="tablist">
-									<li role="presentation" class="active"><a><span class="badge">3</span> 预览</a></li>
+									<li role="presentation" class="active"><a><span class="badge"></span> 预览</a></li>
 								</ul>
 								<br>
 								<div id="resource_area">
@@ -78,37 +78,34 @@
 											<thead>
 												<tr class="success">
 													<td>序号</td>
+													<td>资源ID</td>
 													<td>资源号码</td>
-													<td>运营商</td>
-													<td>资源类型</td>
+													<td>新职场</td>
+													<td>新机房</td>
+													<td>新挂账部门</td>
+													<td>新使用部门</td>
 													<td>资费</td>
-													<td>所在职场</td>
-													<td>机房</td>
-													<td>挂账部门</td>
-													<td>使用科室|外勤部门</td>
-													<td>使用部门类型</td>
-													<td>使用人</td>
-													<td>列支成本中心</td>
+													<td>设备SN号</td>
 													<td>设备端口</td>
-													<td>设备编号</td>
 												</tr>
 											</thead>
 											<tbody >
-												<tr th:each="resource:${session?.resourceList}">
-													<td th:text="${resourceStat?.count}">序号</td>
-													<td th:text="${resource?.resource_no}">资源号码</td>
-													<td th:text="${resource?.operator}">运营商</td>
-													<td th:text="${resource?.resourc_type}">资源类型</td>
-													<td th:text="${resource?.expense?.price}">资费</td>
-													<td th:text="${resource?.workplace?.workplaceName}">所在职场</td>
-													<td th:text="${resource?.networkRoom?.networkroom_name}">机房</td>
-													<td th:text="${resource?.department?.departmentName}">挂账部门</td>
-													<td th:text="${resource?.usedepartment?.departmentName}">使用科室|外勤部门</td>
-													<td th:text="${resource?.usedepartment_type}">使用部门类型</td>
-													<td th:text="${resource?.username}">使用人</td>
-													<td th:text="${resource?.account_center}">列支成本中心</td>
-													<td th:text="${resource?.equipment_port_num}">设备端口</td>
-													<td th:text="${resource?.equipment?.equipmentSn}">设备端口</td>
+												<tr th:each="resourceMigration:${session?.resourceMigrationList}">
+													<td th:text="${resourceMigrationStat?.count}">序号</td>
+													<td th:text="${resourceMigration?.resource_id}">资源ID</td>
+													<td th:text="${resourceMigration?.resource_no}">资源号码</td>
+													<!--<td th:text="${resourceMigration?.operator}">运营商</td>-->
+													<!--<td th:text="${resourceMigration?.resourc_type}">资源类型</td>-->
+													<td th:text="${resourceMigration?.new_workplace_name}">新职场</td>
+													<td th:text="${resourceMigration?.new_network_room_name}">新机房</td>
+													<td th:text="${resourceMigration?.new_department_name}">新挂账部门</td>
+													<td th:text="${resourceMigration?.new_usedepartment_name}">新使用部门</td>
+													<td th:text="${resourceMigration?.price}">资费</td>
+													<!--<td th:text="${resourceMigration?.usedepartment_type}">使用部门类型</td>-->
+													<!--<td th:text="${resourceMigration?.username}">使用人</td>-->
+													<!--<td th:text="${resourceMigration?.account_center}">列支成本中心</td>-->
+													<td th:text="${resourceMigration?.equipment_sn}">设备端口</td>
+													<td th:text="${resourceMigration?.equipment_port_num}">设备端口</td>
 												</tr>
 											</tbody>
 										</table>
@@ -142,7 +139,7 @@
 									</div>
 								</div>
 								<!--<button type="button" class="btn btn-default" id="backStep">上一步</button>-->
-								<button type="button" class="btn btn-success" id="generateResource">转为资源</button>
+								<button type="button" class="btn btn-success" id="updateResource">更新资源</button>
 							</div>
 						</div>
 						<!-- END BASIC TABLE -->
@@ -163,21 +160,21 @@
 <script type="text/javascript">
 
 
-	$(function () {
-		//判断工单设备列表是否为空
-        var equipmentNum = "${session.order?.equipmentPurchaseRecordList}".length
-        if(equipmentNum > 0){
-            $("#equipment_area").show();
-        }else{
-            $("#equipment_area").hide();
-        }
-
-    })
+    // $(function () {
+		// //判断工单设备列表是否为空
+    //     var equipmentNum = "${session.order?.equipmentPurchaseRecordList}".length
+    //     if(equipmentNum > 0){
+    //         $("#equipment_area").show();
+    //     }else{
+    //         $("#equipment_area").hide();
+    //     }
+    //
+    // })
 
     var loadingIndex = -1;
 
-    $("#generateResource").click(function () {
-        layer.confirm('确定要转为资源吗? 如果录入没问题，请按【确定】，否则请按【取消】，并重新检查', {icon: 3, title:'提示：【该操作不可逆】'}, function(index){
+    $("#updateResource").click(function () {
+        layer.confirm('确定要更新资源吗? 如果录入没问题，请按【确定】，否则请按【取消】，并重新检查', {icon: 3, title:'提示：【该操作不可逆】'}, function(index){
             var url = "[[@{|/resource/generateResource|}]]";
             $.getJSON(url,function(result){
                 if(result.success){
