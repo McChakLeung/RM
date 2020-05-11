@@ -258,4 +258,60 @@ public class ResourceController {
         return result;
 
     }
+
+
+    /**
+     * 迁移资源
+     * @param session
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/migrationResource")
+    public Object migrationResource(HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try {
+            User user = (User)session.getAttribute(Const.LOGIN_USER);
+            List<ResourceMigration> resourceMigrationList = (List<ResourceMigration>) session.getAttribute("resourceMigrationList");
+            List<Equipment> equipmentList = (List<Equipment>)session.getAttribute("equipmentList");
+            Order order = (Order)session.getAttribute("order");
+
+            //判断获取的数据是否为空
+            if(resourceMigrationList.isEmpty()){
+                result.setMessage("未添加资源号码，请重新输入");
+                result.setSuccess(false);
+            }
+
+//            if(equipmentList.isEmpty()){
+//                result.setMessage("未添加设备，请重新输入");
+//                result.setSuccess(false);
+//            }
+
+            //生成资源
+
+            //第一步：在资源表中添加资源记录
+            resourceService.updateResourceListByMigrationList(resourceMigrationList);
+
+            //第二步：在设备表中添加设备记录
+
+
+            //第四步：更新order状态为已完成
+            order.setStatus("已完成");
+            order.setFinish(true);
+            orderService.updateOrder(order);
+
+            result.setSuccess(true);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("生成资源异常，请联系管理员解决");
+        }finally {
+            //释放session空间，否则占用服务器资源
+            session.removeAttribute("resourceList");
+            session.removeAttribute("equipmentList");
+            session.removeAttribute("order");
+        }
+        return result;
+
+    }
 }
