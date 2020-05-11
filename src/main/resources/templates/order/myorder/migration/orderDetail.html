@@ -76,8 +76,15 @@
 								<form class="form-horizontal" style="margin-top:20px;margin-bottom: 20px" id="form">
 									<div class="form-group">
 										<label for="fresource" class="col-md-2 control-label">资源号码：<span style="color:red">* </span></label>
-										<div class="col-md-10">
+										<div class="col-md-4">
 											<input type="text" class="form-control" id="fresource" name="resource_no" placeholder="请单击选择资源号码" resource_id="">
+										</div>
+										<label for="fusedepartment_type" class="col-md-2 control-label">使用部门类型</label>
+										<div class="col-md-4">
+											<select class="form-control" id="fusedepartment_type" name="new_usedepartment_type">
+												<option>内勤</option>
+												<option>外勤</option>
+											</select>
 										</div>
 									</div>
 									<div class="form-group">
@@ -101,7 +108,7 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">资费<span style="color:red">* </span>	</label>
+										<label class="col-md-2 control-label">迁移费用<span style="color:red">* </span>	</label>
 										<div class="col-md-4">
 											<input type="number" class="form-control" id="fprice" name="price" expense_id="">
 										</div>
@@ -120,11 +127,12 @@
 										<tr class="success">
 											<td>资源ID</td>
 											<td>资源号码</td>
+											<td>使用部门类型</td>
 											<td>新职场</td>
 											<td>新机房</td>
 											<td>新挂账部门</td>
 											<td>新使用部门</td>
-											<td>资费</td>
+											<td>迁移费用</td>
 											<td>操作</td>
 										</tr>
 										</thead>
@@ -240,7 +248,7 @@
 
         if($.trim($("#fprice").val()) == ""){
             // $("#fmessage").text("用户名不能为空，请重新输入");
-            layer.msg("资费不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+            layer.msg("迁移费用不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
                 $("#fprice").val("");
                 $("#fprice").attr("expense_id","");
                 $("#fprice").focus();
@@ -306,6 +314,7 @@
             content+='<tr>';
             content+='  <td>'+n.resource_id+'</td>';
             content+='  <td>'+n.resource_no+'</td>';
+            content+='  <td>'+n.new_usedepartment_type+'</td>';
             content+='  <td>'+n.new_workplace_name + '</td>';
             content+='  <td>'+n.new_network_room_name+'</td>';
             content+='  <td>'+n.new_department_name+'</td>';

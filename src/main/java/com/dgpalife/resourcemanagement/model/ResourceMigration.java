@@ -23,6 +23,8 @@ public class ResourceMigration {
 
     private String new_usedepartment_name;
 
+    private String new_usedepartment_type;
+
     private Long expense_id;
 
     private Double price;
@@ -42,6 +44,14 @@ public class ResourceMigration {
     private String equipment_sn;
 
     private String equipment_port_num;
+
+    public String getNew_usedepartment_type() {
+        return new_usedepartment_type;
+    }
+
+    public void setNew_usedepartment_type(String new_usedepartment_type) {
+        this.new_usedepartment_type = new_usedepartment_type;
+    }
 
     public Long getEquipment_id() {
         return equipment_id;

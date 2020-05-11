@@ -1,7 +1,9 @@
 package com.dgpalife.resourcemanagement.mapper;
 
 import com.dgpalife.resourcemanagement.model.Item;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface ItemMapper {
     int deleteByPrimaryKey(Long id);
 

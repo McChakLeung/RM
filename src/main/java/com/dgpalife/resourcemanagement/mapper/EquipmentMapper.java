@@ -25,4 +25,6 @@ public interface EquipmentMapper {
     List<Object> selectEquipmentByQueryText(Map<String, Object> params);
 
     int selectCountByQueryText(Map<String, Object> params);
+
+    Equipment selectByEquipmenSN(String equipment_sn);
 }

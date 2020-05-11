@@ -1,7 +1,9 @@
 package com.dgpalife.resourcemanagement.mapper;
 
 import com.dgpalife.resourcemanagement.model.ChangeItemRecord;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface ChangeItemRecordMapper {
     int deleteByPrimaryKey(Long id);
 

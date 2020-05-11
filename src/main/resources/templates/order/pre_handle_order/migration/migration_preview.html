@@ -80,11 +80,12 @@
 													<td>序号</td>
 													<td>资源ID</td>
 													<td>资源号码</td>
+													<td>使用部门类型</td>
 													<td>新职场</td>
 													<td>新机房</td>
 													<td>新挂账部门</td>
 													<td>新使用部门</td>
-													<td>资费</td>
+													<td>迁移费用</td>
 													<td>设备SN号</td>
 													<td>设备端口</td>
 												</tr>
@@ -94,13 +95,14 @@
 													<td th:text="${resourceMigrationStat?.count}">序号</td>
 													<td th:text="${resourceMigration?.resource_id}">资源ID</td>
 													<td th:text="${resourceMigration?.resource_no}">资源号码</td>
+													<td th:text="${resourceMigration?.new_usedepartment_type}">使用部门类型</td>
 													<!--<td th:text="${resourceMigration?.operator}">运营商</td>-->
 													<!--<td th:text="${resourceMigration?.resourc_type}">资源类型</td>-->
 													<td th:text="${resourceMigration?.new_workplace_name}">新职场</td>
 													<td th:text="${resourceMigration?.new_network_room_name}">新机房</td>
 													<td th:text="${resourceMigration?.new_department_name}">新挂账部门</td>
 													<td th:text="${resourceMigration?.new_usedepartment_name}">新使用部门</td>
-													<td th:text="${resourceMigration?.price}">资费</td>
+													<td th:text="${resourceMigration?.price}">迁移费用</td>
 													<!--<td th:text="${resourceMigration?.usedepartment_type}">使用部门类型</td>-->
 													<!--<td th:text="${resourceMigration?.username}">使用人</td>-->
 													<!--<td th:text="${resourceMigration?.account_center}">列支成本中心</td>-->

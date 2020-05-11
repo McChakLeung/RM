@@ -13,6 +13,7 @@
     <result column="new_department_name" jdbcType="VARCHAR" property="new_department_name" />
     <result column="new_usedepartment_id" jdbcType="BIGINT" property="new_usedepartment_id" />
     <result column="new_usedepartment_name" jdbcType="VARCHAR" property="new_usedepartment_name" />
+    <result column="new_usedepartment_type" jdbcType="VARCHAR" property="new_usedepartment_type" />
     <result column="expense_id" jdbcType="BIGINT" property="expense_id" />
     <result column="price" jdbcType="DOUBLE" property="price" />
     <result column="project_id" jdbcType="BIGINT" property="project_id" />
@@ -26,7 +27,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, resource_id, resource_no, new_workplace_id, new_workplace_name, new_network_room_id, new_network_room_name,
-    new_department_id, new_department_name, new_usedepartment_id, new_usedepartment_name, 
+    new_department_id, new_department_name, new_usedepartment_id, new_usedepartment_name, new_usedepartment_type,
     expense_id, price, project_id, order_id, template_id, creator_id, create_time,equipment_id,equipment_sn,equipment_port_num
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -43,7 +44,7 @@
     insert into t_resource_migration (id, resource_id, resource_no, 
       new_workplace_id, new_workplace_name, new_network_room_id, new_network_room_name,
       new_department_id, new_department_name, new_usedepartment_id, 
-      new_usedepartment_name, expense_id, price, project_id,
+      new_usedepartment_name, new_usedepartment_type, expense_id, price, project_id,
       order_id, template_id, creator_id, 
       create_time,equipment_id,equipment_sn,equipment_port_num)
     values (#{id,jdbcType=BIGINT}, #{resource_id,jdbcType=BIGINT}, #{resource_no,jdbcType=VARCHAR},
@@ -88,6 +89,9 @@
       </if>
       <if test="new_usedepartment_name != null">
         new_usedepartment_name,
+      </if>
+      <if test="new_usedepartment_type != null">
+        new_usedepartment_type,
       </if>
       <if test="expense_id != null">
         expense_id,
@@ -154,6 +158,9 @@
       <if test="new_usedepartment_name != null">
         #{new_usedepartment_name,jdbcType=VARCHAR},
       </if>
+      <if test="new_usedepartment_type != null">
+        #{new_usedepartment_type,jdbcType=VARCHAR},
+      </if>
       <if test="expense_id != null">
         #{expense_id,jdbcType=BIGINT},
       </if>
@@ -219,6 +226,9 @@
       <if test="new_usedepartment_name != null">
         new_usedepartment_name = #{new_usedepartment_name,jdbcType=VARCHAR},
       </if>
+      <if test="new_usedepartment_type != null">
+        new_usedepartment_type = #{new_usedepartment_type,jdbcType=VARCHAR},
+      </if>
       <if test="expense_id != null">
         expense_id = #{expense_id,jdbcType=BIGINT},
       </if>
@@ -264,6 +274,7 @@
       new_department_name = #{new_department_name,jdbcType=VARCHAR},
       new_usedepartment_id = #{new_usedepartment_id,jdbcType=BIGINT},
       new_usedepartment_name = #{new_usedepartment_name,jdbcType=VARCHAR},
+      new_usedepartment_type = #{new_usedepartment_type,jdbcType=VARCHAR},
       expense_id = #{expense_id,jdbcType=BIGINT},
       price = #{price,jdbcType=DOUBLE},
       project_id = #{project_id,jdbcType=BIGINT},
@@ -281,7 +292,7 @@
     insert into t_resource_migration (resource_id, resource_no,
       new_workplace_id, new_workplace_name, new_network_room_id, new_network_room_name,
       new_department_id, new_department_name, new_usedepartment_id,
-      new_usedepartment_name, expense_id, price, project_id,
+      new_usedepartment_name, new_usedepartment_type, expense_id, price, project_id,
       order_id, template_id, creator_id,
       create_time)
     values
@@ -289,7 +300,7 @@
       (#{item.resource_id,jdbcType=BIGINT}, #{item.resource_no,jdbcType=VARCHAR},
       #{item.new_workplace_id,jdbcType=BIGINT}, #{item.new_workplace_name,jdbcType=VARCHAR}, #{item.new_network_room_id,jdbcType=BIGINT}, #{item.new_network_room_name,jdbcType=VARCHAR},
       #{item.new_department_id,jdbcType=BIGINT}, #{item.new_department_name,jdbcType=VARCHAR}, #{item.new_usedepartment_id,jdbcType=BIGINT},
-      #{item.new_usedepartment_name,jdbcType=VARCHAR}, #{item.expense_id,jdbcType=BIGINT}, #{item.price,jdbcType=DOUBLE}, #{item.project_id,jdbcType=BIGINT},
+      #{item.new_usedepartment_name,jdbcType=VARCHAR},#{item.new_usedepartment_type,jdbcType=VARCHAR}, #{item.expense_id,jdbcType=BIGINT}, #{item.price,jdbcType=DOUBLE}, #{item.project_id,jdbcType=BIGINT},
       #{item.order_id,jdbcType=BIGINT}, #{item.template_id,jdbcType=BIGINT}, #{item.creator_id,jdbcType=BIGINT},
       #{item.create_time,jdbcType=VARCHAR})
     </foreach>

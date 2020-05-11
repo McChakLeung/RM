@@ -120,6 +120,7 @@
 										<tr class="success">
 											<td>资源ID</td>
 											<td>资源号码</td>
+											<td>使用部门类型</td>
 											<td>新职场</td>
 											<td>新机房</td>
 											<td>新挂账部门</td>
@@ -131,6 +132,7 @@
 										<tr th:each="resourceMigration:${resourceMigrationList}">
 											<td th:text="${resourceMigration?.resource_id}">资源ID</td>
 											<td th:text="${resourceMigration?.resource_no}">资源号码</td>
+											<td th:text="${resourceMigration?.new_usedepartment_type}">使用部门类型</td>
 											<td th:text="${resourceMigration?.new_workplace_name}">新职场</td>
 											<td th:text="${resourceMigration?.new_network_room_name}">新机房</td>
 											<td th:text="${resourceMigration?.new_department_name}">新挂账部门</td>

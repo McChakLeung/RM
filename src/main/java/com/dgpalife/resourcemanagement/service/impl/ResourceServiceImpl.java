@@ -7,6 +7,7 @@ import com.dgpalife.resourcemanagement.service.ResourceService;
 import org.activiti.engine.impl.transformer.LongToInteger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Transactional
 public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
@@ -33,6 +35,15 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
     private Order_resourceMapper order_resourceMapper;
+
+    @Autowired
+    private EquipmentMapper equipmentMapper;
+
+    @Autowired
+    private ResourceMigrationMapper resourceMigrationMapper;
+
+    @Autowired
+    private OrderMapper orderMapper;
 
     @Override
     public int queryByResourceNo(String resource_no) {
@@ -121,4 +132,49 @@ public class ResourceServiceImpl implements ResourceService {
             resourceMapper.updateResource(resourceRemovement.getResourceId());
         }
     }
+
+    @Override
+    public void updateMigrationResourceList(List<ResourceMigration> resourceMigrationList, List<Equipment> equipmentList, User user, Order order) {
+
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+
+        //判断传入的equipmentList是否为空，如果不为空则在设备表中添加设备记录
+        if(!equipmentList.isEmpty()){
+            for(Equipment equipment:equipmentList){
+                equipment.setCreatorId(user.getId());
+                equipment.setCreateTime(sdf.format(date));
+                equipmentMapper.insertSelective(equipment);
+            }
+        }
+
+        //第二步：遍历ResourceMigrationList
+        for(ResourceMigration resourceMigration: resourceMigrationList){
+            //查询设备表中与migrationList中EquipmentSN一致的数据，并更新Migration对象中equipment_id的字段
+            Equipment equipment = equipmentMapper.selectByEquipmenSN(resourceMigration.getEquipment_sn());
+            resourceMigration.setEquipment_id(equipment.getId());
+
+            //然后根据migratio对象中查询出resource_id，查询resource对象，并更新Resource表数据
+            Resource resource = resourceMapper.selectByPrimaryKey(resourceMigration.getResource_id());
+            resource.setWorkplace_id(resourceMigration.getNew_workplace_id());
+            resource.setNetwork_room_id(resourceMigration.getNew_network_room_id());
+            resource.setDepartment_id(resourceMigration.getNew_department_id());
+            resource.setUsedepartment_id(resourceMigration.getNew_usedepartment_id());
+            resource.setUsedepartment_type(resourceMigration.getNew_usedepartment_type());
+            resource.setEquipment_id(resourceMigration.getEquipment_id());
+            resource.setEquipment_port_num(resourceMigration.getEquipment_port_num());
+            resourceMapper.updateByPrimaryKeySelective(resource);
+
+            //最后更新migration表
+            resourceMigrationMapper.updateByPrimaryKeySelective(resourceMigration);
+        }
+
+
+        //第四步：更新order状态为已完成
+        order.setStatus("已完成");
+        order.setFinish(true);
+        orderMapper.updateByPrimaryKeySelective(order);
+    }
+
 }

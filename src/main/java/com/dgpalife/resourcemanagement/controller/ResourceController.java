@@ -281,23 +281,8 @@ public class ResourceController {
                 result.setSuccess(false);
             }
 
-//            if(equipmentList.isEmpty()){
-//                result.setMessage("未添加设备，请重新输入");
-//                result.setSuccess(false);
-//            }
-
             //生成资源
-
-            //第一步：在资源表中添加资源记录
-            resourceService.updateResourceListByMigrationList(resourceMigrationList);
-
-            //第二步：在设备表中添加设备记录
-
-
-            //第四步：更新order状态为已完成
-            order.setStatus("已完成");
-            order.setFinish(true);
-            orderService.updateOrder(order);
+            resourceService.updateMigrationResourceList(resourceMigrationList,equipmentList,user,order);
 
             result.setSuccess(true);
 

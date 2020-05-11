@@ -151,4 +151,11 @@
     </where>
     ORDER BY create_time ASC
   </select>
+
+  <select id="selectByEquipmenSN" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"></include>
+    FROM t_equipment
+    WHERE equipment_sn = #{equipment_sn}
+  </select>
 </mapper>

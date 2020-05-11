@@ -1,10 +1,7 @@
 package com.dgpalife.resourcemanagement.service;
 
 import com.dgpalife.resourcemanagement.common.Page;
-import com.dgpalife.resourcemanagement.model.Order;
-import com.dgpalife.resourcemanagement.model.Resource;
-import com.dgpalife.resourcemanagement.model.ResourceRemovement;
-import com.dgpalife.resourcemanagement.model.User;
+import com.dgpalife.resourcemanagement.model.*;
 
 import java.util.List;
 import java.util.Map;
@@ -27,4 +24,6 @@ public interface ResourceService {
     Map<String,Object> queryResoureDetailByID(Long resource_id);
 
     void deleteResourceList(List<ResourceRemovement> resourceRemovementList);
+
+    void updateMigrationResourceList(List<ResourceMigration> resourceMigrationList, List<Equipment> equipmentList, User user,Order order);
 }
