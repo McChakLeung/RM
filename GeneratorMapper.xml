@@ -6,7 +6,7 @@
 <generatorConfiguration>
 
     <!-- 指定连接数据库的JDBC驱动包所在位置，指定到你本机的完整路径 -->
-    <classPathEntry location="D:\mvnrepository\mysql\mysql-connector-java\5.1.46\mysql-connector-java-5.1.46.jar"/>
+    <classPathEntry location="D:\mvnrepository\mysql\mysql-connector-java\8.0.15\mysql-connector-java-8.0.15.jar"/>
 
     <!-- 配置table表信息内容体，targetRuntime指定采用MyBatis3的版本 -->
     <context id="tables" targetRuntime="MyBatis3">
@@ -18,7 +18,7 @@
 
         <!-- 配置数据库连接信息 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost/resourcemanagement"
+                        connectionURL="jdbc:mysql://localhost/resourcemanagement?serverTimezone=Hongkong"
                         userId="root"
                         password="Pa888888">
         </jdbcConnection>
@@ -40,15 +40,15 @@
         </javaClientGenerator>
 
         <!-- 数据库表名及对应的Java模型类名 -->
-        <table tableName="t_resource_migration"
-               domainObjectName="Resource_Migration"
+        <table tableName="t_change_item_record"
+               domainObjectName="ChangeItemRecord"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
-
-
+               selectByExampleQueryId="false">
+            <property name="useActualColumnNames" value="true" />
+        </table>
     </context>
 
 </generatorConfiguration>

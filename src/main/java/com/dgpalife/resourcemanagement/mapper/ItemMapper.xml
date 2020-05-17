@@ -2,29 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dgpalife.resourcemanagement.mapper.ItemMapper">
   <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.Item">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="item_name" jdbcType="VARCHAR" property="itemName" />
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="item_name" jdbcType="VARCHAR" property="item_name" />
+    <result column="table_field" jdbcType="VARCHAR" property="table_field" />
+    <result column="create_time" jdbcType="VARCHAR" property="create_time" />
+    <result column="creator_id" jdbcType="BIGINT" property="creator_id" />
   </resultMap>
-  <sql id="Base_Column_List">
-    id, item_name, create_time, creator_id
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_item
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_item
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Item">
-    insert into t_item (id, item_name, create_time, 
-      creator_id)
-    values (#{id,jdbcType=BIGINT}, #{itemName,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
-      #{creatorId,jdbcType=BIGINT})
+    insert into t_item (id, item_name, table_field, 
+      create_time, creator_id)
+    values (#{id,jdbcType=BIGINT}, #{item_name,jdbcType=VARCHAR}, #{table_field,jdbcType=VARCHAR}, 
+      #{create_time,jdbcType=VARCHAR}, #{creator_id,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Item">
     insert into t_item
@@ -32,13 +20,16 @@
       <if test="id != null">
         id,
       </if>
-      <if test="itemName != null">
+      <if test="item_name != null">
         item_name,
       </if>
-      <if test="createTime != null">
+      <if test="table_field != null">
+        table_field,
+      </if>
+      <if test="create_time != null">
         create_time,
       </if>
-      <if test="creatorId != null">
+      <if test="creator_id != null">
         creator_id,
       </if>
     </trim>
@@ -46,37 +37,18 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="itemName != null">
-        #{itemName,jdbcType=VARCHAR},
+      <if test="item_name != null">
+        #{item_name,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=VARCHAR},
+      <if test="table_field != null">
+        #{table_field,jdbcType=VARCHAR},
       </if>
-      <if test="creatorId != null">
-        #{creatorId,jdbcType=BIGINT},
+      <if test="create_time != null">
+        #{create_time,jdbcType=VARCHAR},
+      </if>
+      <if test="creator_id != null">
+        #{creator_id,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.Item">
-    update t_item
-    <set>
-      <if test="itemName != null">
-        item_name = #{itemName,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=VARCHAR},
-      </if>
-      <if test="creatorId != null">
-        creator_id = #{creatorId,jdbcType=BIGINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.Item">
-    update t_item
-    set item_name = #{itemName,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=VARCHAR},
-      creator_id = #{creatorId,jdbcType=BIGINT}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
 </mapper>

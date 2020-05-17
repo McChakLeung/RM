@@ -15,7 +15,7 @@ public interface ResourceService {
 
     Map<String,Object> queryPortInfoByResourceID(Long id);
 
-    void insertResourceList(List<Resource> resourceList,Order order, User user);
+    void generateResource(List<Resource> resourceList,List<Equipment> equipmentList,Order order, User user);
 
     List<Object> selectResourceByQueryText(Map<String, Object> params);
 

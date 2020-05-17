@@ -119,7 +119,8 @@ public class OrderController {
                 return "redirect:/order/myorder/migration/toMigrationOrder";
             case "removement_order":
                 return "redirect:/order/myorder/removement/toRemoveOrder";
-
+            case "maintaining_order":
+                return "redirect:/order/myorder/maintaining/toMaintainingOrder";
         }
         return "redirect:/order/myorder/toSelectOrderType";
     }
@@ -151,6 +152,11 @@ public class OrderController {
         return "/order/myorder/removement/orderInfo";
     }
 
+
+    @RequestMapping("/myorder/maintaining/toMaintainingOrder")
+    public String toMaintainingOrder(){
+        return "/order/myorder/maintaining/orderInfo";
+    }
 
     /**
      * 将建设工单临时放置在session中存放
@@ -216,6 +222,26 @@ public class OrderController {
         return result;
     }
 
+    /**
+     * 将资源维护工单临时放置在session中存放
+     * @param order
+     * @param session
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/myorder/maintaining/saveTemporaryMaintainingOrder")
+    public Object saveTemporaryMaintainingOrder(@RequestBody Order order, HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try {
+            session.setAttribute("order",order);
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("跳转异常，请联系管理员解决");
+        }
+        return result;
+    }
 
     @RequestMapping("/myorder/construction/toConstructionDetail")
     public String toConstructionDetail(){
@@ -231,6 +257,12 @@ public class OrderController {
     public String toRemovementDetail(){
         return "/order/myorder/removement/orderDetail";
     }
+
+    @RequestMapping("/myorder/maintaining/toMaintainingDetail")
+    public String toMaintainingDetail(){
+        return "/order/myorder/maintaining/orderDetail";
+    }
+
 
     /**
      * 将建设工单明细的List集合临时放置在session中存放
@@ -706,6 +738,8 @@ public class OrderController {
 
     }
 
+
+
 //    /**
 //     * 将建设工单临时放置在session中存放
 //     * @param resourceList
@@ -717,7 +751,7 @@ public class OrderController {
 //    public Object saveResourceList(@RequestBody List<Resource> resourceList, HttpSession session){
 //        AjaxResult result = new AjaxResult();
 //        try {
-//            //session.setAttribute("resource",resource);
+//            session.setAttribute("resourceList",resourceList);
 //            result.setSuccess(true);
 //        }catch (Exception e){
 //            e.printStackTrace();
@@ -762,6 +796,29 @@ public class OrderController {
         return "/order/pre_handle_order/migration/migration_resource";
     }
 
+
+    /**
+     * 将建设工单临时放置在session中存放
+     * @param equipmentList
+     * @param session
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/preHandleOrder/construction/saveEquipmentList")
+    public Object saveEquipmentList(@RequestBody JSONObject jsonObject, HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try {
+            List<Equipment> equipmentList = jsonObject.getJSONArray("equipmentList").toJavaList(Equipment.class);
+            session.setAttribute("equipmentList",equipmentList);
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("生成异常，请联系管理员解决");
+        }
+        return result;
+    }
+
     /**
      * 将待处理工单的临时数据存放到session中，用于资源配对设备页面
      * @param jsonObject
@@ -772,7 +829,7 @@ public class OrderController {
     public Object saveResourceList(@RequestBody JSONObject jsonObject, HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
-            List<Resource> resourceList = jsonObject.getJSONArray("resourceDetailList").toJavaList(Resource.class);
+            List<Resource> resourceList = jsonObject.getJSONArray("resourceList").toJavaList(Resource.class);
             session.setAttribute("resourceList",resourceList);
             result.setSuccess(true);
         }catch (Exception e){

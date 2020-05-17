@@ -89,12 +89,26 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public void insertResourceList(List<Resource> resourceList, Order order, User user) {
+    public void generateResource(List<Resource> resourceList,List<Equipment>equipmentList, Order order, User user) {
 
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+        //第一步：判断传入的equipmentList是否为空，如果不为空则在设备表中添加设备记录
+        if(!equipmentList.isEmpty()){
+            for(Equipment equipment:equipmentList){
+                equipment.setCreatorId(user.getId());
+                equipment.setCreateTime(sdf.format(date));
+                equipmentMapper.insertSelective(equipment);
+            }
+        }
+
+        //第二步：遍历resourceList
         for (Resource resource: resourceList) {
+            //查询设备表中与resourceList中EquipmentSN一致的数据，并更新Migration对象中equipment_id的字段
+            Equipment equipment = equipmentMapper.selectByEquipmenSN(resource.getEquipment().getEquipmentSn());
+            resource.setEquipment_id(equipment.getId());
+
             //设置resource信息
             resource.setCreate_time(sdf.format(date));
             resource.setCreator_id(user.getId());
@@ -109,6 +123,11 @@ public class ResourceServiceImpl implements ResourceService {
             order_resourceMapper.insertSelective(order_resource);
 
         }
+
+        //第三步：更新order状态为已完成
+        order.setStatus("已完成");
+        order.setFinish(true);
+        orderMapper.updateByPrimaryKeySelective(order);
     }
 
     @Override

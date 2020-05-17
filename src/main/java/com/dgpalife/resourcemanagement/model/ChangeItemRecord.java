@@ -3,19 +3,23 @@ package com.dgpalife.resourcemanagement.model;
 public class ChangeItemRecord {
     private Long id;
 
-    private Long resourceId;
+    private Long resource_id;
 
-    private Integer changeItemId;
+    private String resource_no;
 
-    private Long beforeChange;
+    private Long item_id;
 
-    private Long afterChange;
+    private String item_name;
 
-    private Long orderId;
+    private Long before_change;
+
+    private Long after_change;
+
+    private Long order_id;
 
     private String createtime;
 
-    private Long creatorId;
+    private Long creator_id;
 
     private String comment;
 
@@ -27,44 +31,60 @@ public class ChangeItemRecord {
         this.id = id;
     }
 
-    public Long getResourceId() {
-        return resourceId;
+    public Long getResource_id() {
+        return resource_id;
     }
 
-    public void setResourceId(Long resourceId) {
-        this.resourceId = resourceId;
+    public void setResource_id(Long resource_id) {
+        this.resource_id = resource_id;
     }
 
-    public Integer getChangeItemId() {
-        return changeItemId;
+    public String getResource_no() {
+        return resource_no;
     }
 
-    public void setChangeItemId(Integer changeItemId) {
-        this.changeItemId = changeItemId;
+    public void setResource_no(String resource_no) {
+        this.resource_no = resource_no;
     }
 
-    public Long getBeforeChange() {
-        return beforeChange;
+    public Long getItem_id() {
+        return item_id;
     }
 
-    public void setBeforeChange(Long beforeChange) {
-        this.beforeChange = beforeChange;
+    public void setItem_id(Long item_id) {
+        this.item_id = item_id;
     }
 
-    public Long getAfterChange() {
-        return afterChange;
+    public String getItem_name() {
+        return item_name;
     }
 
-    public void setAfterChange(Long afterChange) {
-        this.afterChange = afterChange;
+    public void setItem_name(String item_name) {
+        this.item_name = item_name;
     }
 
-    public Long getOrderId() {
-        return orderId;
+    public Long getBefore_change() {
+        return before_change;
     }
 
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
+    public void setBefore_change(Long before_change) {
+        this.before_change = before_change;
+    }
+
+    public Long getAfter_change() {
+        return after_change;
+    }
+
+    public void setAfter_change(Long after_change) {
+        this.after_change = after_change;
+    }
+
+    public Long getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(Long order_id) {
+        this.order_id = order_id;
     }
 
     public String getCreatetime() {
@@ -75,12 +95,12 @@ public class ChangeItemRecord {
         this.createtime = createtime;
     }
 
-    public Long getCreatorId() {
-        return creatorId;
+    public Long getCreator_id() {
+        return creator_id;
     }
 
-    public void setCreatorId(Long creatorId) {
-        this.creatorId = creatorId;
+    public void setCreator_id(Long creator_id) {
+        this.creator_id = creator_id;
     }
 
     public String getComment() {

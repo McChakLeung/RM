@@ -270,13 +270,9 @@
 												<td th:text="${resourceMigration?.resource_no}">资源号码</td>
 												<td th:text="${resourceMigration?.new_usedepartment_type}">使用部门类型</td>
 												<td th:text="${resourceMigration?.new_workplace_name}">新职场</td>
-												<td style="display: none" th:text="${resourceMigration?.new_workplace_id}"></td>
 												<td th:text="${resourceMigration?.new_network_room_name}">新机房</td>
-												<td style="display: none" th:text="${resourceMigration?.new_network_room_id}"></td>
 												<td th:text="${resourceMigration?.new_department_name}">新挂账部门</td>
-												<td style="display: none" th:text="${resourceMigration?.new_department_id}">新挂账部门</td>
 												<td th:text="${resourceMigration?.new_usedepartment_name}">新使用部门</td>
-												<td style="display: none" th:text="${resourceMigration?.new_usedepartment_id}">新使用部门</td>
 												<td th:text="${resourceMigration?.price}">迁移费用</td>
 												<!--<td th:if="${#lists.isEmpty(session?.equipmentPurchaseRecordList)}">-->
 													<!--<input type="text" th:id="fselect_oldequipment+${resourceMigrationStat?.count}" th:onclick="|select_oldequipment(${resourceMigrationStat?.count})|" equipment_id="" style="width: 100px">-->
@@ -782,11 +778,15 @@
             obj.resource_id = rows.eq(i).children("td").eq(0).text();
             obj.resource_no = rows.eq(i).children("td").eq(1).text();
             obj.new_usedepartment_type = rows.eq(i).children("td").eq(2).text();
-            obj.new_workplace_id = [[${session?.}]]
+            obj.new_workplace_id = [[${session?.resourceMigrationList}]][i].new_workplace_id;
             obj.new_workplace_name = rows.eq(i).children("td").eq(3).text();
+            obj.new_network_room_id = [[${session?.resourceMigrationList}]][i].new_network_room_id;
             obj.new_network_room_name = rows.eq(i).children("td").eq(4).text();
+            obj.new_department_id = [[${session?.resourceMigrationList}]][i].new_department_id;
             obj.new_department_name = rows.eq(i).children("td").eq(5).text();
+            obj.new_usedepartment_id = [[${session?.resourceMigrationList}]][i].new_usedepartment_id;
             obj.new_usedepartment_name = rows.eq(i).children("td").eq(6).text();
+            obj.expense_id = [[${session?.resourceMigrationList}]][i].expense_id;
             obj.price= rows.eq(i).children("td").eq(7).text();
             if(rows.eq(i).children("td").eq(8).find("input[type='text']").length>0){
                 obj.equipment_sn= rows.eq(i).children("td").eq(8).children("input").val();

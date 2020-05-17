@@ -121,17 +121,17 @@ public class ResourceController {
             //生成资源
 
             //第一步：在资源表中添加资源记录
-            resourceService.insertResourceList(resourceList,order,user);
+            resourceService.generateResource(resourceList,equipmentList,order,user);
 
-            //第二步：在设备表中添加设备记录
-            if(equipmentList != null) {
-                equipmentService.insertEquipmentList(equipmentList,user);
-            }
-
-            //第三步：更新order状态为已完成
-            order.setStatus("已完成");
-            order.setFinish(true);
-            orderService.updateOrder(order);
+//            //第二步：在设备表中添加设备记录
+//            if(equipmentList != null) {
+//                equipmentService.insertEquipmentList(equipmentList,user);
+//            }
+//
+//            //第三步：更新order状态为已完成
+//            order.setStatus("已完成");
+//            order.setFinish(true);
+//            orderService.updateOrder(order);
 
             result.setSuccess(true);
 

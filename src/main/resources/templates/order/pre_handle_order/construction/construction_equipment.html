@@ -137,7 +137,7 @@
 										</tr>
 										</thead>
 										<tbody id="t1">
-											<tr th:each="constructDetail:${session.order?.constructDetailList}">
+											<tr th:each="constructDetail:${session?.constructDetailList}">
 												<td th:text="${constructDetailStat?.count}">序号</td>
 												<td th:text="${constructDetail?.usedepartment?.departmentName}">使用科室|外勤部门</td>
 												<td th:text="${constructDetail?.usedepartment_type}">部门类型</td>
@@ -165,7 +165,7 @@
 										</tr>
 										</thead>
 										<tbody id="t2">
-										<tr th:each="equipmentPurchaseRecord:${session.order?.equipmentPurchaseRecordList}">
+										<tr th:each="equipmentPurchaseRecord:${session?.equipmentPurchaseRecordList}">
 											<td th:text="${equipmentPurchaseRecordStat?.count}">序号</td>
 											<td th:text="${equipmentPurchaseRecord?.equipment_type}">购买设备类型</td>
 											<td th:text="${equipmentPurchaseRecord?.purchaseNum}">购买数量</td>
@@ -413,7 +413,7 @@
 <script type="text/javascript"  th:inline="javascript">
 
     $(function () {
-		var equipmentNum = [[${session.order?.equipmentPurchaseRecordList}]].length
+		var equipmentNum = [[${session?.equipmentPurchaseRecordList}]].length
 		if(equipmentNum > 0){
 		    $("#useNewEquipment").show();
 		    $("#useOldEquipment").hide();
@@ -425,7 +425,7 @@
 
     var loadingIndex = -1;
 
-    var resourceDetailList = new Array();
+    var resourceList = new Array();
 
     $("#addBtn").click(function () {
 
@@ -575,17 +575,17 @@
         dataArray["equipment_id"] = $("#fselect_oldequipment").attr("equipment_id");
 
         console.log(dataArray)
-        resourceDetailList.push(dataArray);
-        showDetail(resourceDetailList);
+        resourceList.push(dataArray);
+        showDetail(resourceList);
     })
 
-    function showDetail(resourceDetailList) {
+    function showDetail(resourceList) {
 
         var content = '';
 
-        console.log(resourceDetailList)
+        console.log(resourceList)
 
-        $.each(resourceDetailList,function(i,n){
+        $.each(resourceList,function(i,n){
             content+='<tr>';
             content+='  <td>'+(i+1)+'</td>';
             content+='  <td>'+n.resource_no+'</td>';
@@ -839,7 +839,7 @@
             // selectedMulti: false,
             addDiyDom: function(treeId, treeNode){
                 var aObj = $("#" + treeNode.tId + "_a"); // tId = permissionTree_1, ==> $("#permissionTree_1_a")
-                aObj.attr("href", "javascript:;");
+                //aObj.attr("href", "javascript:;");
                 var icoObj = $("#" + treeNode.tId + "_ico"); // tId = permissionTree_1, $("#permissionTree_1_ico")
                 if ( treeNode.icon ) {
                     icoObj.removeClass("button ico_docu ico_open").addClass(treeNode.icon).css("background","");
@@ -1010,8 +1010,8 @@
     function deleteBtn(i) {
         layer.confirm("确定要删除此行记录吗？" ,{icon: 3, title:'提示'}, function(cindex){
             layer.close(cindex);
-            resourceDetailList.splice(i,1);
-            showDetail(resourceDetailList);
+            resourceList.splice(i,1);
+            showDetail(resourceList);
         },function (cindex) {
             layer.close(cindex);
         })
@@ -1315,7 +1315,7 @@
 
         $.ajax({
             type:"post",
-            url:[[@{|/order/preHandleOrder/saveEquipmentList|}]],
+            url:[[@{|/order/preHandleOrder/construction/saveEquipmentList|}]],
         	data:JSON.stringify({'equipmentList':equipmentList}),
             dataType:"json",
             contentType : "application/json;charset=utf-8",
@@ -1339,7 +1339,7 @@
         var OrderConstructNum = getTableNum("t1",5);
 
         //判断工单的装机数量与添加的资源数量是否一致
-        if(OrderConstructNum != resourceDetailList.length){
+        if(OrderConstructNum != resourceList.length){
             layer.msg("添加的资源数量与工单的数量不一致，请重新填写",{time:2000, icon:5, shift:5})
             return false;
         }
@@ -1348,7 +1348,7 @@
         $.ajax({
             type:"post",
             url:[[@{|/order/preHandleOrder/construction/saveResourceList|}]],
-        	data:JSON.stringify({'resourceDetailList':resourceDetailList}),
+        	data:JSON.stringify({'resourceList':resourceList}),
             dataType:"json",
             contentType : "application/json;charset=utf-8",
             beforeSend:function () {

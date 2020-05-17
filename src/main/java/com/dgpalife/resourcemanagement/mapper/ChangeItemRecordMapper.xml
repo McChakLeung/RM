@@ -2,46 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dgpalife.resourcemanagement.mapper.ChangeItemRecordMapper">
   <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.ChangeItemRecord">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="resource_id" jdbcType="BIGINT" property="resourceId" />
-    <result column="change_item_id" jdbcType="INTEGER" property="changeItemId" />
-    <result column="before_change" jdbcType="BIGINT" property="beforeChange" />
-    <result column="after_change" jdbcType="BIGINT" property="afterChange" />
-    <result column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="resource_id" jdbcType="BIGINT" property="resource_id" />
+    <result column="resource_no" jdbcType="VARCHAR" property="resource_no" />
+    <result column="item_id" jdbcType="BIGINT" property="item_id" />
+    <result column="item_name" jdbcType="VARCHAR" property="item_name" />
+    <result column="before_change" jdbcType="BIGINT" property="before_change" />
+    <result column="after_change" jdbcType="BIGINT" property="after_change" />
+    <result column="order_id" jdbcType="BIGINT" property="order_id" />
     <result column="createtime" jdbcType="VARCHAR" property="createtime" />
-    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
+    <result column="creator_id" jdbcType="BIGINT" property="creator_id" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.dgpalife.resourcemanagement.model.ChangeItemRecord">
     <result column="comment" jdbcType="LONGVARCHAR" property="comment" />
   </resultMap>
-  <sql id="Base_Column_List">
-    id, resource_id, change_item_id, before_change, after_change, order_id, createtime, 
-    creator_id
-  </sql>
   <sql id="Blob_Column_List">
     comment
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from t_change_item_record
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_change_item_record
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.ChangeItemRecord">
-    insert into t_change_item_record (id, resource_id, change_item_id, 
-      before_change, after_change, order_id, 
-      createtime, creator_id, comment
-      )
-    values (#{id,jdbcType=BIGINT}, #{resourceId,jdbcType=BIGINT}, #{changeItemId,jdbcType=INTEGER}, 
-      #{beforeChange,jdbcType=BIGINT}, #{afterChange,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, 
-      #{createtime,jdbcType=VARCHAR}, #{creatorId,jdbcType=BIGINT}, #{comment,jdbcType=LONGVARCHAR}
-      )
+    insert into t_change_item_record (id, resource_id, resource_no, 
+      item_id, item_name, before_change, 
+      after_change, order_id, createtime, 
+      creator_id, comment)
+    values (#{id,jdbcType=BIGINT}, #{resource_id,jdbcType=BIGINT}, #{resource_no,jdbcType=VARCHAR}, 
+      #{item_id,jdbcType=BIGINT}, #{item_name,jdbcType=VARCHAR}, #{before_change,jdbcType=BIGINT}, 
+      #{after_change,jdbcType=BIGINT}, #{order_id,jdbcType=BIGINT}, #{createtime,jdbcType=VARCHAR}, 
+      #{creator_id,jdbcType=BIGINT}, #{comment,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.ChangeItemRecord">
     insert into t_change_item_record
@@ -49,25 +35,31 @@
       <if test="id != null">
         id,
       </if>
-      <if test="resourceId != null">
+      <if test="resource_id != null">
         resource_id,
       </if>
-      <if test="changeItemId != null">
-        change_item_id,
+      <if test="resource_no != null">
+        resource_no,
       </if>
-      <if test="beforeChange != null">
+      <if test="item_id != null">
+        item_id,
+      </if>
+      <if test="item_name != null">
+        item_name,
+      </if>
+      <if test="before_change != null">
         before_change,
       </if>
-      <if test="afterChange != null">
+      <if test="after_change != null">
         after_change,
       </if>
-      <if test="orderId != null">
+      <if test="order_id != null">
         order_id,
       </if>
       <if test="createtime != null">
         createtime,
       </if>
-      <if test="creatorId != null">
+      <if test="creator_id != null">
         creator_id,
       </if>
       <if test="comment != null">
@@ -78,83 +70,36 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="resourceId != null">
-        #{resourceId,jdbcType=BIGINT},
+      <if test="resource_id != null">
+        #{resource_id,jdbcType=BIGINT},
       </if>
-      <if test="changeItemId != null">
-        #{changeItemId,jdbcType=INTEGER},
+      <if test="resource_no != null">
+        #{resource_no,jdbcType=VARCHAR},
       </if>
-      <if test="beforeChange != null">
-        #{beforeChange,jdbcType=BIGINT},
+      <if test="item_id != null">
+        #{item_id,jdbcType=BIGINT},
       </if>
-      <if test="afterChange != null">
-        #{afterChange,jdbcType=BIGINT},
+      <if test="item_name != null">
+        #{item_name,jdbcType=VARCHAR},
       </if>
-      <if test="orderId != null">
-        #{orderId,jdbcType=BIGINT},
+      <if test="before_change != null">
+        #{before_change,jdbcType=BIGINT},
+      </if>
+      <if test="after_change != null">
+        #{after_change,jdbcType=BIGINT},
+      </if>
+      <if test="order_id != null">
+        #{order_id,jdbcType=BIGINT},
       </if>
       <if test="createtime != null">
         #{createtime,jdbcType=VARCHAR},
       </if>
-      <if test="creatorId != null">
-        #{creatorId,jdbcType=BIGINT},
+      <if test="creator_id != null">
+        #{creator_id,jdbcType=BIGINT},
       </if>
       <if test="comment != null">
         #{comment,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.ChangeItemRecord">
-    update t_change_item_record
-    <set>
-      <if test="resourceId != null">
-        resource_id = #{resourceId,jdbcType=BIGINT},
-      </if>
-      <if test="changeItemId != null">
-        change_item_id = #{changeItemId,jdbcType=INTEGER},
-      </if>
-      <if test="beforeChange != null">
-        before_change = #{beforeChange,jdbcType=BIGINT},
-      </if>
-      <if test="afterChange != null">
-        after_change = #{afterChange,jdbcType=BIGINT},
-      </if>
-      <if test="orderId != null">
-        order_id = #{orderId,jdbcType=BIGINT},
-      </if>
-      <if test="createtime != null">
-        createtime = #{createtime,jdbcType=VARCHAR},
-      </if>
-      <if test="creatorId != null">
-        creator_id = #{creatorId,jdbcType=BIGINT},
-      </if>
-      <if test="comment != null">
-        comment = #{comment,jdbcType=LONGVARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.dgpalife.resourcemanagement.model.ChangeItemRecord">
-    update t_change_item_record
-    set resource_id = #{resourceId,jdbcType=BIGINT},
-      change_item_id = #{changeItemId,jdbcType=INTEGER},
-      before_change = #{beforeChange,jdbcType=BIGINT},
-      after_change = #{afterChange,jdbcType=BIGINT},
-      order_id = #{orderId,jdbcType=BIGINT},
-      createtime = #{createtime,jdbcType=VARCHAR},
-      creator_id = #{creatorId,jdbcType=BIGINT},
-      comment = #{comment,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.ChangeItemRecord">
-    update t_change_item_record
-    set resource_id = #{resourceId,jdbcType=BIGINT},
-      change_item_id = #{changeItemId,jdbcType=INTEGER},
-      before_change = #{beforeChange,jdbcType=BIGINT},
-      after_change = #{afterChange,jdbcType=BIGINT},
-      order_id = #{orderId,jdbcType=BIGINT},
-      createtime = #{createtime,jdbcType=VARCHAR},
-      creator_id = #{creatorId,jdbcType=BIGINT}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
 </mapper>

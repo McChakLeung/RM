@@ -3,11 +3,13 @@ package com.dgpalife.resourcemanagement.model;
 public class Item {
     private Long id;
 
-    private String itemName;
+    private String item_name;
 
-    private String createTime;
+    private String table_field;
 
-    private Long creatorId;
+    private String create_time;
+
+    private Long creator_id;
 
     public Long getId() {
         return id;
@@ -17,27 +19,35 @@ public class Item {
         this.id = id;
     }
 
-    public String getItemName() {
-        return itemName;
+    public String getItem_name() {
+        return item_name;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setItem_name(String item_name) {
+        this.item_name = item_name;
     }
 
-    public String getCreateTime() {
-        return createTime;
+    public String getTable_field() {
+        return table_field;
     }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
+    public void setTable_field(String table_field) {
+        this.table_field = table_field;
     }
 
-    public Long getCreatorId() {
-        return creatorId;
+    public String getCreate_time() {
+        return create_time;
     }
 
-    public void setCreatorId(Long creatorId) {
-        this.creatorId = creatorId;
+    public void setCreate_time(String create_time) {
+        this.create_time = create_time;
+    }
+
+    public Long getCreator_id() {
+        return creator_id;
+    }
+
+    public void setCreator_id(Long creator_id) {
+        this.creator_id = creator_id;
     }
 }
