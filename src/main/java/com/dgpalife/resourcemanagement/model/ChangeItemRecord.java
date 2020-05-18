@@ -3,9 +3,11 @@ package com.dgpalife.resourcemanagement.model;
 public class ChangeItemRecord {
     private Long id;
 
-    private Long resource_id;
+    private String change_type;
 
-    private String resource_no;
+    private Long change_type_key;
+
+    private String change_type_value;
 
     private Long item_id;
 
@@ -31,20 +33,28 @@ public class ChangeItemRecord {
         this.id = id;
     }
 
-    public Long getResource_id() {
-        return resource_id;
+    public String getChange_type() {
+        return change_type;
     }
 
-    public void setResource_id(Long resource_id) {
-        this.resource_id = resource_id;
+    public void setChange_type(String change_type) {
+        this.change_type = change_type;
     }
 
-    public String getResource_no() {
-        return resource_no;
+    public Long getChange_type_key() {
+        return change_type_key;
     }
 
-    public void setResource_no(String resource_no) {
-        this.resource_no = resource_no;
+    public void setChange_type_key(Long change_type_key) {
+        this.change_type_key = change_type_key;
+    }
+
+    public String getChange_type_value() {
+        return change_type_value;
+    }
+
+    public void setChange_type_value(String change_type_value) {
+        this.change_type_value = change_type_value;
     }
 
     public Long getItem_id() {

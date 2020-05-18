@@ -74,9 +74,18 @@
 
 								<form class="form-horizontal" style="margin-top:20px;margin-bottom: 20px" id="form">
 									<div class="form-group">
-										<label for="fresource" class="col-md-2 control-label">资源号码：<span style="color:red">* </span></label>
+										<label for="fchange_type" class="col-md-2 control-label">变更类型：<span style="color:red">* </span></label>
 										<div class="col-md-4">
-											<input type="text" class="form-control" id="fresource" name="resource_no" placeholder="请单击选择资源号码" resource_id="">
+											<select class="form-control" id="fchange_type">
+												<option value="0">资源类变更</option>
+												<option value="1">设备类变更</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="f_change_type_value" class="col-md-2 control-label">变更类型值：<span style="color:red">* </span></label>
+										<div class="col-md-4">
+											<input type="text" class="form-control" id="f_change_type_value" name="change_type_value" change_type_key="" onclick="selectChangeTypeValue()">
 										</div>
 										<label for="fitem_name" class="col-md-2 control-label">变更项目：<span style="color:red">* </span></label>
 										<div class="col-md-4">
@@ -94,6 +103,12 @@
 										</div>
 									</div>
 									<div class="form-group">
+										<label for="fcomment" class="col-md-2 control-label">备注：<span style="color:red">* </span></label>
+										<div class="col-md-10">
+											<input type="text" class="form-control" id="fcomment" name="comment">
+										</div>
+									</div>
+									<div class="form-group">
 										<label class="col-sm-2 control-label"></label>
 										<div class="col-sm-10">
 											<button id="addBtn" type="button" class="btn btn-primary">添加</button>
@@ -105,14 +120,13 @@
 									<table id="detailList" class="table table-bordered" style="text-align:center;">
 										<thead>
 										<tr class="success">
-											<td>ID</td>
-											<td>资源号码</td>
-											<td>资源类型</td>
-											<td>运营商</td>
-											<td>职场名称</td>
-											<td>挂账部门</td>
-											<td>使用部门</td>
-											<td>使用人</td>
+											<td>序号</td>
+											<td>变更类型</td>
+											<td>变更类型值</td>
+											<td>变更项目</td>
+											<td>变更前值</td>
+											<td>变更后值</td>
+											<td>备注</td>
 											<td>操作</td>
 										</tr>
 										</thead>
@@ -137,10 +151,18 @@
 		<div style="padding: 1% 1%;display: none" id="resource_layer">
 			搜索号码：
 			<div class="layui-inline">
-				<input class="layui-input" name="resource_no" id="demoReload" placeholder="请输入资源号码" autocomplete="off">
+				<input class="layui-input" name="resource_no" id="resource_text" placeholder="请输入资源号码" autocomplete="off">
 			</div>
-			<button class="layui-btn" data-type="reload" id="search">搜索</button>
+			<button class="layui-btn" data-type="reload" id="resource_search">搜索</button>
 			<table class="layui-table"  id="fresource_table" lay-filter="resource"></table>
+		</div>
+		<div style="padding: 1% 1%;display: none" id="equipment_layer">
+			搜索设备：
+			<div class="layui-inline">
+				<input class="layui-input" name="equipment_sn" id="equipment_text" placeholder="请输入设备sn" autocomplete="off">
+			</div>
+			<button class="layui-btn" data-type="reload" id="equipment_search">搜索</button>
+			<table class="layui-table"  id="fequipment_table" lay-filter="equipment"></table>
 		</div>
 	</div>
 		<!-- END MAIN -->
@@ -151,84 +173,154 @@
 </div>
 <script type="text/javascript" th:inline="javascript">
 
-    //资源单击选择事件
-    //注意！！！！！！ 动态表格不能放置在form表单中，否则使用里面的单击事件会有问题
-    $("#fresource").click(function () {
+	function selectChangeTypeValue() {
+		var change_type = $("#fchange_type").val();
+		if(change_type == 0){
+            //单击触发layer弹出层
+            layer.open({
+                title:"请选择资源号码",
+                area: ['800px', '600px'],
+                type:1,
+                // content:"[[@{|/openQuery|}]]",
+                content:$('#resource_layer'),
+                btn:['选择','取消'],
+                success:function (layero, index) {
+                    layui.use('table',function () {
+                        var table = layui.table;
 
-        var id, resource_no = null;
+                        //自动渲染数据表格
+                        table.render({
+                            // elem: layer.getChildFrame("#ftable", index)
+                            elem: '#fresource_table'
+                            ,url:[[@{|/resource/showTable|}]]  //该url必须要返回符合layui要求的前端格式的json数据
+                    ,cols: [
+                            [
+                                {type:'radio',title:'选择'}
+                                ,{field: 'id', title: 'ID',width:40}
+                                ,{field: 'resource_no', title: '资源号码'}
+                                ,{field: 'resourc_type', title: '资源类型'}
+                                ,{field: 'operator', title: '运营商'}
+                                ,{field: 'workplace_name', title: '职场名称',width:120}
+                                ,{field: 'department_name', title: '挂账部门'}
+                                ,{field: 'usedepartment_name', title: '使用部门'}
+                                ,{field: 'username', title: '使用人'}
 
-        //单击触发layer弹出层
-        layer.open({
-            title:"请选择资源号码",
-            area: ['800px', '600px'],
-            type:1,
-            // content:"[[@{|/openQuery|}]]",
-            content:$('#resource_layer'),
-            btn:['选择','取消'],
-            success:function (layero, index) {
-                layui.use('table',function () {
-                    var table = layui.table;
-
-                    //自动渲染数据表格
-                    table.render({
-                        // elem: layer.getChildFrame("#ftable", index)
-                        elem: '#fresource_table'
-                        ,url:[[@{|/resource/showTable|}]]  //该url必须要返回符合layui要求的前端格式的json数据
-                ,cols: [
-                        [
-                            {type:'radio',title:'选择'}
-                            ,{field: 'id', title: 'ID',width:40}
-                            ,{field: 'resource_no', title: '资源号码'}
-                            ,{field: 'resourc_type', title: '资源类型'}
-                            ,{field: 'operator', title: '运营商'}
-                            ,{field: 'workplace_name', title: '职场名称',width:120}
-                            ,{field: 'department_name', title: '挂账部门'}
-                            ,{field: 'usedepartment_name', title: '使用部门'}
-                            ,{field: 'username', title: '使用人'}
-
+                            ]
                         ]
-                    ]
-                        ,page:true
-                        ,id: 'resource'
-                });
-
-                    //搜索功能实现
-                    $('#search').on('click',function () {
-                        // var type = $(this).data('type');
-                        // active[type] ? active[type].call(this) : '';
-                        var demoReload = $('#demoReload');
-                        table.reload('resource',{
-                            url:[[@{|/resource/showTable|}]]
-                    ,page: {
-                            curr: 1 //重新从第 1 页开始
-                        }
-                    ,where: {
-                            queryText: demoReload.val()
-                        }
-                    })
+                            ,page:true
+                            ,id: 'resource'
                     });
 
-                    //获取选中的层
-                    table.on('row(resource)',function (obj) {
-                        id = obj.data.id;
-                        resource_no = obj.data.resource_no;
+                        //搜索功能实现
+                        $('#resource_search').on('click',function () {
+                            // var type = $(this).data('type');
+                            // active[type] ? active[type].call(this) : '';
+                            var resource_text = $('#resource_text');
+                            table.reload('resource',{
+                                url:[[@{|/resource/showTable|}]]
+                        ,page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        ,where: {
+                                queryText: resource_text.val()
+                            }
+                        })
+                        });
+
+                        //获取选中的层
+                        table.on('row(resource)',function (obj) {
+                            change_type_key = obj.data.id;
+                            change_type_value = obj.data.resource_no;
+                        })
                     })
-                })
 
 
-            },
-            yes:function (layero, index) {
-                $("#fresource").attr("resource_id",id);
-                $("#fresource").val(resource_no);
-                layer.close(layero)
-            },
-            btn2:function (layero, index) {
-                layer.close(layero)
-            }
-        })
+                },
+                yes:function (layero, index) {
+                    $("#f_change_type_value").attr("change_type_key",change_type_key);
+                    $("#f_change_type_value").val(change_type_value);
+                    layer.close(layero)
+                },
+                btn2:function (layero, index) {
+                    layer.close(layero)
+                }
+            })
+		}else{
+            layer.open({
+                title: "设备列表",
+                area: ['600px', '400px'],
+                type: 1,
+                // content:"[[@{|/openQuery|}]]",
+                content: $('#equipment_layer'),
+                btn: ['选择', '取消'],
+                success: function (layero, index) {
+                    layui.use('table', function () {
+                        var table = layui.table;
 
-    })
+                        //自动渲染数据表格
+                        table.render({
+                            // elem: layer.getChildFrame("#ftable", index)
+                            elem: '#fequipment_table'
+                            , url: [[@{|/equipment/setting/showTable|}]]  //该url必须要返回符合layui要求的前端格式的json数据
+                    ,
+                        cols: [
+                            [
+                                {type: 'radio'}
+                                , {field: 'id', title: 'ID'}
+                                , {field: 'equipment_sn', title: '设备序列号'}
+                                , {field: 'equipment_name', title: '设备名称'}
+                                , {field: 'account_center', title: '成本中心'}
+                                , {field: 'create_time', title: '创建时间'}
+                            ]
+                        ]
+                            , page
+                    :
+                        true
+                            , id
+                    :
+                        'equipment'
+                    })
+                        ;
 
+                        //搜索功能实现
+                        $('#equipment_search').on('click', function () {
+                            // var type = $(this).data('type');
+                            // active[type] ? active[type].call(this) : '';
+                            var equipment_text = $('#equipment_text');
+                            table.reload('equipment_sn', {
+                                url: [[@{|/equipment/setting/showTable|}]]
+                        ,
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        ,
+                            where: {
+                                queryText: equipment_text.val()
+                            }
+                        })
+                        });
+
+                        //获取选中的层
+                        table.on('row(equipment)', function (obj) {
+                            change_type_key = obj.data.id;
+                            change_type_value = obj.data.equipment_sn;
+                        })
+                    })
+
+
+                },
+                yes:function (layero, index) {
+                    $("#f_change_type_value").attr("change_type_key",change_type_key);
+                    $("#f_change_type_value").val(change_type_value);
+                    layer.close(layero)
+                },
+                btn2:function (layero, index) {
+                    layer.close(layero)
+                }
+            })
+		}
+
+    }
 
 
     var loadingIndex = -1;

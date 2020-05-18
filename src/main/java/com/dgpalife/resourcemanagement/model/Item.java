@@ -9,35 +9,9 @@ public class Item {
 
     private String table_names;
 
-    private Long table_primary_key;
-
     private String create_time;
 
     private Long creator_id;
-
-    public String getTable_field() {
-        return table_field;
-    }
-
-    public void setTable_field(String table_field) {
-        this.table_field = table_field;
-    }
-
-    public String getTable_names() {
-        return table_names;
-    }
-
-    public void setTable_names(String table_names) {
-        this.table_names = table_names;
-    }
-
-    public Long getTable_primary_key() {
-        return table_primary_key;
-    }
-
-    public void setTable_primary_key(Long table_primary_key) {
-        this.table_primary_key = table_primary_key;
-    }
 
     public Long getId() {
         return id;
@@ -53,6 +27,22 @@ public class Item {
 
     public void setItem_name(String item_name) {
         this.item_name = item_name;
+    }
+
+    public String getTable_field() {
+        return table_field;
+    }
+
+    public void setTable_field(String table_field) {
+        this.table_field = table_field;
+    }
+
+    public String getTable_names() {
+        return table_names;
+    }
+
+    public void setTable_names(String table_names) {
+        this.table_names = table_names;
     }
 
     public String getCreate_time() {

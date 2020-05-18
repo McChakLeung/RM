@@ -3,8 +3,9 @@
 <mapper namespace="com.dgpalife.resourcemanagement.mapper.ChangeItemRecordMapper">
   <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.ChangeItemRecord">
     <result column="id" jdbcType="BIGINT" property="id" />
-    <result column="resource_id" jdbcType="BIGINT" property="resource_id" />
-    <result column="resource_no" jdbcType="VARCHAR" property="resource_no" />
+    <result column="change_type" jdbcType="VARCHAR" property="change_type" />
+    <result column="change_type_key" jdbcType="BIGINT" property="change_type_key" />
+    <result column="change_type_value" jdbcType="VARCHAR" property="change_type_value" />
     <result column="item_id" jdbcType="BIGINT" property="item_id" />
     <result column="item_name" jdbcType="VARCHAR" property="item_name" />
     <result column="before_change" jdbcType="BIGINT" property="before_change" />
@@ -20,14 +21,16 @@
     comment
   </sql>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.ChangeItemRecord">
-    insert into t_change_item_record (id, resource_id, resource_no, 
-      item_id, item_name, before_change, 
-      after_change, order_id, createtime, 
-      creator_id, comment)
-    values (#{id,jdbcType=BIGINT}, #{resource_id,jdbcType=BIGINT}, #{resource_no,jdbcType=VARCHAR}, 
-      #{item_id,jdbcType=BIGINT}, #{item_name,jdbcType=VARCHAR}, #{before_change,jdbcType=BIGINT}, 
-      #{after_change,jdbcType=BIGINT}, #{order_id,jdbcType=BIGINT}, #{createtime,jdbcType=VARCHAR}, 
-      #{creator_id,jdbcType=BIGINT}, #{comment,jdbcType=LONGVARCHAR})
+    insert into t_change_item_record (id, change_type, change_type_key, 
+      change_type_value, item_id, item_name, 
+      before_change, after_change, order_id, 
+      createtime, creator_id, comment
+      )
+    values (#{id,jdbcType=BIGINT}, #{change_type,jdbcType=VARCHAR}, #{change_type_key,jdbcType=BIGINT}, 
+      #{change_type_value,jdbcType=VARCHAR}, #{item_id,jdbcType=BIGINT}, #{item_name,jdbcType=VARCHAR}, 
+      #{before_change,jdbcType=BIGINT}, #{after_change,jdbcType=BIGINT}, #{order_id,jdbcType=BIGINT}, 
+      #{createtime,jdbcType=VARCHAR}, #{creator_id,jdbcType=BIGINT}, #{comment,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.ChangeItemRecord">
     insert into t_change_item_record
@@ -35,11 +38,14 @@
       <if test="id != null">
         id,
       </if>
-      <if test="resource_id != null">
-        resource_id,
+      <if test="change_type != null">
+        change_type,
       </if>
-      <if test="resource_no != null">
-        resource_no,
+      <if test="change_type_key != null">
+        change_type_key,
+      </if>
+      <if test="change_type_value != null">
+        change_type_value,
       </if>
       <if test="item_id != null">
         item_id,
@@ -70,11 +76,14 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="resource_id != null">
-        #{resource_id,jdbcType=BIGINT},
+      <if test="change_type != null">
+        #{change_type,jdbcType=VARCHAR},
       </if>
-      <if test="resource_no != null">
-        #{resource_no,jdbcType=VARCHAR},
+      <if test="change_type_key != null">
+        #{change_type_key,jdbcType=BIGINT},
+      </if>
+      <if test="change_type_value != null">
+        #{change_type_value,jdbcType=VARCHAR},
       </if>
       <if test="item_id != null">
         #{item_id,jdbcType=BIGINT},
