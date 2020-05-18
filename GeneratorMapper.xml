@@ -40,8 +40,8 @@
         </javaClientGenerator>
 
         <!-- 数据库表名及对应的Java模型类名 -->
-        <table tableName="t_change_item_record"
-               domainObjectName="ChangeItemRecord"
+        <table tableName="t_item"
+               domainObjectName="Item"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"

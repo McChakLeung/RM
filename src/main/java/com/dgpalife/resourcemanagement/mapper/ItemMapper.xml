@@ -5,14 +5,18 @@
     <result column="id" jdbcType="BIGINT" property="id" />
     <result column="item_name" jdbcType="VARCHAR" property="item_name" />
     <result column="table_field" jdbcType="VARCHAR" property="table_field" />
+    <result column="table_names" jdbcType="VARCHAR" property="table_names" />
+    <result column="table_primary_key" jdbcType="BIGINT" property="table_primary_key" />
     <result column="create_time" jdbcType="VARCHAR" property="create_time" />
     <result column="creator_id" jdbcType="BIGINT" property="creator_id" />
   </resultMap>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Item">
     insert into t_item (id, item_name, table_field, 
-      create_time, creator_id)
+      table_names, table_primary_key, create_time, 
+      creator_id)
     values (#{id,jdbcType=BIGINT}, #{item_name,jdbcType=VARCHAR}, #{table_field,jdbcType=VARCHAR}, 
-      #{create_time,jdbcType=VARCHAR}, #{creator_id,jdbcType=BIGINT})
+      #{table_names,jdbcType=VARCHAR}, #{table_primary_key,jdbcType=BIGINT}, #{create_time,jdbcType=VARCHAR}, 
+      #{creator_id,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Item">
     insert into t_item
@@ -25,6 +29,12 @@
       </if>
       <if test="table_field != null">
         table_field,
+      </if>
+      <if test="table_names != null">
+        table_names,
+      </if>
+      <if test="table_primary_key != null">
+        table_primary_key,
       </if>
       <if test="create_time != null">
         create_time,
@@ -42,6 +52,12 @@
       </if>
       <if test="table_field != null">
         #{table_field,jdbcType=VARCHAR},
+      </if>
+      <if test="table_names != null">
+        #{table_names,jdbcType=VARCHAR},
+      </if>
+      <if test="table_primary_key != null">
+        #{table_primary_key,jdbcType=BIGINT},
       </if>
       <if test="create_time != null">
         #{create_time,jdbcType=VARCHAR},
