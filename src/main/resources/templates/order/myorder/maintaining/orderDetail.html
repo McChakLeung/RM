@@ -95,7 +95,7 @@
 									<div class="form-group">
 										<label for="fbefore_change" class="col-md-2 control-label">变更前值：<span style="color:red">* </span></label>
 										<div class="col-md-4">
-											<input type="text" class="form-control" id="fbefore_change" name="before_change">
+											<input type="text" class="form-control" id="fbefore_change" name="before_change" disabled>
 										</div>
 										<label for="fafter_change" class="col-md-2 control-label">变更后值：<span style="color:red">* </span></label>
 										<div class="col-md-4">
@@ -163,6 +163,14 @@
 			</div>
 			<button class="layui-btn" data-type="reload" id="equipment_search">搜索</button>
 			<table class="layui-table"  id="fequipment_table" lay-filter="equipment"></table>
+		</div>
+		<div style="padding: 1% 1%;display: none" id="item_layer">
+			搜索变更项目：
+			<div class="layui-inline">
+				<input class="layui-input" name="item_name" id="item_text" placeholder="请输入变更项目" autocomplete="off">
+			</div>
+			<button class="layui-btn" data-type="reload" id="item_search">搜索</button>
+			<table class="layui-table"  id="fitem_table" lay-filter="item"></table>
 		</div>
 	</div>
 		<!-- END MAIN -->
@@ -248,7 +256,7 @@
 		}else{
             layer.open({
                 title: "设备列表",
-                area: ['600px', '400px'],
+                area: ['800px', '600px'],
                 type: 1,
                 // content:"[[@{|/openQuery|}]]",
                 content: $('#equipment_layer'),
@@ -262,25 +270,19 @@
                             // elem: layer.getChildFrame("#ftable", index)
                             elem: '#fequipment_table'
                             , url: [[@{|/equipment/setting/showTable|}]]  //该url必须要返回符合layui要求的前端格式的json数据
-                    ,
-                        cols: [
+                    		,cols: [
                             [
-                                {type: 'radio'}
-                                , {field: 'id', title: 'ID'}
-                                , {field: 'equipment_sn', title: '设备序列号'}
-                                , {field: 'equipment_name', title: '设备名称'}
-                                , {field: 'account_center', title: '成本中心'}
-                                , {field: 'create_time', title: '创建时间'}
-                            ]
-                        ]
-                            , page
-                    :
-                        true
-                            , id
-                    :
-                        'equipment'
-                    })
-                        ;
+									{type: 'radio'}
+									, {field: 'id', title: 'ID',width:40}
+									, {field: 'equipment_sn', title: '设备序列号'}
+									, {field: 'equipment_type', title: '设备类型'}
+									, {field: 'account_center', title: '成本中心'}
+									, {field: 'create_time', title: '创建时间'}
+                            	]
+                        	]
+                            , page:true
+                            , id:'item'
+						});
 
                         //搜索功能实现
                         $('#equipment_search').on('click', function () {
@@ -321,6 +323,76 @@
 		}
 
     }
+
+    $("#fitem_name").click(function () {
+        var change_type = $("#fchange_type").text();
+
+        layer.open({
+            title: "变更项目列表",
+            area: ['800px', '600px'],
+            type: 1,
+            // content:"[[@{|/openQuery|}]]",
+            content: $('#item_layer'),
+            btn: ['选择', '取消'],
+            success: function (layero, index) {
+                layui.use('table', function () {
+                    var table = layui.table;
+
+                    //自动渲染数据表格
+                    table.render({
+                        // elem: layer.getChildFrame("#ftable", index)
+                        elem: '#fitem_table'
+                        , url: [[@{|/item/setting/showTable/|}]] + change_type //该url必须要返回符合layui要求的前端格式的json数据
+                		,cols: [
+                        [
+                            {type: 'radio'}
+                            , {field: 'id', title: 'ID',width:40}
+                            , {field: 'item_name', title: '项目名'}
+                            , {field: 'table_field', title: '表字段'}
+                            , {field: 'table_names', title: '表名'}
+                        ]
+					]
+                        , page:true
+                        , id:'item'
+                });
+
+                    //搜索功能实现
+                    $('#item_search').on('click', function () {
+                        // var type = $(this).data('type');
+                        // active[type] ? active[type].call(this) : '';
+                        var item_text = $('#item_text');
+                        table.reload('item_name', {
+                            url: [[@{|/item/setting/showTable/|}]] + change_type
+                    ,
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    ,
+                        where: {
+                            queryText: item_text.val()
+                        }
+                    })
+                    });
+
+                    //获取选中的层
+                    table.on('row(item)', function (obj) {
+                        item_id = obj.data.id;
+                        item_name = obj.data.item_name;
+                    })
+                })
+
+
+            },
+            yes:function (layero, index) {
+                $("#fitem_name").attr("item_id",item_id);
+                $("#fitem_name").val(item_name);
+                layer.close(layero)
+            },
+            btn2:function (layero, index) {
+                layer.close(layero)
+            }
+        })
+    })
 
 
     var loadingIndex = -1;
