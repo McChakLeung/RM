@@ -325,7 +325,7 @@
     }
 
     $("#fitem_name").click(function () {
-        var change_type = $("#fchange_type").text();
+        var change_type = $("#fchange_type option:selected").text();
 
         layer.open({
             title: "变更项目列表",
@@ -346,10 +346,10 @@
                 		,cols: [
                         [
                             {type: 'radio'}
-                            , {field: 'id', title: 'ID',width:40}
-                            , {field: 'item_name', title: '项目名'}
-                            , {field: 'table_field', title: '表字段'}
-                            , {field: 'table_names', title: '表名'}
+                            , {field: 'id', title: 'ID',width:120}
+                            , {field: 'item_name', title: '项目名',width:200}
+                            , {field: 'table_field', title: '表字段',width:200}
+                            , {field: 'table_names', title: '表名',width:200}
                         ]
 					]
                         , page:true

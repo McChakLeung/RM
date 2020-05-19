@@ -150,7 +150,7 @@ public class DepartmentController {
     public String toUpdate(@PathVariable Long id, Model model){
         Department department = departmentService.selectDepartmentById(id);
         model.addAttribute("department",department);
-        return "setting/department/update";
+        return "/setting/department/update";
     }
 
     @ResponseBody

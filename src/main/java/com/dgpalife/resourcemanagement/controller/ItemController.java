@@ -1,7 +1,9 @@
 package com.dgpalife.resourcemanagement.controller;
 
 import com.dgpalife.resourcemanagement.common.StringUtil;
+import com.dgpalife.resourcemanagement.service.ItemService;
 import com.dgpalife.resourcemanagement.vo.LayuiVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +18,9 @@ import java.util.Map;
 @RequestMapping("/item")
 public class ItemController {
 
+    @Autowired
+    private ItemService itemService;
+
     @ResponseBody
     @RequestMapping("/setting/showTable/{change_type}")
     public Object showTable(@PathVariable String change_type, String queryText){
@@ -24,15 +29,16 @@ public class ItemController {
 
         try {
             Map<String,Object> params = new HashMap<>();
+            params.put("change_type",change_type);
             if(StringUtil.isNotEmpty(queryText)){
                 if(queryText.contains("%")){
                     queryText = queryText.replaceAll("%", "\\\\%");
                 }
                 params.put("queryText", queryText); //   \%
             }
-            List<Object> equipmentList = equipmentService.selectEquipmentByQueryText(params);
-            int count = equipmentService.selectCountByQueryText(params);
-            layuiVO.setData(equipmentList);
+            List<Object> itemList = itemService.selectItemByQueryText(params);
+            int count = itemService.selectCountByQueryText(params);
+            layuiVO.setData(itemList);
             layuiVO.setCount(count);
             layuiVO.setCode(0);
         }catch (Exception e){

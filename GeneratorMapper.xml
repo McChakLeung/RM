@@ -50,15 +50,15 @@
             <property name="useActualColumnNames" value="true" />
         </table>
 
-        <table tableName="t_change_item_record"
-               domainObjectName="ChangeItemRecord"
-               enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <property name="useActualColumnNames" value="true" />
-        </table>
+        <!--<table tableName="t_change_item_record"-->
+               <!--domainObjectName="ChangeItemRecord"-->
+               <!--enableCountByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false">-->
+            <!--<property name="useActualColumnNames" value="true" />-->
+        <!--</table>-->
     </context>
 
 </generatorConfiguration>

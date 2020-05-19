@@ -8,14 +8,15 @@
     <result column="table_names" jdbcType="VARCHAR" property="table_names" />
     <result column="create_time" jdbcType="VARCHAR" property="create_time" />
     <result column="creator_id" jdbcType="BIGINT" property="creator_id" />
+    <result column="change_type" jdbcType="VARCHAR" property="change_type" />
   </resultMap>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Item">
     insert into t_item (id, item_name, table_field, 
-      table_names, create_time, creator_id
-      )
+      table_names, create_time, creator_id, 
+      change_type)
     values (#{id,jdbcType=BIGINT}, #{item_name,jdbcType=VARCHAR}, #{table_field,jdbcType=VARCHAR}, 
-      #{table_names,jdbcType=VARCHAR}, #{create_time,jdbcType=VARCHAR}, #{creator_id,jdbcType=BIGINT}
-      )
+      #{table_names,jdbcType=VARCHAR}, #{create_time,jdbcType=VARCHAR}, #{creator_id,jdbcType=BIGINT}, 
+      #{change_type,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Item">
     insert into t_item
@@ -38,6 +39,9 @@
       <if test="creator_id != null">
         creator_id,
       </if>
+      <if test="change_type != null">
+        change_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -58,6 +62,34 @@
       <if test="creator_id != null">
         #{creator_id,jdbcType=BIGINT},
       </if>
+      <if test="change_type != null">
+        #{change_type,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
+  <select id="selectItemByQueryText" resultType="map">
+    SELECT * FROM t_item
+    <where>
+      <if test="queryText!=null">
+        item_name like concat("%",#{queryText},"%")
+      </if>
+      <if test="change_type!=null">
+        change_type = #{change_type}
+      </if>
+    </where>
+    ORDER BY create_time DESC
+  </select>
+
+  <select id="selectCountByQueryText" resultType="Integer">
+    select count(*) from t_item
+    <where>
+      <if test="queryText!=null">
+        item_name like concat("%",#{queryText},"%")
+      </if>
+      <if test="change_type!=null">
+        change_type = #{change_type}
+      </if>
+    </where>
+    ORDER BY create_time ASC
+  </select>
 </mapper>

@@ -13,6 +13,8 @@ public class Item {
 
     private Long creator_id;
 
+    private String change_type;
+
     public Long getId() {
         return id;
     }
@@ -59,5 +61,13 @@ public class Item {
 
     public void setCreator_id(Long creator_id) {
         this.creator_id = creator_id;
+    }
+
+    public String getChange_type() {
+        return change_type;
+    }
+
+    public void setChange_type(String change_type) {
+        this.change_type = change_type;
     }
 }

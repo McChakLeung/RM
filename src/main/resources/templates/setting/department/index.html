@@ -108,7 +108,7 @@
                 // },
                 addHoverDom: function(treeId, treeNode){
                     var aObj = $("#" + treeNode.tId + "_a"); // tId = permissionTree_1, ==> $("#permissionTree_1_a")
-                    aObj.attr("href", "javascript:;");
+                    //aObj.attr("href", "javascript:;");
                     if (treeNode.editNameFlag || $("#btnGroup"+treeNode.tId).length>0) return;
                     var s = '<span id="btnGroup'+treeNode.tId+'">';
 
