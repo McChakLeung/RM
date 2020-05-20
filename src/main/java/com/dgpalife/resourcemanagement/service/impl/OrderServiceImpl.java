@@ -7,12 +7,14 @@ import com.dgpalife.resourcemanagement.model.*;
 import com.dgpalife.resourcemanagement.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -164,6 +166,20 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<ResourceMigration> queryResourceMigrationListByOrder(Order order) {
         return resourceMigrationMapper.selectByOrderID(order.getId());
+    }
+
+    @Override
+    public void deleteOrderByID(Long id) {
+
+        //删除以下几张关联表的记录
+        constructDetailMapper.deleteByOrderId(id);
+        equipmentPurchaseRecordMapper.deleteByOrderId(id);
+        resourceMigrationMapper.deleteByOrderId(id);
+        resourceRemovementMapper.deleteByOrderId(id);
+
+        //删除t_order字段
+        orderMapper.deleteByPrimaryKey(id);
+
     }
 
     @Override

@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Tables</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<!-- VENDOR CSS -->
+	<link rel="stylesheet" th:href="@{|/static/js/vendor/bootstrap/css/bootstrap.min.css|}">
+	<link rel="stylesheet" th:href="@{|/static/js/vendor/font-awesome/css/font-awesome.min.css|}">
+	<link rel="stylesheet" th:href="@{|/static/js/vendor/linearicons/style.css|}">
+	<!-- MAIN CSS -->
+	<link rel="stylesheet" th:href="@{|/static/css/main.css|}">
+	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+	<link rel="stylesheet" th:href="@{|/static/css/demo.css|}">
+	<!--LAYUI CSS-->
+	<link rel="stylesheet" th:href="@{|/static/js/layui/css/layui.css|}">
+	<!--ZTREE CSS-->
+	<link rel="stylesheet" th:href="@{|/static/ztree/zTreeStyle.css|}">
+	<!-- GOOGLE FONTS -->
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+	<!-- ICONS -->
+	<link rel="apple-touch-icon" sizes="76x76" th:href="@{|/static/img/apple-icon.png|}">
+	<link rel="icon" type="image/png" sizes="96x96" th:href="@{|/static/img/favicon.png|}">
+	<!-- Javascript -->
+	<script th:src="@{|/static/js/vendor/jquery/jquery.min.js|}"></script>
+	<script th:src="@{|/static/js/vendor/bootstrap/js/bootstrap.min.js|}"></script>
+	<script th:src="@{|/static/js/vendor/jquery-slimscroll/jquery.slimscroll.min.js|}"></script>
+	<script th:src="@{|/static/js/scripts/klorofil-common.js|}"></script>
+	<script th:src="@{|/static/js/layer/layer.js|}"></script>
+	<script th:src="@{|/static/js/layui/layui.js|}"></script>
+	<script th:src="@{|/static/js/vendor/common.js|}"></script>
+	<script th:src="@{|/static/ztree/jquery.ztree.all-3.5.min.js|}"></script>
+
+</head>
+
+<body>
+<!-- WRAPPER -->
+<div id="wrapper">
+	<!-- NAVBAR -->
+	<div id="header" th:include="/commons/header :: headerContext"></div>
+	<!-- END NAVBAR -->
+	<!-- LEFT SIDEBAR -->
+	<div id="left_sidebar" th:include="/commons/left_sidebar :: leftContext"></div>
+	<!-- END LEFT SIDEBAR -->
+	<!-- MAIN -->
+	<div class="main">
+		<!-- MAIN CONTENT -->
+		<div class="main-content">
+			<div class="container-fluid">
+				<!--<h3 class="page-title">Tables</h3>-->
+				<ol class="breadcrumb">
+					<li><a th:href="@{|#|}">首页</a></li>
+					<li><a th:href="@{|#|}">资源管理</a></li>
+					<li class="active">工单管理</li>
+				</ol>
+				<div class="row">
+					<div class="col-md-12">
+						<!-- BASIC TABLE -->
+						<div class="panel">
+							<div class="panel-body">
+								<div class="panel-header" style="padding-top: 20px">
+									<h2>迁移工单 - 新建</h2>
+								</div>
+								<br>
+								<hr>
+								<br>
+								<ul class="nav nav-tabs" role="tablist">
+									<li role="presentation"><a><span class="badge">1</span> 工单基本信息填写</a></li>
+									<li role="presentation"><a><span class="badge">2</span> 迁移明细</a></li>
+									<li role="presentation" class="active"><a><span class="badge">3</span> 设备明细</a></li>
+									<li role="presentation"><a><span class="badge">4</span> 工单预览及确认</a></li>
+								</ul>
+
+								<form class="form-horizontal" style="margin-top:20px;margin-bottom: 20px">
+									<div class="form-group">
+										<label class="col-md-2 control-label">是否购买设备</label>
+										<div class="col-md-4">
+											<select class="form-control" id="displayPurchaseList">
+												<option th:value="1">是</option>
+												<option th:value="0">否</option>
+											</select>
+										</div>
+									</div>
+								</form>
+
+								<form class="form-horizontal" style="margin-top:20px;margin-bottom: 20px" id="form">
+
+									<div class="form-group">
+										<label class="col-md-2 control-label">购买设备类型<span style="color:red">* </span></label>
+										<div class="col-md-4">
+											<input type="text" class="form-control" id="fequipmentType" name="equipment_type">
+										</div>
+										<label class="col-md-2 control-label">购买数量<span style="color:red">* </span></label>
+										<div class="col-md-4">
+											<input type="number" class="form-control" id="fpurchaseNum" name="purchaseNum">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">设备单价<span style="color:red">* </span>	</label>
+										<div class="col-md-4">
+											<input type="number" class="form-control" id="fprice" name="expense.price" expense_id="">
+										</div>
+										<!--<label class="col-md-2 control-label">列支成本中心<span style="color:red">* </span></label>-->
+										<!--<div class="col-md-4">-->
+											<!--<input type="text" class="form-control" id="faccountCenter" name="accountCenter">-->
+										<!--</div>-->
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-2 control-label"></label>
+										<div class="col-sm-10">
+											<button id="addBtn" type="button" class="btn btn-primary">添加</button>
+											<button id="resetBtn" class="btn btn-default">重置</button>
+										</div>
+									</div>
+
+									<div>
+										<table id="detailList" class="table table-bordered" style="text-align:center;">
+											<thead>
+											<tr class="success">
+												<td>序号</td>
+												<td>购买设备类型</td>
+												<td>购买数量</td>
+												<td>设备单价</td>
+												<!--<td>列支成本中心</td>-->
+												<td>操作</td>
+											</tr>
+											</thead>
+											<tbody>
+
+											</tbody>
+										</table>
+									</div>
+								</form>
+
+								<br>
+								<!--<button type="button" class="btn btn-default" id="backStep">上一步</button>-->
+								<button type="button" class="btn btn-success" id="nextStep">下一步</button>
+							</div>
+						</div>
+						<!-- END BASIC TABLE -->
+					</div>
+					<!--</div>-->
+				</div>
+
+			</div>
+		</div>
+		<!-- END MAIN CONTENT -->
+		<div id="department_layer" style="display: none;">
+			<div id="departmentTree" class="ztree"></div>
+		</div>
+		<div style="padding: 1% 1%;display: none" id="workplace_layer">
+			搜索职场：
+			<div class="layui-inline">
+				<input class="layui-input" name="workplaceName" id="demoReload" placeholder="请输入职场名称" autocomplete="off">
+			</div>
+			<button class="layui-btn" data-type="reload" id="search">搜索</button>
+			<table class="layui-table"  id="fworkplace_table" lay-filter="workplace"></table>
+		</div>
+		<div style="padding: 1% 1%;display: none" id="networkroom_layer">
+			<table class="layui-table"  id="fnetworkroom_table" lay-filter="networkroom"></table>
+		</div>
+		<div style="padding: 1% 1%;display: none" id="expense_layer">
+			<!--搜索职场：-->
+			<!--<div class="layui-inline">-->
+			<!--<input class="layui-input" name="workplaceName" id="demoReload" placeholder="请输入职场名称" autocomplete="off">-->
+			<!--</div>-->
+			<!--<button class="layui-btn" data-type="reload" id="search">搜索</button>-->
+			<table class="layui-table"  id="fexpense_table" lay-filter="expense"></table>
+		</div>
+		<!--<div style="padding: 1% 1%;display: none" id="equipmentType_layer">-->
+			<!--搜索设备类型名称：-->
+			<!--<div class="layui-inline">-->
+				<!--<input class="layui-input" name="equipmentType" id="equipmentType" placeholder="请输入设备类型名称" autocomplete="off">-->
+			<!--</div>-->
+			<!--<button class="layui-btn" data-type="reload" id="equipmentType_search">搜索</button>-->
+			<!--<table class="layui-table"  id="fequipmentType_table" lay-filter="equipmentType"></table>-->
+		<!--</div>-->
+	</div>
+	<!-- END MAIN -->
+	<div class="clearfix"></div>
+	<div id="footer" th:include="/commons/footer :: footerContext"></div>
+
+	<!-- END WRAPPER -->
+</div>
+<script type="text/javascript" th:inline="javascript">
+
+    var loadingIndex = -1;
+
+    var EquipmnetPurchaseDetailList = new Array();
+
+    $("#addBtn").click(function () {
+        //判断必选项是否为空
+        if($.trim($("#fequipmentType").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("购买设备类型名称不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fequipmentType").val("");
+                // $("#fequipmentType").attr("equipment_type_id","");
+                $("#fequipmentType").focus();
+            })
+            return false
+        }
+        if($.trim($("#fpurchaseNum").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("购买设备数量不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fpurchaseNum").val("");
+                $("#fpurchaseNum").focus();
+            })
+            return false
+        }
+
+        if($.trim($("#fprice").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("设备单价不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fprice").val("");
+                $("#fprice").attr("expense_id","");
+                $("#fprice").focus();
+            })
+            return false
+        }
+
+        // if($.trim($("#faccountCenter").val()) == ""){
+        //     // $("#fmessage").text("用户名不能为空，请重新输入");
+        //     layer.msg("列支成本中心不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+        //         $("#faccountCenter").val("");
+        //         $("#faccountCenter").focus();
+        //     })
+        //     return false
+        // }
+
+        var dataArray = {};
+        var formData = $("#form").serializeArray();
+        $.each(formData,function(){
+            //var name = this.name;
+            var value = this.value;
+            //分割name属性，并返回一个数组
+            var paths = this.name.split(".");
+            //返回数组的长度
+            var len = paths.length;
+            var obj = dataArray;
+            $.each(paths,function(i,e){
+                //判断当前的遍历的数据是否有二级数组；i == len-1 为true说明是二级数组，false说明为一级数组
+                if(i == len-1){
+                    //判断该数组是否存在当前遍历的属性
+                    if (obj[e]) {
+                        //push()方法的返回值是把指定的值添加到数组后的新长度，
+                        // "!"是一个布尔操作符，用于将操作的值强制转换为布尔值并取反,
+                        // 即!obj[e].push的值为false
+                        if (!obj[e].push) {
+                            obj[e] = [obj[e]];
+                        }
+                        obj[e].push(value || '');
+                    } else {
+                        obj[e] = value || '';
+                    }
+                }else{
+                    //如一级数组不为空，则将值设置为{}
+                    if(!obj[e]){
+                        obj[e] = {};
+                    }
+                }
+                obj = dataArray[e];
+            });
+
+        });
+
+        // dataArray["equipment_type"]["id"] = $("#fequipmentType").attr("equipment_type_id");
+        // dataArray["equipment_type_id"] = $("#fequipmentType").attr("equipment_type_id");
+        dataArray["expense"]["id"] = $("#fprice").attr("expense_id");
+        dataArray["expenseId"] = $("#fprice").attr("expense_id");
+        console.log(dataArray)
+        EquipmnetPurchaseDetailList.push(dataArray);
+        showDetail(EquipmnetPurchaseDetailList);
+    })
+
+    function showDetail(EquipmnetPurchaseDetailList) {
+
+        //order_detail_obj = [{operator:"电信",resourceType:"电话",number:"2",expense:"100",workplace:{address:"东莞市南城区石竹路广发金融大厦17楼"},networkRoom:{name:"机房1"},createtime:"2019-09-23",user:{username:"麦泽良"}}];
+        //console.log(order_detail_obj)
+        var content = '';
+        //console.log(constructDetailList)
+        $.each(EquipmnetPurchaseDetailList,function(i,n){
+            content+='<tr>';
+            content+='  <td>'+(i+1)+'</td>';
+            content+='  <td>'+n.equipment_type+'</td>';
+            content+='  <td>'+n.purchaseNum+'</td>';
+            content+='  <td>'+n.expense.price+'</td>';
+            // content+='  <td>'+n.accountCenter + '</td>';
+            content+='  <td>';
+            // content+='	  <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+            content+='	  <button type="button" onclick="deleteBtn('+i+')" class="btn btn-danger btn-xs delteBtn" value="aaa"><i class=" glyphicon glyphicon-remove"></i></button>';
+            content+='  </td>';
+            content+='</tr>';
+
+
+        });
+        $("tbody").html(content);
+
+    }
+
+    function deleteBtn(i) {
+        layer.confirm("确定要删除此行记录吗？" ,{icon: 3, title:'提示'}, function(cindex){
+            layer.close(cindex);
+            EquipmnetPurchaseDetailList.splice(i,1);
+            showDetail(EquipmnetPurchaseDetailList);
+        },function (cindex) {
+            layer.close(cindex);
+        })
+    }
+
+    $("#nextStep").click(function () {
+        $.ajax({
+            type:"post",
+            url:[[@{|/order/myorder/saveTemporaryEquipmentPurchaseList|}]],
+        	data:JSON.stringify(EquipmnetPurchaseDetailList),
+            dataType:"json",
+            contentType : "application/json;charset=utf-8",
+            beforeSend:function () {
+            	return true
+        	},
+        	success:function (result) {
+            	if(result.success){
+                	window.location.href= [[@{|/order/myorder/migration/add/toPreviewMigrationOrder|}]];
+            	}else{
+                	layer.msg(result.message,{time:2000, icon:5, shift:5})
+            	}
+        	}
+    	})
+
+    })
+
+	$("#displayPurchaseList").change(function () {
+		var displayPurchaseList = $("#displayPurchaseList").val();
+		if(displayPurchaseList == "0"){
+			$("#form").hide();
+		}else{
+			$("#form").show();
+		}
+	})
+
+
+    //查询用户当前用户,并发送异步请求
+    var loadingIndex = -1;
+
+    //ztree配置数据
+    var zTree;
+
+    var setting = {
+
+        //如果后台传入的数据的字段与ztree的节点名不一致，必须要在setting中data的key中指定后台对应的名称
+        //比如这里的departmentName，否则会显示undefined
+        data:{
+            key:{
+                name:"departmentName"
+            }
+        },
+        view: {
+            // selectedMulti: false,
+            addDiyDom: function(treeId, treeNode){
+                var aObj = $("#" + treeNode.tId + "_a"); // tId = permissionTree_1, ==> $("#permissionTree_1_a")
+                aObj.attr("href", "javascript:;");
+                var icoObj = $("#" + treeNode.tId + "_ico"); // tId = permissionTree_1, $("#permissionTree_1_ico")
+                if ( treeNode.icon ) {
+                    icoObj.removeClass("button ico_docu ico_open").addClass(treeNode.icon).css("background","");
+                }
+            },
+        },
+    }
+
+
+    //异步加载所有部门节点
+    function doLoadApplyDepartment() {
+        var url = [[@{|/setting/department/loadData|}]];
+        $.getJSON(url,function(result){
+            if(result.success){
+                zTree = $.fn.zTree.init($("#departmentTree"), setting, result.datas);
+                zTree.expandAll(false)
+            }else{
+                layer.msg(result.message, {time:1000, icon:5, shift:6});
+            }
+        });
+
+        layer.open({
+            title: "职能部门查询",
+            area: ['600px', '400px'],
+            type: 1,
+            content: $('#department_layer'),
+            btn: ['选择', '取消'],
+
+            yes: function (layero, index) {
+                doSetSelectedNode("fapply_department","apply_department_id")
+                layer.close(layero)
+            },
+
+            btn2: function (layero, index) {
+                layer.close(layero)
+            }
+
+        })
+    }
+
+
+    function doSetSelectedNode(department,tid){
+
+        // 1.获得选中的的节点对象
+        // getSelectedNodes是zTree中的一个函数,返回值是一个数组        
+        var selectedNodes = zTree.getSelectedNodes();
+        // 2.获得具体的节点(node)对象
+        var node=selectedNodes[0];
+        // 3.通过node节点数据更新页面内容
+        $("#"+department).attr(tid, node.id);
+        $("#"+department).val(node.departmentName);
+        // 4.关闭弹框
+        //layer.close(index)
+    }
+
+    //异步加载职能部门下的部门节点
+    function doloadUseDepartment(){
+        $("#departmentTree").empty();
+        var apply_department_id = [[${session.order.applyDepartment.id}]]
+        console.log(apply_department_id)
+        var url = [[@{|/setting/department/doloadUseDepartment/|}]] + apply_department_id;
+        $.getJSON(url,function(result){
+            if(result.success){
+                zTree = $.fn.zTree.init($("#departmentTree"), setting, result.datas);
+                zTree.expandAll(true)
+            }else{
+                layer.msg(result.message, {time:1000, icon:5, shift:6});
+            }
+        });
+
+        layer.open({
+            title: "科室|外勤部门查询",
+            area: ['600px', '400px'],
+            type: 1,
+            content: $('#department_layer'),
+            btn: ['选择', '取消'],
+
+            yes: function (layero, index) {
+                doSetSelectedNode("fusedepartment","usedepartment_id")
+                layer.close(layero)
+            },
+
+            btn2: function (layero, index) {
+                layer.close(layero)
+            }
+
+        })
+    }
+
+    //职场单击选择事件
+    //注意！！！！！！ 动态表格不能放置在form表单中，否则使用里面的单击事件会有问题
+    //职场单击选择事件
+    $("#fworkplace").click(function () {
+
+        var id, workplaceName = null;
+
+        //单击触发layer弹出层
+        layer.open({
+            title:"所在职场",
+            area: ['800px', '600px'],
+            type:1,
+            // content:"[[@{|/openQuery|}]]",
+            content:$('#workplace_layer'),
+            btn:['选择','取消'],
+            success:function (layero, index) {
+                layui.use('table',function () {
+                    var table = layui.table;
+
+                    //自动渲染数据表格
+                    table.render({
+                        // elem: layer.getChildFrame("#ftable", index)
+                        elem: '#fworkplace_table'
+                        ,url:[[@{|/setting/workplace/showTable|}]]  //该url必须要返回符合layui要求的前端格式的json数据
+                ,cols: [
+                        [
+                            {type:'radio'}
+                            ,{field: 'id', title: 'ID',width:80}
+                            ,{field: 'workplaceName', title: '职场名称',width:120}
+                            ,{field: 'address', title: '职场地址'}
+                            ,{field: 'district', title: '所在区域',width:120}
+                        ]
+                    ]
+                        ,page:true
+                        ,id: 'workplace'
+                });
+
+                    //搜索功能实现
+                    $('#search').on('click',function () {
+                        // var type = $(this).data('type');
+                        // active[type] ? active[type].call(this) : '';
+                        var demoReload = $('#demoReload');
+                        table.reload('workplace',{
+                            url:[[@{|/setting/workplace/showTable|}]]
+                    ,page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    ,where: {
+                            queryText: demoReload.val()
+                        }
+                    })
+                    });
+
+                    //获取选中的层
+                    table.on('row(workplace)',function (obj) {
+                        id = obj.data.id;
+                        workplaceName = obj.data.workplaceName;
+                    })
+                })
+
+
+            },
+            yes:function (layero, index) {
+                $("#fworkplace").attr("workplace_id",id);
+                $("#fworkplace").val(workplaceName);
+                layer.close(layero)
+            },
+            btn2:function (layero, index) {
+                layer.close(layero)
+            }
+        })
+
+    })
+
+    //机房单击选择事件
+    //注意！！！！！！ 动态表格不能放置在form表单中，否则使用里面的单击事件会有问题
+    $("#fnetworkRoom").click(function () {
+
+        var id, networkroom_name = null;
+        var workplace_id = $("#fworkplace").attr("workplace_id");
+
+        //单击触发layer弹出层
+        layer.open({
+            title:"所在机房",
+            area: ['600px', '400px'],
+            type:1,
+            // content:"[[@{|/openQuery|}]]",
+            content:$('#networkroom_layer'),
+            btn:['选择','取消'],
+            success:function (layero, index) {
+                layui.use('table',function () {
+                    var table = layui.table;
+
+                    //自动渲染数据表格
+                    table.render({
+                        // elem: layer.getChildFrame("#ftable", index)
+                        elem: '#fnetworkroom_table'
+                        ,url:[[@{|/setting/workplace/showNetworkroomTable|}]]  //该url必须要返回符合layui要求的前端格式的json数据
+                ,cols: [
+                        [
+                            {type:'radio'}
+                            ,{field: 'id', title: 'ID',width:80}
+                            ,{field: 'networkroom_name', title: '机房名称',width:120}
+                            ,{field: 'floor', title: '机房楼层'}
+                        ]
+                    ]
+                        ,page:false
+                        ,id: 'networkroom'
+                        ,where:{
+                        workplace_id: workplace_id
+                    }
+                });
+
+                    //搜索功能实现
+                    // $('#search').on('click',function () {
+                    //     // var type = $(this).data('type');
+                    //     // active[type] ? active[type].call(this) : '';
+                    //     var demoReload = $('#demoReload');
+                    //     table.reload('workplace',{
+                    //         url:[[@{|/setting/workplace/showTable|}]]
+                    // ,page: {
+                    //         curr: 1 //重新从第 1 页开始
+                    //     }
+                    // ,where: {
+                    //         queryText: demoReload.val()
+                    //     }
+                    // })
+                    // });
+
+                    //获取选中的层
+                    table.on('row(networkroom)',function (obj) {
+                        id = obj.data.id;
+                        networkroom_name = obj.data.networkroom_name;
+                    })
+                })
+
+
+            },
+            yes:function (layero, index) {
+                $("#fnetworkRoom").attr("networkroom_id",id);
+                $("#fnetworkRoom").val(networkroom_name);
+                layer.close(layero)
+            },
+            btn2:function (layero, index) {
+                layer.close(layero)
+            }
+        })
+
+    })
+
+    //机房单击选择事件
+    //注意！！！！！！ 动态表格不能放置在form表单中，否则使用里面的单击事件会有问题
+    $("#fprice").click(function () {
+
+        var id, price = null;
+
+        //单击触发layer弹出层
+        layer.open({
+            title:"选择资费",
+            area: ['600px', '400px'],
+            type:1,
+            // content:"[[@{|/openQuery|}]]",
+            content:$('#expense_layer'),
+            btn:['选择','取消'],
+            success:function (layero, index) {
+                layui.use('table',function () {
+                    var table = layui.table;
+
+                    //自动渲染数据表格
+                    table.render({
+                        // elem: layer.getChildFrame("#ftable", index)
+                        elem: '#fexpense_table'
+                        ,url:[[@{|/setting/expense/showExpenseTable|}]]  //该url必须要返回符合layui要求的前端格式的json数据
+                ,cols: [
+                        [
+                            {type:'radio'}
+                            ,{field: 'id', title: 'ID',width:80}
+                            ,{field: 'expenseType', title: '资费类别',width:120}
+                            ,{field: 'price', title: '金额'}
+                            ,{field: 'chargeFrequency', title: '缴费频率'}
+                        ]
+                    ]
+                        ,page:false
+                        ,id: 'expense'
+                });
+
+                    //获取选中的层
+                    table.on('row(expense)',function (obj) {
+                        id = obj.data.id;
+                        price = obj.data.price;
+                    })
+                })
+
+
+            },
+            yes:function (layero, index) {
+                $("#fprice").attr("expense_id",id);
+                $("#fprice").val(price);
+                layer.close(layero)
+            },
+            btn2:function (layero, index) {
+                layer.close(layero)
+            }
+        })
+
+    })
+
+
+    // $("#fequipmentType").click(function () {
+    //
+    //     var id, equipmentName = null;
+    //
+    //     //单击触发layer弹出层
+    //     layer.open({
+    //         title:"设备类型",
+    //         area: ['800px', '600px'],
+    //         type:1,
+    //         // content:"[[@{|/openQuery|}]]",
+    //         content:$('#equipmentType_layer'),
+    //         btn:['选择','取消'],
+    //         success:function (layero, index) {
+    //             layui.use('table',function () {
+    //                 var table = layui.table;
+    //
+    //                 //自动渲染数据表格
+    //                 table.render({
+    //                     // elem: layer.getChildFrame("#ftable", index)
+    //                     elem: '#fequipmentType_table'
+    //                     ,url:[[@{|/setting/equipmentType/showTable|}]]  //该url必须要返回符合layui要求的前端格式的json数据
+    //             ,cols: [
+    //                     [
+    //                         {type:'radio'}
+    //                         ,{field: 'id', title: 'ID',width:80}
+    //                         ,{field: 'equipmentName', title: '设备名称',width:120}
+    //                         ,{field: 'equipmentType', title: '设备类型'}
+    //                         ,{field: 'equipmentPortnum', title: '设备端口数量',width:120}
+    //                     ]
+    //                 ]
+    //                     ,page:true
+    //                     ,id: 'equipmentType'
+    //             });
+    //
+    //                 //搜索功能实现
+    //                 $('#equipmentType_search').on('click',function () {
+    //                     // var type = $(this).data('type');
+    //                     // active[type] ? active[type].call(this) : '';
+    //                     var equipmentType = $('#equipmentType');
+    //                     table.reload('equipmentType',{
+    //                         url:[[@{|/setting/equipmentType/showTable|}]]
+    //                 ,page: {
+    //                         curr: 1 //重新从第 1 页开始
+    //                     }
+    //                 ,where: {
+    //                         queryText: equipmentType.val()
+    //                     }
+    //                 })
+    //                 });
+    //
+    //                 //获取选中的层
+    //                 table.on('row(equipmentType)',function (obj) {
+    //                     id = obj.data.id;
+    //                     equipmentName = obj.data.equipmentName;
+    //                 })
+    //             })
+    //
+    //
+    //         },
+    //         yes:function (layero, index) {
+    //             $("#fequipmentType").attr("equipment_type_id",id);
+    //             $("#fequipmentType").val(equipmentName);
+    //             layer.close(layero)
+    //         },
+    //         btn2:function (layero, index) {
+    //             layer.close(layero)
+    //         }
+    //     })
+    //
+    // })
+
+    $("#resetBtn").click(function () {
+        $("#form")[0].reset();
+        $("#fusedepartment").attr("usedepartment_id","");
+        $("#fworkplace").attr("workplace_id","");
+        $("#fnetworkRoom").attr("networkroom_id","");
+        $("#fprice").attr("expense_id","");
+
+    })
+</script>
+</body>
+
+</html>

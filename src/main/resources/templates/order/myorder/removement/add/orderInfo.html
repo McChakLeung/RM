@@ -61,21 +61,21 @@
 						<div class="panel">
 							<div class="panel-body">
 								<div class="panel-header" style="padding-top: 20px">
-									<h2>资源维护工单 - 新建</h2>
+									<h2>拆机工单 - 新建</h2>
 								</div>
 								<br>
 								<hr>
 								<br>
 								<ul class="nav nav-tabs" role="tablist">
 									<li role="presentation" class="active"><a><span class="badge">1</span> 工单基本信息填写</a></li>
-									<li role="presentation"><a><span class="badge">2</span> 资源维护明细</a></li>
+									<li role="presentation"><a><span class="badge">2</span> 拆机明细</a></li>
 									<li role="presentation"><a><span class="badge">3</span> 工单预览及确认</a></li>
 								</ul>
 
 								<form role="form" style="margin-top:20px;">
 									<div class="form-group">
 										<label for="ftype">工单类型</label>
-										<input type="text" class="form-control" name="type" id="ftype" value="迁移工单" disabled>
+										<input type="text" class="form-control" name="type" id="ftype" value="拆机工单" disabled>
 									</div>
 									<div class="form-group">
 										<label for="ftitle">标题<span style="color:red">* </span></label>
@@ -85,6 +85,10 @@
 										<label for="fapply_department">申请职能部门<span style="color:red">* </span></label>
 										<input type="text" class="form-control" id="fapply_department" placeholder="请选择职能部门或营业区" apply_department_id="" onclick="doLoadApplyDepartment()">
 									</div>
+									<!--<div class="form-group">-->
+										<!--<label for="fapply_usedepartment">申请科室|外勤部门<span style="color:red">* </span></label>-->
+										<!--<input type="text" class="form-control" id="fapply_usedepartment" placeholder="请选择科室|外勤部门" apply_usedepartment_id="" onclick="doloadApplyUseDepartment()">-->
+									<!--</div>-->
 									<div class="form-group">
 										<label for="fproject">所属项目</label>
 										<input type="text" class="form-control" id="fproject" placeholder="请选择所属项目" project_id="">
@@ -157,10 +161,11 @@
 			"reason":$("#freason").val()
 		}
 
+		console.log(order)
 
 		$.ajax({
 			type:"post",
-			url:"[[@{|/order/myorder/maintaining/saveTemporaryMaintainingOrder|}]]",
+			url:"[[@{|/order/myorder/removement/saveTemporaryRemovementOrder|}]]",
 			data:JSON.stringify(order),
 			dataType:"json",
             contentType: 'application/json;charset=utf-8',
@@ -182,15 +187,7 @@
                     })
                     return false
                 }
-                // if($.trim($("#fapply_usedepartment").val()) == ""){
-                //     // $("#fmessage").text("用户名不能为空，请重新输入");
-                //     layer.msg("申请科室|外勤部门不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
-                //         $("#fapply_usedepartment").val("");
-                //         $("#fapply_usedepartment").attr("apply_usedepartment_id","");
-                //         $("#fapply_usedepartment").focus();
-                //     })
-                //     return false
-                // }
+
                 if($.trim($("#freason").val()) == ""){
                     // $("#fmessage").text("用户名不能为空，请重新输入");
                     layer.msg("申请原因不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
@@ -202,7 +199,7 @@
             },
 			success:function (result) {
 				if(result.success){
-                    window.location.href='[[@{|/order/myorder/maintaining/add/toMaintainingDetail|}]]';
+                    window.location.href='[[@{|/order/myorder/removement/add/toRemovementDetail|}]]';
 				}else{
                     layer.msg(result.message,{time:2000, icon:5, shift:5})
 				}
@@ -229,8 +226,8 @@
         view: {
             // selectedMulti: false,
             addDiyDom: function(treeId, treeNode){
-                //var aObj = $("#" + treeNode.tId + "_a"); // tId = permissionTree_1, ==> $("#permissionTree_1_a")
-                //aObj.attr("href", "javascript:;");
+                var aObj = $("#" + treeNode.tId + "_a"); // tId = permissionTree_1, ==> $("#permissionTree_1_a")
+                aObj.attr("href", "javascript:;");
                 var icoObj = $("#" + treeNode.tId + "_ico"); // tId = permissionTree_1, $("#permissionTree_1_ico")
                 if ( treeNode.icon ) {
                     icoObj.removeClass("button ico_docu ico_open").addClass(treeNode.icon).css("background","");
@@ -286,40 +283,8 @@
 		//layer.close(index)
     }
 
-    //异步加载职能部门下的部门节点
-    // function doloadApplyUseDepartment(){
-    //     $("#departmentTree").empty();
-    //     var apply_department_id = $("#fapply_department").attr("apply_department_id")
-    //     var url = "[[@{|/setting/department/doloadApplyUseDepartment/|}]]" + apply_department_id;
-    //     $.getJSON(url,function(result){
-    //         if(result.success){
-    //             zTree = $.fn.zTree.init($("#departmentTree"), setting, result.datas);
-    //             zTree.expandAll(false)
-    //         }else{
-    //             layer.msg(result.message, {time:1000, icon:5, shift:6});
-    //         }
-    //     });
-    //
-    //     layer.open({
-    //         title: "科室|外勤部门查询",
-    //         area: ['600px', '400px'],
-    //         type: 1,
-    //         content: $('#department_layer'),
-    //         btn: ['选择', '取消'],
-    //
-    //         yes: function (layero, index) {
-    //             doSetSelectedNode("fapply_usedepartment","apply_usedepartment_id")
-    //             layer.close(layero)
-    //         },
-    //
-    //         btn2: function (layero, index) {
-    //             layer.close(layero)
-    //         }
-    //
-    //     })
-    // }
 
-    //职场单击选择事件
+    //项目单击选择事件
 	//注意！！！！！！ 动态表格不能放置在form表单中，否则使用里面的单击事件会有问题
     $("#fproject").click(function () {
 

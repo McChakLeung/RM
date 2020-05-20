@@ -114,13 +114,13 @@ public class OrderController {
 //        }
         switch (order_type){
             case "construction_order":
-                return "redirect:/order/myorder/construction/toConstructOrder";
+                return "redirect:/order/myorder/construction/add/toConstructOrder";
             case "migration_order":
-                return "redirect:/order/myorder/migration/toMigrationOrder";
+                return "redirect:/order/myorder/migration/add/toMigrationOrder";
             case "removement_order":
-                return "redirect:/order/myorder/removement/toRemoveOrder";
+                return "redirect:/order/myorder/removement/add/toRemoveOrder";
             case "maintaining_order":
-                return "redirect:/order/myorder/maintaining/toMaintainingOrder";
+                return "redirect:/order/myorder/maintaining/add/toMaintainingOrder";
         }
         return "redirect:/order/myorder/toSelectOrderType";
     }
@@ -129,33 +129,33 @@ public class OrderController {
      * 跳转至建设工单基本信息页面
      * @return
      */
-    @RequestMapping("/myorder/construction/toConstructOrder")
+    @RequestMapping("/myorder/construction/add/toConstructOrder")
     public String toConstructOrder(){
-        return "/order/myorder/construction/orderInfo";
+        return "/order/myorder/construction/add/orderInfo";
     }
 
     /**
      * 跳转至迁移工单基本信息页面
      * @return
      */
-    @RequestMapping("/myorder/migration/toMigrationOrder")
+    @RequestMapping("/myorder/migration/add/toMigrationOrder")
     public String toMigrationOrder(){
-        return "/order/myorder/migration/orderInfo";
+        return "/order/myorder/migration/add/orderInfo";
     }
 
     /**
      * 跳转至拆机工单基本信息页面
      * @return
      */
-    @RequestMapping("/myorder/removement/toRemoveOrder")
+    @RequestMapping("/myorder/removement/add/toRemoveOrder")
     public String toRemoveOrder(){
-        return "/order/myorder/removement/orderInfo";
+        return "/order/myorder/removement/add/orderInfo";
     }
 
 
-    @RequestMapping("/myorder/maintaining/toMaintainingOrder")
+    @RequestMapping("/myorder/maintaining/add/toMaintainingOrder")
     public String toMaintainingOrder(){
-        return "/order/myorder/maintaining/orderInfo";
+        return "/order/myorder/maintaining/add/orderInfo";
     }
 
     /**
@@ -243,24 +243,24 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping("/myorder/construction/toConstructionDetail")
+    @RequestMapping("/myorder/construction/add/toConstructionDetail")
     public String toConstructionDetail(){
-        return "/order/myorder/construction/orderDetail";
+        return "/order/myorder/construction/add/orderDetail";
     }
 
-    @RequestMapping("/myorder/migration/toMigrationDetail")
+    @RequestMapping("/myorder/migration/add/toMigrationDetail")
     public String toMigrationDetail(){
-        return "/order/myorder/migration/orderDetail";
+        return "/order/myorder/migration/add/orderDetail";
     }
 
-    @RequestMapping("/myorder/removement/toRemovementDetail")
+    @RequestMapping("/myorder/removement/add/toRemovementDetail")
     public String toRemovementDetail(){
-        return "/order/myorder/removement/orderDetail";
+        return "/order/myorder/removement/add/orderDetail";
     }
 
-    @RequestMapping("/myorder/maintaining/toMaintainingDetail")
+    @RequestMapping("/myorder/maintaining/add/toMaintainingDetail")
     public String toMaintainingDetail(){
-        return "/order/myorder/maintaining/orderDetail";
+        return "/order/myorder/maintaining/add/orderDetail";
     }
 
 
@@ -326,20 +326,20 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping("/myorder/removement/toPreviewRemovementOrder")
+    @RequestMapping("/myorder/removement/add/toPreviewRemovementOrder")
     public String toPreviewRemovementOrder(){
-        return "/order/myorder/removement/previewOrder";
+        return "/order/myorder/removement/add/previewOrder";
     }
 
 
-    @RequestMapping("/myorder/construction/toConstructionEquipment")
+    @RequestMapping("/myorder/construction/add/toConstructionEquipment")
     public String toConstructionEquipment(){
-        return "/order/myorder/construction/orderEquipmentInfo";
+        return "/order/myorder/construction/add/orderEquipmentInfo";
     }
 
-    @RequestMapping("/myorder/migration/toMigrationEquipment")
+    @RequestMapping("/myorder/migration/add/toMigrationEquipment")
     public String toMigrationEquipment(){
-        return "/order/myorder/migration/orderEquipmentInfo";
+        return "/order/myorder/migration/add/orderEquipmentInfo";
     }
 
 
@@ -364,13 +364,13 @@ public class OrderController {
     }
 
 
-    @RequestMapping("/myorder/construction/toPreviewConstructionOrder")
+    @RequestMapping("/myorder/construction/add/toPreviewConstructionOrder")
     public String toPreviewConstructionOrder(){
-        return "/order/myorder/construction/previewOrder";
+        return "/order/myorder/construction/add/previewOrder";
     }
 
     @ResponseBody
-    @RequestMapping("/myorder/construction/doAddConstructionOrder")
+    @RequestMapping("/myorder/construction/add/doAddConstructionOrder")
     public Object doAddConstructionOrder(HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
@@ -431,7 +431,7 @@ public class OrderController {
     }
 
     @ResponseBody
-    @RequestMapping("/myorder/removement/doAddRemovementOrder")
+    @RequestMapping("/myorder/removement/add/doAddRemovementOrder")
     public Object doAddRemovementOrder(HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
@@ -509,9 +509,9 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping("/myorder/migration/toPreviewMigrationOrder")
+    @RequestMapping("/myorder/migration/add/toPreviewMigrationOrder")
     public String toPreviewMigrationOrder(){
-        return "/order/myorder/migration/previewOrder";
+        return "/order/myorder/migration/add/previewOrder";
     }
 
 
@@ -521,7 +521,7 @@ public class OrderController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/myorder/migration/doAddMigrationOrder")
+    @RequestMapping("/myorder/migration/add/doAddMigrationOrder")
     public Object doAddMigrationOrder(HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
@@ -594,24 +594,70 @@ public class OrderController {
             List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = orderService.queryEquipmentPurchaseRecordListByOrder(order);
             model.addAttribute("constructDetailList",constructDetailList);
             model.addAttribute("equipmentPurchaseRecordList",equipmentPurchaseRecordList);
-            return "/order/myorder/construction_detail";
+            return "/order/myorder/construction/detail/construction_detail";
         }else if (Const.MIGRATION.equals(order.getType())){
             List<ResourceMigration> resourceMigrationList = orderService.queryResourceMigrationListByOrder(order);
             List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = orderService.queryEquipmentPurchaseRecordListByOrder(order);
             model.addAttribute("resourceMigrationList",resourceMigrationList);
             model.addAttribute("equipmentPurchaseRecordList",equipmentPurchaseRecordList);
-            return "/order/myorder/migration_detail";
+            return "/order/myorder/migration/detail/migration_detail";
         }else if(Const.REMOVEMENT.equals(order.getType())){
             List<ResourceRemovement> resourceRemovementList = orderService.queryResourceRemovementListByOrder(order);
             model.addAttribute("resourceRemovementList",resourceRemovementList);
-            return "/order/myorder/removement_detail";
+            return "/order/myorder/removement/detail/removement_detail";
         }else if(Const.CHANGE_ITEM.equals(order.getType())){
-            return "/order/myorder/change_item_detail";
+            return "/order/myorder/maintaining/detail/change_item_detail";
         }
 
         return "/error";
 
     }
+
+    @RequestMapping("/myorder/toUpdate/{id}")
+    public String toUpdate(@PathVariable Long id,Model model){
+
+        Order order = orderService.selectOrderById(id);
+        model.addAttribute("order",order);
+        if(Const.CONSTRUCTION.equals(order.getType())){
+            List<ConstructDetail> constructDetailList = orderService.queryConstructDetailListByOrder(order);
+            List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = orderService.queryEquipmentPurchaseRecordListByOrder(order);
+            model.addAttribute("constructDetailList",constructDetailList);
+            model.addAttribute("equipmentPurchaseRecordList",equipmentPurchaseRecordList);
+            return "/order/myorder/construction_update";
+        }else if (Const.MIGRATION.equals(order.getType())){
+            List<ResourceMigration> resourceMigrationList = orderService.queryResourceMigrationListByOrder(order);
+            List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = orderService.queryEquipmentPurchaseRecordListByOrder(order);
+            model.addAttribute("resourceMigrationList",resourceMigrationList);
+            model.addAttribute("equipmentPurchaseRecordList",equipmentPurchaseRecordList);
+            return "/order/myorder/migration_update";
+        }else if(Const.REMOVEMENT.equals(order.getType())){
+            List<ResourceRemovement> resourceRemovementList = orderService.queryResourceRemovementListByOrder(order);
+            model.addAttribute("resourceRemovementList",resourceRemovementList);
+            return "/order/myorder/removement_update";
+        }else if(Const.CHANGE_ITEM.equals(order.getType())){
+            return "/order/myorder/change_item_update";
+        }
+
+        return "/error";
+
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/myorder/doDelete/{id}")
+    public Object doDelete(@PathVariable Long id){
+        AjaxResult result = new AjaxResult();
+        try {
+            orderService.deleteOrderByID(id);
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("删除异常，请联系管理员解决");
+        }
+        return result;
+    }
+
 
 
     @ResponseBody

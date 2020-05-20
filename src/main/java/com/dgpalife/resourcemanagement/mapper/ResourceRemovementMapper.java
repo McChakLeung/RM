@@ -22,4 +22,6 @@ public interface ResourceRemovementMapper {
     int saveResourceRemovementListByBatch(List<ResourceRemovement> rmList);
 
     List<ResourceRemovement> selectResourceRemovementListByOrderId(Long id);
+
+    void deleteByOrderId(Long id);
 }

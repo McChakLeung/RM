@@ -290,4 +290,9 @@
     FROM t_construct_detail
     WHERE order_id = #{order_id}
   </select>
+
+  <delete id="deleteByOrderId" parameterType="java.lang.Long">
+    delete from t_construct_detail
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </delete>
 </mapper>

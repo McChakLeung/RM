@@ -37,5 +37,7 @@ public interface OrderService {
 
     List<ResourceMigration> queryResourceMigrationListByOrder(Order order);
 
+    void deleteOrderByID(Long id);
+
     //Order selectOrderByIdAndStatus(Long id, String Status);
 }

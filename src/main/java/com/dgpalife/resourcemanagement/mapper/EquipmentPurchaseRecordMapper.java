@@ -22,4 +22,6 @@ public interface EquipmentPurchaseRecordMapper {
     List<EquipmentPurchaseRecord> selectEquipmentPurchaseRecordByOrderID(Long id);
 
     int getPurchaseNumByOrderId(Long order_id);
+
+    void deleteByOrderId(Long id);
 }

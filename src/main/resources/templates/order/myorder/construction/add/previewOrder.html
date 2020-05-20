@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Tables</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<!-- VENDOR CSS -->
+	<link rel="stylesheet" th:href="@{|/static/js/vendor/bootstrap/css/bootstrap.min.css|}">
+	<link rel="stylesheet" th:href="@{|/static/js/vendor/font-awesome/css/font-awesome.min.css|}">
+	<link rel="stylesheet" th:href="@{|/static/js/vendor/linearicons/style.css|}">
+	<!-- MAIN CSS -->
+	<link rel="stylesheet" th:href="@{|/static/css/main.css|}">
+	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+	<link rel="stylesheet" th:href="@{|/static/css/demo.css|}">
+	<!--LAYUI CSS-->
+	<link rel="stylesheet" th:href="@{|/static/js/layui/css/layui.css|}">
+	<!--ZTREE CSS-->
+	<link rel="stylesheet" th:href="@{|/static/ztree/zTreeStyle.css|}">
+	<!-- GOOGLE FONTS -->
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+	<!-- ICONS -->
+	<link rel="apple-touch-icon" sizes="76x76" th:href="@{|/static/img/apple-icon.png|}">
+	<link rel="icon" type="image/png" sizes="96x96" th:href="@{|/static/img/favicon.png|}">
+	<!-- Javascript -->
+	<script th:src="@{|/static/js/vendor/jquery/jquery.min.js|}"></script>
+	<script th:src="@{|/static/js/vendor/bootstrap/js/bootstrap.min.js|}"></script>
+	<script th:src="@{|/static/js/vendor/jquery-slimscroll/jquery.slimscroll.min.js|}"></script>
+	<script th:src="@{|/static/js/scripts/klorofil-common.js|}"></script>
+	<script th:src="@{|/static/js/layer/layer.js|}"></script>
+	<script th:src="@{|/static/js/layui/layui.js|}"></script>
+	<script th:src="@{|/static/js/vendor/common.js|}"></script>
+	<script th:src="@{|/static/ztree/jquery.ztree.all-3.5.min.js|}"></script>
+
+</head>
+
+<body>
+<!-- WRAPPER -->
+<div id="wrapper">
+	<!-- NAVBAR -->
+	<div id="header" th:include="/commons/header :: headerContext"></div>
+	<!-- END NAVBAR -->
+	<!-- LEFT SIDEBAR -->
+	<div id="left_sidebar" th:include="/commons/left_sidebar :: leftContext"></div>
+	<!-- END LEFT SIDEBAR -->
+		<!-- MAIN -->
+	<div class="main">
+		<!-- MAIN CONTENT -->
+		<div class="main-content">
+			<div class="container-fluid">
+				<!--<h3 class="page-title">Tables</h3>-->
+				<ol class="breadcrumb">
+					<li><a th:href="@{|#|}">首页</a></li>
+					<li><a th:href="@{|#|}">资源管理</a></li>
+					<li class="active">工单管理</li>
+				</ol>
+				<div class="row">
+					<div class="col-md-12">
+						<!-- BASIC TABLE -->
+						<div class="panel">
+							<div class="panel-body">
+								<div class="panel-header" style="padding-top: 20px">
+									<h2>建设工单 - 新建</h2>
+								</div>
+								<br>
+								<hr>
+								<br>
+								<ul class="nav nav-tabs" role="tablist">
+									<li role="presentation"><a><span class="badge">1</span> 工单基本信息填写</a></li>
+									<li role="presentation"><a><span class="badge">2</span> 装机明细</a></li>
+									<li role="presentation" class="active"><a><span class="badge">3</span> 工单预览及确认</a></li>
+								</ul>
+
+								<form role="form" style="margin-top:20px;">
+									<div class="form-group">
+										<label for="ftype">工单类型：</label>
+										<span id="ftype" class="form-control" th:text="${session?.order?.type}"></span>
+										<!--<input type="text" class="form-control" name="type" id="ftype" value="建设工单" disabled>-->
+									</div>
+									<div class="form-group">
+										<label for="ftitle">标题</label>
+										<span id="ftitle" class="form-control" th:text="${session?.order?.title}"></span>
+										<!--<input type="text" class="form-control" name="title" id="ftitle">-->
+									</div>
+									<div class="form-group">
+										<label for="fapply_department">申请职能部门</label>
+										<span id="fapply_department" class="form-control" th:text="${session?.order?.applyDepartment?.departmentName}"></span>
+										<!--<input type="text" class="form-control" id="fapply_department" placeholder="请选择职能部门或营业区" apply_department_id="" onclick="doLoadApplyDepartment()">-->
+									</div>
+									<!--<div class="form-group">-->
+									<!--<label for="fapply_usedepartment">申请科室|外勤部门<span style="color:red">* </span></label>-->
+									<!--<input type="text" class="form-control" id="fapply_usedepartment" placeholder="请选择科室|外勤部门" apply_usedepartment_id="" onclick="doloadApplyUseDepartment()">-->
+									<!--</div>-->
+									<div class="form-group">
+										<label for="fproject">所属项目</label>
+										<span id="fproject" class="form-control" th:text="${session?.order?.project?.projectName}"></span>
+										<!--<input type="text" class="form-control" id="fproject" placeholder="请选择所属项目" project_id="">-->
+									</div>
+									<div class="form-group">
+										<label for="fproposer">申请人</label>
+										<span id="fproposer" class="form-control" th:text="${session?.user?.username}"></span>
+										<!--<input type="text" class="form-control" name="proposer" id="fproposer" th:value="${session.user.username}" th:attr="proposer_id = ${session.user.id}" disabled>-->
+									</div>
+									<div class="form-group">
+										<label for="fcontact">联系方式</label>
+										<span id="fcontact" class="form-control" th:text="${session?.user?.contact}"></span>
+										<!--<input type="text" class="form-control" name="contact" id="fcontact" th:value="${session.user.contact!=null}?${session.user.contact}:''" disabled>-->
+										<!--<input type="text" class="form-control" name="contact" id="fcontact" th:value="${session.user.contact}" disabled>-->
+									</div>
+									<div class="form-group">
+										<label for="freason">申请原因</label>
+										<span id="freason" class="form-control" th:text="${session?.order?.reason}"></span>
+										<!--<input type="textarea"  rows="5" cols="30" class="form-control" name="reason" id="freason">-->
+										<!--<textarea  rows="3"  class="form-control" name="reason" id="freason"></textarea>-->
+									</div>
+								</form>
+								<br>
+								<h3>装机明细</h3>
+								<br>
+								<div>
+									<table id="constructDetailList" class="table table-bordered" style="text-align:center;">
+										<thead>
+										<tr class="success">
+											<td>序号</td>
+											<td>使用科室|外勤部门</td>
+											<td>部门类型</td>
+											<td>运营商</td>
+											<td>资源类型</td>
+											<td>装机数量</td>
+											<td>资费</td>
+											<td>所在职场</td>
+											<td>机房</td>
+										</tr>
+										</thead>
+										<tbody >
+											<tr th:each="constructDetail:${session?.constructDetailList}">
+												<td th:text="${constructDetailStat?.count}">序号</td>
+												<td th:text="${constructDetail?.usedepartment?.departmentName}">使用科室|外勤部门</td>
+												<td th:text="${constructDetail?.usedepartment_type}">部门类型</td>
+												<td th:text="${constructDetail?.operator}">运营商</td>
+												<td th:text="${constructDetail?.resourceType}">资源类型</td>
+												<td th:text="${constructDetail?.construct_number}">装机数量</td>
+												<td th:text="${constructDetail?.expense?.price}">资费</td>
+												<td th:text="${constructDetail?.workplace?.workplaceName}">所在职场</td>
+												<td th:text="${constructDetail?.networkRoom?.networkroom_name}">机房</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<br>
+								<h3>设备购买明细</h3>
+								<br>
+								<div>
+									<table id="equipmnetPurchaseDetailList" class="table table-bordered" style="text-align:center;">
+										<thead>
+										<tr class="success">
+											<td>序号</td>
+											<td>购买设备类型名称</td>
+											<td>购买数量</td>
+											<td>设备单价</td>
+										</tr>
+										</thead>
+										<tbody >
+										<tr th:each="equipmnetPurchaseDetail:${session.equipmnetPurchaseDetailList}">
+											<td th:text="${equipmnetPurchaseDetailStat.count}">序号</td>
+											<td th:text="${equipmnetPurchaseDetail.equipment_type}">购买设备类型</td>
+											<td th:text="${equipmnetPurchaseDetail.purchaseNum}">购买数量</td>
+											<td th:text="${equipmnetPurchaseDetail.expense.price}">设备单价</td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
+								<!--<button type="button" class="btn btn-default" id="backStep">上一步</button>-->
+								<button type="button" class="btn btn-success" id="submitBtn">创建工单</button>
+							</div>
+						</div>
+						<!-- END BASIC TABLE -->
+					</div>
+					<!--</div>-->
+				</div>
+
+			</div>
+		</div>
+		<!-- END MAIN CONTENT -->
+	</div>
+		<!-- END MAIN -->
+	<div class="clearfix"></div>
+	<div id="footer" th:include="/commons/footer :: footerContext"></div>
+
+	<!-- END WRAPPER -->
+</div>
+<script type="text/javascript">
+
+    var loadingIndex = -1;
+
+    $("#submitBtn").click(function () {
+        var url = "[[@{|/order/myorder/construction/add/doAddConstructionOrder|}]]";
+        $.getJSON(url,function(result){
+            if(result.success){
+                layer.msg("创建成功", {time:1000, icon:0, shift:6});
+                window.location.href="[[@{|/order/myorder/toIndex|}]]"
+            }else{
+                layer.msg(result.message, {time:1000, icon:5, shift:6});
+            }
+        });
+    })
+
+</script>
+</body>
+
+</html>

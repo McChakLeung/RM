@@ -22,4 +22,6 @@ public interface ResourceMigrationMapper {
     void saveMigrationResourceList(List<ResourceMigration> resourceMigrationList);
 
     List<ResourceMigration> selectByOrderID(Long id);
+
+    void deleteByOrderId(Long id);
 }

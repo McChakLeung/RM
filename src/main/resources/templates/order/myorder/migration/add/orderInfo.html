@@ -61,15 +61,16 @@
 						<div class="panel">
 							<div class="panel-body">
 								<div class="panel-header" style="padding-top: 20px">
-									<h2>资源维护工单 - 新建</h2>
+									<h2>迁移工单 - 新建</h2>
 								</div>
 								<br>
 								<hr>
 								<br>
 								<ul class="nav nav-tabs" role="tablist">
 									<li role="presentation" class="active"><a><span class="badge">1</span> 工单基本信息填写</a></li>
-									<li role="presentation"><a><span class="badge">2</span> 资源维护明细</a></li>
-									<li role="presentation"><a><span class="badge">3</span> 工单预览及确认</a></li>
+									<li role="presentation"><a><span class="badge">2</span> 迁移明细</a></li>
+									<li role="presentation"><a><span class="badge">3</span> 设备明细</a></li>
+									<li role="presentation"><a><span class="badge">4</span> 工单预览及确认</a></li>
 								</ul>
 
 								<form role="form" style="margin-top:20px;">
@@ -154,13 +155,36 @@
 	            "id":$("#fproject").attr("project_id"),
 				"projectName":$("#fproject").val(),
 			},
+			// "proposer":{
+	         //    "id":$("#fproposer").attr("proposer_id"),
+			// 	"username":$("#fproposer").val(),
+			// 	"contact":
+			// },
 			"reason":$("#freason").val()
 		}
 
+		console.log(order)
+        // //获取页面相关变量
+		// var ftype = $("#ftype").val();
+		// var ftitle = $("#ftitle").val();
+		// var fapply_department_id = $("#fapply_department").attr("apply_department_id");
+		// // var fapply_usedepartment_id = $("#fapply_usedepartment").attr("apply_usedepartment_id");
+		// var fproject = $("#fproject").attr("project_id");
+		// var fproposer = $("#fproposer").attr("proposer_id");
+		// var freason = $("#freason").val();
 
 		$.ajax({
 			type:"post",
-			url:"[[@{|/order/myorder/maintaining/saveTemporaryMaintainingOrder|}]]",
+			url:"[[@{|/order/myorder/migration/saveTemporaryMigrationOrder|}]]",
+			// data:{
+			// 	type:ftype,
+			// 	title:ftitle,
+             //    applyDepartmentId:fapply_department_id,
+             //    // applyUseDepartmentId:fapply_usedepartment_id,
+             //    proposerId:fproposer,
+             //    projectId:fproject,
+             //    reason:freason
+			// },
 			data:JSON.stringify(order),
 			dataType:"json",
             contentType: 'application/json;charset=utf-8',
@@ -202,7 +226,7 @@
             },
 			success:function (result) {
 				if(result.success){
-                    window.location.href='[[@{|/order/myorder/maintaining/add/toMaintainingDetail|}]]';
+                    window.location.href='[[@{|/order/myorder/migration/add/toMigrationDetail|}]]';
 				}else{
                     layer.msg(result.message,{time:2000, icon:5, shift:5})
 				}
@@ -229,8 +253,8 @@
         view: {
             // selectedMulti: false,
             addDiyDom: function(treeId, treeNode){
-                //var aObj = $("#" + treeNode.tId + "_a"); // tId = permissionTree_1, ==> $("#permissionTree_1_a")
-                //aObj.attr("href", "javascript:;");
+                var aObj = $("#" + treeNode.tId + "_a"); // tId = permissionTree_1, ==> $("#permissionTree_1_a")
+                aObj.attr("href", "javascript:;");
                 var icoObj = $("#" + treeNode.tId + "_ico"); // tId = permissionTree_1, $("#permissionTree_1_ico")
                 if ( treeNode.icon ) {
                     icoObj.removeClass("button ico_docu ico_open").addClass(treeNode.icon).css("background","");

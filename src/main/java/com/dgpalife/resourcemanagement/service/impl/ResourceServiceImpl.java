@@ -185,8 +185,14 @@ public class ResourceServiceImpl implements ResourceService {
             resource.setEquipment_port_num(resourceMigration.getEquipment_port_num());
             resourceMapper.updateByPrimaryKeySelective(resource);
 
-            //最后更新migration表
+            //更新migration表
             resourceMigrationMapper.updateByPrimaryKeySelective(resourceMigration);
+
+            //插入中间表
+            Order_resource order_resource = new Order_resource();
+            order_resource.setOrderId(order.getId());
+            order_resource.setResourceId(resource.getId());
+            order_resourceMapper.insertSelective(order_resource);
         }
 
 
