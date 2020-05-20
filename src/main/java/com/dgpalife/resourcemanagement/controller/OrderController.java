@@ -345,15 +345,15 @@ public class OrderController {
 
     /**
      * 将建设工单明细的List集合临时放置在session中存放
-     * @param equipmnetPurchaseDetailList
+     * @param equipmentPurchaseRecordList
      * @return
      */
     @ResponseBody
     @RequestMapping("/myorder/saveTemporaryEquipmentPurchaseList")
-    public Object saveTemporaryEquipmentPurchaseList(@RequestBody List<EquipmentPurchaseRecord> equipmnetPurchaseDetailList, HttpSession session){
+    public Object saveTemporaryEquipmentPurchaseList(@RequestBody List<EquipmentPurchaseRecord> equipmentPurchaseRecordList, HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
-            session.setAttribute("equipmnetPurchaseDetailList",equipmnetPurchaseDetailList);
+            session.setAttribute("equipmentPurchaseRecordList",equipmentPurchaseRecordList);
             result.setSuccess(true);
         }catch (Exception e){
             e.printStackTrace();
@@ -614,26 +614,26 @@ public class OrderController {
     }
 
     @RequestMapping("/myorder/toUpdate/{id}")
-    public String toUpdate(@PathVariable Long id,Model model){
+    public String toUpdate(@PathVariable Long id,HttpSession session){
 
         Order order = orderService.selectOrderById(id);
-        model.addAttribute("order",order);
+        session.setAttribute("order",order);
         if(Const.CONSTRUCTION.equals(order.getType())){
             List<ConstructDetail> constructDetailList = orderService.queryConstructDetailListByOrder(order);
             List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = orderService.queryEquipmentPurchaseRecordListByOrder(order);
-            model.addAttribute("constructDetailList",constructDetailList);
-            model.addAttribute("equipmentPurchaseRecordList",equipmentPurchaseRecordList);
-            return "/order/myorder/construction_update";
+            session.setAttribute("constructDetailList",constructDetailList);
+            session.setAttribute("equipmentPurchaseRecordList",equipmentPurchaseRecordList);
+            return "/order/myorder/construction/update/orderInfo";
         }else if (Const.MIGRATION.equals(order.getType())){
             List<ResourceMigration> resourceMigrationList = orderService.queryResourceMigrationListByOrder(order);
             List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = orderService.queryEquipmentPurchaseRecordListByOrder(order);
-            model.addAttribute("resourceMigrationList",resourceMigrationList);
-            model.addAttribute("equipmentPurchaseRecordList",equipmentPurchaseRecordList);
-            return "/order/myorder/migration_update";
+            session.setAttribute("resourceMigrationList",resourceMigrationList);
+            session.setAttribute("equipmentPurchaseRecordList",equipmentPurchaseRecordList);
+            return "/order/myorder/migration/update/orderInfo";
         }else if(Const.REMOVEMENT.equals(order.getType())){
             List<ResourceRemovement> resourceRemovementList = orderService.queryResourceRemovementListByOrder(order);
-            model.addAttribute("resourceRemovementList",resourceRemovementList);
-            return "/order/myorder/removement_update";
+            session.setAttribute("resourceRemovementList",resourceRemovementList);
+            return "/order/myorder/removement/update/orderInfo";
         }else if(Const.CHANGE_ITEM.equals(order.getType())){
             return "/order/myorder/change_item_update";
         }
@@ -642,6 +642,34 @@ public class OrderController {
 
     }
 
+    @RequestMapping("/myorder/construction/update/toConstructionUpdateDetail")
+    public String toConstructionUpdateDetail(){
+        return "/order/myorder/construction/update/orderDetail";
+    }
+
+    @RequestMapping("/myorder/migration/update/toMigrationUpdateDetail")
+    public String toMigrationUpdateDetail(){
+        return "/order/myorder/migration/update/orderDetail";
+    }
+
+    @RequestMapping("/myorder/removement/update/toRemovementUpdateDetail")
+    public String toRemovementUpdateDetail(){
+        return "/order/myorder/removement/update/orderDetail";
+    }
+
+    @RequestMapping("/myorder/maintaining/update/toMaintainingUpdateDetail")
+    public String toMaintainingUpdateDetail(){
+        return "/order/myorder/maintaining/update/orderDetail";
+    }
+
+    /**
+     * 建设工单跳转至更新设备页面
+     * @return
+     */
+    @RequestMapping("/myorder/construction/update/toConstructionUpdateEquipment")
+    public String toConstructionUpdateEquipment(){
+        return "/order/myorder/construction/update/orderEquipmentInfo";
+    }
 
     @ResponseBody
     @RequestMapping("/myorder/doDelete/{id}")

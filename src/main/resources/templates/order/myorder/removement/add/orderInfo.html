@@ -226,8 +226,8 @@
         view: {
             // selectedMulti: false,
             addDiyDom: function(treeId, treeNode){
-                var aObj = $("#" + treeNode.tId + "_a"); // tId = permissionTree_1, ==> $("#permissionTree_1_a")
-                aObj.attr("href", "javascript:;");
+                //var aObj = $("#" + treeNode.tId + "_a"); // tId = permissionTree_1, ==> $("#permissionTree_1_a")
+                //aObj.attr("href", "javascript:;");
                 var icoObj = $("#" + treeNode.tId + "_ico"); // tId = permissionTree_1, $("#permissionTree_1_ico")
                 if ( treeNode.icon ) {
                     icoObj.removeClass("button ico_docu ico_open").addClass(treeNode.icon).css("background","");

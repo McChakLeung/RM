@@ -61,7 +61,7 @@
 						<div class="panel">
 							<div class="panel-body">
 								<div class="panel-header" style="padding-top: 20px">
-									<h2>建设工单 - 新建</h2>
+									<h2>建设工单 - 更新</h2>
 								</div>
 								<br>
 								<hr>
@@ -136,7 +136,7 @@
 									<table id="detailList" class="table table-bordered" style="text-align:center;">
 										<thead>
 										<tr class="success">
-											<td>序号</td>
+											<td>ID</td>
 											<td>使用科室|外勤部门</td>
 											<td>部门类型</td>
 											<td>运营商</td>
@@ -149,7 +149,18 @@
 										</tr>
 										</thead>
 										<tbody>
-
+										<tr th:each="constructDetail:${session?.constructDetailList}">
+											<td th:text="${constructDetailStat?.count}">序号</td>
+											<td th:text="${constructDetail?.usedepartment?.departmentName}">使用科室|外勤部门</td>
+											<td th:text="${constructDetail?.usedepartment_type}">部门类型</td>
+											<td th:text="${constructDetail?.operator}">运营商</td>
+											<td th:text="${constructDetail?.resourceType}">资源类型</td>
+											<td th:text="${constructDetail?.construct_number}">装机数量</td>
+											<td th:text="${constructDetail?.expense?.price}">资费</td>
+											<td th:text="${constructDetail?.workplace?.workplaceName}">所在职场</td>
+											<td th:text="${constructDetail?.networkRoom?.networkroom_name}">机房</td>
+											<td><button type="button" th:onclick="|deleteBtn(${constructDetailStat?.count})|" class="btn btn-danger btn-xs delteBtn" value="aaa"><i class=" glyphicon glyphicon-remove"></i></button></td>
+										</tr>
 										</tbody>
 									</table>
 								</div>
@@ -199,7 +210,7 @@
 
     var loadingIndex = -1;
 
-    var constructDetailList = new Array();
+    var constructDetailList = [[${session?.constructDetailList}]];
 
     $("#addBtn").click(function () {
 		//判断必选项是否为空
@@ -351,7 +362,7 @@
             },
 			success:function (result) {
 				if(result.success){
-                    window.location.href= [[@{|/order/myorder/construction/toConstructionEquipment|}]];
+                    window.location.href= [[@{|/order/myorder/construction/update/toConstructionUpdateEquipment|}]];
 				}else{
                     layer.msg(result.message,{time:2000, icon:5, shift:5})
 				}
@@ -378,8 +389,8 @@
         view: {
             // selectedMulti: false,
             addDiyDom: function(treeId, treeNode){
-                var aObj = $("#" + treeNode.tId + "_a"); // tId = permissionTree_1, ==> $("#permissionTree_1_a")
-                aObj.attr("href", "javascript:;");
+                //var aObj = $("#" + treeNode.tId + "_a"); // tId = permissionTree_1, ==> $("#permissionTree_1_a")
+                //aObj.attr("href", "javascript:;");
                 var icoObj = $("#" + treeNode.tId + "_ico"); // tId = permissionTree_1, $("#permissionTree_1_ico")
                 if ( treeNode.icon ) {
                     icoObj.removeClass("button ico_docu ico_open").addClass(treeNode.icon).css("background","");
@@ -389,36 +400,36 @@
     }
 
 
-	//异步加载所有部门节点
-    function doLoadApplyDepartment() {
-        var url = [[@{|/setting/department/loadData|}]];
-        $.getJSON(url,function(result){
-            if(result.success){
-                zTree = $.fn.zTree.init($("#departmentTree"), setting, result.datas);
-                zTree.expandAll(false)
-            }else{
-                layer.msg(result.message, {time:1000, icon:5, shift:6});
-            }
-        });
-
-        layer.open({
-            title: "职能部门查询",
-            area: ['600px', '400px'],
-            type: 1,
-            content: $('#department_layer'),
-            btn: ['选择', '取消'],
-
-			yes: function (layero, index) {
-                doSetSelectedNode("fapply_department","apply_department_id")
-                layer.close(layero)
-			},
-
-			btn2: function (layero, index) {
-				layer.close(layero)
-			}
-
-        })
-    }
+    // //异步加载所有部门节点
+    // function doLoadApplyDepartment() {
+    //     var url = [[@{|/setting/department/loadData|}]];
+    //     $.getJSON(url,function(result){
+    //         if(result.success){
+    //             zTree = $.fn.zTree.init($("#departmentTree"), setting, result.datas);
+    //             zTree.expandAll(false)
+    //         }else{
+    //             layer.msg(result.message, {time:1000, icon:5, shift:6});
+    //         }
+    //     });
+    //
+    //     layer.open({
+    //         title: "职能部门查询",
+    //         area: ['600px', '400px'],
+    //         type: 1,
+    //         content: $('#department_layer'),
+    //         btn: ['选择', '取消'],
+    //
+		// 	yes: function (layero, index) {
+    //             doSetSelectedNode("fapply_department","apply_department_id")
+    //             layer.close(layero)
+		// 	},
+    //
+		// 	btn2: function (layero, index) {
+		// 		layer.close(layero)
+		// 	}
+    //
+    //     })
+    // }
 
 
     function doSetSelectedNode(department,tid){
@@ -438,7 +449,7 @@
     //异步加载职能部门下的部门节点
     function doloadUseDepartment(){
         $("#departmentTree").empty();
-        var apply_department_id = [[${session.order.applyDepartment.id}]]
+        var apply_department_id = [[${session?.order?.applyDepartment?.id}]]
 		console.log(apply_department_id)
         var url = [[@{|/setting/department/doloadUseDepartment/|}]] + apply_department_id;
         $.getJSON(url,function(result){
