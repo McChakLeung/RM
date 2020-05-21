@@ -377,7 +377,7 @@ public class OrderController {
             User user = (User)session.getAttribute("user");
             Order order = (Order)session.getAttribute("order");
             List<ConstructDetail> constructDetailList = (List<ConstructDetail>)session.getAttribute("constructDetailList");
-            List<EquipmentPurchaseRecord> equipmnetPurchaseDetailList = (List<EquipmentPurchaseRecord>)session.getAttribute("equipmnetPurchaseDetailList");
+            List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = (List<EquipmentPurchaseRecord>)session.getAttribute("equipmentPurchaseRecordList");
             if(order == null){
                 result.setSuccess(false);
                 result.setMessage("暂未填写工单基本信息，请重新填写");
@@ -407,25 +407,25 @@ public class OrderController {
             //发送给后台处理
             constructDetailService.saveConstructDetailBatch(constructDetailList);
 
-            for(EquipmentPurchaseRecord equipmentPurchaseRecord: equipmnetPurchaseDetailList){
+            for(EquipmentPurchaseRecord equipmentPurchaseRecord: equipmentPurchaseRecordList){
                 equipmentPurchaseRecord.setCreateTime(sdf.format(date));
                 equipmentPurchaseRecord.setCreatorId(user.getId());
                 equipmentPurchaseRecord.setOrderId(order.getId());
             }
 
             //发送给后台处理
-            equipmentPurchaseRecordService.saveEquipmentPurchaseRecordByBatch(equipmnetPurchaseDetailList);
-
-            //创建工单后销毁相关的session属性
-            session.removeAttribute("order");
-            session.removeAttribute("constructDetailList");
-            session.removeAttribute("equipmnetPurchaseDetailList");
+            equipmentPurchaseRecordService.saveEquipmentPurchaseRecordByBatch(equipmentPurchaseRecordList);
 
             result.setSuccess(true);
         }catch (Exception e){
             e.printStackTrace();
             result.setSuccess(false);
             result.setMessage("创建工单异常，请联系管理员解决");
+        }finally {
+            //创建工单后销毁相关的session属性
+            session.removeAttribute("order");
+            session.removeAttribute("constructDetailList");
+            session.removeAttribute("equipmentPurchaseRecordList");
         }
         return result;
     }
@@ -669,6 +669,11 @@ public class OrderController {
     @RequestMapping("/myorder/construction/update/toConstructionUpdateEquipment")
     public String toConstructionUpdateEquipment(){
         return "/order/myorder/construction/update/orderEquipmentInfo";
+    }
+
+    @RequestMapping("/myorder/construction/update/toPreviewConstructionUpdateOrder")
+    public String toPreviewConstructionUpdateOrder(){
+        return "/order/myorder/construction/update/previewOrder";
     }
 
     @ResponseBody

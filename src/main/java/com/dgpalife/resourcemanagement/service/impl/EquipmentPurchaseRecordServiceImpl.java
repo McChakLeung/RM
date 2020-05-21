@@ -15,8 +15,8 @@ public class EquipmentPurchaseRecordServiceImpl implements EquipmentPurchaseReco
     private EquipmentPurchaseRecordMapper equipmentPurchaseRecordMapper;
 
     @Override
-    public void saveEquipmentPurchaseRecordByBatch(List<EquipmentPurchaseRecord> equipmnetPurchaseDetailList) {
-        for(EquipmentPurchaseRecord equipmentPurchaseRecord:equipmnetPurchaseDetailList){
+    public void saveEquipmentPurchaseRecordByBatch(List<EquipmentPurchaseRecord> equipmentPurchaseRecordList) {
+        for(EquipmentPurchaseRecord equipmentPurchaseRecord:equipmentPurchaseRecordList){
             equipmentPurchaseRecordMapper.insertSelective(equipmentPurchaseRecord);
         }
     }

@@ -136,7 +136,7 @@
 									<table id="detailList" class="table table-bordered" style="text-align:center;">
 										<thead>
 										<tr class="success">
-											<td>ID</td>
+											<td>序号</td>
 											<td>使用科室|外勤部门</td>
 											<td>部门类型</td>
 											<td>运营商</td>
@@ -342,7 +342,7 @@
 
     function deleteBtn(i) {
         layer.confirm("确定要删除此行记录吗？" ,{icon: 3, title:'提示'}, function(cindex){
-            layer.close(cindex);
+            //layer.close(cindex);
             constructDetailList.splice(i,1);
             showDetail(constructDetailList);
         },function (cindex) {
