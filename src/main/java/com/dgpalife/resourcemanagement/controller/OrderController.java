@@ -350,7 +350,7 @@ public class OrderController {
      */
     @ResponseBody
     @RequestMapping("/myorder/saveTemporaryEquipmentPurchaseList")
-    public Object saveTemporaryEquipmentPurchaseList(@RequestBody List<EquipmentPurchaseRecord> equipmentPurchaseRecordList, HttpSession session){
+    public Object saveTemporaryEquipmentPurchaseList(@RequestBody(required = false) List<EquipmentPurchaseRecord> equipmentPurchaseRecordList, HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
             session.setAttribute("equipmentPurchaseRecordList",equipmentPurchaseRecordList);
@@ -674,6 +674,67 @@ public class OrderController {
     @RequestMapping("/myorder/construction/update/toPreviewConstructionUpdateOrder")
     public String toPreviewConstructionUpdateOrder(){
         return "/order/myorder/construction/update/previewOrder";
+    }
+
+    @ResponseBody
+    @RequestMapping("/myorder/construction/update/doUpdateConstructionOrder")
+    public Object doUpdateConstructionOrder(HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try {
+            User user = (User)session.getAttribute("user");
+            Order order = (Order)session.getAttribute("order");
+            List<ConstructDetail> constructDetailList = (List<ConstructDetail>)session.getAttribute("constructDetailList");
+            List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = (List<EquipmentPurchaseRecord>)session.getAttribute("equipmentPurchaseRecordList");
+            if(order == null){
+                result.setSuccess(false);
+                result.setMessage("暂未填写工单基本信息，请重新填写");
+                return result;
+            }
+            if(constructDetailList==null){
+                result.setSuccess(false);
+                result.setMessage("暂未填写装机明细信息，请重新填写");
+                return result;
+            }
+
+            //设置order的其他信息
+            order.setStatus("待提交");
+            order.setProposerId(user.getId());
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            order.setCreateTime(sdf.format(date));
+
+            orderService.saveOrder(order);
+
+            for(ConstructDetail constructDetail: constructDetailList){
+                constructDetail.setCreateTime(sdf.format(date));
+                constructDetail.setCreatorId(user.getId());
+                constructDetail.setOrderId(order.getId());
+            }
+
+            //发送给后台处理
+            constructDetailService.saveConstructDetailBatch(constructDetailList);
+
+            for(EquipmentPurchaseRecord equipmentPurchaseRecord: equipmentPurchaseRecordList){
+                equipmentPurchaseRecord.setCreateTime(sdf.format(date));
+                equipmentPurchaseRecord.setCreatorId(user.getId());
+                equipmentPurchaseRecord.setOrderId(order.getId());
+            }
+
+            //发送给后台处理
+            equipmentPurchaseRecordService.saveEquipmentPurchaseRecordByBatch(equipmentPurchaseRecordList);
+
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("创建工单异常，请联系管理员解决");
+        }finally {
+            //创建工单后销毁相关的session属性
+            session.removeAttribute("order");
+            session.removeAttribute("constructDetailList");
+            session.removeAttribute("equipmentPurchaseRecordList");
+        }
+        return result;
     }
 
     @ResponseBody

@@ -162,11 +162,11 @@
 										</tr>
 										</thead>
 										<tbody >
-										<tr th:each="equipmnetPurchaseDetail:${session.equipmnetPurchaseDetailList}">
-											<td th:text="${equipmnetPurchaseDetailStat.count}">序号</td>
-											<td th:text="${equipmnetPurchaseDetail.equipment_type}">购买设备类型</td>
-											<td th:text="${equipmnetPurchaseDetail.purchaseNum}">购买数量</td>
-											<td th:text="${equipmnetPurchaseDetail.expense.price}">设备单价</td>
+										<tr th:each="equipmentPurchaseRecord:${session?.equipmentPurchaseRecordList}">
+											<td th:text="${equipmentPurchaseRecordStat.count}">序号</td>
+											<td th:text="${equipmentPurchaseRecord.equipment_type}">购买设备类型</td>
+											<td th:text="${equipmentPurchaseRecord.purchaseNum}">购买数量</td>
+											<td th:text="${equipmentPurchaseRecord.expense.price}">设备单价</td>
 										</tr>
 										</tbody>
 									</table>
@@ -195,7 +195,7 @@
     var loadingIndex = -1;
 
     $("#submitBtn").click(function () {
-        var url = "[[@{|/order/myorder/construction/doAddConstructionOrder|}]]";
+        var url = "[[@{|/order/myorder/construction/update/doUpdateConstructionOrder|}]]";
         $.getJSON(url,function(result){
             if(result.success){
                 layer.msg("创建成功", {time:1000, icon:0, shift:6});

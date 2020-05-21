@@ -150,7 +150,7 @@
 										</thead>
 										<tbody>
 										<tr th:each="constructDetail:${session?.constructDetailList}">
-											<td th:text="${constructDetailStat?.count}">序号</td>
+											<td th:text="${constructDetailStat?.index+1}">序号</td>
 											<td th:text="${constructDetail?.usedepartment?.departmentName}">使用科室|外勤部门</td>
 											<td th:text="${constructDetail?.usedepartment_type}">部门类型</td>
 											<td th:text="${constructDetail?.operator}">运营商</td>
@@ -159,7 +159,7 @@
 											<td th:text="${constructDetail?.expense?.price}">资费</td>
 											<td th:text="${constructDetail?.workplace?.workplaceName}">所在职场</td>
 											<td th:text="${constructDetail?.networkRoom?.networkroom_name}">机房</td>
-											<td><button type="button" th:onclick="|deleteBtn(${constructDetailStat?.count})|" class="btn btn-danger btn-xs delteBtn" value="aaa"><i class=" glyphicon glyphicon-remove"></i></button></td>
+											<td><button type="button" th:onclick="|deleteBtn(${constructDetailStat?.index+1})|" class="btn btn-danger btn-xs delteBtn" value="aaa"><i class=" glyphicon glyphicon-remove"></i></button></td>
 										</tr>
 										</tbody>
 									</table>
@@ -341,8 +341,9 @@
     }
 
     function deleteBtn(i) {
+        //var constructDetailList = [[${session?.constructDetailList}]];
         layer.confirm("确定要删除此行记录吗？" ,{icon: 3, title:'提示'}, function(cindex){
-            //layer.close(cindex);
+            layer.close(cindex);
             constructDetailList.splice(i,1);
             showDetail(constructDetailList);
         },function (cindex) {
