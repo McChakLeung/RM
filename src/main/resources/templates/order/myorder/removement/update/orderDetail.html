@@ -61,7 +61,7 @@
 						<div class="panel">
 							<div class="panel-body">
 								<div class="panel-header" style="padding-top: 20px">
-									<h2>拆机工单 - 新建</h2>
+									<h2>拆机工单 - 更新</h2>
 								</div>
 								<br>
 								<hr>
@@ -104,7 +104,17 @@
 										</tr>
 										</thead>
 										<tbody>
-
+										<tr th:each="resourceRemovement:${session?.resourceRemovementList}">
+											<td th:text="${resourceRemovement?.id}">id</td>
+											<td th:text="${resourceRemovement?.resource?.resource_no}">资源号码</td>
+											<td th:text="${resourceRemovement?.resource?.resourc_type}">资源类型</td>
+											<td th:text="${resourceRemovement?.resource?.operator}">运营商</td>
+											<td th:text="${resourceRemovement?.resource?.workplace?.workplaceName}">职场名称</td>
+											<td th:text="${resourceRemovement?.resource?.department?.departmentName}">挂账部门</td>
+											<td th:text="${resourceRemovement?.resource?.usedepartment?.departmentName}">使用部门</td>
+											<td th:text="${resourceRemovement?.resource?.username}">使用人</td>
+											<td><button type="button" th:onclick="|deleteBtn(${resourceRemovementStat?.index+1})|" class="btn btn-danger btn-xs delteBtn" value="aaa"><i class=" glyphicon glyphicon-remove"></i></button></td>
+										</tr>
 										</tbody>
 									</table>
 								</div>
@@ -220,7 +230,7 @@
 
     var loadingIndex = -1;
 
-    var resourceRemovementList = new Array();
+    var resourceRemovementList = [[${session?.resourceRemovementList}]];
 
     $("#addBtn").click(function () {
 

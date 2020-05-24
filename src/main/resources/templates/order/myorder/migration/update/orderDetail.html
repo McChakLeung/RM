@@ -137,7 +137,17 @@
 										</tr>
 										</thead>
 										<tbody>
-
+										<tr th:each="resourceMigration:${session?.resourceMigrationList}">
+											<td th:text="${resourceMigration?.resource_id}">资源ID</td>
+											<td th:text="${resourceMigration?.resource_no}">资源号码</td>
+											<td th:text="${resourceMigration?.new_usedepartment_type}">资源号码</td>
+											<td th:text="${resourceMigration?.new_workplace_name}">新职场</td>
+											<td th:text="${resourceMigration?.new_network_room_name}">新机房</td>
+											<td th:text="${resourceMigration?.new_department_name}">新挂账部门</td>
+											<td th:text="${resourceMigration?.new_usedepartment_name}">新使用部门</td>
+											<td th:text="${resourceMigration?.price}">迁移费用</td>
+											<td><button type="button" th:onclick="|deleteBtn(${resourceMigrationStat?.index+1})|" class="btn btn-danger btn-xs delteBtn" value="aaa"><i class=" glyphicon glyphicon-remove"></i></button></td>
+										</tr>
 										</tbody>
 									</table>
 								</div>
@@ -190,7 +200,7 @@
 
     var loadingIndex = -1;
 
-    var ResourceMigrationList = new Array();
+    var ResourceMigrationList = [[${session?.resourceMigrationList}]];;
 
     $("#addBtn").click(function () {
 
@@ -360,8 +370,8 @@
         view: {
             // selectedMulti: false,
             addDiyDom: function(treeId, treeNode){
-                var aObj = $("#" + treeNode.tId + "_a"); // tId = permissionTree_1, ==> $("#permissionTree_1_a")
-                aObj.attr("href", "javascript:;");
+                //var aObj = $("#" + treeNode.tId + "_a"); // tId = permissionTree_1, ==> $("#permissionTree_1_a")
+                //aObj.attr("href", "javascript:;");
                 var icoObj = $("#" + treeNode.tId + "_ico"); // tId = permissionTree_1, $("#permissionTree_1_ico")
                 if ( treeNode.icon ) {
                     icoObj.removeClass("button ico_docu ico_open").addClass(treeNode.icon).css("background","");
@@ -748,7 +758,7 @@
         },
         success:function (result) {
             if(result.success){
-                window.location.href= [[@{|/order/myorder/migration/toMigrationEquipment|}]];
+                window.location.href= [[@{|/order/myorder/migration/update/toMigrationUpdateEquipment|}]];
             }else{
                 layer.msg(result.message,{time:2000, icon:5, shift:5})
             }

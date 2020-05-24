@@ -39,5 +39,9 @@ public interface OrderService {
 
     void deleteOrderByID(Long id);
 
+    void updateConstructionOrderInfo(Order order, User user, List<ConstructDetail> constructDetailList, List<EquipmentPurchaseRecord> equipmentPurchaseRecordList);
+
+    void updateMigrationOrderInfo(Order order, User user, List<ResourceMigration> resourceMigrationList, List<EquipmentPurchaseRecord> equipmentPurchaseRecordList);
+
     //Order selectOrderByIdAndStatus(Long id, String Status);
 }

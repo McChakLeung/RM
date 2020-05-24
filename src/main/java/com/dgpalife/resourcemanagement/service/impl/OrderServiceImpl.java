@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -183,6 +184,78 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public void updateConstructionOrderInfo(Order order, User user, List<ConstructDetail> constructDetailList, List<EquipmentPurchaseRecord> equipmentPurchaseRecordList) {
+        //设置order的其他信息
+        order.setStatus("待提交");
+        order.setProposerId(user.getId());
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        order.setCreateTime(sdf.format(date));
+
+        //更新工单信息
+        orderMapper.updateByPrimaryKeySelective(order);
+
+        //处理建设明细
+        //1) 删除明细表中与工单相关联的数据
+        constructDetailMapper.deleteByOrderId(order.getId());
+        //2) 更新建设明细表
+        for(ConstructDetail constructDetail: constructDetailList){
+            constructDetail.setCreateTime(sdf.format(date));
+            constructDetail.setCreatorId(user.getId());
+            constructDetail.setOrderId(order.getId());
+            constructDetailMapper.insertSelective(constructDetail);
+        }
+
+        //更新设备信息
+        //1) 删除明细表中与工单相关的数据
+        equipmentPurchaseRecordMapper.deleteByOrderId(order.getId());
+        //2) 更新明细表
+        for(EquipmentPurchaseRecord equipmentPurchaseRecord: equipmentPurchaseRecordList){
+            equipmentPurchaseRecord.setCreateTime(sdf.format(date));
+            equipmentPurchaseRecord.setCreatorId(user.getId());
+            equipmentPurchaseRecord.setOrderId(order.getId());
+            equipmentPurchaseRecordMapper.insertSelective(equipmentPurchaseRecord);
+        }
+
+    }
+
+    @Override
+    public void updateMigrationOrderInfo(Order order, User user, List<ResourceMigration> resourceMigrationList, List<EquipmentPurchaseRecord> equipmentPurchaseRecordList) {
+        //设置order的其他信息
+        order.setStatus("待提交");
+        order.setProposerId(user.getId());
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        order.setCreateTime(sdf.format(date));
+
+        //更新工单信息
+        orderMapper.updateByPrimaryKeySelective(order);
+
+        //处理建设明细
+        //1) 删除明细表中与工单相关联的数据
+        resourceMigrationMapper.deleteByOrderId(order.getId());
+        //2) 更新建设明细表
+        for(ResourceMigration resourceMigration: resourceMigrationList){
+            resourceMigration.setCreate_time(sdf.format(date));
+            resourceMigration.setCreator_id(user.getId());
+            resourceMigration.setOrder_id(order.getId());
+            resourceMigrationMapper.insertSelective(resourceMigration);
+        }
+
+        //更新设备信息
+        //1) 删除明细表中与工单相关的数据
+        equipmentPurchaseRecordMapper.deleteByOrderId(order.getId());
+        //2) 更新明细表
+        for(EquipmentPurchaseRecord equipmentPurchaseRecord: equipmentPurchaseRecordList){
+            equipmentPurchaseRecord.setCreateTime(sdf.format(date));
+            equipmentPurchaseRecord.setCreatorId(user.getId());
+            equipmentPurchaseRecord.setOrderId(order.getId());
+            equipmentPurchaseRecordMapper.insertSelective(equipmentPurchaseRecord);
+        }
+
+    }
+
+    @Override
     public void updateOrder(Order order) {
         orderMapper.updateByPrimaryKeySelective(order);
     }
@@ -232,25 +305,4 @@ public class OrderServiceImpl implements OrderService {
         return orderList;
     }
 
-
-
-//    @Override
-//    public Order selectOrderByIdAndStatus(Long id, String Status) {
-//        Order order = orderMapper.queryOrderByIdAndStatus(id,Status);
-//        Department applyDepartment = departmentMapper.selectByPrimaryKey(order.getApplyDepartmentId());
-//        User user = userMapper.selectByPrimaryKey(order.getProposerId());
-//        Project project = projectMapper.selectByPrimaryKey(order.getProjectId());
-//        List<ConstructDetail> constructDetailList = constructDetailMapper.selectByOrderID(order.getId());
-//        for(ConstructDetail constructDetail: constructDetailList){
-//            constructDetail.setUsedepartment(departmentMapper.selectByPrimaryKey(constructDetail.getUsedepartment_id()));
-//            constructDetail.setExpense(expenseMapper.selectByPrimaryKey(constructDetail.getExpenseId()));
-//            constructDetail.setWorkplace(workplaceMapper.selectByPrimaryKey(constructDetail.getWorkplaceId()));
-//            constructDetail.setNetworkRoom(networkRoomMapper.selectByPrimaryKey(constructDetail.getNetworkRoomId()));
-//        }
-//        order.setApplyDepartment(applyDepartment);
-//        order.setProposer(user);
-//        order.setProject(project);
-//        order.setConstructDetailList(constructDetailList);
-//        return order;
-//    }
 }

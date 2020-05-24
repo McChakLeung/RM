@@ -201,12 +201,20 @@ public class ResourceController {
 
     @ResponseBody
     @RequestMapping("/queryResoureDetailByID")
-    public Object queryResoureDetailByID(@RequestParam(value = "resource_id",required = false) Long resource_id){
+    public Object queryResoureDetailByID(@RequestParam(value = "resource_id",required = false) Long resource_id,HttpSession session){
         AjaxResult result = new AjaxResult();
 
         try{
-            Map<String,Object> resource = resourceService.queryResoureDetailByID(resource_id);
-            result.setDatas(resource);
+            Order order = (Order)session.getAttribute("order");
+            Resource resource = resourceService.queryResoureDetailByID(resource_id);
+            ResourceRemovement resourceRemovement = new ResourceRemovement();
+            resourceRemovement.setResource(resource);
+            resourceRemovement.setResourceId(resource_id);
+            resourceRemovement.setOrderId(order.getId());
+            resourceRemovement.setOrder(order);
+
+            //result.setDatas(resourceRemovement);
+            
             result.setSuccess(true);
         }catch (Exception e){
             result.setSuccess(false);

@@ -27,4 +27,5 @@ public interface ConstructDetailMapper {
     int getConstructDetailNumByOrderId(Long order_id);
 
     void deleteByOrderId(Long id);
+
 }

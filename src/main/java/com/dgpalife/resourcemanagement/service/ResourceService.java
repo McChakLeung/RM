@@ -21,7 +21,7 @@ public interface ResourceService {
 
     int selectCount(Map<String, Object> params);
 
-    Map<String,Object> queryResoureDetailByID(Long resource_id);
+    Resource queryResoureDetailByID(Long resource_id);
 
     void deleteResourceList(List<ResourceRemovement> resourceRemovementList);
 

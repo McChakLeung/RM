@@ -141,8 +141,18 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public Map<String, Object> queryResoureDetailByID(Long resource_id) {
-        return resourceMapper.queryResoureDetailByID(resource_id);
+    public Resource queryResoureDetailByID(Long resource_id) {
+        //return resourceMapper.queryResoureDetailByID(resource_id);
+        Resource resource = resourceMapper.selectByPrimaryKey(resource_id);
+        Workplace workplace = workplaceMapper.selectByPrimaryKey(resource.getWorkplace_id());
+        NetworkRoom networkRoom  = networkRoomMapper.selectByPrimaryKey(resource.getNetwork_room_id());
+        Department department = departmentMapper.selectByPrimaryKey(resource.getDepartment_id());
+        Department usedepartment = departmentMapper.selectByPrimaryKey(resource.getUsedepartment_id());
+        resource.setWorkplace(workplace);
+        resource.setNetworkRoom(networkRoom);
+        resource.setDepartment(department);
+        resource.setUsedepartment(usedepartment);
+        return  resource;
     }
 
     @Override

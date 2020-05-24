@@ -332,17 +332,17 @@
     </where>
   </select>
 
-  <select id="queryResoureDetailByID" resultType="map">
-    SELECT t1.id id, t1.resource_no resource_no,t1.resourc_type resourc_type,
-    t1.operator operator, t2.workplace_name workplace_name,t3.department_name department_name,
-    t4.department_name usedepartment_name, t1.username username
-    FROM t_resource t1
-    LEFT JOIN t_workplace t2 ON t1.workplace_id = t2.id
-    LEFT JOIN t_department t3 ON t1.department_id = t3.id
-    LEFT JOIN t_department t4 ON t1.usedepartment_id = t4.id
-    WHERE t1.id = #{resource_id}
-     AND t1.deleted = 0
-  </select>
+  <!--<select id="queryResoureDetailByID" resultMap="BaseResultMap">-->
+    <!--SELECT t1.id id, t1.resource_no resource_no,t1.resourc_type resourc_type,-->
+    <!--t1.operator operator, t2.workplace_name workplace_name,t3.department_name department_name,-->
+    <!--t4.department_name usedepartment_name, t1.username username-->
+    <!--FROM t_resource t1-->
+    <!--LEFT JOIN t_workplace t2 ON t1.workplace_id = t2.id-->
+    <!--LEFT JOIN t_department t3 ON t1.department_id = t3.id-->
+    <!--LEFT JOIN t_department t4 ON t1.usedepartment_id = t4.id-->
+    <!--WHERE t1.id = #{resource_id}-->
+     <!--AND t1.deleted = 0-->
+  <!--</select>-->
 
   <update id="updateResource">
     update t_resource

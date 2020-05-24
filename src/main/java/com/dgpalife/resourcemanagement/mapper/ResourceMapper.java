@@ -32,7 +32,7 @@ public interface ResourceMapper {
 
     int selectSearchResult(Map<String, Object> params);
 
-    Map<String,Object> queryResoureDetailByID(Long resource_id);
+    //Resource queryResoureDetailByID(Long resource_id);
 
     void updateResource(Long resourceId);
 }

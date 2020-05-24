@@ -61,7 +61,7 @@
 						<div class="panel">
 							<div class="panel-body">
 								<div class="panel-header" style="padding-top: 20px">
-									<h2>拆机工单 - 新建</h2>
+									<h2>拆机工单 - 更新</h2>
 								</div>
 								<br>
 								<hr>
@@ -75,38 +75,35 @@
 								<form role="form" style="margin-top:20px;">
 									<div class="form-group">
 										<label for="ftype">工单类型</label>
-										<input type="text" class="form-control" name="type" id="ftype" value="拆机工单" disabled>
+										<input type="text" class="form-control" name="type" id="ftype" th:value="${session?.order?.type}" disabled>
 									</div>
 									<div class="form-group">
 										<label for="ftitle">标题<span style="color:red">* </span></label>
-										<input type="text" class="form-control" name="title" id="ftitle">
+										<input type="text" class="form-control" name="title" id="ftitle" th:value="${session?.order?.title}">
 									</div>
 									<div class="form-group">
 										<label for="fapply_department">申请职能部门<span style="color:red">* </span></label>
-										<input type="text" class="form-control" id="fapply_department" placeholder="请选择职能部门或营业区" apply_department_id="" onclick="doLoadApplyDepartment()">
+										<input type="text" class="form-control" id="fapply_department" placeholder="请选择职能部门或营业区" th:value="${session?.order?.applyDepartment?.departmentName}"  th:attr="apply_department_id = ${session?.order?.applyDepartment?.id}" onclick="doLoadApplyDepartment()">
 									</div>
-									<!--<div class="form-group">-->
-										<!--<label for="fapply_usedepartment">申请科室|外勤部门<span style="color:red">* </span></label>-->
-										<!--<input type="text" class="form-control" id="fapply_usedepartment" placeholder="请选择科室|外勤部门" apply_usedepartment_id="" onclick="doloadApplyUseDepartment()">-->
-									<!--</div>-->
 									<div class="form-group">
 										<label for="fproject">所属项目</label>
-										<input type="text" class="form-control" id="fproject" placeholder="请选择所属项目" project_id="">
+										<input type="text" class="form-control" id="fproject" placeholder="请选择所属项目" th:value="${session?.order?.project?.projectName}" th:attr="project_id = ${session?.order?.projectId}">
 									</div>
 									<div class="form-group">
 										<label for="fproposer">申请人</label>
-										<input type="text" class="form-control" name="proposer" id="fproposer" th:value="${session.user.username}" th:attr="proposer_id = ${session.user.id}" disabled>
+										<input type="text" class="form-control" name="proposer" id="fproposer" th:value="${session?.order?.proposer?.username}" th:attr="proposer_id = ${session?.order?.proposerId}" disabled>
 									</div>
 									<div class="form-group">
 										<label for="fcontact">联系方式</label>
 										<!--<input type="text" class="form-control" name="contact" id="fcontact" th:value="${session.user.contact!=null}?${session.user.contact}:''" disabled>-->
-										<input type="text" class="form-control" name="contact" id="fcontact" th:value="${session.user.contact}" disabled>
+										<input type="text" class="form-control" name="contact" id="fcontact" th:value="${session?.order?.proposer?.contact}" disabled>
 									</div>
 									<div class="form-group">
 										<label for="freason">申请原因<span style="color:red">* </span></label>
 										<!--<input type="textarea"  rows="5" cols="30" class="form-control" name="reason" id="freason">-->
-										<textarea  rows="3"  class="form-control" name="reason" id="freason"></textarea>
+										<textarea  rows="3"  class="form-control" name="reason" id="freason" th:text="${session?.order?.reason}"></textarea>
 									</div>
+									<input type="hidden" id="fid" th:value="${session?.order?.id}">
 								</form>
 								<!--<button type="button" class="btn btn-default" id="backStep">上一步</button>-->
 								<button type="button" class="btn btn-success" id="nextStep">下一步</button>
@@ -146,6 +143,7 @@
 
 	    //组装order对象
 	    var order = {
+            "id":$("#fid").val(),
 	        "type":$("#ftype").val(),
 			"title":$("#ftitle").val(),
 			"applyDepartmentId":$("#fapply_department").attr("apply_department_id"),
@@ -199,7 +197,7 @@
             },
 			success:function (result) {
 				if(result.success){
-                    window.location.href='[[@{|/order/myorder/removement/toRemovementDetail|}]]';
+                    window.location.href='[[@{|/order/myorder/removement/update/toRemovementUpdateDetail|}]]';
 				}else{
                     layer.msg(result.message,{time:2000, icon:5, shift:5})
 				}
