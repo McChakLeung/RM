@@ -61,7 +61,7 @@
 						<div class="panel">
 							<div class="panel-body">
 								<div class="panel-header" style="padding-top: 20px">
-									<h2>建设工单 - 新建</h2>
+									<h2>拆机工单 - 新建</h2>
 								</div>
 								<br>
 								<hr>
@@ -133,15 +133,15 @@
 										</tr>
 										</thead>
 										<tbody >
-											<tr th:each="resource:${session?.resourceRemovementList}">
-												<td th:text="${resource?.id}">id</td>
-												<td th:text="${resource?.resource_no}">资源号码</td>
-												<td th:text="${resource?.resourc_type}">资源类型</td>
-												<td th:text="${resource?.operator}">运营商</td>
-												<td th:text="${resource?.workplace_name}">职场名称</td>
-												<td th:text="${resource?.department_name}">挂账部门</td>
-												<td th:text="${resource?.usedepartment_name}">使用部门</td>
-												<td th:text="${resource?.username}">使用人</td>
+											<tr th:each="resourceRemovement:${session?.resourceRemovementList}">
+												<td th:text="${resourceRemovement?.resource?.id}">id</td>
+												<td th:text="${resourceRemovement?.resource?.resource_no}">资源号码</td>
+												<td th:text="${resourceRemovement?.resource?.resourc_type}">资源类型</td>
+												<td th:text="${resourceRemovement?.resource?.operator}">运营商</td>
+												<td th:text="${resourceRemovement?.resource?.workplace.workplaceName}">职场名称</td>
+												<td th:text="${resourceRemovement?.resource?.department.departmentName}">挂账部门</td>
+												<td th:text="${resourceRemovement?.resource?.usedepartment.departmentName}">使用部门</td>
+												<td th:text="${resourceRemovement?.resource?.username}">使用人</td>
 											</tr>
 										</tbody>
 									</table>

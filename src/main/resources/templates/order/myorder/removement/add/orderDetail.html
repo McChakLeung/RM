@@ -251,6 +251,7 @@
             if(result.success){
                 //window.location.href= "[[@{|/order/myorder/construction/toEquipment|}]]";
                 resourceRemovementList.push(result.datas);
+                console.log(resourceRemovementList)
                 showDetail(resourceRemovementList);
             }else{
                 layer.msg(result.message,{time:2000, icon:5, shift:5})
@@ -270,13 +271,13 @@
         //console.log(constructDetailList)
         $.each(resourceRemovementList,function(i,n){
             content+='<tr>';
-            content+='  <td>'+n.id+'</td>';
+            content+='  <td>'+n.resource.id+'</td>';
             content+='  <td>'+n.resource.resource_no+'</td>';
             content+='  <td>'+n.resource.resourc_type+'</td>';
             content+='  <td>'+n.resource.operator+'</td>';
-            content+='  <td>'+n.workplace.workplaceName+'</td>';
-            content+='  <td>'+n.department.departmentName+'</td>';
-            content+='  <td>'+n.usedepartment.departmentName+'</td>';
+            content+='  <td>'+n.resource.workplace.workplaceName+'</td>';
+            content+='  <td>'+n.resource.department.departmentName+'</td>';
+            content+='  <td>'+n.resource.usedepartment.departmentName+'</td>';
             content+='  <td>'+n.resource.username + '</td>';
             content+='  <td>';
             // content+='	  <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';

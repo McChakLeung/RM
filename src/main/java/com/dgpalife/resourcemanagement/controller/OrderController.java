@@ -292,7 +292,7 @@ public class OrderController {
      */
     @ResponseBody
     @RequestMapping("/myorder/removement/saveTemporaryResourceRemovementList")
-    public Object saveTemporaryResourceRemovementList(@RequestBody List<Map<String,Object>> resourceRemovementList, HttpSession session){
+    public Object saveTemporaryResourceRemovementList(@RequestBody List<ResourceRemovement> resourceRemovementList, HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
             session.setAttribute("resourceRemovementList",resourceRemovementList);

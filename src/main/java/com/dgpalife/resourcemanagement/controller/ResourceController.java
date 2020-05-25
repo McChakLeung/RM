@@ -210,10 +210,10 @@ public class ResourceController {
             ResourceRemovement resourceRemovement = new ResourceRemovement();
             resourceRemovement.setResource(resource);
             resourceRemovement.setResourceId(resource_id);
-            resourceRemovement.setOrderId(order.getId());
+            //resourceRemovement.setOrderId(order.getId());
             resourceRemovement.setOrder(order);
 
-            //result.setDatas(resourceRemovement);
+            result.setDatas(resourceRemovement);
             
             result.setSuccess(true);
         }catch (Exception e){
