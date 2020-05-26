@@ -26,4 +26,6 @@ public interface ResourceService {
     void deleteResourceList(List<ResourceRemovement> resourceRemovementList);
 
     void updateMigrationResourceList(List<ResourceMigration> resourceMigrationList, List<Equipment> equipmentList, User user,Order order);
+
+    void removeResource(List<ResourceRemovement> resourceRemovementList, Order order);
 }

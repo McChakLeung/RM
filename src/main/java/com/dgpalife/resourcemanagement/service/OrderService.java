@@ -43,5 +43,7 @@ public interface OrderService {
 
     void updateMigrationOrderInfo(Order order, User user, List<ResourceMigration> resourceMigrationList, List<EquipmentPurchaseRecord> equipmentPurchaseRecordList);
 
+    void doAddRemovementOrder(User user, Order order, List<ResourceRemovement> resourceRemovementList);
+
     //Order selectOrderByIdAndStatus(Long id, String Status);
 }

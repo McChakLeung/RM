@@ -243,14 +243,7 @@ public class ResourceController {
                 result.setSuccess(false);
             }
 
-            //拆除资源
-            //第一步：在资源表中添加资源记录
-            resourceService.deleteResourceList(resourceRemovementList);
-
-            //第二步：更新order状态为已完成
-            order.setStatus("已完成");
-            order.setFinish(true);
-            orderService.updateOrder(order);
+            resourceService.removeResource(resourceRemovementList,order);
 
             result.setSuccess(true);
 

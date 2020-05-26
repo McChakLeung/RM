@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -251,6 +252,26 @@ public class OrderServiceImpl implements OrderService {
             equipmentPurchaseRecord.setCreatorId(user.getId());
             equipmentPurchaseRecord.setOrderId(order.getId());
             equipmentPurchaseRecordMapper.insertSelective(equipmentPurchaseRecord);
+        }
+
+    }
+
+    @Override
+    public void doAddRemovementOrder(User user, Order order, List<ResourceRemovement> resourceRemovementList) {
+        //设置order的其他信息
+        order.setStatus("待提交");
+        order.setProposerId(user.getId());
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        order.setCreateTime(sdf.format(date));
+
+        orderMapper.insertSelective(order);
+
+        for(ResourceRemovement resourceRemovement:resourceRemovementList){
+            resourceRemovement.setCreateTime(sdf.format(date));
+            resourceRemovement.setCreatorId(user.getId());
+            resourceRemovement.setOrderId(order.getId());
+            resourceRemovementMapper.insertSelective(resourceRemovement);
         }
 
     }

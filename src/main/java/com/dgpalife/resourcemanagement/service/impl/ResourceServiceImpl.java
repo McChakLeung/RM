@@ -212,4 +212,19 @@ public class ResourceServiceImpl implements ResourceService {
         orderMapper.updateByPrimaryKeySelective(order);
     }
 
+    @Override
+    public void removeResource(List<ResourceRemovement> resourceRemovementList, Order order) {
+        //拆除资源
+        //第一步：在资源表中添加资源记录
+        for(ResourceRemovement resourceRemovement: resourceRemovementList){
+            resourceMapper.deleteByPrimaryKey(resourceRemovement.getResourceId());
+        }
+        //resourceService.deleteResourceList(resourceRemovementList);
+
+        //第二步：更新order状态为已完成
+        order.setStatus("已完成");
+        order.setFinish(true);
+        orderMapper.updateByPrimaryKeySelective(order);
+    }
+
 }

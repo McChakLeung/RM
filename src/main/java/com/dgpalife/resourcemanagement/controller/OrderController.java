@@ -437,7 +437,7 @@ public class OrderController {
         try {
             User user = (User)session.getAttribute("user");
             Order order = (Order)session.getAttribute("order");
-            List<Map<String,Object>> resourceRemovementList = (List<Map<String,Object>>)session.getAttribute("resourceRemovementList");
+            List<ResourceRemovement> resourceRemovementList = (List<ResourceRemovement>)session.getAttribute("resourceRemovementList");
             if(order == null){
                 result.setSuccess(false);
                 result.setMessage("暂未填写工单基本信息，请重新填写");
@@ -449,53 +449,9 @@ public class OrderController {
                 return result;
             }
 
-            //设置order的其他信息
-            order.setStatus("待提交");
-            order.setProposerId(user.getId());
-            Date date = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            order.setCreateTime(sdf.format(date));
+            orderService.doAddRemovementOrder(user,order,resourceRemovementList);
 
-            orderService.saveOrder(order);
-
-            //遍历拆机清单，将Map集合中的数据存放到ResourceRemovement类中
-            List<ResourceRemovement> RMList = new ArrayList<>();
-
-//            for(Map<String,Object> resource: resourceRemovementList){
-//                ResourceRemovement resourceRemovement = new ResourceRemovement();
-//                resourceRemovement.setOrderId(order.getId());
-//                resourceRemovement.setResourceId((Long)resource.get("id"));
-//                resourceRemovement.setProjectId(order.getProjectId());
-//                resourceRemovement.setCreatorId(user.getId());
-//                resourceRemovement.setCreateTime(sdf.format(date));
-//                RMList.add(resourceRemovement);
-//            }
-
-            for(int i = 0;i<resourceRemovementList.size();i++){
-                ResourceRemovement resourceRemovement = new ResourceRemovement();
-//                Map<String, Object> map = resourceRemovementList.get(i);
-//                Iterator iterator = map.keySet().iterator();
-//                while (iterator.hasNext()){
-//                    resourceRemovement.setOrderId(order.getId());
-//                    Integer resource_id = (Integer)map.get("id");
-//                    resourceRemovement.setResourceId(resource_id.longValue());
-//                    resourceRemovement.setProjectId(order.getProjectId());
-//                    resourceRemovement.setCreatorId(user.getId());
-//                    resourceRemovement.setCreateTime(sdf.format(date));
-//                    RMList.add(resourceRemovement);
-//                }
-                Integer resource_id = (Integer)resourceRemovementList.get(i).get("id");
-                resourceRemovement.setOrderId(order.getId());
-                resourceRemovement.setResourceId(resource_id.longValue());
-                resourceRemovement.setProjectId(order.getProjectId());
-                resourceRemovement.setCreatorId(user.getId());
-                resourceRemovement.setCreateTime(sdf.format(date));
-                RMList.add(resourceRemovement);
-            }
-
-            //发送给后台处理
-            int count = resourceRemovementService.saveResourceRemovementListByBatch(RMList);
-            result.setSuccess(count>0);
+            result.setSuccess(true);
 
         }catch (Exception e){
             e.printStackTrace();
