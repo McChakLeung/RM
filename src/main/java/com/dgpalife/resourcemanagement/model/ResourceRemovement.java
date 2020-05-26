@@ -3,25 +3,45 @@ package com.dgpalife.resourcemanagement.model;
 public class ResourceRemovement {
     private Long id;
 
-    private Long resourceId;
+    private Long resource_id;
 
     private Resource resource;
 
-    private Long orderId;
+    private String resource_no;
+
+    private String resourc_type;
+
+    private String operator;
+
+    private String workplaceName;
+
+    private String networkroom_name;
+
+    private String departmentName;
+
+    private String usedepartmentName;
+
+    private String username;
 
     private Order order;
 
-    private Long projectId;
+    private Long order_id;
 
-    private Project project;
+    private Long project_id;
 
-    private Long templateId;
+    private Long template_id;
 
-    private Long creatorId;
+    private Long creator_id;
 
-    private User creator;
+    private String create_time;
 
-    private String createTime;
+    public String getNetworkroom_name() {
+        return networkroom_name;
+    }
+
+    public void setNetworkroom_name(String networkroom_name) {
+        this.networkroom_name = networkroom_name;
+    }
 
     public Resource getResource() {
         return resource;
@@ -39,22 +59,6 @@ public class ResourceRemovement {
         this.order = order;
     }
 
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
-    }
-
-    public User getCreator() {
-        return creator;
-    }
-
-    public void setCreator(User creator) {
-        this.creator = creator;
-    }
-
     public Long getId() {
         return id;
     }
@@ -63,51 +67,107 @@ public class ResourceRemovement {
         this.id = id;
     }
 
-    public Long getResourceId() {
-        return resourceId;
+    public Long getResource_id() {
+        return resource_id;
     }
 
-    public void setResourceId(Long resourceId) {
-        this.resourceId = resourceId;
+    public void setResource_id(Long resource_id) {
+        this.resource_id = resource_id;
     }
 
-    public Long getOrderId() {
-        return orderId;
+    public String getResource_no() {
+        return resource_no;
     }
 
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
+    public void setResource_no(String resource_no) {
+        this.resource_no = resource_no;
     }
 
-    public Long getProjectId() {
-        return projectId;
+    public String getResourc_type() {
+        return resourc_type;
     }
 
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
+    public void setResourc_type(String resourc_type) {
+        this.resourc_type = resourc_type;
     }
 
-    public Long getTemplateId() {
-        return templateId;
+    public String getOperator() {
+        return operator;
     }
 
-    public void setTemplateId(Long templateId) {
-        this.templateId = templateId;
+    public void setOperator(String operator) {
+        this.operator = operator;
     }
 
-    public Long getCreatorId() {
-        return creatorId;
+    public String getWorkplaceName() {
+        return workplaceName;
     }
 
-    public void setCreatorId(Long creatorId) {
-        this.creatorId = creatorId;
+    public void setWorkplaceName(String workplaceName) {
+        this.workplaceName = workplaceName;
     }
 
-    public String getCreateTime() {
-        return createTime;
+    public String getDepartmentName() {
+        return departmentName;
     }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getUsedepartmentName() {
+        return usedepartmentName;
+    }
+
+    public void setUsedepartmentName(String usedepartmentName) {
+        this.usedepartmentName = usedepartmentName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Long getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(Long order_id) {
+        this.order_id = order_id;
+    }
+
+    public Long getProject_id() {
+        return project_id;
+    }
+
+    public void setProject_id(Long project_id) {
+        this.project_id = project_id;
+    }
+
+    public Long getTemplate_id() {
+        return template_id;
+    }
+
+    public void setTemplate_id(Long template_id) {
+        this.template_id = template_id;
+    }
+
+    public Long getCreator_id() {
+        return creator_id;
+    }
+
+    public void setCreator_id(Long creator_id) {
+        this.creator_id = creator_id;
+    }
+
+    public String getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(String create_time) {
+        this.create_time = create_time;
     }
 }

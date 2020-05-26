@@ -209,7 +209,7 @@ public class ResourceController {
             Resource resource = resourceService.queryResoureDetailByID(resource_id);
             ResourceRemovement resourceRemovement = new ResourceRemovement();
             resourceRemovement.setResource(resource);
-            resourceRemovement.setResourceId(resource_id);
+            resourceRemovement.setResource_id(resource_id);
             //resourceRemovement.setOrderId(order.getId());
             resourceRemovement.setOrder(order);
 

@@ -2,34 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dgpalife.resourcemanagement.mapper.ResourceRemovementMapper">
   <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.ResourceRemovement">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="resource_id" jdbcType="BIGINT" property="resourceId" />
-    <result column="order_id" jdbcType="BIGINT" property="orderId" />
-    <result column="project_id" jdbcType="BIGINT" property="projectId" />
-    <result column="template_id" jdbcType="BIGINT" property="templateId" />
-    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="resource_id" jdbcType="BIGINT" property="resource_id" />
+    <result column="resource_no" jdbcType="VARCHAR" property="resource_no" />
+    <result column="resourc_type" jdbcType="VARCHAR" property="resourc_type" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="workplaceName" jdbcType="VARCHAR" property="workplaceName" />
+    <result column="networkroom_name" jdbcType="VARCHAR" property="networkroom_name" />
+    <result column="departmentName" jdbcType="VARCHAR" property="departmentName" />
+    <result column="usedepartmentName" jdbcType="VARCHAR" property="usedepartmentName" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="order_id" jdbcType="BIGINT" property="order_id" />
+    <result column="project_id" jdbcType="BIGINT" property="project_id" />
+    <result column="template_id" jdbcType="BIGINT" property="template_id" />
+    <result column="creator_id" jdbcType="BIGINT" property="creator_id" />
+    <result column="create_time" jdbcType="VARCHAR" property="create_time" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, resource_id, order_id, project_id, template_id, creator_id, create_time
+    id, resource_id, resource_no,
+      resourc_type, operator, workplaceName,networkroom_name,
+      departmentName, usedepartmentName, username,
+      order_id, project_id, template_id,
+      creator_id, create_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_resource_removement
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_resource_removement
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.ResourceRemovement">
-    insert into t_resource_removement (id, resource_id, order_id, 
-      project_id, template_id, creator_id, 
-      create_time)
-    values (#{id,jdbcType=BIGINT}, #{resourceId,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, 
-      #{projectId,jdbcType=BIGINT}, #{templateId,jdbcType=BIGINT}, #{creatorId,jdbcType=BIGINT}, 
-      #{createTime,jdbcType=VARCHAR})
+    insert into t_resource_removement (id, resource_id, resource_no, 
+      resourc_type, operator, workplaceName, networkroom_name,
+      departmentName, usedepartmentName, username, 
+      order_id, project_id, template_id, 
+      creator_id, create_time)
+    values (#{id,jdbcType=BIGINT}, #{resource_id,jdbcType=BIGINT}, #{resource_no,jdbcType=VARCHAR}, 
+      #{resourc_type,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, #{workplaceName,jdbcType=VARCHAR}, #{networkroom_name,jdbcType=VARCHAR},
+      #{departmentName,jdbcType=VARCHAR}, #{usedepartmentName,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
+      #{order_id,jdbcType=BIGINT}, #{project_id,jdbcType=BIGINT}, #{template_id,jdbcType=BIGINT}, 
+      #{creator_id,jdbcType=BIGINT}, #{create_time,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.ResourceRemovement">
     insert into t_resource_removement
@@ -37,22 +43,46 @@
       <if test="id != null">
         id,
       </if>
-      <if test="resourceId != null">
+      <if test="resource_id != null">
         resource_id,
       </if>
-      <if test="orderId != null">
+      <if test="resource_no != null">
+        resource_no,
+      </if>
+      <if test="resourc_type != null">
+        resourc_type,
+      </if>
+      <if test="operator != null">
+        operator,
+      </if>
+      <if test="workplaceName != null">
+        workplaceName,
+      </if>
+      <if test="networkroom_name != null">
+        networkroom_name,
+      </if>
+      <if test="departmentName != null">
+        departmentName,
+      </if>
+      <if test="usedepartmentName != null">
+        usedepartmentName,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="order_id != null">
         order_id,
       </if>
-      <if test="projectId != null">
+      <if test="project_id != null">
         project_id,
       </if>
-      <if test="templateId != null">
+      <if test="template_id != null">
         template_id,
       </if>
-      <if test="creatorId != null">
+      <if test="creator_id != null">
         creator_id,
       </if>
-      <if test="createTime != null">
+      <if test="create_time != null">
         create_time,
       </if>
     </trim>
@@ -60,70 +90,63 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="resourceId != null">
-        #{resourceId,jdbcType=BIGINT},
+      <if test="resource_id != null">
+        #{resource_id,jdbcType=BIGINT},
       </if>
-      <if test="orderId != null">
-        #{orderId,jdbcType=BIGINT},
+      <if test="resource_no != null">
+        #{resource_no,jdbcType=VARCHAR},
       </if>
-      <if test="projectId != null">
-        #{projectId,jdbcType=BIGINT},
+      <if test="resourc_type != null">
+        #{resourc_type,jdbcType=VARCHAR},
       </if>
-      <if test="templateId != null">
-        #{templateId,jdbcType=BIGINT},
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
       </if>
-      <if test="creatorId != null">
-        #{creatorId,jdbcType=BIGINT},
+      <if test="workplaceName != null">
+        #{workplaceName,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=VARCHAR},
+      <if test="networkroom_name != null">
+        #{networkroom_name,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentName != null">
+        #{departmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="usedepartmentName != null">
+        #{usedepartmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="order_id != null">
+        #{order_id,jdbcType=BIGINT},
+      </if>
+      <if test="project_id != null">
+        #{project_id,jdbcType=BIGINT},
+      </if>
+      <if test="template_id != null">
+        #{template_id,jdbcType=BIGINT},
+      </if>
+      <if test="creator_id != null">
+        #{creator_id,jdbcType=BIGINT},
+      </if>
+      <if test="create_time != null">
+        #{create_time,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.ResourceRemovement">
-    update t_resource_removement
-    <set>
-      <if test="resourceId != null">
-        resource_id = #{resourceId,jdbcType=BIGINT},
-      </if>
-      <if test="orderId != null">
-        order_id = #{orderId,jdbcType=BIGINT},
-      </if>
-      <if test="projectId != null">
-        project_id = #{projectId,jdbcType=BIGINT},
-      </if>
-      <if test="templateId != null">
-        template_id = #{templateId,jdbcType=BIGINT},
-      </if>
-      <if test="creatorId != null">
-        creator_id = #{creatorId,jdbcType=BIGINT},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.ResourceRemovement">
-    update t_resource_removement
-    set resource_id = #{resourceId,jdbcType=BIGINT},
-      order_id = #{orderId,jdbcType=BIGINT},
-      project_id = #{projectId,jdbcType=BIGINT},
-      template_id = #{templateId,jdbcType=BIGINT},
-      creator_id = #{creatorId,jdbcType=BIGINT},
-      create_time = #{createTime,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-
   <insert id="saveResourceRemovementListByBatch" parameterType="java.util.List">
-    insert into t_resource_removement (resource_id, order_id,
-      project_id, creator_id,
-      create_time)
+    insert into t_resource_removement (resource_id, resource_no,
+    resourc_type, operator, workplaceName,networkroom_name,
+    departmentName, usedepartmentName, username,
+    order_id, project_id, template_id,
+    creator_id, create_time)
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.resourceId,jdbcType=BIGINT}, #{item.orderId,jdbcType=BIGINT},
-      #{item.projectId,jdbcType=BIGINT}, #{item.creatorId,jdbcType=BIGINT},
-      #{item.createTime,jdbcType=VARCHAR})
+      (#{resource_id,jdbcType=BIGINT}, #{resource_no,jdbcType=VARCHAR},
+      #{resourc_type,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, #{workplaceName,jdbcType=VARCHAR},#{networkroom_name,jdbcType=VARCHAR},
+      #{departmentName,jdbcType=VARCHAR}, #{usedepartmentName,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR},
+      #{order_id,jdbcType=BIGINT}, #{project_id,jdbcType=BIGINT}, #{template_id,jdbcType=BIGINT},
+      #{creator_id,jdbcType=BIGINT}, #{create_time,jdbcType=VARCHAR})
     </foreach>
   </insert>
 

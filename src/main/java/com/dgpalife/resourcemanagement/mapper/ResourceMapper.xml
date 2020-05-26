@@ -18,11 +18,10 @@
     <result column="account_center" jdbcType="VARCHAR" property="account_center" />
     <result column="create_time" jdbcType="VARCHAR" property="create_time" />
     <result column="creator_id" jdbcType="BIGINT" property="creator_id" />
-    <result column="deleted" jdbcType="BOOLEAN" property="deleted" />
   </resultMap>
   <sql id="Base_Column_List">
     id, resource_no, resourc_type, operator,usedepartment_type,workplace_id, network_room_id, department_id, usedepartment_id,
-    username, equipment_id, equipment_port_num, expense_id, account_center, create_time, creator_id, deleted
+    username, equipment_id, equipment_port_num, expense_id, account_center, create_time, creator_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -37,14 +36,14 @@
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.Resource">
     insert into t_resource (
       id, resource_no, resourc_type, operator,usedepartment_type, workplace_id, network_room_id, department_id, usedepartment_id,
-      username, equipment_id, equipment_port_num, expense_id, account_center, create_time, creator_id, deleted
+      username, equipment_id, equipment_port_num, expense_id, account_center, create_time, creator_id
     )
     values (#{id,jdbcType=BIGINT}, #{resource_no,jdbcType=VARCHAR}, #{resourc_type,jdbcType=VARCHAR},
       #{operator,jdbcType=VARCHAR},#{usedepartment_type,jdbcType=VARCHAR},#{workplace_id,jdbcType=BIGINT}, #{network_room_id,jdbcType=BIGINT},
       #{department_id,jdbcType=BIGINT}, #{usedepartment_id,jdbcType=BIGINT},
       #{username,jdbcType=VARCHAR}, #{equipment_id,jdbcType=BIGINT}, #{equipment_port_num,jdbcType=VARCHAR},
       #{expense_id,jdbcType=BIGINT},#{account_center,jdbcType=VARCHAR},
-      #{create_time,jdbcType=VARCHAR}, #{creator_id,jdbcType=BIGINT},#{deleted,jdbcType=BOOLEAN} )
+      #{create_time,jdbcType=VARCHAR}, #{creator_id,jdbcType=BIGINT} )
   </insert>
   <insert id="insertSelective" parameterType="com.dgpalife.resourcemanagement.model.Resource" useGeneratedKeys="true" keyProperty="id">
     insert into t_resource
@@ -95,10 +94,7 @@
         create_time,
       </if>
       <if test="creator_id != null">
-        creator_id,
-      </if>
-      <if test="deleted != null">
-        deleted
+        creator_id
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -150,9 +146,6 @@
       <if test="creator_id != null">
         #{creator_id,jdbcType=BIGINT}
       </if>
-      <if test="deleted != null">
-        #{deleted,jdbcType=BOOLEAN}
-      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.Resource">
@@ -201,10 +194,7 @@
         create_time = #{create_time,jdbcType=VARCHAR},
       </if>
       <if test="creator_id != null">
-        creator_id = #{creator_id,jdbcType=BIGINT},
-      </if>
-      <if test="deleted != null">
-        deleted = #{deleted,jdbcType=BOOLEAN}
+        creator_id = #{creator_id,jdbcType=BIGINT}
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -226,8 +216,7 @@
       expense_id = #{expense_id,jdbcType=BIGINT},
       account_center = #{account_center,jdbcType=VARCHAR},
       create_time = #{create_time,jdbcType=VARCHAR},
-      creator_id = #{creator_id,jdbcType=BIGINT},
-      deleted = #{deleted,jdbcType=BOOLEAN}
+      creator_id = #{creator_id,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -262,7 +251,6 @@
       <if test="operator != null">
         AND t1.operator = #{operator}
       </if>
-        AND t1.deleted = 0
     </where>
     ORDER BY t1.create_time DESC
     limit #{startline}, #{pagesize}
@@ -289,9 +277,6 @@
       <if test="operator != null">
         AND operator = #{operator}
       </if>
-      <if test="operator != null">
-        AND t1.deleted = 0
-      </if>
     </where>
     ORDER BY create_time DESC
     limit #{startline}, #{pagesize}
@@ -303,7 +288,6 @@
     FROM t_resource t1
     LEFT JOIN t_equipment t2 ON t1.equipment_id = t2.id
     WHERE t1.id = #{id}
-    AND t1.deleted = 0
   </select>
 
   <select id="selectResourceByQueryText" resultType="map">
@@ -318,7 +302,6 @@
       <if test="queryText!=null">
         resource_no like concat("%",#{queryText},"%")
       </if>
-      AND t1.deleted = 0
     </where>
   </select>
 
@@ -328,7 +311,6 @@
       <if test="queryText!=null">
         resource_no like concat("%",#{queryText},"%")
       </if>
-      AND deleted = 0
     </where>
   </select>
 
@@ -344,9 +326,9 @@
      <!--AND t1.deleted = 0-->
   <!--</select>-->
 
-  <update id="updateResource">
-    update t_resource
-    set deleted = 1
-    WHERE id = #{resourceId}
-  </update>
+  <!--<update id="updateResource">-->
+    <!--update t_resource-->
+    <!--set deleted = 1-->
+    <!--WHERE id = #{resourceId}-->
+  <!--</update>-->
 </mapper>

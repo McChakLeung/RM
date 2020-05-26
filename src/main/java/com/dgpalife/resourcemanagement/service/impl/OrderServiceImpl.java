@@ -151,7 +151,7 @@ public class OrderServiceImpl implements OrderService {
         List<ResourceRemovement> resourceRemovementList = resourceRemovementMapper.selectResourceRemovementListByOrderId(order.getId());
         for(ResourceRemovement resourceRemovement:resourceRemovementList){
 
-            Resource resource = resourceMapper.selectByPrimaryKey(resourceRemovement.getResourceId());
+            Resource resource = resourceMapper.selectByPrimaryKey(resourceRemovement.getResource_id());
             if(resource == null){
                 resourceRemovement.setResource(null);
             }else {
@@ -264,13 +264,21 @@ public class OrderServiceImpl implements OrderService {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         order.setCreateTime(sdf.format(date));
-
+        //更新工单
         orderMapper.insertSelective(order);
-
+        //更新t_resource_removement
         for(ResourceRemovement resourceRemovement:resourceRemovementList){
-            resourceRemovement.setCreateTime(sdf.format(date));
-            resourceRemovement.setCreatorId(user.getId());
-            resourceRemovement.setOrderId(order.getId());
+            resourceRemovement.setResource_no(resourceRemovement.getResource().getResource_no());
+            resourceRemovement.setResourc_type(resourceRemovement.getResource().getResourc_type());
+            resourceRemovement.setOperator(resourceRemovement.getResource().getOperator());
+            resourceRemovement.setWorkplaceName(resourceRemovement.getResource().getWorkplace().getWorkplaceName());
+            resourceRemovement.setNetworkroom_name(resourceRemovement.getResource().getNetworkRoom().getNetworkroom_name());
+            resourceRemovement.setDepartmentName(resourceRemovement.getResource().getDepartment().getDepartmentName());
+            resourceRemovement.setUsedepartmentName(resourceRemovement.getResource().getUsedepartment().getDepartmentName());
+            resourceRemovement.setUsername(resourceRemovement.getResource().getUsername());
+            resourceRemovement.setCreate_time(sdf.format(date));
+            resourceRemovement.setCreator_id(user.getId());
+            resourceRemovement.setOrder_id(order.getId());
             resourceRemovementMapper.insertSelective(resourceRemovement);
         }
 

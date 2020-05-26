@@ -158,7 +158,7 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public void deleteResourceList(List<ResourceRemovement> resourceRemovementList) {
         for(ResourceRemovement resourceRemovement: resourceRemovementList){
-            resourceMapper.updateResource(resourceRemovement.getResourceId());
+            resourceMapper.updateResource(resourceRemovement.getResource_id());
         }
     }
 
@@ -217,7 +217,7 @@ public class ResourceServiceImpl implements ResourceService {
         //拆除资源
         //第一步：在资源表中添加资源记录
         for(ResourceRemovement resourceRemovement: resourceRemovementList){
-            resourceMapper.deleteByPrimaryKey(resourceRemovement.getResourceId());
+            resourceMapper.deleteByPrimaryKey(resourceRemovement.getResource_id());
         }
         //resourceService.deleteResourceList(resourceRemovementList);
 
