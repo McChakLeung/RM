@@ -75,16 +75,13 @@
 
 								<form class="form-horizontal" style="margin-top:20px;margin-bottom: 20px" id="form">
 									<div class="form-group">
+										<label for="fapply_department" class="col-md-2 control-label">申请职能部门|营业区<span style="color:red">* </span></label>
+										<div class="col-md-4">
+											<input type="text" class="form-control" id="fapply_department" name="apply_department.departmentName" placeholder="请选择职能部门|营业区" apply_department_id="" onclick="doLoadApplyDepartment()">
+										</div>
 										<label for="fusedepartment" class="col-md-2 control-label">使用科室|外勤部门<span style="color:red">* </span></label>
 										<div class="col-md-4">
 											<input type="text" class="form-control" id="fusedepartment" name="usedepartment.departmentName" placeholder="请选择科室|外勤部门" usedepartment_id="" onclick="doloadUseDepartment()">
-										</div>
-										<label for="fusedepartment_type" class="col-md-2 control-label">部门类型</label>
-										<div class="col-md-4">
-											<select class="form-control" id="fusedepartment_type" name="usedepartment_type">
-												<option>内勤</option>
-												<option>外勤</option>
-											</select>
 										</div>
 									</div>
 									<div class="form-group">
@@ -125,6 +122,15 @@
 										</div>
 									</div>
 									<div class="form-group">
+										<label for="fusedepartment_type" class="col-md-2 control-label">部门类型</label>
+										<div class="col-md-4">
+											<select class="form-control" id="fusedepartment_type" name="usedepartment_type">
+												<option>内勤</option>
+												<option>外勤</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
 										<label class="col-sm-2 control-label"></label>
 										<div class="col-sm-10">
 											<button id="addBtn" type="button" class="btn btn-primary">添加</button>
@@ -137,14 +143,15 @@
 										<thead>
 										<tr class="success">
 											<td>序号</td>
+											<td>申请职能部门|营业区</td>
 											<td>使用科室|外勤部门</td>
-											<td>部门类型</td>
 											<td>运营商</td>
 											<td>资源类型</td>
 											<td>装机数量</td>
 											<td>资费</td>
 											<td>所在职场</td>
 											<td>机房</td>
+											<td>部门类型</td>
 											<td>操作</td>
 										</tr>
 										</thead>
@@ -202,6 +209,17 @@
     var constructDetailList = new Array();
 
     $("#addBtn").click(function () {
+
+        if($.trim($("#fapply_department").val()) == ""){
+            // $("#fmessage").text("用户名不能为空，请重新输入");
+            layer.msg("申请职能部门|营业区不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
+                $("#fapply_department").val("");
+                $("#fapply_department").attr("apply_department_id","");
+                $("#fapply_department").focus();
+            })
+            return false
+        }
+
 		//判断必选项是否为空
         if($.trim($("#fusedepartment").val()) == ""){
             // $("#fmessage").text("用户名不能为空，请重新输入");
@@ -212,6 +230,7 @@
             })
             return false
         }
+
         if($.trim($("#fconstruct_number").val()) == ""){
             // $("#fmessage").text("用户名不能为空，请重新输入");
             layer.msg("装机数量不能为空，请重新输入", {time:2000, icon:5, shift:5},function () {
@@ -287,6 +306,8 @@
 
         });
 
+        dataArray["apply_department"]["id"] = $("#fapply_department").attr("apply_department_id");
+        dataArray["apply_department_id"] = $("#fapply_department").attr("apply_department_id");
         dataArray["usedepartment"]["id"] = $("#fusedepartment").attr("usedepartment_id");
         dataArray["usedepartment_id"] = $("#fusedepartment").attr("usedepartment_id");
         dataArray["workplace"]["id"] = $("#fworkplace").attr("workplace_id");
@@ -309,14 +330,15 @@
         $.each(constructDetailList,function(i,n){
             content+='<tr>';
             content+='  <td>'+(i+1)+'</td>';
+            content+='  <td>'+n.apply_department.departmentName+'</td>';
             content+='  <td>'+n.usedepartment.departmentName+'</td>';
-            content+='  <td>'+n.usedepartment_type+'</td>';
             content+='  <td>'+n.operator+'</td>';
             content+='  <td>'+n.resourceType+'</td>';
             content+='  <td>'+n.construct_number+'</td>';
             content+='  <td>'+n.expense.price+'</td>';
             content+='  <td>'+n.workplace.workplaceName + '</td>';
             content+='  <td>'+n.networkRoom.networkroom_name+'</td>';
+            content+='  <td>'+n.usedepartment_type+'</td>';
             content+='  <td>';
             // content+='	  <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
             content+='	  <button type="button" onclick="deleteBtn('+i+')" class="btn btn-danger btn-xs delteBtn" value="aaa"><i class=" glyphicon glyphicon-remove"></i></button>';
@@ -395,7 +417,7 @@
         $.getJSON(url,function(result){
             if(result.success){
                 zTree = $.fn.zTree.init($("#departmentTree"), setting, result.datas);
-                zTree.expandAll(false)
+                zTree.expandAll(true)
             }else{
                 layer.msg(result.message, {time:1000, icon:5, shift:6});
             }
@@ -438,7 +460,7 @@
     //异步加载职能部门下的部门节点
     function doloadUseDepartment(){
         $("#departmentTree").empty();
-        var apply_department_id = [[${session.order.applyDepartment.id}]]
+        var apply_department_id = $("#fapply_department").attr("apply_department_id");
 		console.log(apply_department_id)
         var url = [[@{|/setting/department/doloadUseDepartment/|}]] + apply_department_id;
         $.getJSON(url,function(result){
@@ -678,6 +700,7 @@
 
     $("#resetBtn").click(function () {
         $("#form")[0].reset();
+        $("#fapply_department").attr("apply_department_id","");
         $("#fusedepartment").attr("usedepartment_id","");
         $("#fworkplace").attr("workplace_id","");
         $("#fnetworkRoom").attr("networkroom_id","");

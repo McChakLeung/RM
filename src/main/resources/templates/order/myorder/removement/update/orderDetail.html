@@ -92,11 +92,12 @@
 									<table id="detailList" class="table table-bordered" style="text-align:center;">
 										<thead>
 										<tr class="success">
-											<td>ID</td>
+											<td>资源ID</td>
 											<td>资源号码</td>
 											<td>资源类型</td>
 											<td>运营商</td>
 											<td>职场名称</td>
+											<td>机房名称</td>
 											<td>挂账部门</td>
 											<td>使用部门</td>
 											<td>使用人</td>
@@ -105,11 +106,12 @@
 										</thead>
 										<tbody>
 										<tr th:each="resourceRemovement:${session?.resourceRemovementList}">
-											<td th:text="${resourceRemovement?.id}">id</td>
+											<td th:text="${resourceRemovement?.resource?.id}">id</td>
 											<td th:text="${resourceRemovement?.resource?.resource_no}">资源号码</td>
 											<td th:text="${resourceRemovement?.resource?.resourc_type}">资源类型</td>
 											<td th:text="${resourceRemovement?.resource?.operator}">运营商</td>
 											<td th:text="${resourceRemovement?.resource?.workplace?.workplaceName}">职场名称</td>
+											<td th:text="${resourceRemovement?.resource?.networkRoom?.networkroom_name}">机房名称</td>
 											<td th:text="${resourceRemovement?.resource?.department?.departmentName}">挂账部门</td>
 											<td th:text="${resourceRemovement?.resource?.usedepartment?.departmentName}">使用部门</td>
 											<td th:text="${resourceRemovement?.resource?.username}">使用人</td>
@@ -179,6 +181,7 @@
                             ,{field: 'resourc_type', title: '资源类型'}
                             ,{field: 'operator', title: '运营商'}
                             ,{field: 'workplace_name', title: '职场名称',width:120}
+                            ,{field: 'networkroom_name', title: '机房名称'}
                             ,{field: 'department_name', title: '挂账部门'}
                             ,{field: 'usedepartment_name', title: '使用部门'}
                             ,{field: 'username', title: '使用人'}
@@ -280,14 +283,15 @@
         //console.log(constructDetailList)
         $.each(resourceRemovementList,function(i,n){
             content+='<tr>';
-            content+='  <td>'+n.id+'</td>';
-            content+='  <td>'+n.resource_no+'</td>';
-            content+='  <td>'+n.resourc_type+'</td>';
-            content+='  <td>'+n.operator+'</td>';
-            content+='  <td>'+n.workplace_name+'</td>';
-            content+='  <td>'+n.department_name+'</td>';
-            content+='  <td>'+n.usedepartment_name+'</td>';
-            content+='  <td>'+n.username + '</td>';
+            content+='  <td>'+n.resource.id+'</td>';
+            content+='  <td>'+n.resource.resource_no+'</td>';
+            content+='  <td>'+n.resource.resourc_type+'</td>';
+            content+='  <td>'+n.resource.operator+'</td>';
+            content+='  <td>'+n.resource.workplace.workplaceName+'</td>';
+            content+='  <td>'+n.resource.networkRoom.networkroom_name+'</td>';
+            content+='  <td>'+n.resource.department.departmentName+'</td>';
+            content+='  <td>'+n.resource.usedepartment.departmentName+'</td>';
+            content+='  <td>'+n.resource.username + '</td>';
             content+='  <td>';
             // content+='	  <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
             content+='	  <button type="button" onclick="deleteBtn('+i+')" class="btn btn-danger btn-xs delteBtn" value="aaa"><i class=" glyphicon glyphicon-remove"></i></button>';
@@ -322,7 +326,7 @@
             },
 			success:function (result) {
 				if(result.success){
-                    window.location.href= [[@{|/order/myorder/removement/toPreviewRemovementOrder|}]];
+                    window.location.href= [[@{|/order/myorder/removement/update/toPreviewUpdateRemovementOrder|}]];
 				}else{
                     layer.msg(result.message,{time:2000, icon:5, shift:5})
 				}

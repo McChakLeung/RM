@@ -3,6 +3,10 @@ package com.dgpalife.resourcemanagement.model;
 public class ConstructDetail {
     private Long id;
 
+    private Department apply_department;
+
+    private Long apply_department_id;
+
     private Long usedepartment_id;
 
     private Department usedepartment;
@@ -44,6 +48,22 @@ public class ConstructDetail {
     private Long projectId;
 
     private Project project;
+
+    public Department getApply_department() {
+        return apply_department;
+    }
+
+    public void setApply_department(Department apply_department) {
+        this.apply_department = apply_department;
+    }
+
+    public Long getApply_department_id() {
+        return apply_department_id;
+    }
+
+    public void setApply_department_id(Long apply_department_id) {
+        this.apply_department_id = apply_department_id;
+    }
 
     public Long getProjectId() {
         return projectId;

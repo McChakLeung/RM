@@ -3,6 +3,7 @@
 <mapper namespace="com.dgpalife.resourcemanagement.mapper.ConstructDetailMapper">
   <resultMap id="BaseResultMap" type="com.dgpalife.resourcemanagement.model.ConstructDetail">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="apply_department_id" jdbcType="BIGINT" property="apply_department_id" />
     <result column="usedepartment_id" jdbcType="BIGINT" property="usedepartment_id" />
     <result column="usedepartment_type" jdbcType="VARCHAR" property="usedepartment_type" />
     <result column="operator" jdbcType="VARCHAR" property="operator" />
@@ -18,7 +19,7 @@
     <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, usedepartment_id,usedepartment_type,operator, resource_type,
+    id,apply_department_id,usedepartment_id,usedepartment_type,operator, resource_type,
     construct_number, expense_id,workplace_id, network_room_id, project_id,
     order_id,template_id, create_time, creator_id
   </sql>
@@ -33,11 +34,11 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dgpalife.resourcemanagement.model.ConstructDetail">
-    insert into t_construct_detail (id, operator, resource_type, 
+    insert into t_construct_detail (id,apply_department_id,usedepartment_id, operator, resource_type,
       construct_number, expense_id, workplace_id,network_room_id,
       project_id, order_id, template_id, 
       create_time, creator_id)
-    values (#{id,jdbcType=BIGINT}, #{operator,jdbcType=VARCHAR}, #{resourceType,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT},#{apply_department_id,jdbcType=BIGINT},#{usedepartment_id,jdbcType=BIGINT}, #{operator,jdbcType=VARCHAR}, #{resourceType,jdbcType=VARCHAR},
       #{construct_number,jdbcType=INTEGER}, #{expenseId,jdbcType=BIGINT},#{workplaceId,jdbcType=BIGINT}, #{networkRoomId,jdbcType=BIGINT},
       #{projectId,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{templateId,jdbcType=BIGINT}, 
       #{createTime,jdbcType=VARCHAR}, #{creatorId,jdbcType=BIGINT})
@@ -47,6 +48,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="apply_department_id != null">
+        apply_department_id,
       </if>
       <if test="usedepartment_id != null">
         usedepartment_id,
@@ -92,6 +96,9 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
+      <if test="apply_department_id != null">
+        #{apply_department_id,jdbcType=BIGINT},
+      </if>
       <if test="usedepartment_id != null">
         #{usedepartment_id,jdbcType=BIGINT},
       </if>
@@ -136,6 +143,12 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.dgpalife.resourcemanagement.model.ConstructDetail">
     update t_construct_detail
     <set>
+      <if test="apply_department_id != null">
+        apply_department_id = #{apply_department_id,jdbcType=BIGINT},
+      </if>
+      <if test="usedepartment_id != null">
+        usedepartment_id = #{usedepartment_id,jdbcType=BIGINT},
+      </if>
       <if test="operator != null">
         operator = #{operator,jdbcType=VARCHAR},
       </if>
@@ -174,7 +187,10 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dgpalife.resourcemanagement.model.ConstructDetail">
     update t_construct_detail
-    set operator = #{operator,jdbcType=VARCHAR},
+    set
+      apply_department_id = #{apply_department_id,jdbcType=BIGINT},
+      usedepartment_id = #{usedepartment_id,jdbcType=BIGINT},
+      operator = #{operator,jdbcType=VARCHAR},
       resource_type = #{resourceType,jdbcType=VARCHAR},
       construct_number = #{construct_number,jdbcType=INTEGER},
       expense_id = #{expenseId,jdbcType=BIGINT},
@@ -188,11 +204,12 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="insertByBatch" >
-      insert into t_construct_detail (usedepartment_id,usedepartment_type,operator, resource_type,
+      insert into t_construct_detail (apply_department_id, usedepartment_id,usedepartment_type,operator, resource_type,
       construct_number, expense_id, workplace_id,network_room_id,
       project_id, order_id,
       create_time, creator_id) values
       <foreach collection="constructDetailList" item="constructDetail" separator=",">
+        #{constructDetail.apply_department_id,jdbcType=BIGINT}, #{constructDetail.usedepartment_id,jdbcType=BIGINT},
         (#{constructDetail.operator,jdbcType=VARCHAR}, #{constructDetail.resourceType,jdbcType=VARCHAR},
         #{constructDetail.construct_number,jdbcType=INTEGER}, #{constructDetail.expenseId,jdbcType=BIGINT},
         #{constructDetail.workplaceId,jdbcType=BIGINT}, #{constructDetail.networkRoomId,jdbcType=BIGINT},

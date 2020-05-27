@@ -632,6 +632,11 @@ public class OrderController {
         return "/order/myorder/construction/update/previewOrder";
     }
 
+    @RequestMapping("/myorder/removement/update/toPreviewUpdateRemovementOrder")
+    public String toPreviewUpdateRemovementOrder(){
+        return "/order/myorder/removement/update/previewOrder";
+    }
+
     @ResponseBody
     @RequestMapping("/myorder/construction/update/doUpdateConstructionOrder")
     public Object doUpdateConstructionOrder(HttpSession session){
@@ -687,6 +692,28 @@ public class OrderController {
             session.removeAttribute("order");
             session.removeAttribute("resourceMigrationList");
             session.removeAttribute("equipmentPurchaseRecordList");
+        }
+        return result;
+    }
+
+    @ResponseBody
+    @RequestMapping("/myorder/removement/update/doUpdateRemovementOrder")
+    public Object doUpdateRemovementOrder(HttpSession session){
+        AjaxResult result = new AjaxResult();
+        try {
+            User user = (User)session.getAttribute("user");
+            Order order = (Order)session.getAttribute("order");
+            List<ResourceRemovement> resourceRemovementList = (List<ResourceRemovement>)session.getAttribute("resourceRemovementList");
+            orderService.doUpdateRemovementOrder(order,user,resourceRemovementList);
+            result.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess(false);
+            result.setMessage("更新工单异常，请联系管理员解决");
+        }finally {
+            //创建工单后销毁相关的session属性
+            session.removeAttribute("order");
+            session.removeAttribute("resourceRemovementList");
         }
         return result;
     }

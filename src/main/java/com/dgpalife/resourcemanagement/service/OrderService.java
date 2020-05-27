@@ -45,5 +45,7 @@ public interface OrderService {
 
     void doAddRemovementOrder(User user, Order order, List<ResourceRemovement> resourceRemovementList);
 
+    void doUpdateRemovementOrder(Order order, User user, List<ResourceRemovement> resourceRemovementList);
+
     //Order selectOrderByIdAndStatus(Long id, String Status);
 }

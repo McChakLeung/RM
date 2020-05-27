@@ -123,6 +123,7 @@
 										<thead>
 										<tr class="success">
 											<td>序号</td>
+											<td>申请职能部门|营业区</td>
 											<td>使用科室|外勤部门</td>
 											<td>部门类型</td>
 											<td>运营商</td>
@@ -136,6 +137,7 @@
 										<tbody >
 											<tr th:each="constructDetail:${session?.constructDetailList}">
 												<td th:text="${constructDetailStat?.count}">序号</td>
+												<td th:text="${constructDetail?.apply_department?.departmentName}">申请职能部门|营业区</td>
 												<td th:text="${constructDetail?.usedepartment?.departmentName}">使用科室|外勤部门</td>
 												<td th:text="${constructDetail?.usedepartment_type}">部门类型</td>
 												<td th:text="${constructDetail?.operator}">运营商</td>

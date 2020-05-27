@@ -127,28 +127,30 @@
 											<td>资源类型</td>
 											<td>运营商</td>
 											<td>职场名称</td>
+											<td>机房名称</td>
 											<td>挂账部门</td>
 											<td>使用部门</td>
 											<td>使用人</td>
 										</tr>
 										</thead>
 										<tbody >
-											<tr th:each="resource:${session?.resourceRemovementList}">
-												<td th:text="${resource?.id}">id</td>
-												<td th:text="${resource?.resource_no}">资源号码</td>
-												<td th:text="${resource?.resourc_type}">资源类型</td>
-												<td th:text="${resource?.operator}">运营商</td>
-												<td th:text="${resource?.workplace_name}">职场名称</td>
-												<td th:text="${resource?.department_name}">挂账部门</td>
-												<td th:text="${resource?.usedepartment_name}">使用部门</td>
-												<td th:text="${resource?.username}">使用人</td>
+										<tr th:each="resourceRemovement:${session?.resourceRemovementList}">
+											<td th:text="${resourceRemovement?.resource?.id}">id</td>
+											<td th:text="${resourceRemovement?.resource?.resource_no}">资源号码</td>
+											<td th:text="${resourceRemovement?.resource?.resourc_type}">资源类型</td>
+											<td th:text="${resourceRemovement?.resource?.operator}">运营商</td>
+											<td th:text="${resourceRemovement?.resource?.workplace?.workplaceName}">职场名称</td>
+											<td th:text="${resourceRemovement?.resource?.networkRoom?.networkroom_name}">机房名称</td>
+											<td th:text="${resourceRemovement?.resource?.department?.departmentName}">挂账部门</td>
+											<td th:text="${resourceRemovement?.resource?.usedepartment?.departmentName}">使用部门</td>
+											<td th:text="${resourceRemovement?.resource?.username}">使用人</td>
 											</tr>
 										</tbody>
 									</table>
 								</div>
 								<br>
 								<!--<button type="button" class="btn btn-default" id="backStep">上一步</button>-->
-								<button type="button" class="btn btn-success" id="submitBtn">创建工单</button>
+								<button type="button" class="btn btn-success" id="submitBtn">更新工单</button>
 							</div>
 						</div>
 						<!-- END BASIC TABLE -->
@@ -171,7 +173,7 @@
     var loadingIndex = -1;
 
     $("#submitBtn").click(function () {
-        var url = "[[@{|/order/myorder/removement/doAddRemovementOrder|}]]";
+        var url = "[[@{|/order/myorder/removement/update/doUpdateRemovementOrder|}]]";
         $.getJSON(url,function(result){
             if(result.success){
                 layer.msg("创建成功", {time:1000, icon:0, shift:6});

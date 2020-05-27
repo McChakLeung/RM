@@ -130,15 +130,15 @@
 										</thead>
 										<tbody >
 											<tr th:each="resourceRemovement:${resourceRemovementList}">
-												<td th:text="${resourceRemovement?.resource_id}">id</td>
-												<td th:text="${resourceRemovement?.resource_no}">资源号码</td>
-												<td th:text="${resourceRemovement?.resourc_type}">资源类型</td>
-												<td th:text="${resourceRemovement?.operator}">运营商</td>
-												<td th:text="${resourceRemovement?.workplaceName}">职场名称</td>
-												<td th:text="${resourceRemovement?.networkroom_name}">所在机房</td>
-												<td th:text="${resourceRemovement?.departmentName}">挂账部门</td>
-												<td th:text="${resourceRemovement?.usedepartmentName}">使用部门</td>
-												<td th:text="${resourceRemovement?.username}">使用人</td>
+												<td th:text="${resourceRemovement?.resource?.id}">id</td>
+												<td th:text="${resourceRemovement?.resource?.resource_no}">资源号码</td>
+												<td th:text="${resourceRemovement?.resource?.resourc_type}">资源类型</td>
+												<td th:text="${resourceRemovement?.resource?.operator}">运营商</td>
+												<td th:text="${resourceRemovement?.resource?.workplace?.workplaceName}">职场名称</td>
+												<td th:text="${resourceRemovement?.resource?.networkRoom?.networkroom_name}">机房名称</td>
+												<td th:text="${resourceRemovement?.resource?.department?.departmentName}">挂账部门</td>
+												<td th:text="${resourceRemovement?.resource?.usedepartment?.departmentName}">使用部门</td>
+												<td th:text="${resourceRemovement?.resource?.username}">使用人</td>
 											</tr>
 										</tbody>
 									</table>

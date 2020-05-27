@@ -126,6 +126,7 @@ public class OrderServiceImpl implements OrderService {
     public List<ConstructDetail> queryConstructDetailListByOrder(Order order) {
         List<ConstructDetail> constructDetailList = constructDetailMapper.selectByOrderID(order.getId());
         for(ConstructDetail constructDetail: constructDetailList){
+            constructDetail.setApply_department(departmentMapper.selectByPrimaryKey(constructDetail.getApply_department_id()));
             constructDetail.setUsedepartment(departmentMapper.selectByPrimaryKey(constructDetail.getUsedepartment_id()));
             constructDetail.setExpense(expenseMapper.selectByPrimaryKey(constructDetail.getExpenseId()));
             constructDetail.setWorkplace(workplaceMapper.selectByPrimaryKey(constructDetail.getWorkplaceId()));
@@ -276,6 +277,31 @@ public class OrderServiceImpl implements OrderService {
             resourceRemovement.setDepartmentName(resourceRemovement.getResource().getDepartment().getDepartmentName());
             resourceRemovement.setUsedepartmentName(resourceRemovement.getResource().getUsedepartment().getDepartmentName());
             resourceRemovement.setUsername(resourceRemovement.getResource().getUsername());
+            resourceRemovement.setCreate_time(sdf.format(date));
+            resourceRemovement.setCreator_id(user.getId());
+            resourceRemovement.setOrder_id(order.getId());
+            resourceRemovementMapper.insertSelective(resourceRemovement);
+        }
+
+    }
+
+    @Override
+    public void doUpdateRemovementOrder(Order order, User user, List<ResourceRemovement> resourceRemovementList) {
+        //设置order的其他信息
+        order.setStatus("待提交");
+        order.setProposerId(user.getId());
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        order.setCreateTime(sdf.format(date));
+
+        //更新工单信息
+        orderMapper.updateByPrimaryKeySelective(order);
+
+        //处理建设明细
+        //1) 删除明细表中与工单相关联的数据
+        resourceRemovementMapper.deleteByOrderId(order.getId());
+        //2) 更新建设明细表
+        for(ResourceRemovement resourceRemovement: resourceRemovementList){
             resourceRemovement.setCreate_time(sdf.format(date));
             resourceRemovement.setCreator_id(user.getId());
             resourceRemovement.setOrder_id(order.getId());
