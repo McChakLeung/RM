@@ -841,7 +841,11 @@ public class OrderController {
             List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = orderService.queryEquipmentPurchaseRecordListByOrder(order);
             session.setAttribute("constructDetailList",constructDetailList);
             session.setAttribute("equipmentPurchaseRecordList",equipmentPurchaseRecordList);
-            return "/order/pre_handle_order/construction/construction_equipment";
+            if(equipmentPurchaseRecordList == null || equipmentPurchaseRecordList.isEmpty()){
+                return "/order/pre_handle_order/construction/construction_old_equipment";
+            }else{
+                return "/order/pre_handle_order/construction/construction_new_equipment";
+            }
         }else if (Const.MIGRATION.equals(order.getType())){
             List<ResourceMigration> resourceMigrationList = orderService.queryResourceMigrationListByOrder(order);
             List<EquipmentPurchaseRecord> equipmentPurchaseRecordList = orderService.queryEquipmentPurchaseRecordListByOrder(order);
@@ -910,7 +914,7 @@ public class OrderController {
 
     @RequestMapping("/preHandleOrder/construction/toResourceConstruction")
     public String toResourceConstruction(){
-        return "/order/pre_handle_order/construction/construction_resource";
+        return "construction_old_equipment";
     }
 
     @RequestMapping("/preHandleOrder/migration/toResourceMigration")

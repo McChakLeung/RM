@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Tables</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<!-- VENDOR CSS -->
+	<link rel="stylesheet" th:href="@{|/static/js/vendor/bootstrap/css/bootstrap.min.css|}">
+	<link rel="stylesheet" th:href="@{|/static/js/vendor/font-awesome/css/font-awesome.min.css|}">
+	<link rel="stylesheet" th:href="@{|/static/js/vendor/linearicons/style.css|}">
+	<!-- MAIN CSS -->
+	<link rel="stylesheet" th:href="@{|/static/css/main.css|}">
+	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+	<link rel="stylesheet" th:href="@{|/static/css/demo.css|}">
+	<!--LAYUI CSS-->
+	<link rel="stylesheet" th:href="@{|/static/js/layui/css/layui.css|}">
+	<!--ZTREE CSS-->
+	<link rel="stylesheet" th:href="@{|/static/ztree/zTreeStyle.css|}">
+	<!-- GOOGLE FONTS -->
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+	<!-- ICONS -->
+	<link rel="apple-touch-icon" sizes="76x76" th:href="@{|/static/img/apple-icon.png|}">
+	<link rel="icon" type="image/png" sizes="96x96" th:href="@{|/static/img/favicon.png|}">
+	<!-- Javascript -->
+	<script th:src="@{|/static/js/vendor/jquery/jquery.min.js|}"></script>
+	<script th:src="@{|/static/js/vendor/bootstrap/js/bootstrap.min.js|}"></script>
+	<script th:src="@{|/static/js/vendor/jquery-slimscroll/jquery.slimscroll.min.js|}"></script>
+	<script th:src="@{|/static/js/scripts/klorofil-common.js|}"></script>
+	<script th:src="@{|/static/js/layer/layer.js|}"></script>
+	<script th:src="@{|/static/js/layui/layui.js|}"></script>
+	<script th:src="@{|/static/js/vendor/common.js|}"></script>
+	<script th:src="@{|/static/ztree/jquery.ztree.all-3.5.min.js|}"></script>
+
+</head>
+
+<body>
+<!-- WRAPPER -->
+<div id="wrapper">
+	<!-- NAVBAR -->
+	<div id="header" th:include="/commons/header :: headerContext"></div>
+	<!-- END NAVBAR -->
+	<!-- LEFT SIDEBAR -->
+	<div id="left_sidebar" th:include="/commons/left_sidebar :: leftContext"></div>
+	<!-- END LEFT SIDEBAR -->
+		<!-- MAIN -->
+	<div class="main">
+		<!-- MAIN CONTENT -->
+		<div class="main-content">
+			<div class="container-fluid">
+				<!--<h3 class="page-title">Tables</h3>-->
+				<ol class="breadcrumb">
+					<li><a th:href="@{|#|}">首页</a></li>
+					<li><a th:href="@{|#|}">资源管理</a></li>
+					<li class="active">工单管理</li>
+				</ol>
+				<div class="row">
+					<div class="col-md-12">
+						<!-- BASIC TABLE -->
+						<div class="panel">
+							<div class="panel-body">
+								<div class="panel-header" style="padding-top: 20px">
+									<h2>建设工单转资源处理 - 新设备</h2>
+								</div>
+								<br>
+								<hr>
+								<br>
+								<ul class="nav nav-tabs" role="tablist">
+									<li role="presentation" class="active"><a><span class="badge">1</span> 工单信息预览</a></li>
+								</ul>
+								<form role="form" style="margin-top:20px;" class="form-horizontal">
+									<div class="form-group">
+										<label for="ftitle" class="col-sm-2 control-label">标题：</label>
+										<div class="col-sm-10">
+											<span id="ftitle" class="form-control" th:text="${session.order?.title}"></span>
+										</div>
+										<!--<input type="text" class="form-control" name="title" id="ftitle">-->
+									</div>
+
+									<div class="form-group">
+										<label for="apply_department" class="col-sm-2 control-label">申请职能部门：</label>
+										<div class="col-sm-10">
+											<span id="apply_department" class="form-control" th:text="${session.order?.applyDepartment?.departmentName}" ></span>
+										</div>
+
+										<!--<input type="text" class="form-control" id="fapply_department" placeholder="请选择职能部门或营业区" apply_department_id="" onclick="doLoadApplyDepartment()">-->
+									</div>
+
+									<div class="form-group">
+										<label for="ftype" class="col-sm-2 control-label">工单类型：</label>
+										<div class="col-sm-4">
+											<span id="ftype" class="form-control" th:text="${session.order?.type}"></span>
+										</div>
+										<label for="fproject" class="col-sm-2 control-label">所属项目：</label>
+										<div class="col-sm-4">
+											<span id="fproject" class="form-control" th:text="${session.order?.project?.projectName}"></span>
+										</div>
+										<!--<input type="text" class="form-control" name="type" id="ftype" value="建设工单" disabled>-->
+									</div>
+
+									<div class="form-group">
+										<label for="fproposer" class="col-sm-2 control-label">申请人：</label>
+										<div class="col-sm-4">
+											<span id="fproposer" class="form-control" th:text="${session.order?.proposer?.username}"></span>
+										</div>
+										<label for="fcontact" class="col-sm-2 control-label">联系方式：</label>
+										<div class="col-sm-4">
+											<span id="fcontact" class="form-control" th:text="${session.order?.proposer?.contact}"></span>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label for="freason" class="col-sm-2 control-label">申请原因：</label>
+										<div class="col-sm-10">
+											<span id="freason" class="form-control" th:text="${session.order?.reason}"></span>
+										</div>
+									</div>
+									<input type="hidden" id="fid" th:value="${session.order?.id}">
+								</form>
+								<br>
+								<h3>装机明细</h3>
+								<br>
+								<div>
+									<table id="detailList" class="table table-bordered" style="text-align:center;">
+										<thead>
+										<tr class="success">
+											<td>序号</td>
+											<td>申请职能部门|营业区</td>
+											<td>使用科室|外勤部门</td>
+											<td>部门类型</td>
+											<td>运营商</td>
+											<td>资源类型</td>
+											<td>装机数量</td>
+											<td>资费</td>
+											<td>所在职场</td>
+											<td>机房</td>
+										</tr>
+										</thead>
+										<tbody id="t1">
+											<tr th:each="constructDetail:${session?.constructDetailList}">
+												<td th:text="${constructDetailStat?.count}">序号</td>
+												<td th:text="${constructDetail?.apply_department?.departmentName}">申请职能部门|营业区</td>
+												<td th:text="${constructDetail?.usedepartment?.departmentName}">使用科室|外勤部门</td>
+												<td th:text="${constructDetail?.usedepartment_type}">部门类型</td>
+												<td th:text="${constructDetail?.operator}">运营商</td>
+												<td th:text="${constructDetail?.resourceType}">资源类型</td>
+												<td th:text="${constructDetail?.construct_number}">装机数量</td>
+												<td th:text="${constructDetail?.expense?.price}">资费</td>
+												<td th:text="${constructDetail?.workplace?.workplaceName}">所在职场</td>
+												<td th:text="${constructDetail?.networkRoom?.networkroom_name}">机房</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<br>
+								<h3>设备购买明细</h3>
+								<br>
+								<div>
+									<table id="equipmnetPurchaseDetailList" class="table table-bordered" style="text-align:center;">
+										<thead>
+										<tr class="success">
+											<td>序号</td>
+											<td>购买设备类型名称</td>
+											<td>购买数量</td>
+											<td>设备单价</td>
+										</tr>
+										</thead>
+										<tbody id="t2">
+										<tr th:each="equipmentPurchaseRecord:${session?.equipmentPurchaseRecordList}">
+											<td th:text="${equipmentPurchaseRecordStat?.count}">序号</td>
+											<td th:text="${equipmentPurchaseRecord?.equipment_type}">购买设备类型</td>
+											<td th:text="${equipmentPurchaseRecord?.purchaseNum}">购买数量</td>
+											<td th:text="${equipmentPurchaseRecord?.expense.price}">设备单价</td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
+								<br>
+								<hr>
+								<br>
+								<div id="Equipment">
+									<ul class="nav nav-tabs" role="tablist">
+										<li role="presentation" class="active"><a><span class="badge">2</span> 设备购买录入</a></li>
+									</ul>
+									<br>
+									<div>
+										<table id="equipmentPurchaseList" class="table table-bordered" style="text-align:center;">
+											<thead>
+											<tr class="success">
+												<td>序号</td>
+												<td>购买设备SN号</td>
+												<td>购买设备类型</td>
+												<td>设备单价</td>
+												<td>列支成本中心</td>
+											</tr>
+											</thead>
+											<tbody id="equipmentList">
+
+											</tbody>
+										</table>
+									</div>
+
+								</div>
+								<div id="Resource">
+									<ul class="nav nav-tabs" role="tablist">
+										<li role="presentation" class="active"><a><span class="badge">3</span> 资源录入</a></li>
+									</ul>
+									<br>
+									<div>
+										<table id="temp_resource_list" class="table table-bordered" style="text-align:center;">
+											<thead>
+											<tr class="success">
+												<td>序号</td>
+												<td>资源号码</td>
+												<td>运营商</td>
+												<td>资源类型</td>
+												<td>资费</td>
+												<td>所在职场</td>
+												<td>机房</td>
+												<td>挂账部门</td>
+												<td>使用科室</td>
+												<td>部门类型</td>
+												<td>使用人</td>
+												<td>成本中心</td>
+												<td>设备端口</td>
+												<td>设备编号</td>
+											</tr>
+											</thead>
+											<tbody id="resourceList">
+
+											</tbody>
+										</table>
+									</div>
+									<button type="button" class="btn btn-success" id="preview">预览</button>
+								</div>
+							</div>
+						</div>
+						<!-- END BASIC TABLE -->
+					</div>
+					<!--</div>-->
+				</div>
+
+			</div>
+		</div>
+		<!-- END MAIN CONTENT -->
+	</div>
+		<!-- END MAIN -->
+	<div id="department_layer" style="display: none;">
+		<div id="departmentTree" class="ztree"></div>
+	</div>
+	<div style="padding: 1% 1%;display: none" id="workplace_layer">
+		搜索职场：
+		<div class="layui-inline">
+			<input class="layui-input" name="workplaceName" id="demoReload" placeholder="请输入职场名称" autocomplete="off">
+		</div>
+		<button class="layui-btn" data-type="reload" id="search">搜索</button>
+		<table class="layui-table"  id="fworkplace_table" lay-filter="workplace"></table>
+	</div>
+	<div style="padding: 1% 1%;display: none" id="networkroom_layer">
+		<table class="layui-table"  id="fnetworkroom_table" lay-filter="networkroom"></table>
+	</div>
+	<div style="padding: 1% 1%;display: none" id="expense_layer">
+		<!--搜索职场：-->
+		<!--<div class="layui-inline">-->
+		<!--<input class="layui-input" name="workplaceName" id="demoReload" placeholder="请输入职场名称" autocomplete="off">-->
+		<!--</div>-->
+		<!--<button class="layui-btn" data-type="reload" id="search">搜索</button>-->
+		<table class="layui-table"  id="fexpense_table" lay-filter="expense"></table>
+	</div>
+	<!--<div style="padding: 1% 1%;display: none" id="equipmentType_layer">-->
+		<!--搜索设备类型名称：-->
+		<!--<div class="layui-inline">-->
+			<!--<input class="layui-input" name="equipmentType" id="equipmentType" placeholder="请输入设备类型名称" autocomplete="off">-->
+		<!--</div>-->
+		<!--<button class="layui-btn" data-type="reload" id="equipmentType_search">搜索</button>-->
+		<!--<table class="layui-table"  id="fequipmentType_table" lay-filter="equipmentType"></table>-->
+	<!--</div>-->
+
+	<div style="padding: 1% 1%;display: none" id="equipment_layer">
+		搜索设备：
+		<div class="layui-inline">
+			<input class="layui-input" name="equipment_sn" id="equipment_sn" placeholder="请输入设备sn号" autocomplete="off">
+		</div>
+		<button class="layui-btn" data-type="reload" id="equipment_search">搜索</button>
+		<table class="layui-table"  id="fequipment_table" lay-filter="equipment"></table>
+	</div>
+	<div class="clearfix"></div>
+	<div id="footer" th:include="/commons/footer :: footerContext"></div>
+
+	<!-- END WRAPPER -->
+</div>
+<script type="text/javascript"  th:inline="javascript">
+
+
+	$(function () {
+		var equipmentPurchaseRecordList = [[${session?.equipmentPurchaseRecordList}]];
+		generateEquipmentTable(equipmentPurchaseRecordList);
+
+		var constructDetailList = [[${session?.constructDetailList}]];
+
+		generateConstructDetailTable(constructDetailList);
+    })
+
+	function generateEquipmentTable(equipmentPurchaseRecordList) {
+
+	    console.log(equipmentPurchaseRecordList)
+
+	    var trHtml = '';
+        var m = 1;
+
+		for(var i=0;i<equipmentPurchaseRecordList.length;i++ ){
+			var purchaseNum = equipmentPurchaseRecordList[i].purchaseNum;
+			for(var n=0; n<purchaseNum;n++){
+			    trHtml += '<tr>';
+				trHtml += '<td>'+ m + '</td>';
+				trHtml += '<td><input type="text" class="form-control"></td>';
+				trHtml += '<td>' + equipmentPurchaseRecordList[i].equipment_type + '</td>';
+				trHtml += '<td>' + equipmentPurchaseRecordList[i].expense.price + '</td>';
+				trHtml += '<td><input type="text" class="form-control"></td>';
+                trHtml += '</tr>';
+                m++;
+			}
+		}
+        $("#equipmentList").html(trHtml);
+    }
+
+    function generateConstructDetailTable(constructDetailList) {
+        console.log(constructDetailList)
+
+        var trHtml = '';
+        var m = 1;
+
+        for(var i=0;i<constructDetailList.length;i++ ){
+            var construct_number = constructDetailList[i].construct_number;
+            for(var n=0; n<construct_number;n++){
+                trHtml += '<tr>';
+                trHtml += '<td>'+ m + '</td>';
+                trHtml += '<td><input type="text" class="form-control"></td>';
+                trHtml += '<td>'+ constructDetailList[i].operator +'</td>';
+                trHtml += '<td>'+ constructDetailList[i].resourceType +'</td>';
+                trHtml += '<td>'+ constructDetailList[i].expense.price +'</td>';
+                trHtml += '<td style="display: none;">'+ constructDetailList[i].expense.id +'</td>';
+                trHtml += '<td>'+ constructDetailList[i].workplace.workplaceName +'</td>';
+                trHtml += '<td style="display: none;">'+ constructDetailList[i].workplace.id +'</td>';
+                trHtml += '<td>'+ constructDetailList[i].networkRoom.networkroom_name +'</td>';
+                trHtml += '<td style="display: none;">'+ constructDetailList[i].networkRoom.id +'</td>';
+                trHtml += '<td>'+ constructDetailList[i].apply_department.departmentName +'</td>';
+                trHtml += '<td style="display: none;">'+ constructDetailList[i].apply_department.id +'</td>';
+                trHtml += '<td>'+ constructDetailList[i].usedepartment.departmentName +'</td>';
+                trHtml += '<td style="display: none;">'+ constructDetailList[i].usedepartment.id +'</td>';
+                trHtml += '<td>'+ constructDetailList[i].usedepartment_type +'</td>';
+                trHtml += '<td><input type="text" class="form-control"></td>';
+                trHtml += '<td><input type="text" class="form-control"></td>';
+                trHtml += '<td><input type="text" class="form-control"></td>';
+                trHtml += '<td><input type="text" class="form-control"></td>';
+                trHtml += '</tr>';
+                m++;
+            }
+        }
+        $("#resourceList").html(trHtml);
+    }
+
+
+    $("#preview").click(function () {
+
+        // var OrderConstructNum = getTableNum("t1",5);
+        //
+        // //判断工单的装机数量与添加的资源数量是否一致
+        // if(OrderConstructNum != resourceList.length){
+        //     layer.msg("添加的资源数量与工单的数量不一致，请重新填写",{time:2000, icon:5, shift:5})
+        //     return false;
+        // }
+
+
+        $.ajax({
+            type:"post",
+            url:[[@{|/order/preHandleOrder/construction/saveResourceList|}]],
+        	data:JSON.stringify({'resourceList':resourceList}),
+            dataType:"json",
+            contentType : "application/json;charset=utf-8",
+            beforeSend:function () {
+            return true
+        },
+        success:function (result) {
+            if(result.success){
+				window.location.href= [[@{|/order/preHandleOrder/construction/toPreviewConstruction|}]];
+            }else{
+                layer.msg(result.message,{time:2000, icon:5, shift:5})
+            }
+        }
+    	})
+
+    })
+
+
+    // //查询订单购买设备数量
+    // function getTableNum(table_id,row){
+    //
+    //     //table_id： 要统计的table 的id值
+    //     //row：要统计哪一列
+    //
+    //     var total = 0;
+    //     $("#"+ table_id +" tr").each(function () {
+    //         // var num = parseInt(($(this).find("td")[row]).innerText);
+    //         // total += getNumValue(num);
+		// 	$(this).find("td:eq("+ row +")").each(function () {
+    //             total += parseInt($(this).text());
+    //         })
+    //     });
+    //
+    //     return Number(total);
+    //
+    // }
+    //
+    // function getNumValue(num) {
+    //     if (!isNaN(num)) {
+    //         num = parseInt(num);
+    //     }
+    //     else {
+    //         num = 0;
+    //     }
+    //     return num;
+    // }
+
+
+</script>
+</body>
+
+</html>
