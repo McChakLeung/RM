@@ -311,6 +311,31 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Resource> queryResourceDetailList(List<Resource> resources) {
+        List<Resource> resourceList = new ArrayList<>();
+        for(Resource resource: resources){
+            resource.setExpense(expenseMapper.selectByPrimaryKey(resource.getExpense_id()));
+            resource.setWorkplace(workplaceMapper.selectByPrimaryKey(resource.getWorkplace_id()));
+            resource.setNetworkRoom(networkRoomMapper.selectByPrimaryKey(resource.getNetwork_room_id()));
+            resource.setDepartment(departmentMapper.selectByPrimaryKey(resource.getDepartment_id()));
+            resource.setUsedepartment(departmentMapper.selectByPrimaryKey(resource.getUsedepartment_id()));
+            resourceList.add(resource);
+        }
+        return resourceList;
+    }
+
+    @Override
+    public List<Equipment> queryEquipmentDetailList(List<Equipment> equipments) {
+        List<Equipment> equipmentList = new ArrayList<>();
+        for(Equipment equipment: equipments){
+            equipment.setExpense(expenseMapper.selectByPrimaryKey(equipment.getExpense_id()));
+            equipmentList.add(equipment);
+        }
+        return equipmentList;
+    }
+
+
+    @Override
     public void updateOrder(Order order) {
         orderMapper.updateByPrimaryKeySelective(order);
     }

@@ -208,7 +208,7 @@
 									</ul>
 									<br>
 									<div>
-										<table id="temp_resource_list" class="table table-bordered" style="text-align:center;">
+										<table id="resource_list" class="table table-bordered" style="text-align:center;">
 											<thead>
 											<tr class="success">
 												<td>序号</td>
@@ -317,6 +317,7 @@
 				trHtml += '<td><input type="text" class="form-control"></td>';
 				trHtml += '<td>' + equipmentPurchaseRecordList[i].equipment_type + '</td>';
 				trHtml += '<td>' + equipmentPurchaseRecordList[i].expense.price + '</td>';
+				trHtml += '<td  style="display: none;">' + equipmentPurchaseRecordList[i].expense.id + '</td>';
 				trHtml += '<td><input type="text" class="form-control"></td>';
                 trHtml += '</tr>';
                 m++;
@@ -372,11 +373,18 @@
         //     return false;
         // }
 
+        var equipment_table = "equipmentPurchaseList";
+
+        var equipmentList = equipmentTableToJSONForJquery(equipment_table);
+
+        var resource_table = "resource_list";
+
+        var resourceList  = resourceTableToJSONForJquery(resource_table);
 
         $.ajax({
             type:"post",
             url:[[@{|/order/preHandleOrder/construction/saveResourceList|}]],
-        	data:JSON.stringify({'resourceList':resourceList}),
+        	data:JSON.stringify({'equipmentList':equipmentList,'resourceList':resourceList}),
             dataType:"json",
             contentType : "application/json;charset=utf-8",
             beforeSend:function () {
@@ -392,6 +400,53 @@
     	})
 
     })
+
+    function equipmentTableToJSONForJquery(table) {
+
+        var rows = $("#"+table).find("tr:gt(0)");
+        var num = rows.length;
+        var info = [];
+        for (var i = 0; i < num; i++) {
+            var obj = {};
+            obj.equipmentSn = rows.eq(i).children("td").eq(1).children("input").val();
+            obj.equipmentType = rows.eq(i).children("td").eq(2).text();
+            obj.expense_id = rows.eq(i).children("td").eq(4).text();
+            obj.account_center = rows.eq(i).children("td").eq(5).children("input").val();
+            console.log(obj)
+            info.push(obj);
+        }
+        console.log(info)
+        return info;
+
+    }
+
+    function resourceTableToJSONForJquery(table) {
+
+        var rows = $("#"+table).find("tr:gt(0)");
+        var num = rows.length;
+        var info = [];
+        for (var i = 0; i < num; i++) {
+            var obj = {};
+            obj.resource_no = rows.eq(i).children("td").eq(1).children("input").val();
+            obj.operator = rows.eq(i).children("td").eq(2).text();
+            obj.resourc_type = rows.eq(i).children("td").eq(3).text();
+            obj.expense_id = rows.eq(i).children("td").eq(5).text();
+            obj.workplace_id = rows.eq(i).children("td").eq(7).text();
+            obj.network_room_id = rows.eq(i).children("td").eq(9).text();
+            obj.department_id = rows.eq(i).children("td").eq(11).text();
+            obj.usedepartment_id = rows.eq(i).children("td").eq(13).text();
+            obj.usedepartment_type = rows.eq(i).children("td").eq(14).text();
+            obj.username = rows.eq(i).children("td").eq(15).children("input").val();
+            obj.account_center = rows.eq(i).children("td").eq(16).children("input").val();
+            obj.equipment_port_num = rows.eq(i).children("td").eq(17).children("input").val();
+            obj.equipment = { equipmentSN:rows.eq(i).children("td").eq(18).children("input").val()};
+            console.log(obj)
+            info.push(obj);
+        }
+        console.log(info)
+        return info;
+
+    }
 
 
     // //查询订单购买设备数量

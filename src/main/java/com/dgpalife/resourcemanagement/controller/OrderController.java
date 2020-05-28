@@ -925,7 +925,6 @@ public class OrderController {
 
     /**
      * 将建设工单临时放置在session中存放
-     * @param equipmentList
      * @param session
      * @return
      */
@@ -955,8 +954,12 @@ public class OrderController {
     public Object saveResourceList(@RequestBody JSONObject jsonObject, HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
-            List<Resource> resourceList = jsonObject.getJSONArray("resourceList").toJavaList(Resource.class);
+            List<Resource> resources = jsonObject.getJSONArray("resourceList").toJavaList(Resource.class);
+            List<Equipment> equipments = jsonObject.getJSONArray("equipmentList").toJavaList(Equipment.class);
+            List<Resource> resourceList = orderService.queryResourceDetailList(resources);
+            List<Equipment> equipmentList = orderService.queryEquipmentDetailList(equipments);
             session.setAttribute("resourceList",resourceList);
+            session.setAttribute("equipmentList",equipmentList);
             result.setSuccess(true);
         }catch (Exception e){
             e.printStackTrace();

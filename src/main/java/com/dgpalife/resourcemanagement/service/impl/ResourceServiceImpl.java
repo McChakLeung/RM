@@ -106,8 +106,8 @@ public class ResourceServiceImpl implements ResourceService {
         //第二步：遍历resourceList
         for (Resource resource: resourceList) {
             //查询设备表中与resourceList中EquipmentSN一致的数据，并更新Migration对象中equipment_id的字段
-            Equipment equipment = equipmentMapper.selectByEquipmenSN(resource.getEquipment().getEquipmentSn());
-            resource.setEquipment_id(equipment.getId());
+            //Equipment equipment = equipmentMapper.selectByEquipmenSN(resource.getEquipment().getEquipmentSn());
+            //resource.setEquipment_id(equipment.getId());
 
             //设置resource信息
             resource.setCreate_time(sdf.format(date));
