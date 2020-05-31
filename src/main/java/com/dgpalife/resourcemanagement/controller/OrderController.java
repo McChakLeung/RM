@@ -954,12 +954,17 @@ public class OrderController {
     public Object saveResourceList(@RequestBody JSONObject jsonObject, HttpSession session){
         AjaxResult result = new AjaxResult();
         try {
+            if(jsonObject.containsKey("equipmentList")){
+                List<Equipment> equipments = jsonObject.getJSONArray("equipmentList").toJavaList(Equipment.class);
+                List<Equipment> equipmentList = orderService.queryEquipmentDetailList(equipments);
+                session.setAttribute("equipmentList",equipmentList);
+            }
+
             List<Resource> resources = jsonObject.getJSONArray("resourceList").toJavaList(Resource.class);
-            List<Equipment> equipments = jsonObject.getJSONArray("equipmentList").toJavaList(Equipment.class);
             List<Resource> resourceList = orderService.queryResourceDetailList(resources);
-            List<Equipment> equipmentList = orderService.queryEquipmentDetailList(equipments);
+
             session.setAttribute("resourceList",resourceList);
-            session.setAttribute("equipmentList",equipmentList);
+
             result.setSuccess(true);
         }catch (Exception e){
             e.printStackTrace();

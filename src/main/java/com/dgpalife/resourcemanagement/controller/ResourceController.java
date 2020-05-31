@@ -19,10 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/resource")
@@ -104,7 +101,10 @@ public class ResourceController {
         try {
             User user = (User)session.getAttribute(Const.LOGIN_USER);
             List<Resource> resourceList = (List<Resource>) session.getAttribute("resourceList");
-            List<Equipment> equipmentList = (List<Equipment>)session.getAttribute("equipmentList");
+            List<Equipment> equipmentList = new ArrayList<>();
+            if(session.getAttribute("equipmentList") != null){
+                equipmentList = (List<Equipment>)session.getAttribute("equipmentList");
+            }
             Order order = (Order)session.getAttribute("order");
 
             //判断获取的数据是否为空

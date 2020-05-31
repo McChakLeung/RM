@@ -165,7 +165,7 @@
 
 	$(function () {
 		//判断工单设备列表是否为空
-        var equipmentNum = "${session.order?.equipmentPurchaseRecordList}".length
+        var equipmentNum = "${session.equipmentList}".length
         if(equipmentNum > 0){
             $("#equipment_area").show();
         }else{
